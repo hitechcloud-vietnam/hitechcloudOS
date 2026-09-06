@@ -1,11 +1,11 @@
 ---
 name: mcp-configurator
-description: Add or update workspace MCP servers using hitechcloudOS mcp_registry syntax.
+description: Add or update workspace MCP servers using holaOS mcp_registry syntax.
 ---
 
 # MCP Configurator
 
-Use this skill when the task is to add, remove, or update MCP access in a hitechcloudOS workspace.
+Use this skill when the task is to add, remove, or update MCP access in a holaOS workspace.
 
 ## Core Rules
 1. Edit `workspace.yaml` at the workspace root. Do not create `mcp.json`, `.cursor/mcp.json`, `claude_desktop_config.json`, or another generic MCP config unless the user explicitly asks for that format.

@@ -158,7 +158,7 @@ type WorkspaceRuntimePlanReferenceResponse =
 const DEFAULT_PROMPT_FILE = "AGENTS.md";
 // Fallback single agent when a workspace.yaml has no `agents` block at all. The model is a
 // floor (the session picker overrides it) and matches the runner-prep scaffold default.
-const DEFAULT_AGENT_ID = "hitechcloud";
+const DEFAULT_AGENT_ID = "holaboss";
 const DEFAULT_AGENT_MODEL = "gpt-5.4";
 const DEFAULT_TIMEOUT_MS = 10_000;
 const TOOL_ID_PATTERN = /^(?<server>[A-Za-z0-9][A-Za-z0-9_-]*)\.(?<tool>[A-Za-z0-9][A-Za-z0-9_-]*)$/;

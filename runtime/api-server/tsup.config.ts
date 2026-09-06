@@ -40,7 +40,7 @@ export default defineConfig({
   // Bundle the (pure-JS, no-native-deps) channel gateway into the api-server
   // output so it ships without a separate vendored node_modules copy and so its
   // edits hot-reload through the api-server's own dist sync in dev.
-  noExternal: ["@hitechcloud/runtime-channel-gateway"],
+  noExternal: ["@holaboss/runtime-channel-gateway"],
   async onSuccess() {
     copyEmbeddedAssets();
   },

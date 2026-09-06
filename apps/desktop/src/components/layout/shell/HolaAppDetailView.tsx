@@ -49,7 +49,7 @@ function overviewText(entry: AppCatalogEntry): string {
   }
   const blurb = entry.description?.trim();
   return [
-    `${entry.title} is a HolaApp for your hitechcloudOS workspace.`,
+    `${entry.title} is a HolaApp for your holaOS workspace.`,
     blurb || null,
     "Once installed it lives in your sidebar, and your agent can operate its tools directly from chat — so you get things done by just asking.",
   ]

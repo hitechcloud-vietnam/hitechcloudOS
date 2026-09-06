@@ -15,7 +15,7 @@ const zeroAutomationsFetcher = async () => ({
 
 test("packageWorkspace resolves for a minimal workspace", async () => {
   const workspaceDir = await fs.mkdtemp(
-    path.join(os.tmpdir(), "hitechcloud-workspace-packager-"),
+    path.join(os.tmpdir(), "holaboss-workspace-packager-"),
   );
 
   await fs.writeFile(path.join(workspaceDir, "workspace.yaml"), "name: test\n", "utf8");
@@ -66,7 +66,7 @@ test("buildPresignedUploadError includes the response body and signed headers", 
 
 test("packageWorkspace includes automations.yaml and sets automations_count: 0 when empty", async () => {
   const workspaceDir = await fs.mkdtemp(
-    path.join(os.tmpdir(), "hitechcloud-workspace-packager-"),
+    path.join(os.tmpdir(), "holaboss-workspace-packager-"),
   );
   await fs.writeFile(path.join(workspaceDir, "workspace.yaml"), "name: test\n", "utf8");
 
@@ -200,7 +200,7 @@ test("fetchAndSerializeAutomations rejects with fetch cronjobs failed when fetch
 
 test("packageWorkspace honors forceExcludePaths for individual files", async () => {
   const workspaceDir = await fs.mkdtemp(
-    path.join(os.tmpdir(), "hitechcloud-workspace-packager-"),
+    path.join(os.tmpdir(), "holaboss-workspace-packager-"),
   );
   await fs.writeFile(path.join(workspaceDir, "workspace.yaml"), "name: test\n", "utf8");
   await fs.writeFile(path.join(workspaceDir, "README.md"), "# Test\n", "utf8");
@@ -223,7 +223,7 @@ test("packageWorkspace honors forceExcludePaths for individual files", async () 
 
 test("packageWorkspace honors forceExcludePaths as a directory prefix", async () => {
   const workspaceDir = await fs.mkdtemp(
-    path.join(os.tmpdir(), "hitechcloud-workspace-packager-"),
+    path.join(os.tmpdir(), "holaboss-workspace-packager-"),
   );
   await fs.writeFile(path.join(workspaceDir, "workspace.yaml"), "name: test\n", "utf8");
   await fs.mkdir(path.join(workspaceDir, "skills", "alpha"), { recursive: true });
@@ -269,7 +269,7 @@ test("forceExcludePaths cannot bypass the sensitive-file blocker", async () => {
   // candidate). Make sure listing it as exclude doesn't suddenly include
   // it — the safety nets remain authoritative.
   const workspaceDir = await fs.mkdtemp(
-    path.join(os.tmpdir(), "hitechcloud-workspace-packager-"),
+    path.join(os.tmpdir(), "holaboss-workspace-packager-"),
   );
   await fs.writeFile(path.join(workspaceDir, "workspace.yaml"), "name: test\n", "utf8");
   await fs.writeFile(path.join(workspaceDir, "secret.pem"), "key\n", "utf8");
@@ -285,7 +285,7 @@ test("forceExcludePaths cannot bypass the sensitive-file blocker", async () => {
 
 test("previewBundle classifies user opt-outs as user_excluded", async () => {
   const workspaceDir = await fs.mkdtemp(
-    path.join(os.tmpdir(), "hitechcloud-workspace-packager-"),
+    path.join(os.tmpdir(), "holaboss-workspace-packager-"),
   );
   await fs.writeFile(path.join(workspaceDir, "workspace.yaml"), "name: test\n", "utf8");
   await fs.writeFile(path.join(workspaceDir, "drop-me.md"), "x\n", "utf8");

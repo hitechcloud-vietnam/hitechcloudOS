@@ -17,7 +17,7 @@
 
 ## File Structure
 
-### Runtime repo (`hitechcloudOS`)
+### Runtime repo (`holaOS`)
 
 | File | Responsibility |
 |------|---------------|
@@ -1071,7 +1071,7 @@ git commit -m "feat: add managed connect button to integrations pane"
 - [ ] Run:
 
 ```bash
-cd /Users/you/hitechcloud-vietnam/hitechcloud/hitechcloudOS
+cd /Users/you/holaboss-ai/holaboss/holaOS
 
 cd runtime/api-server && node --import tsx --test src/composio-service.test.ts
 cd runtime/api-server && node --import tsx --test src/integration-broker.test.ts
@@ -1111,7 +1111,7 @@ Open `http://localhost:3099`, select Gmail, click "Start OAuth Flow", complete a
 
 - **Token resolution strategy**: The `getAccessToken` method in Task 1 uses a proxy call to a provider endpoint as the guaranteed working approach. During implementation, check if `GET /api/v3/connected_accounts/{id}` returns `state.access_token` directly — if so, use that simpler path instead of the proxy call.
 
-- **Provider-to-toolkit mapping**: Composio uses "toolkit slugs" (e.g., `gmail`) while Hitechcloud uses provider IDs (e.g., `google`). The `PROVIDER_TO_COMPOSIO_TOOLKIT` mapping in Task 3 handles this. If a provider is not in the map, it falls through to using the provider ID as the toolkit slug.
+- **Provider-to-toolkit mapping**: Composio uses "toolkit slugs" (e.g., `gmail`) while Holaboss uses provider IDs (e.g., `google`). The `PROVIDER_TO_COMPOSIO_TOOLKIT` mapping in Task 3 handles this. If a provider is not in the map, it falls through to using the provider ID as the toolkit slug.
 
 - **No module changes needed**: Because the broker's `exchangeToken` contract is unchanged (apps still call `POST /api/v1/integrations/broker/token`), existing modules (Gmail, Sheets, GitHub, Reddit, Twitter, LinkedIn) work with Composio connections without any code changes. The broker transparently resolves tokens from Composio when it encounters `auth_mode: "composio"`.
 

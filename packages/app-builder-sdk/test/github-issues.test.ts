@@ -27,7 +27,7 @@ describe("GitHub Issues — full workflow lifecycle", () => {
   test("full issue lifecycle: draft → open → in_progress → closed → reopened", async () => {
     const { app } = setup()
     const row = app._state.insertRow("issue", {
-      repo_full_name: "hitechcloud/hitechcloud", title: "Bug X", body: "details",
+      repo_full_name: "holaboss/holaboss", title: "Bug X", body: "details",
     }, "draft")
 
     // 1. create: draft → open
@@ -60,13 +60,13 @@ describe("GitHub Issues — full workflow lifecycle", () => {
     expect(card!.surface).toBe("ops_log")
     expect(card!.status).toBe("reopened")
     expect(card!.summary).toBe("Bug X")
-    expect(card!.deepLink).toBe("https://github.com/hitechcloud/hitechcloud/issues/42")
+    expect(card!.deepLink).toBe("https://github.com/holaboss/holaboss/issues/42")
   })
 
   test("close is reversible (back to 'reopened')", async () => {
     const { app } = setup()
     const row = app._state.insertRow("issue", {
-      repo_full_name: "hitechcloud/hitechcloud", title: "x", external_id: "42",
+      repo_full_name: "holaboss/holaboss", title: "x", external_id: "42",
     }, "open")
     app._state.updateRow(row.id, { externalId: "42" })
 
@@ -83,7 +83,7 @@ describe("GitHub Issues — full workflow lifecycle", () => {
   test("comment: side effect, does NOT change issue status", async () => {
     const { app } = setup()
     const row = app._state.insertRow("issue", {
-      repo_full_name: "hitechcloud/hitechcloud", title: "x", external_id: "42",
+      repo_full_name: "holaboss/holaboss", title: "x", external_id: "42",
     }, "open")
     app._state.updateRow(row.id, { externalId: "42" })
     app._state.upsertOutput({
@@ -115,7 +115,7 @@ describe("GitHub Issues — full workflow lifecycle", () => {
   test("invalid transition: start_work on closed issue rejected", async () => {
     const { app } = setup()
     const row = app._state.insertRow("issue", {
-      repo_full_name: "hitechcloud/hitechcloud", title: "x", external_id: "42",
+      repo_full_name: "holaboss/holaboss", title: "x", external_id: "42",
     }, "closed")
     const r = await app._invokeAction({ actionName: "start_work", rowId: row.id, bridge: bridge() })
     expect((r as any).fail.code).toBe("invalid_state")
@@ -141,7 +141,7 @@ describe("GitHub Issues — full workflow lifecycle", () => {
   test("failure: bad token surfaces with reauth hint", async () => {
     const { app } = setup()
     const row = app._state.insertRow("issue", {
-      repo_full_name: "hitechcloud/hitechcloud", title: "x",
+      repo_full_name: "holaboss/holaboss", title: "x",
     }, "draft")
     scriptedResponses.push({ status: 401, body: { message: "Bad credentials" } })
     const r = await app._invokeAction({ actionName: "create", rowId: row.id, bridge: bridge() })

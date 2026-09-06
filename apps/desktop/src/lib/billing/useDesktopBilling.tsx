@@ -37,17 +37,17 @@ const DESKTOP_BILLING_LOW_BALANCE_THRESHOLD = 10;
 const DESKTOP_BILLING_PLAN_META = {
   basic: {
     planId: "basic",
-    planName: "hitechcloudOS",
+    planName: "holaOS",
     monthlyCreditsIncluded: 200 as number | null,
   },
   pro: {
     planId: "pro",
-    planName: "hitechcloudOS Pro",
+    planName: "holaOS Pro",
     monthlyCreditsIncluded: 2000 as number | null,
   },
   customize: {
     planId: "customize",
-    planName: "hitechcloudOS Custom",
+    planName: "holaOS Custom",
     monthlyCreditsIncluded: null as number | null,
   },
 } as const;

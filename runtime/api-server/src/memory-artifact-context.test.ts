@@ -9,12 +9,12 @@ test("artifactContextEvidenceLines formats structured artifact excerpts into rep
       {
         sourceKind: "tool_result",
         treeId: "tree-tool-1",
-        title: "hitechcloud_composio.gmail_fetch_emails",
+        title: "holaboss_composio.gmail_fetch_emails",
         provider: "gmail",
         accountNamespace: "ops@example.com",
         canonicalEntityKey: "artifact:tool-result:gmail:call-1",
         excerpts: [
-          "Ben Book at anyIP reached out personally about hitechcloud.",
+          "Ben Book at anyIP reached out personally about holaboss.",
           "Follow-up should stay attached to the same thread.",
         ],
       },
@@ -26,7 +26,7 @@ test("artifactContextEvidenceLines formats structured artifact excerpts into rep
         accountNamespace: null,
         canonicalEntityKey: "artifact:output:output-1",
         excerpts: [
-          "Ben Book at anyIP should stay attached to hitechcloud personal outreach memory.",
+          "Ben Book at anyIP should stay attached to holaboss personal outreach memory.",
         ],
       },
     ],
@@ -35,8 +35,8 @@ test("artifactContextEvidenceLines formats structured artifact excerpts into rep
   });
 
   assert.deepEqual(evidenceLines, [
-    "[tool_result gmail ops@example.com] hitechcloud_composio.gmail_fetch_emails => Ben Book at anyIP reached out personally about hitechcloud.",
-    "[tool_result gmail ops@example.com] hitechcloud_composio.gmail_fetch_emails => Follow-up should stay attached to the same thread.",
-    "[output_artifact] outreach-delegated.md => Ben Book at anyIP should stay attached to hitechcloud personal outreach memory.",
+    "[tool_result gmail ops@example.com] holaboss_composio.gmail_fetch_emails => Ben Book at anyIP reached out personally about holaboss.",
+    "[tool_result gmail ops@example.com] holaboss_composio.gmail_fetch_emails => Follow-up should stay attached to the same thread.",
+    "[output_artifact] outreach-delegated.md => Ben Book at anyIP should stay attached to holaboss personal outreach memory.",
   ]);
 });

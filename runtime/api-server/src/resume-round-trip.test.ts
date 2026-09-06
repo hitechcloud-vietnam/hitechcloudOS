@@ -15,8 +15,8 @@ import {
  * Both halves are already covered on their own: that a terminal event persists
  * its `harness_session_id`, and that bootstrap can load a persisted id. What was
  * not covered is that they meet — that the id turn 1 WRITES is the id turn 2
- * READS. The write goes to `.hitechcloud/state/harness-session-state.json` (v2) and
- * the read also accepts a legacy `.hitechcloud/harness-session-state.json` (v1), so
+ * READS. The write goes to `.holaboss/state/harness-session-state.json` (v2) and
+ * the read also accepts a legacy `.holaboss/harness-session-state.json` (v1), so
  * the two sides address the same fact through different paths and formats. Each
  * half can stay green while the seam between them silently stops working.
  *

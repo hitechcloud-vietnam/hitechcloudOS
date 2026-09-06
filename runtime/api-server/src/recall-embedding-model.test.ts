@@ -6,14 +6,14 @@ import { afterEach, test } from 'node:test';
 
 import { createRecallEmbeddingModelClient } from './recall-embedding-model.js';
 
-const ORIGINAL_RUNTIME_CONFIG_PATH = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+const ORIGINAL_RUNTIME_CONFIG_PATH = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
 const tempDirs: string[] = [];
 
 afterEach(() => {
   if (ORIGINAL_RUNTIME_CONFIG_PATH === undefined) {
-    delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+    delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
   } else {
-    process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = ORIGINAL_RUNTIME_CONFIG_PATH;
+    process.env.HOLABOSS_RUNTIME_CONFIG_PATH = ORIGINAL_RUNTIME_CONFIG_PATH;
   }
   for (const dir of tempDirs.splice(0)) {
     fs.rmSync(dir, { recursive: true, force: true });
@@ -26,7 +26,7 @@ function makeTempDir(prefix: string): string {
   return dir;
 }
 
-test('createRecallEmbeddingModelClient prefers hitechcloud embeddings when the proxy is available', () => {
+test('createRecallEmbeddingModelClient prefers holaboss embeddings when the proxy is available', () => {
   const root = makeTempDir('hb-recall-embedding-config-');
   const configPath = path.join(root, 'runtime-config.json');
   fs.writeFileSync(
@@ -35,14 +35,14 @@ test('createRecallEmbeddingModelClient prefers hitechcloud embeddings when the p
       {
         runtime: {
           background_tasks: {
-            provider: 'hitechcloud_model_proxy',
+            provider: 'holaboss_model_proxy',
             model: 'gpt-5.4-mini',
           },
           sandbox_id: 'desktop:test-sandbox',
         },
         providers: {
-          hitechcloud_model_proxy: {
-            kind: 'hitechcloud_proxy',
+          holaboss_model_proxy: {
+            kind: 'holaboss_proxy',
             api_key: 'hbmk.test-token',
             base_url: 'https://proxy.example/api/v1/model-proxy',
           },
@@ -53,13 +53,13 @@ test('createRecallEmbeddingModelClient prefers hitechcloud embeddings when the p
           },
         },
         integrations: {
-          hitechcloud: {
+          holaboss: {
             auth_token: 'hbmk.test-token',
             sandbox_id: 'desktop:test-sandbox',
             user_id: 'user-1',
           },
         },
-        hitechcloud: {
+        holaboss: {
           auth_token: 'hbmk.test-token',
           sandbox_id: 'desktop:test-sandbox',
           user_id: 'user-1',
@@ -72,7 +72,7 @@ test('createRecallEmbeddingModelClient prefers hitechcloud embeddings when the p
     ),
     'utf8',
   );
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
 
   const client = createRecallEmbeddingModelClient({
     workspaceId: 'workspace-1',

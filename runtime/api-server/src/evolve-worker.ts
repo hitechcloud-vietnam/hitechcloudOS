@@ -1,6 +1,6 @@
 import { setTimeout as sleep } from "node:timers/promises";
 
-import type { PostRunJobRecord, RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import type { PostRunJobRecord, RuntimeStateStore } from "@holaboss/runtime-state-store";
 
 import type { MemoryServiceLike } from "./memory.js";
 

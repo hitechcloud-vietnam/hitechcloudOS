@@ -43,9 +43,9 @@ test("isBrowserProfileId only matches the bprofile_ prefix", () => {
 
 test("profile partition + paths are profile-namespaced and stable", () => {
   const partition = browserProfilePartition(idA);
-  assert.match(partition, /^persist:hitechcloud-profile-/);
+  assert.match(partition, /^persist:holaboss-profile-/);
   // Distinct from the workspace partition namespace.
-  assert.doesNotMatch(partition, /hitechcloud-browser-/);
+  assert.doesNotMatch(partition, /holaboss-browser-/);
   // Stable across calls.
   assert.equal(browserProfilePartition(idA), partition);
   // Distinct ids → distinct partitions.

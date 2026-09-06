@@ -4,7 +4,7 @@
 
 **Goal:** Add a local broker token exchange endpoint to the runtime and migrate Gmail, Sheets, and GitHub modules from direct `PLATFORM_INTEGRATION_TOKEN` env var usage to broker-based token acquisition.
 
-**Architecture:** Phase 2 introduces a broker token exchange service inside the existing runtime API server. Apps present their `HITECHCLOUD_APP_GRANT` (injected by Phase 1) and a provider name, and the broker resolves the correct provider token from the binding/connection chain. Each direct-API module (Gmail, Sheets, GitHub) gets a small integration client that calls the broker instead of reading env vars. `PLATFORM_INTEGRATION_TOKEN` remains as a fallback during migration but is no longer the primary token source.
+**Architecture:** Phase 2 introduces a broker token exchange service inside the existing runtime API server. Apps present their `HOLABOSS_APP_GRANT` (injected by Phase 1) and a provider name, and the broker resolves the correct provider token from the binding/connection chain. Each direct-API module (Gmail, Sheets, GitHub) gets a small integration client that calls the broker instead of reading env vars. `PLATFORM_INTEGRATION_TOKEN` remains as a fallback during migration but is no longer the primary token source.
 
 **Tech Stack:** TypeScript, Fastify (runtime API server), node:test (testing), TanStack Start modules (Gmail/Sheets/GitHub)
 
@@ -35,7 +35,7 @@ Phase 2 does not include:
 
 ## File Structure
 
-### Runtime repo (`hitechcloudOS`)
+### Runtime repo (`holaOS`)
 
 | File | Responsibility |
 |------|---------------|
@@ -44,7 +44,7 @@ Phase 2 does not include:
 | `runtime/api-server/src/app.ts` (modify) | Register broker route |
 | `runtime/api-server/src/app.test.ts` (modify) | Broker route integration test |
 
-### Module repo (`hitechcloud-modules`)
+### Module repo (`holaboss-modules`)
 
 For each of Gmail, Sheets, GitHub:
 
@@ -52,7 +52,7 @@ For each of Gmail, Sheets, GitHub:
 |------|---------------|
 | `{module}/src/server/integration-client.ts` (new) | Broker client: token exchange with fallback |
 | `{module}/src/server/google-api.ts` or `github-api.ts` (modify) | Replace `getToken()` with broker client |
-| `{module}/app.runtime.yaml` (modify) | Add `HITECHCLOUD_INTEGRATION_BROKER_URL` and `HITECHCLOUD_APP_GRANT` to `env_contract` |
+| `{module}/app.runtime.yaml` (modify) | Add `HOLABOSS_INTEGRATION_BROKER_URL` and `HOLABOSS_APP_GRANT` to `env_contract` |
 
 ---
 
@@ -73,7 +73,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import { RuntimeStateStore } from "@holaboss/runtime-state-store";
 
 import {
   BrokerError,
@@ -128,7 +128,7 @@ test("exchangeToken returns provider token for a valid grant and active binding"
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@hitechcloud.vn",
+    accountLabel: "owner@holaboss.ai",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -221,7 +221,7 @@ test("exchangeToken throws connection_inactive when connection is expired", () =
     connectionId: "conn-google-expired",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "expired@hitechcloud.vn",
+    accountLabel: "expired@holaboss.ai",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "expired",
@@ -269,7 +269,7 @@ test("exchangeToken throws token_unavailable when connection has no secret_ref",
     connectionId: "conn-google-no-secret",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "nosecret@hitechcloud.vn",
+    accountLabel: "nosecret@holaboss.ai",
     authMode: "manual_token",
     grantedScopes: ["gmail.send"],
     status: "active"
@@ -316,7 +316,7 @@ test("exchangeToken prefers app-specific binding over workspace default", () => 
     connectionId: "conn-google-default",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "default@hitechcloud.vn",
+    accountLabel: "default@holaboss.ai",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -326,7 +326,7 @@ test("exchangeToken prefers app-specific binding over workspace default", () => 
     connectionId: "conn-google-app",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "app@hitechcloud.vn",
+    accountLabel: "app@holaboss.ai",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -379,7 +379,7 @@ Expected: FAIL because `integration-broker.ts` does not exist.
 - [ ] Create `runtime/api-server/src/integration-broker.ts`:
 
 ```ts
-import { type RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import { type RuntimeStateStore } from "@holaboss/runtime-state-store";
 
 export type BrokerErrorCode =
   | "grant_invalid"
@@ -559,7 +559,7 @@ test("POST /api/v1/integrations/broker/token returns provider token via HTTP", a
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@hitechcloud.vn",
+    accountLabel: "owner@holaboss.ai",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -707,19 +707,19 @@ git commit -m "feat: add broker token exchange route"
 ## Task 3: Migrate Gmail Module To Broker-Based Token Acquisition
 
 **Files:**
-- Create: `../hitechcloud-modules/gmail/src/server/integration-client.ts`
-- Modify: `../hitechcloud-modules/gmail/src/server/google-api.ts`
-- Modify: `../hitechcloud-modules/gmail/app.runtime.yaml`
+- Create: `../holaboss-modules/gmail/src/server/integration-client.ts`
+- Modify: `../holaboss-modules/gmail/src/server/google-api.ts`
+- Modify: `../holaboss-modules/gmail/app.runtime.yaml`
 
-The module repo is at `/Users/you/hitechcloud-vietnam/hitechcloud-modules/gmail/`.
+The module repo is at `/Users/you/holaboss-ai/holaboss-modules/gmail/`.
 
 ### Step 1: Create the integration client
 
-- [ ] Create `../hitechcloud-modules/gmail/src/server/integration-client.ts`:
+- [ ] Create `../holaboss-modules/gmail/src/server/integration-client.ts`:
 
 ```ts
-const BROKER_URL = process.env.HITECHCLOUD_INTEGRATION_BROKER_URL ?? "";
-const APP_GRANT = process.env.HITECHCLOUD_APP_GRANT ?? "";
+const BROKER_URL = process.env.HOLABOSS_INTEGRATION_BROKER_URL ?? "";
+const APP_GRANT = process.env.HOLABOSS_APP_GRANT ?? "";
 
 interface TokenExchangeResponse {
   token: string;
@@ -781,12 +781,12 @@ function getFallbackToken(provider: string): string {
 
 ### Step 2: Update google-api.ts to use the integration client
 
-- [ ] In `../hitechcloud-modules/gmail/src/server/google-api.ts`, replace the existing `getToken()` function and `headers()` function. The current file starts like this:
+- [ ] In `../holaboss-modules/gmail/src/server/google-api.ts`, replace the existing `getToken()` function and `headers()` function. The current file starts like this:
 
 ```ts
 import { readFileSync } from "node:fs"
 
-const TOKEN_FILE = "/hitechcloud/state/integration-tokens.json"
+const TOKEN_FILE = "/holaboss/state/integration-tokens.json"
 const GMAIL_BASE = "https://gmail.googleapis.com/gmail/v1/users/me"
 
 function getToken(): string {
@@ -845,11 +845,11 @@ Also remove the `readFileSync` import if it becomes unused after removing `getTo
 
 ### Step 3: Update app.runtime.yaml env_contract
 
-- [ ] In `../hitechcloud-modules/gmail/app.runtime.yaml`, update the `env_contract` section from:
+- [ ] In `../holaboss-modules/gmail/app.runtime.yaml`, update the `env_contract` section from:
 
 ```yaml
 env_contract:
-  - "HITECHCLOUD_USER_ID"
+  - "HOLABOSS_USER_ID"
   - "PLATFORM_INTEGRATION_TOKEN"
   - "WORKSPACE_API_URL"
   - "WORKSPACE_GOOGLE_INTEGRATION_ID"
@@ -859,9 +859,9 @@ to:
 
 ```yaml
 env_contract:
-  - "HITECHCLOUD_USER_ID"
-  - "HITECHCLOUD_INTEGRATION_BROKER_URL"
-  - "HITECHCLOUD_APP_GRANT"
+  - "HOLABOSS_USER_ID"
+  - "HOLABOSS_INTEGRATION_BROKER_URL"
+  - "HOLABOSS_APP_GRANT"
   - "PLATFORM_INTEGRATION_TOKEN"
   - "WORKSPACE_API_URL"
   - "WORKSPACE_GOOGLE_INTEGRATION_ID"
@@ -872,7 +872,7 @@ env_contract:
 - [ ] Run:
 
 ```bash
-cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/gmail && npm run build
+cd /Users/you/holaboss-ai/holaboss-modules/gmail && npm run build
 ```
 
 Expected: build succeeds.
@@ -882,7 +882,7 @@ Expected: build succeeds.
 - [ ] Run:
 
 ```bash
-cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/gmail
+cd /Users/you/holaboss-ai/holaboss-modules/gmail
 git add src/server/integration-client.ts src/server/google-api.ts app.runtime.yaml
 git commit -m "feat: migrate gmail to broker-based token acquisition"
 ```
@@ -892,19 +892,19 @@ git commit -m "feat: migrate gmail to broker-based token acquisition"
 ## Task 4: Migrate Sheets Module To Broker-Based Token Acquisition
 
 **Files:**
-- Create: `../hitechcloud-modules/sheets/src/server/integration-client.ts`
-- Modify: `../hitechcloud-modules/sheets/src/server/google-api.ts`
-- Modify: `../hitechcloud-modules/sheets/app.runtime.yaml`
+- Create: `../holaboss-modules/sheets/src/server/integration-client.ts`
+- Modify: `../holaboss-modules/sheets/src/server/google-api.ts`
+- Modify: `../holaboss-modules/sheets/app.runtime.yaml`
 
-The module repo is at `/Users/you/hitechcloud-vietnam/hitechcloud-modules/sheets/`.
+The module repo is at `/Users/you/holaboss-ai/holaboss-modules/sheets/`.
 
 ### Step 1: Create the integration client
 
-- [ ] Create `../hitechcloud-modules/sheets/src/server/integration-client.ts` with the same contents as the Gmail integration client from Task 3 Step 1:
+- [ ] Create `../holaboss-modules/sheets/src/server/integration-client.ts` with the same contents as the Gmail integration client from Task 3 Step 1:
 
 ```ts
-const BROKER_URL = process.env.HITECHCLOUD_INTEGRATION_BROKER_URL ?? "";
-const APP_GRANT = process.env.HITECHCLOUD_APP_GRANT ?? "";
+const BROKER_URL = process.env.HOLABOSS_INTEGRATION_BROKER_URL ?? "";
+const APP_GRANT = process.env.HOLABOSS_APP_GRANT ?? "";
 
 interface TokenExchangeResponse {
   token: string;
@@ -966,7 +966,7 @@ function getFallbackToken(provider: string): string {
 
 ### Step 2: Update google-api.ts to use the integration client
 
-- [ ] In `../hitechcloud-modules/sheets/src/server/google-api.ts`, apply the same pattern as Task 3 Step 2. Replace the `getToken()` and `headers()` functions:
+- [ ] In `../holaboss-modules/sheets/src/server/google-api.ts`, apply the same pattern as Task 3 Step 2. Replace the `getToken()` and `headers()` functions:
 
 ```ts
 import { getProviderToken } from "./integration-client"
@@ -995,11 +995,11 @@ Remove the `readFileSync` import if it becomes unused.
 
 ### Step 3: Update app.runtime.yaml env_contract
 
-- [ ] In `../hitechcloud-modules/sheets/app.runtime.yaml`, update the `env_contract` section from:
+- [ ] In `../holaboss-modules/sheets/app.runtime.yaml`, update the `env_contract` section from:
 
 ```yaml
 env_contract:
-  - "HITECHCLOUD_USER_ID"
+  - "HOLABOSS_USER_ID"
   - "PLATFORM_INTEGRATION_TOKEN"
   - "WORKSPACE_API_URL"
   - "WORKSPACE_GOOGLE_INTEGRATION_ID"
@@ -1009,9 +1009,9 @@ to:
 
 ```yaml
 env_contract:
-  - "HITECHCLOUD_USER_ID"
-  - "HITECHCLOUD_INTEGRATION_BROKER_URL"
-  - "HITECHCLOUD_APP_GRANT"
+  - "HOLABOSS_USER_ID"
+  - "HOLABOSS_INTEGRATION_BROKER_URL"
+  - "HOLABOSS_APP_GRANT"
   - "PLATFORM_INTEGRATION_TOKEN"
   - "WORKSPACE_API_URL"
   - "WORKSPACE_GOOGLE_INTEGRATION_ID"
@@ -1022,7 +1022,7 @@ env_contract:
 - [ ] Run:
 
 ```bash
-cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/sheets && npm run build
+cd /Users/you/holaboss-ai/holaboss-modules/sheets && npm run build
 ```
 
 Expected: build succeeds.
@@ -1032,7 +1032,7 @@ Expected: build succeeds.
 - [ ] Run:
 
 ```bash
-cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/sheets
+cd /Users/you/holaboss-ai/holaboss-modules/sheets
 git add src/server/integration-client.ts src/server/google-api.ts app.runtime.yaml
 git commit -m "feat: migrate sheets to broker-based token acquisition"
 ```
@@ -1042,19 +1042,19 @@ git commit -m "feat: migrate sheets to broker-based token acquisition"
 ## Task 5: Migrate GitHub Module To Broker-Based Token Acquisition
 
 **Files:**
-- Create: `../hitechcloud-modules/github/src/server/integration-client.ts`
-- Modify: `../hitechcloud-modules/github/src/server/github-api.ts`
-- Modify: `../hitechcloud-modules/github/app.runtime.yaml`
+- Create: `../holaboss-modules/github/src/server/integration-client.ts`
+- Modify: `../holaboss-modules/github/src/server/github-api.ts`
+- Modify: `../holaboss-modules/github/app.runtime.yaml`
 
-The module repo is at `/Users/you/hitechcloud-vietnam/hitechcloud-modules/github/`.
+The module repo is at `/Users/you/holaboss-ai/holaboss-modules/github/`.
 
 ### Step 1: Create the integration client
 
-- [ ] Create `../hitechcloud-modules/github/src/server/integration-client.ts` with the same contents as the Gmail integration client from Task 3 Step 1:
+- [ ] Create `../holaboss-modules/github/src/server/integration-client.ts` with the same contents as the Gmail integration client from Task 3 Step 1:
 
 ```ts
-const BROKER_URL = process.env.HITECHCLOUD_INTEGRATION_BROKER_URL ?? "";
-const APP_GRANT = process.env.HITECHCLOUD_APP_GRANT ?? "";
+const BROKER_URL = process.env.HOLABOSS_INTEGRATION_BROKER_URL ?? "";
+const APP_GRANT = process.env.HOLABOSS_APP_GRANT ?? "";
 
 interface TokenExchangeResponse {
   token: string;
@@ -1116,12 +1116,12 @@ function getFallbackToken(provider: string): string {
 
 ### Step 2: Update github-api.ts to use the integration client
 
-- [ ] In `../hitechcloud-modules/github/src/server/github-api.ts`, replace the `getToken()` and `headers()` functions. The current file starts like this:
+- [ ] In `../holaboss-modules/github/src/server/github-api.ts`, replace the `getToken()` and `headers()` functions. The current file starts like this:
 
 ```ts
 import { readFileSync } from "node:fs"
 
-const TOKEN_FILE = "/hitechcloud/state/integration-tokens.json"
+const TOKEN_FILE = "/holaboss/state/integration-tokens.json"
 const GH_BASE = "https://api.github.com"
 
 function getToken(): string {
@@ -1176,11 +1176,11 @@ Remove the `readFileSync` import if it becomes unused.
 
 ### Step 3: Update app.runtime.yaml env_contract
 
-- [ ] In `../hitechcloud-modules/github/app.runtime.yaml`, update the `env_contract` section from:
+- [ ] In `../holaboss-modules/github/app.runtime.yaml`, update the `env_contract` section from:
 
 ```yaml
 env_contract:
-  - "HITECHCLOUD_USER_ID"
+  - "HOLABOSS_USER_ID"
   - "PLATFORM_INTEGRATION_TOKEN"
   - "WORKSPACE_API_URL"
   - "WORKSPACE_GITHUB_INTEGRATION_ID"
@@ -1190,9 +1190,9 @@ to:
 
 ```yaml
 env_contract:
-  - "HITECHCLOUD_USER_ID"
-  - "HITECHCLOUD_INTEGRATION_BROKER_URL"
-  - "HITECHCLOUD_APP_GRANT"
+  - "HOLABOSS_USER_ID"
+  - "HOLABOSS_INTEGRATION_BROKER_URL"
+  - "HOLABOSS_APP_GRANT"
   - "PLATFORM_INTEGRATION_TOKEN"
   - "WORKSPACE_API_URL"
   - "WORKSPACE_GITHUB_INTEGRATION_ID"
@@ -1203,7 +1203,7 @@ env_contract:
 - [ ] Run:
 
 ```bash
-cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/github && npm run build
+cd /Users/you/holaboss-ai/holaboss-modules/github && npm run build
 ```
 
 Expected: build succeeds.
@@ -1213,7 +1213,7 @@ Expected: build succeeds.
 - [ ] Run:
 
 ```bash
-cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/github
+cd /Users/you/holaboss-ai/holaboss-modules/github
 git add src/server/integration-client.ts src/server/github-api.ts app.runtime.yaml
 git commit -m "feat: migrate github to broker-based token acquisition"
 ```
@@ -1227,7 +1227,7 @@ git commit -m "feat: migrate github to broker-based token acquisition"
 - [ ] Run:
 
 ```bash
-cd /Users/you/hitechcloud-vietnam/hitechcloud/hitechcloudOS
+cd /Users/you/holaboss-ai/holaboss/holaOS
 
 # Broker service + route
 cd runtime/api-server && node --import tsx --test src/integration-broker.test.ts
@@ -1250,9 +1250,9 @@ Expected: all tests PASS, desktop typecheck PASS.
 - [ ] Run:
 
 ```bash
-cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/gmail && npm run build
-cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/sheets && npm run build
-cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/github && npm run build
+cd /Users/you/holaboss-ai/holaboss-modules/gmail && npm run build
+cd /Users/you/holaboss-ai/holaboss-modules/sheets && npm run build
+cd /Users/you/holaboss-ai/holaboss-modules/github && npm run build
 ```
 
 Expected: all builds succeed.
@@ -1262,7 +1262,7 @@ Expected: all builds succeed.
 - [ ] Run:
 
 ```bash
-cd /Users/you/hitechcloud-vietnam/hitechcloud/hitechcloudOS && npm run desktop:prepare-runtime:local
+cd /Users/you/holaboss-ai/holaboss/holaOS && npm run desktop:prepare-runtime:local
 ```
 
 Expected: runtime bundle prepares successfully.

@@ -47,19 +47,19 @@ test("auth panel derives runtime readiness from the shared desktop runtime state
   assert.match(source, /setHasLoadedRuntimeConfigDocument\(true\);/);
 });
 
-test("runtime auth panel removes provider branding chrome after collapsing to hitechcloud-only settings", async () => {
+test("runtime auth panel removes provider branding chrome after collapsing to holaboss-only settings", async () => {
   const source = await readFile(AUTH_PANEL_PATH, "utf8");
 
   assert.doesNotMatch(source, /function ProviderBrandIcon\(/);
-  assert.doesNotMatch(source, /hitechcloudLogoUrl/);
+  assert.doesNotMatch(source, /holabossLogoUrl/);
   assert.doesNotMatch(
     source,
-    /Catalog, base URL, and credentials come from your Hitechcloud runtime\s+binding\./,
+    /Catalog, base URL, and credentials come from your Holaboss runtime\s+binding\./,
   );
   assert.doesNotMatch(source, /Supported models/);
   assert.doesNotMatch(
     source,
-    /No managed models are available yet\.\s+Refresh your runtime binding\s+to load the latest Hitechcloud catalog\./,
+    /No managed models are available yet\.\s+Refresh your runtime binding\s+to load the latest Holaboss catalog\./,
   );
   assert.doesNotMatch(source, /open=\{Boolean\(expandedProviderId\)\}/);
   assert.doesNotMatch(source, /renderProviderDrawerContent\(expandedProviderId\)/);

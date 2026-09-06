@@ -134,7 +134,7 @@ export function browserWorkspaceStatePath(
 
 /** Electron `partition:` value for the workspace's `Session` store. */
 export function browserWorkspacePartition(workspaceId: string): string {
-  return `persist:hitechcloud-browser-${sanitizeBrowserWorkspaceSegment(workspaceId)}`;
+  return `persist:holaboss-browser-${sanitizeBrowserWorkspaceSegment(workspaceId)}`;
 }
 
 // =============================================================================
@@ -181,7 +181,7 @@ export function browserProfileStatePath(
 
 /** Electron `partition:` value for a profile's persistent `Session` store. */
 export function browserProfilePartition(profileId: string): string {
-  return `persist:hitechcloud-profile-${sanitizeBrowserWorkspaceSegment(profileId)}`;
+  return `persist:holaboss-profile-${sanitizeBrowserWorkspaceSegment(profileId)}`;
 }
 
 // =============================================================================

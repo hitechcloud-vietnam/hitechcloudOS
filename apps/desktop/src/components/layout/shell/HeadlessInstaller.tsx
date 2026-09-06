@@ -2,7 +2,7 @@ import type {
   InstalledItem,
   InstallEventPayload,
   InstallResult,
-} from "@hitechcloud/app-host/protocol";
+} from "@holaboss/app-host/protocol";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -471,7 +471,7 @@ export function InstallStatusResponder({
   capsRef.current = installedCaps.data;
 
   // HolaApps: report from the FULL catalog (backend-driven `installed` flags),
-  // NOT main's `installedHolaAppIds` — that set is a subset (only Hitechcloud-hosted
+  // NOT main's `installedHolaAppIds` — that set is a subset (only Holaboss-hosted
   // `/mcp/<id>` apps; external / api-key apps like OmniSocials are excluded). Keep
   // the catalog fresh on mount + focus so an install elsewhere is reflected.
   const { catalog: appCatalog, refresh: refreshApps } = useHolaAppCatalog();

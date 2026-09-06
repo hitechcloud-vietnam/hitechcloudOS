@@ -1,5 +1,5 @@
 // =====================================================================
-// Primitives — hitechcloudOS-locked shadcn-style components. Drop these in
+// Primitives — holaOS-locked shadcn-style components. Drop these in
 // instead of redefining your own; they are guaranteed to match the
 // workspace canvas (tokens, density, hover affordances).
 // =====================================================================

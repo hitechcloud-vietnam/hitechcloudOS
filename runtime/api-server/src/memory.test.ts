@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import { RuntimeStateStore } from "@holaboss/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import { FilesystemMemoryService as MemoryService } from "./memory.js";
@@ -306,7 +306,7 @@ test("filesystem memory service resolves workspace-local bundles from the regist
     true,
   );
   assert.equal(
-    fs.existsSync(path.join(workspaceRoot, "workspace-custom", ".hitechcloud", "memory", "notes.md")),
+    fs.existsSync(path.join(workspaceRoot, "workspace-custom", ".holaboss", "memory", "notes.md")),
     false,
   );
   assert.equal(capturedFiles["workspace/workspace-custom/notes.md"], "custom workspace memory\n");
@@ -441,11 +441,11 @@ test("filesystem memory service status repairs legacy related keys before summar
     });
     store.upsertInteractionEntity({
       workspaceId: "workspace-1",
-      entityId: "interaction:topic:hitechcloud-outreach",
+      entityId: "interaction:topic:holaboss-outreach",
       entityType: "topic",
-      canonicalName: "Hitechcloud outreach",
-      slug: "topic-hitechcloud-outreach",
-      summary: "Hitechcloud outreach memory.",
+      canonicalName: "Holaboss outreach",
+      slug: "topic-holaboss-outreach",
+      summary: "Holaboss outreach memory.",
       aliases: [],
       isSystem: false,
       status: "active",
@@ -464,13 +464,13 @@ test("filesystem memory service status repairs legacy related keys before summar
     store.upsertInteractionLeaf({
       workspaceId: "workspace-1",
       leafId: "leaf-outreach",
-      entityId: "interaction:topic:hitechcloud-outreach",
-      subjectKey: "hitechcloud:outreach:anyip",
-      path: "leaves/hitechcloud-outreach.md",
-      title: "Hitechcloud outreach note",
-      summary: "Ben Book at anyIP reached out to the user personally about hitechcloud.",
-      fingerprint: "hitechcloud-outreach-anyip",
-      bodySha256: "hitechcloud-outreach-anyip-sha",
+      entityId: "interaction:topic:holaboss-outreach",
+      subjectKey: "holaboss:outreach:anyip",
+      path: "leaves/holaboss-outreach.md",
+      title: "Holaboss outreach note",
+      summary: "Ben Book at anyIP reached out to the user personally about holaboss.",
+      fingerprint: "holaboss-outreach-anyip",
+      bodySha256: "holaboss-outreach-anyip-sha",
       tags: ["outreach"],
       secondaryEntityIds: [],
       sourceType: "manual",
@@ -486,22 +486,22 @@ test("filesystem memory service status repairs legacy related keys before summar
 
     const leafAbsolutePath = path.join(
       workspaceMemoryDir(path.join(workspaceRoot, "workspace-1")),
-      "leaves/hitechcloud-outreach.md",
+      "leaves/holaboss-outreach.md",
     );
     fs.mkdirSync(path.dirname(leafAbsolutePath), { recursive: true });
     fs.writeFileSync(
       leafAbsolutePath,
       appendDurableMemoryRelatedSections(
         [
-          "# Hitechcloud outreach note",
+          "# Holaboss outreach note",
           "",
           "## Summary",
           "",
-          "Ben Book at anyIP reached out to the user personally about hitechcloud.",
+          "Ben Book at anyIP reached out to the user personally about holaboss.",
           "",
           "## Evidence",
           "",
-          "Ben Book at anyIP reached out to the user personally about hitechcloud.",
+          "Ben Book at anyIP reached out to the user personally about holaboss.",
         ].join("\n"),
         {
           relatedEntities: [

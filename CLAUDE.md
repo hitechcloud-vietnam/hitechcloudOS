@@ -1,9 +1,9 @@
-# hitechcloudOS — repo guide
+# holaOS — repo guide
 
-The local Electron desktop app (`hitechcloud-local`) + its in-process runtime
+The local Electron desktop app (`hola-boss-oss`) + its in-process runtime
 (`runtime/{harnesses,harness-host,api-server,state-store}`). See
 `apps/desktop/CLAUDE.md` for desktop-renderer conventions and the parent
-`~/Developer/CLAUDE.md` for how this fits the wider Hitechcloud product.
+`~/Developer/CLAUDE.md` for how this fits the wider Holaboss product.
 
 ## `hola` — debug the Hola (pi) brain from the CLI
 
@@ -24,7 +24,7 @@ the harness subprocess is swapped. Events stream through the real relay (so
 `harness_session_id` is persisted → resume works) and are pretty-printed.
 
 Key facts:
-- **Root auto-detected** from `apps/desktop/.env` (`HITECHCLOUD_DESKTOP_USER_DATA_DIR`
+- **Root auto-detected** from `apps/desktop/.env` (`HOLABOSS_DESKTOP_USER_DATA_DIR`
   → `<appData>/<dir>/sandbox-host`, same as the desktop). Override with
   `--sandbox-root <path>` or `HB_SANDBOX_ROOT`.
 - **Owns the root runtime** ("option 1"): run with the **desktop closed** on that
@@ -51,5 +51,5 @@ Implementation notes for future edits:
 - `runPi(req, deps)` REPLACES its deps — pass `{ ...defaultPiDeps(), emitEvent }`,
   not just `{ emitEvent }`, or you'll hit `deps.createSession is not a function`.
 - Apply the root env (`HB_SANDBOX_ROOT` + DB paths) BEFORE launching the runtime
-  child, else it defaults to `/hitechcloud` and dies with `mkdir: /hitechcloud:
+  child, else it defaults to `/holaboss` and dies with `mkdir: /holaboss:
   Read-only file system`.

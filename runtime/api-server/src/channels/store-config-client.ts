@@ -1,5 +1,5 @@
-import type { ChannelConfigClient, ChannelConnectionConfig } from "@hitechcloud/runtime-channel-gateway";
-import type { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import type { ChannelConfigClient, ChannelConnectionConfig } from "@holaboss/runtime-channel-gateway";
+import type { RuntimeStateStore } from "@holaboss/runtime-state-store";
 
 /**
  * Config source backed by the `channel_connections` table. Enumerates enabled

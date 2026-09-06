@@ -15,7 +15,7 @@ import { atomWithStorage } from "jotai/utils";
  * an empty-string slot in localStorage forever.
  */
 export const composerDraftsAtom = atomWithStorage<Record<string, string>>(
-  "hitechcloud-shell-composer-drafts-v1",
+  "holaboss-shell-composer-drafts-v1",
   {},
 );
 

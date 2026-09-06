@@ -37,7 +37,7 @@ export const listMarketplaceTemplates200Schema = z.object({
 "source": z.string().default("official"),
 "verified": z.boolean().default(true),
 "display_name": z.union([z.string(), z.null(), z.null()]).optional(),
-"author_name": z.string().default("Hitechcloud"),
+"author_name": z.string().default("Holaboss"),
 "author_id": z.string().default("_official")
     })),
 "spotlight": z.array(z.object({

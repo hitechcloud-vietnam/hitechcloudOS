@@ -55,7 +55,7 @@ export const COMPOSIO_INLINE_CACHE_FILE = "composio-inline-tool-cache.json";
 const DEFAULT_TTL_MS = 15 * 60_000;
 
 export function composioInlineCachePath(workspaceDir: string): string {
-  return path.join(workspaceDir, ".hitechcloud", "state", COMPOSIO_INLINE_CACHE_FILE);
+  return path.join(workspaceDir, ".holaboss", "state", COMPOSIO_INLINE_CACHE_FILE);
 }
 
 function ttlMs(env: NodeJS.ProcessEnv = process.env): number {

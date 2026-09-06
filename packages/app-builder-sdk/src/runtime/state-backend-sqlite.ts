@@ -3,7 +3,7 @@
 // Uses bun:sqlite to open the workspace shared DB (WORKSPACE_DB_PATH) and
 // keeps all SDK state in app-owned tables prefixed with the app id.
 //
-// This iteration intentionally does NOT bridge to @hitechcloud/runtime-state-store's
+// This iteration intentionally does NOT bridge to @holaboss/runtime-state-store's
 // `outputs` / `runtime_notifications` tables — those mappings come in a follow-up
 // iteration. For now, outputs and notifications are persisted in app-owned
 // tables; once we wire to state-store, those tables can be backfilled or

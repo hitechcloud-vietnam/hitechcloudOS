@@ -305,7 +305,7 @@ export {
 };
 
 /** A model's identity without the provider that serves it. Only the leading
- *  segment goes: `hitechcloud_model_proxy/qwen/qwen3.7-plus` is the qwen3.7-plus of
+ *  segment goes: `holaboss_model_proxy/qwen/qwen3.7-plus` is the qwen3.7-plus of
  *  the qwen family, and dropping more than the provider would merge two models
  *  that only share a suffix. */
 function modelIdentity(token: string): string {
@@ -323,7 +323,7 @@ function sessionUserId(
   return session?.user?.id?.trim() || "";
 }
 
-function isHitechcloudProxyModel(model: string) {
+function isHolabossProxyModel(model: string) {
   const normalized = model.trim().toLowerCase();
   if (!normalized) {
     return false;
@@ -338,12 +338,12 @@ function isHitechcloudProxyModel(model: string) {
   );
 }
 
-function isHitechcloudProviderId(providerId: string) {
+function isHolabossProviderId(providerId: string) {
   const normalized = providerId.trim().toLowerCase();
   return (
-    normalized === "hitechcloud_model_proxy" ||
-    normalized === "hitechcloud" ||
-    normalized.includes("hitechcloud")
+    normalized === "holaboss_model_proxy" ||
+    normalized === "holaboss" ||
+    normalized.includes("holaboss")
   );
 }
 
@@ -1269,33 +1269,33 @@ function startCase(value: string) {
 }
 
 /**
- * The two runtime MCP servers Hitechcloud injects into every external harness
+ * The two runtime MCP servers Holaboss injects into every external harness
  * (see runtime `harnesses/src/harness-mcp.ts`). Their tools arrive namespaced
  * with the server name, and each harness client uses a different separator —
  * so match these by exact name to strip the prefix reliably.
  */
-const HITECHCLOUD_MCP_SERVER_NAMES = [
-  // Longest first: `hitechcloud_runtime_tools` is a prefix-superstring of
-  // `hitechcloud_runtime`, so it must be tried before it.
-  "hitechcloud_runtime_tools",
-  "hitechcloud_runtime",
+const HOLABOSS_MCP_SERVER_NAMES = [
+  // Longest first: `holaboss_runtime_tools` is a prefix-superstring of
+  // `holaboss_runtime`, so it must be tried before it.
+  "holaboss_runtime_tools",
+  "holaboss_runtime",
 ] as const;
 
 /**
  * Tools an external harness reaches over our runtime MCP servers arrive
  * namespaced with the server name, but each client does it differently:
- *   • Claude Code: `mcp__<server>__<tool>` (e.g. `mcp__hitechcloud_runtime_tools__web_search`)
- *   • codex:       `<server>__<tool>`      (e.g. `hitechcloud_runtime_tools__web_search`)
+ *   • Claude Code: `mcp__<server>__<tool>` (e.g. `mcp__holaboss_runtime_tools__web_search`)
+ *   • codex:       `<server>__<tool>`      (e.g. `holaboss_runtime_tools__web_search`)
  * Since separator conventions vary between clients, the only reliable anchor is
- * the known server name. Drop an optional `mcp__`, then a known Hitechcloud server
- * name across any separator, so a trace step reads "Web Search", not "Hitechcloud
+ * the known server name. Drop an optional `mcp__`, then a known Holaboss server
+ * name across any separator, so a trace step reads "Web Search", not "Holaboss
  * Runtime Tools Web Search". Fall back to the generic `<server>__` strip for
- * other (non-Hitechcloud) MCP servers. Bare tool names (pi wires these in-process)
+ * other (non-Holaboss) MCP servers. Bare tool names (pi wires these in-process)
  * pass through untouched.
  */
 function stripMcpServerPrefix(toolName: string): string {
   const withoutMcp = toolName.replace(/^mcp__/, "");
-  for (const server of HITECHCLOUD_MCP_SERVER_NAMES) {
+  for (const server of HOLABOSS_MCP_SERVER_NAMES) {
     if (withoutMcp.startsWith(server)) {
       const rest = withoutMcp.slice(server.length).replace(/^[._-]+/, "");
       if (rest) {
@@ -1582,7 +1582,7 @@ function normalizeQueuedSessionInputPreviewEntries(
 }
 
 function setQueuedSessionInputPreviewState(entries: unknown) {
-  window.__hitechcloudQueuedMessagesPreviewState =
+  window.__holabossQueuedMessagesPreviewState =
     normalizeQueuedSessionInputPreviewEntries(entries);
   window.dispatchEvent(new CustomEvent(QUEUED_MESSAGES_PREVIEW_EVENT));
 }
@@ -1601,7 +1601,7 @@ function useQueuedSessionInputPreview(params: {
     }
 
     const applyCurrentState = () => {
-      const items = window.__hitechcloudQueuedMessagesPreviewState ?? [];
+      const items = window.__holabossQueuedMessagesPreviewState ?? [];
       setPreviewItems(
         items.map((item, index) => ({
           inputId: `preview-queued-${index + 1}`,
@@ -1624,7 +1624,7 @@ function useQueuedSessionInputPreview(params: {
       QUEUED_MESSAGES_PREVIEW_EVENT,
       handlePreviewChange as EventListener,
     );
-    window.__hitechcloudDevQueuedMessagesPreview = {
+    window.__holabossDevQueuedMessagesPreview = {
       single: (
         text = "Draft a concise follow-up after the current run finishes.",
       ) =>
@@ -1641,7 +1641,7 @@ function useQueuedSessionInputPreview(params: {
         ),
       clear: () => setQueuedSessionInputPreviewState([]),
       set: (entries) => setQueuedSessionInputPreviewState(entries),
-      get: () => window.__hitechcloudQueuedMessagesPreviewState ?? [],
+      get: () => window.__holabossQueuedMessagesPreviewState ?? [],
     };
 
     return () => {
@@ -1649,7 +1649,7 @@ function useQueuedSessionInputPreview(params: {
         QUEUED_MESSAGES_PREVIEW_EVENT,
         handlePreviewChange as EventListener,
       );
-      delete window.__hitechcloudDevQueuedMessagesPreview;
+      delete window.__holabossDevQueuedMessagesPreview;
     };
   }, [sessionId, workspaceId]);
 
@@ -2716,7 +2716,7 @@ const PENDING_INTEGRATION_TOOL_NAMES = new Set([
 /**
  * The bare runtime-tool id, with any MCP namespacing stripped. The in-process
  * pi/Hola harness emits the bare id (e.g.
- * `hitechcloud_workspace_integrations_propose_connect`), but external harnesses
+ * `holaboss_workspace_integrations_propose_connect`), but external harnesses
  * (Claude Code, Codex, …) reach the same runtime tools over MCP, which exposes
  * them as `mcp__<server>__<tool>`. Tool-name checks below must match either
  * form, else features like the Connect card silently break for those harnesses.
@@ -2801,7 +2801,7 @@ function proposedIntegrationsFromToolResult(
   payload: Record<string, unknown>,
 ): ChatProposedIntegration[] {
   const toolName = effectiveToolName(payload);
-  if (toolName !== "hitechcloud_workspace_integrations_propose_connect") return [];
+  if (toolName !== "holaboss_workspace_integrations_propose_connect") return [];
   const phase =
     typeof payload.phase === "string" ? payload.phase.trim().toLowerCase() : "";
   if (phase !== "completed" || payload.error === true) return [];
@@ -3350,7 +3350,7 @@ function joinWithAnd(items: string[]): string {
  */
 function activeSurfaceContextText(surface: ActiveWebAppSurface): string {
   const lines = [
-    `Context — the user currently has the "${surface.title}" app open in hitechcloudOS.`,
+    `Context — the user currently has the "${surface.title}" app open in holaOS.`,
   ];
   // Prefer the live location (the page they actually navigated to inside the
   // surface, e.g. a specific Notion page) over the app's base url.
@@ -3633,7 +3633,7 @@ export function ChatPane({
   // Recent files as WorkspaceFileEntry-shaped rows, in most-recent-first
   // order. Prefer the rich entry from the bounded workspace walk when
   // available; otherwise synthesize one from filePath + label so files
-  // that listWorkspaceFiles skips (dotdirs like .hitechcloud, paths deeper
+  // that listWorkspaceFiles skips (dotdirs like .holaboss, paths deeper
   // than maxDepth=4, anything past the maxFiles=500 cap) still surface
   // in the @ picker instead of vanishing silently.
   const recentFileEntriesForWorkspace = useMemo<WorkspaceFileEntry[]>(() => {
@@ -3873,7 +3873,7 @@ export function ChatPane({
   const [desktopMainSession, setDesktopMainSession] =
     useState<AgentSessionRecordPayload | null>(null);
   // Per-harness model + thinking selection for CLI harnesses
-  // (claude-code, codex). The Hitechcloud `chatModelPreference` state
+  // (claude-code, codex). The Holaboss `chatModelPreference` state
   // machine is tightly coupled to the provider catalogue — re-routing
   // it for harness-namespaced ids (claude-opus-4-7, gpt-5.1-codex)
   // would change semantics for every existing call site. Sibling
@@ -8104,7 +8104,7 @@ export function ChatPane({
           item.inputId.replace("preview-queued-", "").trim(),
           10,
         ) - 1;
-      const currentEntries = window.__hitechcloudQueuedMessagesPreviewState ?? [];
+      const currentEntries = window.__holabossQueuedMessagesPreviewState ?? [];
       if (previewIndex < 0 || previewIndex >= currentEntries.length) {
         throw new Error("Queued preview item not found.");
       }
@@ -8162,7 +8162,7 @@ export function ChatPane({
           item.inputId.replace("preview-queued-", "").trim(),
           10,
         ) - 1;
-      const currentEntries = window.__hitechcloudQueuedMessagesPreviewState ?? [];
+      const currentEntries = window.__holabossQueuedMessagesPreviewState ?? [];
       if (previewIndex < 0 || previewIndex >= currentEntries.length) {
         throw new Error("Queued preview item not found.");
       }
@@ -9131,7 +9131,7 @@ export function ChatPane({
       ? "Loading workspace context..."
       : "";
   const isSignedIn = Boolean(sessionUserId(authSessionState.data));
-  const hitechcloudProxyModelsAvailable =
+  const holabossProxyModelsAvailable =
     isSignedIn &&
     Boolean(runtimeConfig?.authTokenPresent) &&
     Boolean((runtimeConfig?.modelProxyBaseUrl || "").trim());
@@ -9140,14 +9140,14 @@ export function ChatPane({
   const visibleConfiguredProviderModelGroups = configuredProviderModelGroups
     .filter(
       (providerGroup) =>
-        isSignedIn || !isHitechcloudProviderId(providerGroup.providerId),
+        isSignedIn || !isHolabossProviderId(providerGroup.providerId),
     )
     .map((providerGroup) => ({
       ...providerGroup,
       pending:
         isSignedIn &&
-        isHitechcloudProviderId(providerGroup.providerId) &&
-        !hitechcloudProxyModelsAvailable,
+        isHolabossProviderId(providerGroup.providerId) &&
+        !holabossProxyModelsAvailable,
       models: providerGroup.models.filter((model) => {
         const normalizedToken = model.token.trim();
         if (!normalizedToken || isDeprecatedChatModel(normalizedToken)) {
@@ -9169,7 +9169,7 @@ export function ChatPane({
   const runtimeDefaultModel =
     runtimeConfig?.defaultModel?.trim() || DEFAULT_RUNTIME_MODEL;
   const requiresModelProviderSetup =
-    !hasConfiguredProviderCatalog && !hitechcloudProxyModelsAvailable;
+    !hasConfiguredProviderCatalog && !holabossProxyModelsAvailable;
   const runtimeDefaultModelAvailable =
     !requiresModelProviderSetup &&
     (hasConfiguredProviderCatalog
@@ -9178,8 +9178,8 @@ export function ChatPane({
             (model) => model.token.trim() === runtimeDefaultModel,
           ),
         )
-      : hitechcloudProxyModelsAvailable ||
-        !isHitechcloudProxyModel(runtimeDefaultModel));
+      : holabossProxyModelsAvailable ||
+        !isHolabossProxyModel(runtimeDefaultModel));
   const availableChatModelOptionGroups: ChatModelOptionGroup[] =
     hasConfiguredProviderCatalog
       ? visibleConfiguredProviderModelGroups.map((providerGroup) => ({
@@ -9231,7 +9231,7 @@ export function ChatPane({
           .filter((model) => !isDeprecatedChatModel(model))
           .filter(
             (model) =>
-              hitechcloudProxyModelsAvailable || !isHitechcloudProxyModel(model),
+              holabossProxyModelsAvailable || !isHolabossProxyModel(model),
           )
           .map((model) => ({
             value: model,
@@ -9282,10 +9282,10 @@ export function ChatPane({
   const selectedFallbackModelMetadata =
     !selectedConfiguredModel &&
     !hasConfiguredProviderCatalog &&
-    hitechcloudProxyModelsAvailable &&
+    holabossProxyModelsAvailable &&
     resolvedChatModel
       ? modelCatalog.catalogMetadataForProviderModel(
-          "hitechcloud_model_proxy",
+          "holaboss_model_proxy",
           resolvedChatModel,
         )
       : null;
@@ -9322,7 +9322,7 @@ export function ChatPane({
               selectedThinkingValues.includes(selectedDefaultThinkingValue)
             ? selectedDefaultThinkingValue
             : (selectedThinkingValues[0] ?? null);
-  // The Hitechcloud model catalogue applies only to pi/Hola, which
+  // The Holaboss model catalogue applies only to pi/Hola, which
   // dispatches through the model proxy. Non-pi harnesses (claude-code,
   // codex) carry their own namespace + reasoning controls:
   //   • Claude:  --effort {low|medium|high}
@@ -9532,8 +9532,8 @@ export function ChatPane({
   const usesHostedManagedCredits =
     hasHostedBillingAccount &&
     (hasConfiguredProviderCatalog
-      ? selectedManagedProviderGroup?.kind === "hitechcloud_proxy"
-      : hitechcloudProxyModelsAvailable && Boolean(resolvedChatModel));
+      ? selectedManagedProviderGroup?.kind === "holaboss_proxy"
+      : holabossProxyModelsAvailable && Boolean(resolvedChatModel));
   const modelSelectionUnavailableReason =
     availableChatModelOptions.length > 0
       ? ""
@@ -9897,7 +9897,7 @@ export function ChatPane({
     const exact = availableChatModelOptions.find((o) => o.value === wanted);
     // Same model, different route: a sharer on OpenAI natively writes
     // `openai/gpt-5.4-mini` where a reader holding it through the proxy has
-    // `hitechcloud_model_proxy/gpt-5.4-mini`. Falling through to the default would
+    // `holaboss_model_proxy/gpt-5.4-mini`. Falling through to the default would
     // reproduce the post on a different model entirely.
     const sameModel =
       exact ??
@@ -11119,7 +11119,7 @@ export function ChatPane({
  * Layout: harness picker + (for non-pi harnesses) a model picker scoped
  * to the harness's supported_models. The model selection lives in
  * parent ChatPane state via `harnessChatModelOverride` so the dispatch
- * code can read it without going through the Hitechcloud catalogue.
+ * code can read it without going through the Holaboss catalogue.
  */
 function EmptyComposerHarnessPicker({
   workspaceId,

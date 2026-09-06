@@ -55,7 +55,7 @@ export function piMcpToolCacheKey(servers: unknown, toolRefs: unknown): string {
 }
 
 /**
- * True when any server payload carries `_hitechcloud_force_refresh` — set when a
+ * True when any server payload carries `_holaboss_force_refresh` — set when a
  * resolved-application sidecar just (re)started and its tool set may have
  * changed. Forces a live re-discovery, bypassing the cache.
  */
@@ -64,7 +64,7 @@ export function piMcpServersForceRefresh(servers: readonly unknown[]): boolean {
     (server) =>
       !!server &&
       typeof server === "object" &&
-      (server as Record<string, unknown>)._hitechcloud_force_refresh === true,
+      (server as Record<string, unknown>)._holaboss_force_refresh === true,
   );
 }
 

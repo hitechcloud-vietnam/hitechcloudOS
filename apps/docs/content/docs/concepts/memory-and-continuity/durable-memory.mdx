@@ -14,11 +14,11 @@ The runtime memory model is intentionally split:
 | Layer | Purpose | Durable? |
 | --- | --- | --- |
 | `state/control-plane.db` | canonical profile state and profile-global memory metadata | yes |
-| `<workspace-id>/.hitechcloud/state/runtime.db` | workspace execution truth, workspace-scoped memory metadata, pending proposals | yes |
-| `<workspace-id>/.hitechcloud/memory/runtime/` | latest-turn projections, blockers, recent-turn snapshots | no |
-| `<workspace-id>/.hitechcloud/memory/runtime/session-memory/` | resume-friendly continuity snapshots | semi-volatile |
-| `<workspace-id>/.hitechcloud/memory/interaction/` | workspace-local durable interaction leaves and summaries | yes |
-| `<workspace-id>/.hitechcloud/memory/semantic/interaction/trees/` | workspace-local semantic tree markdown for recall and browsing | yes |
+| `<workspace-id>/.holaboss/state/runtime.db` | workspace execution truth, workspace-scoped memory metadata, pending proposals | yes |
+| `<workspace-id>/.holaboss/memory/runtime/` | latest-turn projections, blockers, recent-turn snapshots | no |
+| `<workspace-id>/.holaboss/memory/runtime/session-memory/` | resume-friendly continuity snapshots | semi-volatile |
+| `<workspace-id>/.holaboss/memory/interaction/` | workspace-local durable interaction leaves and summaries | yes |
+| `<workspace-id>/.holaboss/memory/semantic/interaction/trees/` | workspace-local semantic tree markdown for recall and browsing | yes |
 | `memory/integration/trees/` | global durable integration evidence leaves | yes |
 | `memory/semantic/integration/trees/` | global semantic tree markdown for integration recall | yes |
 | `memory/preference/` plus optional `memory/identity/` | secondary user-memory docs outside the main forests | yes |
@@ -64,9 +64,9 @@ Interaction memory is workspace-local. It is built from conversation-derived lea
 
 Typical physical paths:
 
-- `<workspace-id>/.hitechcloud/memory/interaction/entities/<entity-slug>/leaves/<leaf-id>.md`
-- `<workspace-id>/.hitechcloud/memory/interaction/entities/<entity-slug>/summaries/L<level>/<node-id>.md`
-- `<workspace-id>/.hitechcloud/memory/semantic/interaction/trees/<entity-slug>/content.md`
+- `<workspace-id>/.holaboss/memory/interaction/entities/<entity-slug>/leaves/<leaf-id>.md`
+- `<workspace-id>/.holaboss/memory/interaction/entities/<entity-slug>/summaries/L<level>/<node-id>.md`
+- `<workspace-id>/.holaboss/memory/semantic/interaction/trees/<entity-slug>/content.md`
 
 The memory namespace for those same files is:
 
@@ -79,7 +79,7 @@ The same semantic tree is also exposed as a graph. In that graph, the workspace 
 
 ### Global integration forest
 
-Integration memory is global to the configured memory root rather than stored inside one workspace’s `.hitechcloud/` folder. It is also tree-based.
+Integration memory is global to the configured memory root rather than stored inside one workspace’s `.holaboss/` folder. It is also tree-based.
 
 Typical physical paths:
 
@@ -131,7 +131,7 @@ That separation matters because integration memory can be refreshed from externa
 
 ## What makes memory durable
 
-In `hitechcloudOS`, something should become durable memory only when it meets most of these standards:
+In `holaOS`, something should become durable memory only when it meets most of these standards:
 
 - it is stable across runs rather than tied to one transient execution
 - it is useful without replaying the full transcript

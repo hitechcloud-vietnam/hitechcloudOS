@@ -47,17 +47,17 @@ The host then normalizes those values onto executor-native reasoning controls. I
 
 The current desktop path supports this provider id:
 
-- `hitechcloud_model_proxy` for hitechcloudOS Proxy
+- `holaboss_model_proxy` for holaOS Proxy
 
 In user-facing terms, the currently supported provider is:
 
-- hitechcloudOS Proxy
+- holaOS Proxy
 
 ## Runtime kinds behind those providers
 
 The desktop runtime currently resolves that provider into this provider kind:
 
-- `hitechcloud_proxy`
+- `holaboss_proxy`
 
 The proxy can still fan out onto different upstream API families internally, but that is no longer an operator-configurable provider choice in the desktop product.
 
@@ -69,4 +69,4 @@ The provider kind is not the whole routing story. The runtime also resolves a mo
 - `anthropic_native`
 - `google_compatible`
 
-Those transport decisions are now internal to hitechcloudOS Proxy rather than separate desktop-configurable providers.
+Those transport decisions are now internal to holaOS Proxy rather than separate desktop-configurable providers.

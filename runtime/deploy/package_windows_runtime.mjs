@@ -107,11 +107,11 @@ function bundledPythonCandidates(outputRoot) {
 }
 
 function resolveNodeVersion() {
-  return process.env.HITECHCLOUD_RUNTIME_NODE_VERSION?.trim() || DEFAULT_RUNTIME_NODE_VERSION;
+  return process.env.HOLABOSS_RUNTIME_NODE_VERSION?.trim() || DEFAULT_RUNTIME_NODE_VERSION;
 }
 
 function resolveNpmVersion() {
-  const explicitVersion = process.env.HITECHCLOUD_RUNTIME_NPM_VERSION?.trim();
+  const explicitVersion = process.env.HOLABOSS_RUNTIME_NPM_VERSION?.trim();
   if (explicitVersion) {
     return explicitVersion;
   }
@@ -144,10 +144,10 @@ export function buildWindowsRuntimeCmdLauncherSource() {
 setlocal
 set "SCRIPT_DIR=%~dp0"
 for %%I in ("%SCRIPT_DIR%..") do set "BUNDLE_ROOT=%%~fI"
-if "%HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT%"=="" (
+if "%HOLABOSS_RUNTIME_TOOLCHAIN_ROOT%"=="" (
   set "TOOLCHAIN_ROOT=%BUNDLE_ROOT%"
 ) else (
-  set "TOOLCHAIN_ROOT=%HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT%"
+  set "TOOLCHAIN_ROOT=%HOLABOSS_RUNTIME_TOOLCHAIN_ROOT%"
 )
 set "BUNDLED_NODE_BIN=%TOOLCHAIN_ROOT%\\node-runtime\\bin\\node.exe"
 if not exist "%BUNDLED_NODE_BIN%" set "BUNDLED_NODE_BIN=%TOOLCHAIN_ROOT%\\node-runtime\\node_modules\\node\\bin\\node.exe"
@@ -222,7 +222,7 @@ export async function packageWindowsRuntime(
   assertWindowsHost();
 
   const outputRoot = path.resolve(outputRootArg);
-  const stagingRoot = mkdtempSync(path.join(os.tmpdir(), "hitechcloud-runtime-windows."));
+  const stagingRoot = mkdtempSync(path.join(os.tmpdir(), "holaboss-runtime-windows."));
   const buildNodeRuntimeDir = path.join(stagingRoot, "build-node-runtime");
   const buildNodeExe = path.join(buildNodeRuntimeDir, "node_modules", "node", "bin", "node.exe");
   const buildNpmCli = path.join(buildNodeRuntimeDir, "node_modules", "npm", "bin", "npm-cli.js");
@@ -236,7 +236,7 @@ export async function packageWindowsRuntime(
   const nodeRuntimeDir = path.join(outputRoot, "node-runtime");
   const binDir = path.join(outputRoot, "bin");
   const packageMetadataPath = path.join(outputRoot, "package-metadata.json");
-  const skipNodeDeps = process.env.HITECHCLOUD_SKIP_NODE_DEPS?.trim() === "1";
+  const skipNodeDeps = process.env.HOLABOSS_SKIP_NODE_DEPS?.trim() === "1";
   const nodeVersion = resolveNodeVersion();
   const npmVersion = resolveNpmVersion();
 
@@ -250,7 +250,7 @@ export async function packageWindowsRuntime(
       runCommand(buildNodeExe, [path.join(scriptDir, "build_runtime_root.mjs"), runtimeStagingRoot], {
         env: {
           ...process.env,
-          HITECHCLOUD_RUNTIME_BUILD_NPM_CLI: buildNpmCli,
+          HOLABOSS_RUNTIME_BUILD_NPM_CLI: buildNpmCli,
           PATH: buildPathEntries.join(path.delimiter),
         }
       });

@@ -1,11 +1,11 @@
 /**
  * fetch-compatible wrapper that proxies BFF calls through the Electron main
  * process. Use this anywhere you'd reach for `globalThis.fetch` to hit the
- * Hono BFF (api.hitechcloud.vn / api.imerchstaging.com).
+ * Hono BFF (api.holaos.ai / api.imerchstaging.com).
  *
  * Why: Chromium 138+ blocks third-party cookies on cross-site fetch even
  * with `SameSite=None; Secure`. The renderer (origin localhost:5173 in dev,
- * file:// when packaged) is third-party to api.*.hitechcloud.vn, so direct
+ * file:// when packaged) is third-party to api.*.holaboss.ai, so direct
  * fetch + `credentials: include` silently drops the auth cookie.
  *
  * Going through main is a Node-side fetch — no browser cookie policy in

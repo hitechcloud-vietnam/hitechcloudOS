@@ -48,7 +48,7 @@ mcp:
     - create_record
 
 env_contract:
-  - HITECHCLOUD_WORKSPACE_ID
+  - HOLABOSS_WORKSPACE_ID
 
 integrations:
   - key: primary_gmail
@@ -58,7 +58,7 @@ integrations:
       - https://www.googleapis.com/auth/gmail.modify
     required: true
     credential_source: platform
-    hitechcloud_user_id_required: true
+    holaboss_user_id_required: true
 ```
 
 ## Field Guide
@@ -138,8 +138,8 @@ Make `healthchecks.mcp.path` explicit and keep it aligned with the server code.
 
 In the current lifecycle executor it is only used to decide whether to inject selected runtime variables such as:
 
-- `HITECHCLOUD_USER_ID`
-- `HITECHCLOUD_WORKSPACE_ID` when that variable has not already been injected through integration resolution
+- `HOLABOSS_USER_ID`
+- `HOLABOSS_WORKSPACE_ID` when that variable has not already been injected through integration resolution
 
 It does not magically expose arbitrary host environment variables.
 
@@ -156,7 +156,7 @@ integrations:
       - https://www.googleapis.com/auth/gmail.modify
     required: true
     credential_source: platform
-    hitechcloud_user_id_required: true
+    holaboss_user_id_required: true
 ```
 
 Current `credential_source` values are:

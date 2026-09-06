@@ -21,7 +21,7 @@ function resolveBundleRoot(explicitBundleRoot) {
 
 function resolveToolchainRoot(bundleRoot) {
   const explicitToolchainRoot =
-    process.env.HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT?.trim();
+    process.env.HOLABOSS_RUNTIME_TOOLCHAIN_ROOT?.trim();
   if (explicitToolchainRoot) {
     return path.resolve(explicitToolchainRoot);
   }
@@ -33,7 +33,7 @@ function resolveSandboxRoot() {
   if (configuredRoot) {
     return configuredRoot;
   }
-  return path.join(process.env.LOCALAPPDATA?.trim() || os.tmpdir(), "hitechcloud");
+  return path.join(process.env.LOCALAPPDATA?.trim() || os.tmpdir(), "holaboss");
 }
 
 function firstExistingPath(paths) {
@@ -80,9 +80,9 @@ export async function startWindowsRuntime(args = process.argv.slice(2), options 
   const memoryRoot = process.env.MEMORY_ROOT_DIR?.trim() || path.join(sandboxRoot, "memory");
   const stateRoot = process.env.STATE_ROOT_DIR?.trim() || path.join(sandboxRoot, "state");
   const runtimeAppRoot =
-    process.env.HITECHCLOUD_RUNTIME_APP_ROOT?.trim() || path.join(bundleRoot, "runtime");
+    process.env.HOLABOSS_RUNTIME_APP_ROOT?.trim() || path.join(bundleRoot, "runtime");
   const runtimeNodeBin =
-    process.env.HITECHCLOUD_RUNTIME_NODE_BIN?.trim() ||
+    process.env.HOLABOSS_RUNTIME_NODE_BIN?.trim() ||
     firstExistingPath(runtimeNodeCandidates(toolchainRoot)) ||
     process.execPath;
   const runtimeApiEntry = firstExistingPath(runtimeApiEntryCandidates(runtimeAppRoot));
@@ -99,12 +99,12 @@ export async function startWindowsRuntime(args = process.argv.slice(2), options 
   mkdirSync(runtimeAppRoot, { recursive: true });
 
   process.env.HB_SANDBOX_ROOT = sandboxRoot;
-  process.env.HITECHCLOUD_RUNTIME_APP_ROOT = runtimeAppRoot;
-  process.env.HITECHCLOUD_RUNTIME_ROOT =
-    process.env.HITECHCLOUD_RUNTIME_ROOT?.trim() || runtimeAppRoot;
-  process.env.HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT = toolchainRoot;
-  process.env.HITECHCLOUD_RUNTIME_NODE_BIN = runtimeNodeBin;
-  process.env.HITECHCLOUD_USER_ID = process.env.SANDBOX_HITECHCLOUD_USER_ID?.trim() || "";
+  process.env.HOLABOSS_RUNTIME_APP_ROOT = runtimeAppRoot;
+  process.env.HOLABOSS_RUNTIME_ROOT =
+    process.env.HOLABOSS_RUNTIME_ROOT?.trim() || runtimeAppRoot;
+  process.env.HOLABOSS_RUNTIME_TOOLCHAIN_ROOT = toolchainRoot;
+  process.env.HOLABOSS_RUNTIME_NODE_BIN = runtimeNodeBin;
+  process.env.HOLABOSS_USER_ID = process.env.SANDBOX_HOLABOSS_USER_ID?.trim() || "";
   process.env.MEMORY_ROOT_DIR = memoryRoot;
   process.env.STATE_ROOT_DIR = stateRoot;
   process.env.PATH = pathEntries.join(path.delimiter);
@@ -116,8 +116,8 @@ export async function startWindowsRuntime(args = process.argv.slice(2), options 
     process.env.SANDBOX_RUNTIME_API_PORT?.trim() ||
     process.env.SANDBOX_AGENT_BIND_PORT?.trim() ||
     "8080";
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL_DEFAULT =
-    process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL_DEFAULT?.trim() ||
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL_DEFAULT =
+    process.env.HOLABOSS_MODEL_PROXY_BASE_URL_DEFAULT?.trim() ||
     "http://127.0.0.1:3060/api/v1/model-proxy";
 
   if (isPathLikeCommand(runtimeNodeBin) && !existsSync(runtimeNodeBin)) {
@@ -125,7 +125,7 @@ export async function startWindowsRuntime(args = process.argv.slice(2), options 
   }
   if (!runtimeApiEntry) {
     throw new Error(
-      `runtime api entrypoint not found under HITECHCLOUD_RUNTIME_APP_ROOT=${runtimeAppRoot}`
+      `runtime api entrypoint not found under HOLABOSS_RUNTIME_APP_ROOT=${runtimeAppRoot}`
     );
   }
 

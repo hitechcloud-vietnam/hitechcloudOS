@@ -29,6 +29,6 @@ test("update reminder keeps the update hint concise", async () => {
   const source = await readFile(UPDATE_REMINDER_PATH, "utf8");
 
   assert.doesNotMatch(source, /Downloading quietly in the background\./);
-  assert.doesNotMatch(source, /Restart now, or close later and Hitechcloud will install it on quit\./);
+  assert.doesNotMatch(source, /Restart now, or close later and Holaboss will install it on quit\./);
   assert.match(source, /%\ downloaded/);
 });

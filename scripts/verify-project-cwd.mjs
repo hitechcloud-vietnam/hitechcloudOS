@@ -14,8 +14,8 @@
  *
  * What this verifies, per workspace:
  *
- *   1. For each cwd-scoped entry in `<ws>/.hitechcloud/state/harness-session-state.json`
- *      (e.g. `pi@/Users/you/Hitechcloud/Projects/Test7`), the linked JSONL
+ *   1. For each cwd-scoped entry in `<ws>/.holaboss/state/harness-session-state.json`
+ *      (e.g. `pi@/Users/you/Holaboss/Projects/Test7`), the linked JSONL
  *      file's `cwd` header equals the scoped cwd. Mismatch = bug.
  *
  *   2. The bare-harness `pi` entry's JSONL header `cwd` is either the
@@ -57,7 +57,7 @@ const SANDBOX_HOST_ROOT = path.join(
   os.homedir(),
   "Library",
   "Application Support",
-  "hitechcloud-local-dev-team-sdk",
+  "holaboss-local-dev-team-sdk",
   "sandbox-host",
 );
 const WORKSPACE_ROOT = path.join(SANDBOX_HOST_ROOT, "workspace");
@@ -103,7 +103,7 @@ function normalizeForCompare(value) {
 function checkWorkspace(workspaceDir) {
   const statePath = path.join(
     workspaceDir,
-    ".hitechcloud",
+    ".holaboss",
     "state",
     "harness-session-state.json",
   );
@@ -170,7 +170,7 @@ function cleanWorkspace(workspaceDir) {
   // entry (General session) so HOME/legacy chats are not disturbed.
   const statePath = path.join(
     workspaceDir,
-    ".hitechcloud",
+    ".holaboss",
     "state",
     "harness-session-state.json",
   );

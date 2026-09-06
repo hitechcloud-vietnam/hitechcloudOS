@@ -1,4 +1,4 @@
-ARG TOOLCHAIN_IMAGE=hitechcloud/sandbox-base-toolchain:dev
+ARG TOOLCHAIN_IMAGE=holaboss/sandbox-base-toolchain:dev
 FROM ${TOOLCHAIN_IMAGE}
 
 WORKDIR /tmp/runtime-source
@@ -22,16 +22,16 @@ COPY runtime/api-server/tsconfig.json /tmp/runtime-source/api-server/tsconfig.js
 COPY runtime/api-server/tsup.config.ts /tmp/runtime-source/api-server/tsup.config.ts
 COPY runtime/api-server/src/ /tmp/runtime-source/api-server/src/
 RUN chmod +x /tmp/runtime-source/deploy/build_runtime_root.sh \
-    && /tmp/runtime-source/deploy/build_runtime_root.sh /opt/hitechcloud-runtime
+    && /tmp/runtime-source/deploy/build_runtime_root.sh /opt/holaboss-runtime
 
 WORKDIR /app
 
 RUN mkdir -p /app \
-    && cp -R /opt/hitechcloud-runtime/api-server /app/api-server \
-    && cp -R /opt/hitechcloud-runtime/harness-host /app/harness-host \
-    && cp -R /opt/hitechcloud-runtime/state-store /app/state-store \
-    && cp /opt/hitechcloud-runtime/metadata.json /app/metadata.json \
-    && chmod +x /opt/hitechcloud-runtime/bootstrap/*.sh
+    && cp -R /opt/holaboss-runtime/api-server /app/api-server \
+    && cp -R /opt/holaboss-runtime/harness-host /app/harness-host \
+    && cp -R /opt/holaboss-runtime/state-store /app/state-store \
+    && cp /opt/holaboss-runtime/metadata.json /app/metadata.json \
+    && chmod +x /opt/holaboss-runtime/bootstrap/*.sh
 
 WORKDIR /app
 

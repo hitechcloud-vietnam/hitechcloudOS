@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
  * Hola image. The optional `seed` prop is reserved for future
  * per-agent avatar variants and is currently a no-op.
  */
-export const HOLA_AVATAR_URL = "https://assets.hitechcloud.vn/images/hola.webp";
+export const HOLA_AVATAR_URL = "https://assets.holaboss.ai/images/hola.webp";
 
 const agentAvatarVariants = cva(
   "inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-fg-6",

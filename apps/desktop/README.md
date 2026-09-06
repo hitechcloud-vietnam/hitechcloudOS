@@ -1,4 +1,4 @@
-# Hitechcloud Local - Neon AI Workspace Prototype
+# Holaboss Local - Neon AI Workspace Prototype
 
 Desktop prototype inspired by a futuristic dark neon-green AI operating workspace with three docked panes:
 
@@ -78,17 +78,17 @@ npm run prepare:runtime:linux
 npm run prepare:runtime:windows
 ```
 
-For local development against unreleased `hitechcloudOS` runtime changes:
+For local development against unreleased `holaOS` runtime changes:
 
 ```bash
-# optional when your OSS repo is not ../hitechcloudOS
-export HITECHCLOUD_OSS_ROOT=/absolute/path/to/hitechcloudOS
+# optional when your OSS repo is not ../holaOS
+export HOLABOSS_OSS_ROOT=/absolute/path/to/holaOS
 
 # builds the runtime bundle for the current host platform and stages it into out/runtime-<platform>
 npm run prepare:runtime:local
 ```
 
-After `npm run prepare:runtime:local`, a normal `npm run dev` uses that staged local runtime bundle. Set `HITECHCLOUD_RUNTIME_PLATFORM=macos|linux|windows` if you need to override platform detection.
+After `npm run prepare:runtime:local`, a normal `npm run dev` uses that staged local runtime bundle. Set `HOLABOSS_RUNTIME_PLATFORM=macos|linux|windows` if you need to override platform detection.
 
 Or package directly with local runtime in one step:
 
@@ -99,18 +99,18 @@ npm run dist:win
 ```
 
 The staging script accepts one of:
-- `HITECHCLOUD_RUNTIME_DIR=/absolute/path/to/runtime-<platform>`
-- `HITECHCLOUD_RUNTIME_TARBALL=/absolute/path/to/hitechcloud-runtime-<platform>-<sha>.tar.gz`
-- `HITECHCLOUD_RUNTIME_BUNDLE_URL=https://.../hitechcloud-runtime-<platform>-<sha>.tar.gz`
-- `HITECHCLOUD_RUNTIME_PLATFORM=macos|linux|windows` to override the auto-detected target platform when needed
+- `HOLABOSS_RUNTIME_DIR=/absolute/path/to/runtime-<platform>`
+- `HOLABOSS_RUNTIME_TARBALL=/absolute/path/to/holaboss-runtime-<platform>-<sha>.tar.gz`
+- `HOLABOSS_RUNTIME_BUNDLE_URL=https://.../holaboss-runtime-<platform>-<sha>.tar.gz`
+- `HOLABOSS_RUNTIME_PLATFORM=macos|linux|windows` to override the auto-detected target platform when needed
 
 Runtime packagers can also override the bundled Python source when needed:
-- `HITECHCLOUD_RUNTIME_PYTHON_DIR=/absolute/path/to/extracted/python`
-- `HITECHCLOUD_RUNTIME_PYTHON_TARBALL=/absolute/path/to/cpython-...tar.gz`
-- `HITECHCLOUD_RUNTIME_PYTHON_URL=https://.../cpython-...tar.gz`
-- `HITECHCLOUD_RUNTIME_PYTHON_VERSION`, `HITECHCLOUD_RUNTIME_PYTHON_RELEASE`, `HITECHCLOUD_RUNTIME_PYTHON_VARIANT`, and `HITECHCLOUD_RUNTIME_PYTHON_TARGET_TRIPLE`
+- `HOLABOSS_RUNTIME_PYTHON_DIR=/absolute/path/to/extracted/python`
+- `HOLABOSS_RUNTIME_PYTHON_TARBALL=/absolute/path/to/cpython-...tar.gz`
+- `HOLABOSS_RUNTIME_PYTHON_URL=https://.../cpython-...tar.gz`
+- `HOLABOSS_RUNTIME_PYTHON_VERSION`, `HOLABOSS_RUNTIME_PYTHON_RELEASE`, `HOLABOSS_RUNTIME_PYTHON_VARIANT`, and `HOLABOSS_RUNTIME_PYTHON_TARGET_TRIPLE`
 
-If none are set, it falls back to the host temp directory, for example `${TMPDIR:-/tmp}/hitechcloud-runtime-<platform>-full`, or you can run `npm run prepare:runtime:local` first.
+If none are set, it falls back to the host temp directory, for example `${TMPDIR:-/tmp}/holaboss-runtime-<platform>-full`, or you can run `npm run prepare:runtime:local` first.
 
 To build a mac app bundle with the runtime embedded in Electron resources:
 
@@ -130,18 +130,18 @@ npm run dist:win
 
 Use `dist:win` on a Windows host to build and stage a native local runtime bundle first, then produce a Windows NSIS installer.
 
-The Windows packaging command also writes `out/hitechcloud-config.json` from your configured desktop environment before building the installer.
+The Windows packaging command also writes `out/holaboss-config.json` from your configured desktop environment before building the installer.
 
 This produces a Windows NSIS installer `.exe` in `out/release/`.
 
 Output:
-- [hitechcloudOS.app](/Users/you/Desktop/hitechcloudOS/desktop/out/release/mac-arm64/hitechcloudOS.app)
+- [holaOS.app](/Users/you/Desktop/holaOS/desktop/out/release/mac-arm64/holaOS.app)
 
 Remote configuration for packaged runs (set via environment variables):
-- `HITECHCLOUD_AUTH_BASE_URL` for Better Auth session endpoint
-- `HITECHCLOUD_AUTH_SIGN_IN_URL` for the hosted sign-in page
-- `HITECHCLOUD_BACKEND_BASE_URL` for the Hitechcloud backend base URL used by the desktop
-- `HITECHCLOUD_PACKAGED_APP_BIN` for an explicit packaged binary path
+- `HOLABOSS_AUTH_BASE_URL` for Better Auth session endpoint
+- `HOLABOSS_AUTH_SIGN_IN_URL` for the hosted sign-in page
+- `HOLABOSS_BACKEND_BASE_URL` for the Holaboss backend base URL used by the desktop
+- `HOLABOSS_PACKAGED_APP_BIN` for an explicit packaged binary path
 
 Start by copying the template:
 
@@ -170,19 +170,19 @@ Desktop validation and desktop release packaging now share the single `.github/w
 On pull requests and pushes to `main`, `CI` runs the normal validation jobs only. On manual dispatch, that same workflow:
 - calls `.github/workflows/publish-linux-runtime.yml` to build the backend-consumed Linux runtime bundle and stage it for the final release publish
 - checks out the requested `ref`
-- creates the requested GitHub release in `hitechcloud-vietnam/hitechcloudOS-releases`
-- attaches the Linux runtime bundle, manifest, and checksum to that same `hitechcloud-vietnam/hitechcloudOS-releases` tag
+- creates the requested GitHub release in `holaboss-ai/holaOS-releases`
+- attaches the Linux runtime bundle, manifest, and checksum to that same `holaboss-ai/holaOS-releases` tag
 - builds the signed and notarized Apple Silicon macOS app, then uploads the DMG, ZIP, blockmaps, and `latest-mac.yml`
 - calls `.github/workflows/publish-macos-intel-desktop.yml` to stage the notarized Intel macOS (`x64`) DMG, ZIP, blockmap, and mac updater manifest for the same release
 - merges the Apple Silicon and Intel macOS updater manifests before publishing the final shared `latest-mac.yml` / `beta-mac.yml` assets
 - builds the signed Windows NSIS installer, then uploads the installer, blockmap, and channel manifest
 
-The `.github/workflows/publish-macos-intel-desktop.yml` workflow remains separately dispatchable for Intel-only reruns. It now rebuilds the notarized Intel macOS DMG, ZIP, blockmap, and updater metadata, then merges the Intel updater entries into the existing shared `latest-mac.yml` / `beta-mac.yml` assets on `hitechcloud-vietnam/hitechcloudOS-releases`. That standalone rerun path assumes the Apple Silicon macOS release assets for the tag already exist in the shared release repo.
+The `.github/workflows/publish-macos-intel-desktop.yml` workflow remains separately dispatchable for Intel-only reruns. It now rebuilds the notarized Intel macOS DMG, ZIP, blockmap, and updater metadata, then merges the Intel updater entries into the existing shared `latest-mac.yml` / `beta-mac.yml` assets on `holaboss-ai/holaOS-releases`. That standalone rerun path assumes the Apple Silicon macOS release assets for the tag already exist in the shared release repo.
 
 Release channel policy:
 - the Linux runtime bundle is published separately for remote sandbox runtime consumers
-- desktop releases still do not attach standalone runtime tarballs to `hitechcloud-vietnam/hitechcloudOS-releases`
-- desktop-shippable releases publish to `hitechcloud-vietnam/hitechcloudOS-releases`
+- desktop releases still do not attach standalone runtime tarballs to `holaboss-ai/holaOS-releases`
+- desktop-shippable releases publish to `holaboss-ai/holaOS-releases`
 - the in-app desktop updater is still intended to track desktop releases, not arbitrary runtime assets
 
 Desktop release versioning:
@@ -190,7 +190,7 @@ Desktop release versioning:
 - `YYYY` = year, `MDD` = month without a leading zero plus a two-digit day, `R` = release number for that date
 - examples: `2026.410.1`, `2026.410.2`, `2026.1113.1`
 - do not zero-pad the month in the middle segment; `2026.0410.1` is not valid semver
-- desktop GitHub release tags must be `hitechcloudOS-YYYY.MDD.R`
+- desktop GitHub release tags must be `holaOS-YYYY.MDD.R`
 - the desktop packager derives the app update version from the trailing `X.Y.Z` suffix in `release_tag`, so tags should end with the same `YYYY.MDD.R` value
 - to print a version for today, run `npm --prefix desktop run release:version`
 - to print the full desktop release tag for today, run `npm --prefix desktop run release:tag`
@@ -207,7 +207,7 @@ The manual `CI` release path requires these repository secrets and fails fast wh
 - `AZURE_TENANT_ID`: Microsoft Entra tenant ID for the Windows signing service principal
 - `AZURE_CLIENT_ID`: client ID for the Windows signing service principal
 - `AZURE_CLIENT_SECRET`: client secret value for the Windows signing service principal; use the secret `Value`, not the secret ID
-- `HITECHCLOUD_RELEASES_REPO_TOKEN`: token with read access to the private source repo and write access to `hitechcloud-vietnam/hitechcloudOS-releases`
+- `HOLABOSS_RELEASES_REPO_TOKEN`: token with read access to the private source repo and write access to `holaboss-ai/holaOS-releases`
 
 The manual `CI` release path also requires these repository variables for Azure Trusted Signing:
 
@@ -222,7 +222,7 @@ The Windows CI release job validates this before the build by requesting a Trust
 When manually triggering `CI`, provide:
 
 - `ref`: the branch, tag, or commit you want to ship
-- `release_tag`: the GitHub release tag to create or update, in `hitechcloudOS-YYYY.MDD.R` format
+- `release_tag`: the GitHub release tag to create or update, in `holaOS-YYYY.MDD.R` format
 - `release_title`: optional display title for the GitHub release
 - `prerelease`: whether the GitHub release should be marked as a prerelease when first created
 
@@ -233,9 +233,9 @@ Docs publishing remains separate in `.github/workflows/deploy-docs.yml` and auto
 After a signed build, validate the produced app locally with:
 
 ```bash
-codesign --verify --deep --strict --verbose=2 /path/to/hitechcloudOS.app
-spctl -a -vv -t exec /path/to/hitechcloudOS.app
-xcrun stapler validate /path/to/hitechcloudOS.app
+codesign --verify --deep --strict --verbose=2 /path/to/holaOS.app
+spctl -a -vv -t exec /path/to/holaOS.app
+xcrun stapler validate /path/to/holaOS.app
 ```
 
 ## Project Structure

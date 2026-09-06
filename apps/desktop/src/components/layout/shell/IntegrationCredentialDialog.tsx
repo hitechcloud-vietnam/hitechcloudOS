@@ -72,7 +72,7 @@ function CredentialForm({ request }: { request: IntegrationCredentialRequest }) 
               Connect {displayName}
             </DialogPrimitive.Title>
             <DialogPrimitive.Description className="mt-1 max-w-[300px] text-[13px] text-muted-foreground leading-relaxed">
-              {displayName} signs in with your own key rather than a hitechcloudOS
+              {displayName} signs in with your own key rather than a holaOS
               sign-in window. Paste it here and your agent can work in{" "}
               {displayName} on your behalf.
             </DialogPrimitive.Description>

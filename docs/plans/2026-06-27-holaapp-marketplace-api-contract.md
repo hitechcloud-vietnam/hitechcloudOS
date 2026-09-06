@@ -2,7 +2,7 @@
 
 **Date**: 2026-06-27
 **Status**: Draft (contract to agree before either side builds)
-**Owners**: Backend (the closed-source backend / holaapp-backend) ⇄ Desktop (hitechcloudOS)
+**Owners**: Backend (the closed-source backend / holaapp-backend) ⇄ Desktop (holaOS)
 **Related**: `docs/plans/2026-06-27-holaapp-bundles-prd.md`
 
 This is the agreed wire contract between the **desktop client** and the **server**
@@ -121,7 +121,7 @@ the provisioning the desktop applies locally.
   "provisioning": {
     "mcp": [
       { "id": "need-review", "transport": "http",
-        "url": "https://api.hitechcloud.vn/mcp/need-review/mcp",
+        "url": "https://api.holaos.ai/mcp/need-review/mcp",
         "auth": { "mode": "session" },
         "tools": ["list_records","get_record","approve_record", "..."] }
     ],
@@ -174,7 +174,7 @@ provisioning so the desktop can re-apply from server truth — not a cached/hard
 ## Auth & security
 
 - All calls go through the **gateway** with the user's Better-Auth session (the gateway
-  injects `x-hitechcloud-user-id`); install state is **per user**.
+  injects `x-holaboss-user-id`); install state is **per user**.
 - MCP endpoints are auth-exempt at the edge (`/mcp/*`) and do their own bearer auth — the
   `auth.mode: "session"` bearer is the desktop's session token, as today.
 - Installing grants the agent new tools. v1 = first-party apps, implicit trust (PRD

@@ -108,7 +108,7 @@ export function resolvePythonTargetTriple(runtimePlatform, runtimeArch = process
 }
 
 export function resolvePythonVariants(env = process.env) {
-  const explicitVariant = (env.HITECHCLOUD_RUNTIME_PYTHON_VARIANT ?? "").trim();
+  const explicitVariant = (env.HOLABOSS_RUNTIME_PYTHON_VARIANT ?? "").trim();
   return explicitVariant ? [explicitVariant] : [...DEFAULT_PYTHON_VARIANTS];
 }
 
@@ -122,18 +122,18 @@ export function buildPythonDownloadUrl(params) {
 }
 
 function runtimePythonCacheDir(env = process.env) {
-  const configured = (env.HITECHCLOUD_RUNTIME_PYTHON_CACHE_DIR ?? "").trim();
-  return configured ? path.resolve(configured) : path.join(os.tmpdir(), "hitechcloud-runtime-python-cache");
+  const configured = (env.HOLABOSS_RUNTIME_PYTHON_CACHE_DIR ?? "").trim();
+  return configured ? path.resolve(configured) : path.join(os.tmpdir(), "holaboss-runtime-python-cache");
 }
 
 function resolveBundledPythonSpec(runtimePlatform, env = process.env) {
   const platform = normalizeRuntimePlatform(runtimePlatform);
-  const pythonVersion = (env.HITECHCLOUD_RUNTIME_PYTHON_VERSION ?? DEFAULT_PYTHON_VERSION).trim();
-  const pythonRelease = (env.HITECHCLOUD_RUNTIME_PYTHON_RELEASE ?? DEFAULT_PYTHON_RELEASE).trim();
-  const sourceRepo = (env.HITECHCLOUD_RUNTIME_PYTHON_SOURCE_REPO ?? DEFAULT_PYTHON_SOURCE_REPO).trim();
+  const pythonVersion = (env.HOLABOSS_RUNTIME_PYTHON_VERSION ?? DEFAULT_PYTHON_VERSION).trim();
+  const pythonRelease = (env.HOLABOSS_RUNTIME_PYTHON_RELEASE ?? DEFAULT_PYTHON_RELEASE).trim();
+  const sourceRepo = (env.HOLABOSS_RUNTIME_PYTHON_SOURCE_REPO ?? DEFAULT_PYTHON_SOURCE_REPO).trim();
   const targetTriple =
-    (env.HITECHCLOUD_RUNTIME_PYTHON_TARGET_TRIPLE ?? "").trim() ||
-    resolvePythonTargetTriple(platform, env.HITECHCLOUD_RUNTIME_PYTHON_ARCH ?? process.arch);
+    (env.HOLABOSS_RUNTIME_PYTHON_TARGET_TRIPLE ?? "").trim() ||
+    resolvePythonTargetTriple(platform, env.HOLABOSS_RUNTIME_PYTHON_ARCH ?? process.arch);
 
   return {
     platform,
@@ -142,19 +142,19 @@ function resolveBundledPythonSpec(runtimePlatform, env = process.env) {
     sourceRepo,
     targetTriple,
     variants: resolvePythonVariants(env),
-    localDir: (env.HITECHCLOUD_RUNTIME_PYTHON_DIR ?? "").trim(),
-    localArchive: (env.HITECHCLOUD_RUNTIME_PYTHON_TARBALL ?? "").trim(),
-    explicitUrl: (env.HITECHCLOUD_RUNTIME_PYTHON_URL ?? "").trim(),
+    localDir: (env.HOLABOSS_RUNTIME_PYTHON_DIR ?? "").trim(),
+    localArchive: (env.HOLABOSS_RUNTIME_PYTHON_TARBALL ?? "").trim(),
+    explicitUrl: (env.HOLABOSS_RUNTIME_PYTHON_URL ?? "").trim(),
     githubToken:
-      (env.HITECHCLOUD_RUNTIME_PYTHON_GITHUB_TOKEN ?? "").trim() ||
+      (env.HOLABOSS_RUNTIME_PYTHON_GITHUB_TOKEN ?? "").trim() ||
       (env.GITHUB_TOKEN ?? "").trim() ||
-      (env.HITECHCLOUD_GITHUB_TOKEN ?? "").trim(),
+      (env.HOLABOSS_GITHUB_TOKEN ?? "").trim(),
   };
 }
 
 async function downloadToFile(url, destinationPath, token = "") {
   const headers = {
-    "User-Agent": "hitechcloud-runtime-python-stager",
+    "User-Agent": "holaboss-runtime-python-stager",
   };
   if (token) {
     headers.Authorization = `Bearer ${token}`;
@@ -435,7 +435,7 @@ function resolveLocalPythonRoot(localDir) {
   const resolvedDir = path.resolve(localDir);
   const pythonRoot = firstExistingPath([path.join(resolvedDir, "python"), resolvedDir]);
   if (!pythonRoot || !statSync(pythonRoot).isDirectory()) {
-    throw new Error(`HITECHCLOUD_RUNTIME_PYTHON_DIR did not point to a Python install root: ${resolvedDir}`);
+    throw new Error(`HOLABOSS_RUNTIME_PYTHON_DIR did not point to a Python install root: ${resolvedDir}`);
   }
   return pythonRoot;
 }
@@ -445,7 +445,7 @@ export async function stagePythonRuntime(outputRootArg, runtimePlatformArg = pro
   const spec = resolveBundledPythonSpec(runtimePlatformArg);
   const pythonRuntimeRoot = path.join(outputRoot, "python-runtime");
   const pythonInstallRoot = path.join(pythonRuntimeRoot, "python");
-  const stagingRoot = path.join(os.tmpdir(), `hitechcloud-python-stage-${Date.now()}-${Math.random().toString(16).slice(2)}`);
+  const stagingRoot = path.join(os.tmpdir(), `holaboss-python-stage-${Date.now()}-${Math.random().toString(16).slice(2)}`);
 
   rmSync(pythonRuntimeRoot, { recursive: true, force: true });
   mkdirSync(outputRoot, { recursive: true });

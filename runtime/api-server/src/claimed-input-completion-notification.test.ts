@@ -4,8 +4,8 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import type { SessionInputRecord, TurnResultRecord } from "@hitechcloud/runtime-state-store";
-import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import type { SessionInputRecord, TurnResultRecord } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore } from "@holaboss/runtime-state-store";
 
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 import { maybeCreateMainSessionCompletionNotification } from "./claimed-input-executor.js";

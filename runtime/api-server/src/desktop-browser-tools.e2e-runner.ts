@@ -20,7 +20,7 @@ async function main() {
     defaultModel: string;
     runtimeMode: string;
     defaultProvider: string;
-    hitechcloudEnabled: boolean;
+    holabossEnabled: boolean;
     desktopBrowserEnabled: boolean;
     desktopBrowserUrl: string;
     desktopBrowserAuthToken: string;

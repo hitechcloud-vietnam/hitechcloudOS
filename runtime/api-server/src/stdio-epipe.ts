@@ -1,4 +1,4 @@
-const STDIO_EPIPE_GUARD_SYMBOL = Symbol.for("hitechcloud.runtime.stdioEpipeGuard");
+const STDIO_EPIPE_GUARD_SYMBOL = Symbol.for("holaboss.runtime.stdioEpipeGuard");
 
 function isEpipeError(error: unknown): error is NodeJS.ErrnoException {
   return Boolean(error) && typeof error === "object" && (error as { code?: unknown }).code === "EPIPE";

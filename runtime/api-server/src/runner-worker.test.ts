@@ -30,9 +30,9 @@ const ORIGINAL_ENV = {
   SANDBOX_RUNTIME_API_PORT: process.env.SANDBOX_RUNTIME_API_PORT,
   SANDBOX_AGENT_BIND_HOST: process.env.SANDBOX_AGENT_BIND_HOST,
   SANDBOX_AGENT_BIND_PORT: process.env.SANDBOX_AGENT_BIND_PORT,
-  HITECHCLOUD_RUNTIME_APP_ROOT: process.env.HITECHCLOUD_RUNTIME_APP_ROOT,
-  HITECHCLOUD_RUNTIME_ROOT: process.env.HITECHCLOUD_RUNTIME_ROOT,
-  HITECHCLOUD_RUNTIME_NODE_BIN: process.env.HITECHCLOUD_RUNTIME_NODE_BIN
+  HOLABOSS_RUNTIME_APP_ROOT: process.env.HOLABOSS_RUNTIME_APP_ROOT,
+  HOLABOSS_RUNTIME_ROOT: process.env.HOLABOSS_RUNTIME_ROOT,
+  HOLABOSS_RUNTIME_NODE_BIN: process.env.HOLABOSS_RUNTIME_NODE_BIN
 };
 
 const TEMP_DIRS: string[] = [];
@@ -131,20 +131,20 @@ afterEach(() => {
   } else {
     process.env.SANDBOX_AGENT_BIND_PORT = ORIGINAL_ENV.SANDBOX_AGENT_BIND_PORT;
   }
-  if (ORIGINAL_ENV.HITECHCLOUD_RUNTIME_APP_ROOT === undefined) {
-    delete process.env.HITECHCLOUD_RUNTIME_APP_ROOT;
+  if (ORIGINAL_ENV.HOLABOSS_RUNTIME_APP_ROOT === undefined) {
+    delete process.env.HOLABOSS_RUNTIME_APP_ROOT;
   } else {
-    process.env.HITECHCLOUD_RUNTIME_APP_ROOT = ORIGINAL_ENV.HITECHCLOUD_RUNTIME_APP_ROOT;
+    process.env.HOLABOSS_RUNTIME_APP_ROOT = ORIGINAL_ENV.HOLABOSS_RUNTIME_APP_ROOT;
   }
-  if (ORIGINAL_ENV.HITECHCLOUD_RUNTIME_ROOT === undefined) {
-    delete process.env.HITECHCLOUD_RUNTIME_ROOT;
+  if (ORIGINAL_ENV.HOLABOSS_RUNTIME_ROOT === undefined) {
+    delete process.env.HOLABOSS_RUNTIME_ROOT;
   } else {
-    process.env.HITECHCLOUD_RUNTIME_ROOT = ORIGINAL_ENV.HITECHCLOUD_RUNTIME_ROOT;
+    process.env.HOLABOSS_RUNTIME_ROOT = ORIGINAL_ENV.HOLABOSS_RUNTIME_ROOT;
   }
-  if (ORIGINAL_ENV.HITECHCLOUD_RUNTIME_NODE_BIN === undefined) {
-    delete process.env.HITECHCLOUD_RUNTIME_NODE_BIN;
+  if (ORIGINAL_ENV.HOLABOSS_RUNTIME_NODE_BIN === undefined) {
+    delete process.env.HOLABOSS_RUNTIME_NODE_BIN;
   } else {
-    process.env.HITECHCLOUD_RUNTIME_NODE_BIN = ORIGINAL_ENV.HITECHCLOUD_RUNTIME_NODE_BIN;
+    process.env.HOLABOSS_RUNTIME_NODE_BIN = ORIGINAL_ENV.HOLABOSS_RUNTIME_NODE_BIN;
   }
   for (const dir of TEMP_DIRS.splice(0)) {
     fs.rmSync(dir, { recursive: true, force: true });
@@ -168,7 +168,7 @@ function setNodeRunnerTemplate(lines: string[]): void {
   // spawned shell's PATH — present on a dev box, absent on a CI runner, where
   // this produced `/bin/bash: line 1: node: command not found`. These tests
   // never ran in CI before the glob was fixed, so nothing caught it.
-  process.env.HITECHCLOUD_RUNTIME_NODE_BIN = process.execPath;
+  process.env.HOLABOSS_RUNTIME_NODE_BIN = process.execPath;
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-runner-worker-template-"));
   TEMP_DIRS.push(tempDir);
   const runnerScriptPath = path.join(tempDir, "runner-template.mjs");
@@ -382,8 +382,8 @@ test("native runner executor can use the TypeScript runner template", async () =
   delete process.env.SANDBOX_AGENT_RUNNER_COMMAND_TEMPLATE;
   const runtimeRoot = fs.mkdtempSync(path.join(os.tmpdir(), "hb-runner-worker-ts-"));
   TEMP_DIRS.push(runtimeRoot);
-  process.env.HITECHCLOUD_RUNTIME_ROOT = runtimeRoot;
-  process.env.HITECHCLOUD_RUNTIME_NODE_BIN = process.execPath;
+  process.env.HOLABOSS_RUNTIME_ROOT = runtimeRoot;
+  process.env.HOLABOSS_RUNTIME_NODE_BIN = process.execPath;
   fs.mkdirSync(path.join(runtimeRoot, "api-server", "dist"), { recursive: true });
 
   const startEvent = Buffer.from(
@@ -595,8 +595,8 @@ test("build runner env injects runtime api url when missing", () => {
 });
 
 test("build runner env prepends api-server local bin helpers", () => {
-  process.env.HITECHCLOUD_RUNTIME_ROOT = "/bundle/runtime";
-  process.env.HITECHCLOUD_RUNTIME_APP_ROOT = "/bundle/runtime";
+  process.env.HOLABOSS_RUNTIME_ROOT = "/bundle/runtime";
+  process.env.HOLABOSS_RUNTIME_APP_ROOT = "/bundle/runtime";
   const delimiter = shellPathDelimiter();
   process.env.PATH = ["/usr/local/bin", "/usr/bin"].join(delimiter);
   const bundleRoot = path.resolve("/bundle");
@@ -628,14 +628,14 @@ test("build runner env prepends api-server local bin helpers", () => {
   );
 });
 
-test("build runner env anchors the bundle root to this module (not drive-root) when HITECHCLOUD_RUNTIME_ROOT is unset", () => {
+test("build runner env anchors the bundle root to this module (not drive-root) when HOLABOSS_RUNTIME_ROOT is unset", () => {
   // Regression: with the env var unset, runtimeRoot() defaulted to "/runtime",
   // and runtimeBundleRoot()'s `path.resolve(root, "..")` collapsed that to the
   // drive root on Windows — producing bogus `C:\python-runtime\...` PATH entries
   // and a silent fallback to a system Python. It must now anchor to this
   // module's real on-disk location instead.
-  delete process.env.HITECHCLOUD_RUNTIME_ROOT;
-  delete process.env.HITECHCLOUD_RUNTIME_APP_ROOT;
+  delete process.env.HOLABOSS_RUNTIME_ROOT;
+  delete process.env.HOLABOSS_RUNTIME_APP_ROOT;
   const delimiter = shellPathDelimiter();
   process.env.PATH = ["/usr/bin"].join(delimiter);
 

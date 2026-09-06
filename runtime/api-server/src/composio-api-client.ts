@@ -8,13 +8,13 @@
 //
 //   - Auth is a Better-Auth bearer token. There is NO org-wide service
 //     token, no symmetric API key, no impersonation surface — by design,
-//     because hitechcloudOS ships open source and any such secret would be
+//     because holaOS ships open source and any such secret would be
 //     extractable from a published build.
 //
 //   - The token IS the Better-Auth session token for a real user. The
 //     desktop captures it when the user signs in (Better-Auth's bearer
 //     plugin returns it via the `set-auth-token` response header) and
-//     injects it into the runtime as HITECHCLOUD_AUTH_BEARER_TOKEN.
+//     injects it into the runtime as HOLABOSS_AUTH_BEARER_TOKEN.
 //
 //   - The runtime never declares "owner_user_id" — Hono derives it from
 //     the resolved session user. A misbehaving runtime cannot lie about
@@ -26,10 +26,10 @@
 //     user_id matches their own.
 
 export interface ComposioApiClientConfig {
-  /** Hono base URL (no trailing slash). Env: HITECHCLOUD_AUTH_BASE_URL. */
+  /** Hono base URL (no trailing slash). Env: HOLABOSS_AUTH_BASE_URL. */
   honoBaseUrl: string;
   /** Better-Auth session token for the real user this runtime represents.
-   *  Env: HITECHCLOUD_AUTH_BEARER_TOKEN. Sent as `Authorization: Bearer <token>`.
+   *  Env: HOLABOSS_AUTH_BEARER_TOKEN. Sent as `Authorization: Bearer <token>`.
    *  Issued to the desktop via Better-Auth's bearer() plugin on login. */
   bearerToken: string;
   /** Override for tests. */
@@ -326,8 +326,8 @@ export class ComposioApiClient {
 export function createComposioApiClientFromEnv(
   env: NodeJS.ProcessEnv = process.env,
 ): ComposioApiClient | null {
-  const honoBaseUrl = (env.HITECHCLOUD_AUTH_BASE_URL ?? "").trim();
-  const bearerToken = (env.HITECHCLOUD_AUTH_BEARER_TOKEN ?? "").trim();
+  const honoBaseUrl = (env.HOLABOSS_AUTH_BASE_URL ?? "").trim();
+  const bearerToken = (env.HOLABOSS_AUTH_BEARER_TOKEN ?? "").trim();
   if (!honoBaseUrl || !bearerToken) {
     return null;
   }

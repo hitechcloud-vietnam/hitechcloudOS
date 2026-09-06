@@ -39,7 +39,7 @@ export interface BrowserHttpServiceDeps {
   closeBrowserProfile: (profileId: string) => { ok: boolean };
   /**
    * The profile a browser DRIVE targets when the request carries no explicit
-   * `x-hitechcloud-browser-profile-id` header. Since the embedded browser is gone,
+   * `x-holaboss-browser-profile-id` header. Since the embedded browser is gone,
    * this makes the agent's browser tools always act on a real profile window
    * (the always-present "Default" profile) instead of the dead Electron tab —
    * so `browser_navigate` etc. auto-launch + drive a profile with no prior
@@ -148,7 +148,7 @@ export interface BrowserHttpServiceDeps {
   };
   // Same driver contract as profileCdp, but keyed by a HolaApp id instead of a
   // browser-profile id — it drives that app's own Electron BrowserView (the view
-  // the user sees). Selected when the request carries `x-hitechcloud-browser-space: app`.
+  // the user sees). Selected when the request carries `x-holaboss-browser-space: app`.
   appSurfaceCdp?: BrowserHttpServiceDeps["profileCdp"];
   getAuthToken: () => string;
   homeUrl: string;
@@ -182,25 +182,25 @@ const INTERACTIVE_ELEMENTS_SELECTOR = [
 ].join(",");
 
 function tokenFromRequest(request: IncomingMessage): string {
-  const raw = request.headers["x-hitechcloud-desktop-token"];
+  const raw = request.headers["x-holaboss-desktop-token"];
   if (Array.isArray(raw)) return (raw[0] || "").trim();
   return typeof raw === "string" ? raw.trim() : "";
 }
 
 function workspaceIdFromRequest(request: IncomingMessage): string {
-  const raw = request.headers["x-hitechcloud-workspace-id"];
+  const raw = request.headers["x-holaboss-workspace-id"];
   if (Array.isArray(raw)) return (raw[0] || "").trim();
   return typeof raw === "string" ? raw.trim() : "";
 }
 
 function browserProfileIdFromRequest(request: IncomingMessage): string {
-  const raw = request.headers["x-hitechcloud-browser-profile-id"];
+  const raw = request.headers["x-holaboss-browser-profile-id"];
   if (Array.isArray(raw)) return (raw[0] || "").trim();
   return typeof raw === "string" ? raw.trim() : "";
 }
 
 function sessionIdFromRequest(request: IncomingMessage): string {
-  const raw = request.headers["x-hitechcloud-session-id"];
+  const raw = request.headers["x-holaboss-session-id"];
   if (Array.isArray(raw)) return (raw[0] || "").trim();
   return typeof raw === "string" ? raw.trim() : "";
 }
@@ -209,7 +209,7 @@ function spaceFromRequest(
   request: IncomingMessage,
   browserSpaceId: BrowserHttpServiceDeps["browserSpaceId"],
 ): BrowserSpaceId {
-  const raw = request.headers["x-hitechcloud-browser-space"];
+  const raw = request.headers["x-holaboss-browser-space"];
   if (Array.isArray(raw)) return browserSpaceId(raw[0] || "", "agent");
   return browserSpaceId(typeof raw === "string" ? raw.trim() : "", "agent");
 }
@@ -405,12 +405,12 @@ export function createBrowserHttpService(
       const targetSpace = spaceFromRequest(request, deps.browserSpaceId);
       // A HolaApp-owned session drives its OWN Electron app surface (the view the
       // user is looking at), not the separate agent-profile Chromium. The runtime
-      // relay signals this with `x-hitechcloud-browser-space: app` and the app id in
+      // relay signals this with `x-holaboss-browser-space: app` and the app id in
       // the profile header. We read the raw header (the normalized space type only
       // knows "agent") and, when it's "app", swap the driver to the app-surface
       // one — keyed by the app id exactly where profile ops are keyed by profile id.
       const rawBrowserSpace = (() => {
-        const raw = request.headers["x-hitechcloud-browser-space"];
+        const raw = request.headers["x-holaboss-browser-space"];
         if (Array.isArray(raw)) return (raw[0] || "").trim();
         return typeof raw === "string" ? raw.trim() : "";
       })();
@@ -484,7 +484,7 @@ export function createBrowserHttpService(
       }
 
       // Launch / close a profile's native Chromium window. The target profile is
-      // carried in the x-hitechcloud-browser-profile-id header (resolved agent-side).
+      // carried in the x-holaboss-browser-profile-id header (resolved agent-side).
       if (
         method === "POST" &&
         pathname === "/api/v1/browser/profiles/launch"

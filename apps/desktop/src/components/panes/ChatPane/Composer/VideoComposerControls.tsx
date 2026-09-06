@@ -117,7 +117,7 @@ export function VideoComposerControls() {
     mediaGenerationDefaultModel("video", runtimeConfig ?? null);
 
   const selectModel = useCallback(async (model: string) => {
-    setDraft({ providerId: "hitechcloud", model });
+    setDraft({ providerId: "holaboss", model });
     try {
       await persistMediaGenerationModel("video", model);
     } catch {

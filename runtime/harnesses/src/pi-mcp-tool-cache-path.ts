@@ -12,7 +12,7 @@ import path from "node:path";
 export const PI_MCP_TOOL_CACHE_FILE = "pi-mcp-tool-cache.json";
 
 export function piMcpToolCachePath(workspaceDir: string): string {
-  return path.join(workspaceDir, ".hitechcloud", "state", PI_MCP_TOOL_CACHE_FILE);
+  return path.join(workspaceDir, ".holaboss", "state", PI_MCP_TOOL_CACHE_FILE);
 }
 
 /**

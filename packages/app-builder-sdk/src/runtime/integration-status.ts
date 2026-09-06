@@ -11,7 +11,7 @@
 //
 // Usage from a TanStack Start server function / loader:
 //
-//   import { getIntegrationStatus } from "@hitechcloud/app-builder-sdk"
+//   import { getIntegrationStatus } from "@holaboss/app-builder-sdk"
 //   const status = await getIntegrationStatus()
 //   if (!status.ready) {
 //     // status.issues describes which provider needs which action
@@ -49,7 +49,7 @@ export interface IntegrationStatusResult {
 export interface GetIntegrationStatusOpts {
   /** Optional override for the runtime API base, no trailing slash.
    *  Defaults to WORKSPACE_API_URL env; falls back to stripping `/integrations`
-   *  off HITECHCLOUD_INTEGRATION_BROKER_URL. */
+   *  off HOLABOSS_INTEGRATION_BROKER_URL. */
   apiBaseUrl?: string
   workspaceId?: string
   appId?: string
@@ -75,7 +75,7 @@ function resolveApiBaseUrl(override: string | undefined): string {
   if (explicit) return explicit.replace(/\/+$/, "")
   const workspaceApi = (process.env.WORKSPACE_API_URL ?? "").trim()
   if (workspaceApi) return workspaceApi.replace(/\/+$/, "")
-  const broker = (process.env.HITECHCLOUD_INTEGRATION_BROKER_URL ?? "").trim()
+  const broker = (process.env.HOLABOSS_INTEGRATION_BROKER_URL ?? "").trim()
   if (broker) {
     return broker.replace(/\/+$/, "").replace(/\/integrations$/, "")
   }
@@ -85,10 +85,10 @@ function resolveApiBaseUrl(override: string | undefined): string {
 export async function getIntegrationStatus(
   opts: GetIntegrationStatusOpts = {},
 ): Promise<IntegrationStatusResult> {
-  let workspaceId = opts.workspaceId?.trim() || process.env.HITECHCLOUD_WORKSPACE_ID || ""
+  let workspaceId = opts.workspaceId?.trim() || process.env.HOLABOSS_WORKSPACE_ID || ""
   let appId = opts.appId?.trim() || ""
   if (!appId || !workspaceId) {
-    const fromGrant = parseGrant(opts.grant ?? process.env.HITECHCLOUD_APP_GRANT ?? "")
+    const fromGrant = parseGrant(opts.grant ?? process.env.HOLABOSS_APP_GRANT ?? "")
     if (fromGrant) {
       if (!workspaceId) workspaceId = fromGrant.workspaceId
       if (!appId) appId = fromGrant.appId
@@ -96,14 +96,14 @@ export async function getIntegrationStatus(
   }
   if (!workspaceId || !appId) {
     throw new Error(
-      "getIntegrationStatus: could not resolve workspaceId/appId. Set HITECHCLOUD_WORKSPACE_ID + HITECHCLOUD_APP_GRANT in the app process, or pass workspaceId/appId explicitly.",
+      "getIntegrationStatus: could not resolve workspaceId/appId. Set HOLABOSS_WORKSPACE_ID + HOLABOSS_APP_GRANT in the app process, or pass workspaceId/appId explicitly.",
     )
   }
 
   const apiBaseUrl = resolveApiBaseUrl(opts.apiBaseUrl)
   if (!apiBaseUrl) {
     throw new Error(
-      "getIntegrationStatus: no runtime API base URL available. Set WORKSPACE_API_URL or HITECHCLOUD_INTEGRATION_BROKER_URL.",
+      "getIntegrationStatus: no runtime API base URL available. Set WORKSPACE_API_URL or HOLABOSS_INTEGRATION_BROKER_URL.",
     )
   }
 

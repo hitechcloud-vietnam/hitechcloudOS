@@ -67,7 +67,7 @@ test("decodeRunnerRequestBase64 applies defaults for optional fields", () => {
   );
 
   assert.deepEqual(request, {
-    hitechcloud_user_id: undefined,
+    holaboss_user_id: undefined,
     workspace_id: "workspace-1",
     session_id: "session-1",
     session_kind: undefined,
@@ -111,7 +111,7 @@ test("decodeHarnessHostPiRequestBase64 validates and normalizes request payloads
       thinking_value: "medium",
       provider_id: "openai",
       model_id: "gpt-5.1",
-      selected_model: "hitechcloud_model_proxy/gpt-5.4",
+      selected_model: "holaboss_model_proxy/gpt-5.4",
       timeout_seconds: 30,
       runtime_api_base_url: "http://127.0.0.1:5060",
       system_prompt: "system",
@@ -153,7 +153,7 @@ test("decodeHarnessHostPiRequestBase64 validates and normalizes request payloads
     persisted_harness_session_id: undefined,
     provider_id: "openai",
     model_id: "gpt-5.1",
-    selected_model: "hitechcloud_model_proxy/gpt-5.4",
+    selected_model: "holaboss_model_proxy/gpt-5.4",
     timeout_seconds: 30,
     runtime_api_base_url: "http://127.0.0.1:5060",
     system_prompt: "system",

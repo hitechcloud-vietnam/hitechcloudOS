@@ -20,16 +20,16 @@ The root commands are exposed as `npm run ...`, but the repo shells out to `bun`
 
 ## What `desktop:dev` does before Electron starts
 
-The root wrapper runs `bun --filter=hitechcloud-local run dev`. Inside `apps/desktop/package.json`, `predev` does the heavy lifting:
+The root wrapper runs `bun --filter=holaboss-local run dev`. Inside `apps/desktop/package.json`, `predev` does the heavy lifting:
 
 ```bash
 npm run desktop:dev
-# root wrapper -> bun --filter=hitechcloud-local run dev
+# root wrapper -> bun --filter=holaboss-local run dev
 # apps/desktop predev validates env, rebuilds native modules, and refreshes the staged runtime bundle first
 ```
 
 - `node scripts/ensure-app-sdk.mjs`: makes sure the local app SDK is built before the renderer compiles against it
-- `node scripts/validate-dev-env.mjs`: fails early unless `apps/desktop/.env` or a legacy `desktop/.env` provides a control-plane URL such as `HITECHCLOUD_BACKEND_BASE_URL` or `HITECHCLOUD_PROACTIVE_URL`
+- `node scripts/validate-dev-env.mjs`: fails early unless `apps/desktop/.env` or a legacy `desktop/.env` provides a control-plane URL such as `HOLABOSS_BACKEND_BASE_URL` or `HOLABOSS_PROACTIVE_URL`
 - `kill-port 5173`: clears a stale Vite port
 - `npm run rebuild:native`: rebuilds native modules such as `better-sqlite3`
 - `node scripts/ensure-runtime-bundle.mjs`: checks that `apps/desktop/out/runtime-<platform>` exists and is fresh enough for the current `runtime/` source tree
@@ -82,18 +82,18 @@ Use the package-specific test commands when you are only touching one slice. Use
 
 ## Fast local checks
 
-- The embedded desktop runtime binds to `127.0.0.1:<derived-port>`. `apps/desktop/electron/main.ts` resolves that port from `HITECHCLOUD_RUNTIME_API_PORT` or, when unset, from a hash of the Electron `userData` path.
+- The embedded desktop runtime binds to `127.0.0.1:<derived-port>`. `apps/desktop/electron/main.ts` resolves that port from `HOLABOSS_RUNTIME_API_PORT` or, when unset, from a hash of the Electron `userData` path.
 - Port `5060` is explicitly rejected because Node's fetch stack treats it as blocked.
-- Set `HITECHCLOUD_RUNTIME_API_PORT` when you want a deterministic local health endpoint during debugging.
+- Set `HOLABOSS_RUNTIME_API_PORT` when you want a deterministic local health endpoint during debugging.
 - A packaged standalone runtime usually binds to `8080` unless you override `SANDBOX_AGENT_BIND_PORT`.
 - Running `runtime/api-server/dist/index.mjs` directly defaults to `3060` unless `SANDBOX_RUNTIME_API_PORT`, `SANDBOX_AGENT_BIND_PORT`, or `PORT` is set.
 - The staged runtime bundle should exist under `apps/desktop/out/runtime-<platform>` and include `package-metadata.json`, `runtime/metadata.json`, and `runtime/api-server/dist/index.mjs`.
-- The Electron user-data directory controls the embedded sandbox root and `runtime.log`. In dev, Electron resolves `HITECHCLOUD_DESKTOP_USER_DATA_PATH` first, then `HITECHCLOUD_DESKTOP_USER_DATA_DIR` from the shell or `apps/desktop/.env`, and otherwise falls back to `hitechcloud-local-dev`.
+- The Electron user-data directory controls the embedded sandbox root and `runtime.log`. In dev, Electron resolves `HOLABOSS_DESKTOP_USER_DATA_PATH` first, then `HOLABOSS_DESKTOP_USER_DATA_DIR` from the shell or `apps/desktop/.env`, and otherwise falls back to `holaboss-local-dev`.
 
 ```bash
-export HITECHCLOUD_RUNTIME_API_PORT=39160
+export HOLABOSS_RUNTIME_API_PORT=39160
 npm run desktop:dev
-curl http://127.0.0.1:${HITECHCLOUD_RUNTIME_API_PORT}/healthz
+curl http://127.0.0.1:${HOLABOSS_RUNTIME_API_PORT}/healthz
 bash apps/desktop/scripts/check-runtime-status.sh
 ```
 

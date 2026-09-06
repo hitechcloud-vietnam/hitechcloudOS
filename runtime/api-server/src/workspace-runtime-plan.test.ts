@@ -199,7 +199,7 @@ mcp:
   port: 3099
   path: /mcp
 env_contract:
-  - HITECHCLOUD_USER_ID
+  - HOLABOSS_USER_ID
 `
     }
   });
@@ -277,7 +277,7 @@ integrations:
       - gmail.readonly
     required: true
     credential_source: broker
-    hitechcloud_user_id_required: true
+    holaboss_user_id_required: true
 `
     }
   });
@@ -290,7 +290,7 @@ integrations:
       scopes: ["gmail.send", "gmail.readonly"],
       required: true,
       credentialSource: "broker",
-      hitechcloudUserIdRequired: true
+      holabossUserIdRequired: true
     }
   ]);
 });
@@ -304,9 +304,9 @@ mcp:
 integration:
   destination: google
   credential_source: platform
-  hitechcloud_user_id_required: true
+  holaboss_user_id_required: true
 env_contract:
-  - HITECHCLOUD_USER_ID
+  - HOLABOSS_USER_ID
 `,
     "gmail",
     "apps/gmail/app.runtime.yaml"
@@ -320,7 +320,7 @@ env_contract:
       scopes: [],
       required: true,
       credentialSource: "platform",
-      hitechcloudUserIdRequired: true
+      holabossUserIdRequired: true
     }
   ]);
 });
@@ -340,7 +340,7 @@ integrations:
       - gmail.readonly
     required: true
     credential_source: broker
-    hitechcloud_user_id_required: true
+    holaboss_user_id_required: true
 `,
     "gmail",
     "apps/gmail/app.runtime.yaml"
@@ -354,7 +354,7 @@ integrations:
       scopes: ["gmail.send", "gmail.readonly"],
       required: true,
       credentialSource: "broker",
-      hitechcloudUserIdRequired: true
+      holabossUserIdRequired: true
     }
   ]);
 });
@@ -531,7 +531,7 @@ mcp_registry:
     references: {}
   });
   assert.equal(plan.general_config.type, "single");
-  assert.equal(plan.general_config.agent.id, "hitechcloud");
+  assert.equal(plan.general_config.agent.id, "holaboss");
   assert.equal(plan.general_config.agent.model, "gpt-5.4");
 });
 

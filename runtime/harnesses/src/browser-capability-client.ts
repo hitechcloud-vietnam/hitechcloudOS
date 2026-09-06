@@ -41,22 +41,22 @@ export function browserCapabilityHeaders(
   const headers: Record<string, string> = {};
   const normalizedWorkspaceId = typeof workspaceId === "string" ? workspaceId.trim() : "";
   if (normalizedWorkspaceId) {
-    headers["x-hitechcloud-workspace-id"] = normalizedWorkspaceId;
+    headers["x-holaboss-workspace-id"] = normalizedWorkspaceId;
   }
   const normalizedSessionId = typeof sessionId === "string" ? sessionId.trim() : "";
   if (normalizedSessionId) {
-    headers["x-hitechcloud-session-id"] = normalizedSessionId;
+    headers["x-holaboss-session-id"] = normalizedSessionId;
   }
   const normalizedInputId = typeof inputId === "string" ? inputId.trim() : "";
   if (normalizedInputId) {
-    headers["x-hitechcloud-input-id"] = normalizedInputId;
+    headers["x-holaboss-input-id"] = normalizedInputId;
   }
   if (space === "agent") {
-    headers["x-hitechcloud-browser-space"] = space;
+    headers["x-holaboss-browser-space"] = space;
   }
   const normalizedProfileId = typeof browserProfileId === "string" ? browserProfileId.trim() : "";
   if (normalizedProfileId) {
-    headers["x-hitechcloud-browser-profile-id"] = normalizedProfileId;
+    headers["x-holaboss-browser-profile-id"] = normalizedProfileId;
   }
   return headers;
 }
@@ -109,8 +109,8 @@ export async function executeBrowserCapabilityTool(params: BrowserCapabilityClie
   });
   if (!response.ok) {
     const message = isRecord(response.payload)
-      ? String(response.payload.detail ?? response.payload.error ?? `Hitechcloud browser tool '${params.toolId}' failed.`)
-      : `Hitechcloud browser tool '${params.toolId}' failed.`;
+      ? String(response.payload.detail ?? response.payload.error ?? `Holaboss browser tool '${params.toolId}' failed.`)
+      : `Holaboss browser tool '${params.toolId}' failed.`;
     throw new Error(message);
   }
   const payloadRecord = isRecord(response.payload) ? response.payload : null;
@@ -190,7 +190,7 @@ export async function listBrowserCapabilityProfiles(
 
 /**
  * Open (launch) or close a profile's native browser window. The target profile
- * is carried in the x-hitechcloud-browser-profile-id header via `browserProfileId`.
+ * is carried in the x-holaboss-browser-profile-id header via `browserProfileId`.
  */
 async function postBrowserCapabilityProfileAction(
   action: "launch" | "close",

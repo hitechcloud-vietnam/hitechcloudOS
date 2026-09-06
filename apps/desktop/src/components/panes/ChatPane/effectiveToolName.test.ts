@@ -20,7 +20,7 @@ test("a directly-named tool keeps its name", () => {
 
 test("an mcp-prefixed name is still reduced to the bare tool", () => {
   assert.equal(
-    effectiveToolName({ tool_name: "mcp__hitechcloud__workspace_memory_write" }),
+    effectiveToolName({ tool_name: "mcp__holaboss__workspace_memory_write" }),
     "workspace_memory_write",
   );
 });
@@ -32,12 +32,12 @@ test("a call_tool wrapper resolves to the tool it dispatched", () => {
       phase: "completed",
       tool_name: "call_tool",
       tool_args: {
-        name: "hitechcloud_workspace_integrations_propose_connect",
+        name: "holaboss_workspace_integrations_propose_connect",
         arguments: { provider_id: "notion", toolkit_slug: "notion" },
       },
       error: false,
     }),
-    "hitechcloud_workspace_integrations_propose_connect",
+    "holaboss_workspace_integrations_propose_connect",
   );
 });
 
@@ -45,7 +45,7 @@ test("a wrapper around an mcp-prefixed tool reduces both layers", () => {
   assert.equal(
     effectiveToolName({
       tool_name: "call_tool",
-      tool_args: { name: "mcp__hitechcloud__some_tool" },
+      tool_args: { name: "mcp__holaboss__some_tool" },
     }),
     "some_tool",
   );

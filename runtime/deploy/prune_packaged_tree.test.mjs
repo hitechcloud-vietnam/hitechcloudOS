@@ -152,7 +152,7 @@ test("prunePackagedTree removes dangling symlinks left behind by file pruning", 
     "runtime",
     "api-server",
     "node_modules",
-    "@hitechcloud",
+    "@holaboss",
     "runtime-state-store",
     "dist",
   );

@@ -48,9 +48,9 @@ afterEach(() => {
 
 describe("getIntegrationStatus", () => {
   test("parses workspace + app from grant and calls /readiness", async () => {
-    setEnv("HITECHCLOUD_APP_GRANT", "grant:workspace-1:gmail:abc:nonce:sig")
+    setEnv("HOLABOSS_APP_GRANT", "grant:workspace-1:gmail:abc:nonce:sig")
     setEnv("WORKSPACE_API_URL", "http://runtime.local/api/v1")
-    setEnv("HITECHCLOUD_INTEGRATION_BROKER_URL", undefined)
+    setEnv("HOLABOSS_INTEGRATION_BROKER_URL", undefined)
 
     scripted.push({ status: 200, body: { ready: true, issues: [] } })
 
@@ -64,9 +64,9 @@ describe("getIntegrationStatus", () => {
   })
 
   test("falls back to broker URL when WORKSPACE_API_URL is unset", async () => {
-    setEnv("HITECHCLOUD_APP_GRANT", "grant:workspace-1:gmail:abc:nonce:sig")
+    setEnv("HOLABOSS_APP_GRANT", "grant:workspace-1:gmail:abc:nonce:sig")
     setEnv("WORKSPACE_API_URL", undefined)
-    setEnv("HITECHCLOUD_INTEGRATION_BROKER_URL", "http://127.0.0.1:8080/api/v1/integrations")
+    setEnv("HOLABOSS_INTEGRATION_BROKER_URL", "http://127.0.0.1:8080/api/v1/integrations")
 
     scripted.push({ status: 200, body: { ready: true, issues: [] } })
 
@@ -78,7 +78,7 @@ describe("getIntegrationStatus", () => {
   })
 
   test("surfaces typed issues and marks ready=false", async () => {
-    setEnv("HITECHCLOUD_APP_GRANT", "grant:workspace-1:dash:abc:nonce:sig")
+    setEnv("HOLABOSS_APP_GRANT", "grant:workspace-1:dash:abc:nonce:sig")
     setEnv("WORKSPACE_API_URL", "http://runtime.local")
 
     scripted.push({
@@ -105,7 +105,7 @@ describe("getIntegrationStatus", () => {
   })
 
   test("provider filter narrows result + collapses ready when no matching issue", async () => {
-    setEnv("HITECHCLOUD_APP_GRANT", "grant:workspace-1:dash:abc:nonce:sig")
+    setEnv("HOLABOSS_APP_GRANT", "grant:workspace-1:dash:abc:nonce:sig")
     setEnv("WORKSPACE_API_URL", "http://runtime.local")
 
     scripted.push({
@@ -133,7 +133,7 @@ describe("getIntegrationStatus", () => {
   })
 
   test("provider filter retains the matching issue", async () => {
-    setEnv("HITECHCLOUD_APP_GRANT", "grant:workspace-1:dash:abc:nonce:sig")
+    setEnv("HOLABOSS_APP_GRANT", "grant:workspace-1:dash:abc:nonce:sig")
     setEnv("WORKSPACE_API_URL", "http://runtime.local")
 
     scripted.push({
@@ -162,8 +162,8 @@ describe("getIntegrationStatus", () => {
   })
 
   test("throws clearly when neither grant nor explicit ids are available", async () => {
-    setEnv("HITECHCLOUD_APP_GRANT", undefined)
-    setEnv("HITECHCLOUD_WORKSPACE_ID", undefined)
+    setEnv("HOLABOSS_APP_GRANT", undefined)
+    setEnv("HOLABOSS_WORKSPACE_ID", undefined)
     setEnv("WORKSPACE_API_URL", "http://runtime.local")
 
     await expect(getIntegrationStatus({ fetchImpl: scriptedFetch })).rejects.toThrow(
@@ -172,9 +172,9 @@ describe("getIntegrationStatus", () => {
   })
 
   test("throws when neither WORKSPACE_API_URL nor broker URL are set", async () => {
-    setEnv("HITECHCLOUD_APP_GRANT", "grant:workspace-1:dash:abc:nonce:sig")
+    setEnv("HOLABOSS_APP_GRANT", "grant:workspace-1:dash:abc:nonce:sig")
     setEnv("WORKSPACE_API_URL", undefined)
-    setEnv("HITECHCLOUD_INTEGRATION_BROKER_URL", undefined)
+    setEnv("HOLABOSS_INTEGRATION_BROKER_URL", undefined)
 
     await expect(getIntegrationStatus({ fetchImpl: scriptedFetch })).rejects.toThrow(
       /no runtime API base URL/,
@@ -182,7 +182,7 @@ describe("getIntegrationStatus", () => {
   })
 
   test("unknown readiness codes coerce to integration_not_connected", async () => {
-    setEnv("HITECHCLOUD_APP_GRANT", "grant:workspace-1:dash:abc:nonce:sig")
+    setEnv("HOLABOSS_APP_GRANT", "grant:workspace-1:dash:abc:nonce:sig")
     setEnv("WORKSPACE_API_URL", "http://runtime.local")
 
     scripted.push({

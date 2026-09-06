@@ -1,12 +1,12 @@
 // Composio direct transport — talks to Composio's REST API without going
-// through any Hitechcloud backend (no Hono, no cookie, no runtime, no grant).
+// through any Holaboss backend (no Hono, no cookie, no runtime, no grant).
 //
 // Use this when you hold the Composio API key directly (single-tenant deploy,
 // E2E test scripts, local development). For multi-tenant production where
 // Composio API key must NOT be exposed to the caller, use a different
 // transport that brokers through your backend.
 //
-// Auth: COMPOSIO_API_KEY header (your Hitechcloud-deployment key).
+// Auth: COMPOSIO_API_KEY header (your Holaboss-deployment key).
 // Identity: connected_account_id (per-provider, per-user, set up via OAuth flow).
 
 import type { TransportFn } from "../bridge.ts"

@@ -34,7 +34,7 @@ export interface RunnerOutputEvent {
 export type RunnerOutputEventPayload = RunnerOutputEvent;
 
 export interface RunnerRequest {
-  hitechcloud_user_id?: string | null;
+  holaboss_user_id?: string | null;
   workspace_id: string;
   session_id: string;
   session_kind?: string | null;
@@ -384,7 +384,7 @@ export function decodeRunnerRequestBase64(encoded: string): RunnerRequest {
     throw new Error("runner request payload must be an object");
   }
   return {
-    hitechcloud_user_id: optionalString(parsed.hitechcloud_user_id),
+    holaboss_user_id: optionalString(parsed.holaboss_user_id),
     workspace_id: requiredString(parsed.workspace_id, "workspace_id"),
     session_id: requiredString(parsed.session_id, "session_id"),
     session_kind: optionalString(parsed.session_kind),

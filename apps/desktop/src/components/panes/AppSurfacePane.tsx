@@ -184,7 +184,7 @@ export function AppSurfacePane({
   );
 
   // Re-check integration connections when the user returns to the window or
-  // this tab becomes visible again. OAuth flows leave Hitechcloud to the browser
+  // this tab becomes visible again. OAuth flows leave Holaboss to the browser
   // and come back, so window-focus is a natural trigger to pick up newly
   // connected accounts without making the user click Reload.
   const lastFocusRefetchRef = useRef(0);

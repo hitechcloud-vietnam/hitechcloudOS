@@ -13,7 +13,7 @@ import {
 	type InstallStatusEventPayload,
 	type OpenAppEventPayload,
 	type ShareDraft,
-} from "@hitechcloud/app-host/protocol";
+} from "@holaboss/app-host/protocol";
 import { contextBridge, ipcRenderer } from "electron";
 import type { OnboardingAlignmentReport } from "../../../shared/onboarding-contract.js";
 import {
@@ -932,7 +932,7 @@ interface CancelQueuedSessionInputResponsePayload {
 	updated_at: string;
 }
 
-interface HitechcloudClientConfigPayload {
+interface HolabossClientConfigPayload {
 	projectsUrl: string;
 	marketplaceUrl: string;
 }
@@ -981,8 +981,8 @@ interface DesktopBillingLinksPayload {
 	usageUrl: string;
 }
 
-interface HitechcloudCreateWorkspacePayload {
-	hitechcloud_user_id: string;
+interface HolabossCreateWorkspacePayload {
+	holaboss_user_id: string;
 	harness?: string | null;
 	name: string;
 	template_mode?: "template" | "empty" | "empty_onboarding" | null;
@@ -1006,7 +1006,7 @@ interface WorkspaceRuntimeFolderSelectionPayload {
 	rootPath: string | null;
 }
 
-interface HitechcloudQueueSessionInputPayload {
+interface HolabossQueueSessionInputPayload {
 	text: string;
 	/** Ambient open-app context for the AGENT only — folded into the turn
 	 * instruction by the runtime, never persisted as the user message. */
@@ -1023,22 +1023,22 @@ interface HitechcloudQueueSessionInputPayload {
 	app_id?: string | null;
 }
 
-interface HitechcloudPauseSessionRunPayload {
+interface HolabossPauseSessionRunPayload {
 	workspace_id: string;
 	session_id: string;
 }
 
-interface HitechcloudAnswerUserQuestionAnswer {
+interface HolabossAnswerUserQuestionAnswer {
 	question_id: string;
 	option_id?: string | null;
 	response_text?: string | null;
 	notes?: string | null;
 }
 
-interface HitechcloudAnswerUserQuestionPayload {
+interface HolabossAnswerUserQuestionPayload {
 	workspace_id: string;
 	session_id: string;
-	answers: HitechcloudAnswerUserQuestionAnswer[];
+	answers: HolabossAnswerUserQuestionAnswer[];
 	model?: string | null;
 	thinking_value?: string | null;
 }
@@ -1051,20 +1051,20 @@ interface AnswerUserQuestionResponsePayload {
 	status?: string;
 }
 
-interface HitechcloudUpdateQueuedSessionInputPayload {
+interface HolabossUpdateQueuedSessionInputPayload {
 	workspace_id: string;
 	session_id: string;
 	input_id: string;
 	text: string;
 }
 
-interface HitechcloudCancelQueuedSessionInputPayload {
+interface HolabossCancelQueuedSessionInputPayload {
 	workspace_id: string;
 	session_id: string;
 	input_id: string;
 }
 
-interface HitechcloudStreamSessionOutputsPayload {
+interface HolabossStreamSessionOutputsPayload {
 	sessionId: string;
 	workspaceId?: string | null;
 	inputId?: string | null;
@@ -1072,7 +1072,7 @@ interface HitechcloudStreamSessionOutputsPayload {
 	stopOnTerminal?: boolean;
 }
 
-interface HitechcloudSessionStreamHandlePayload {
+interface HolabossSessionStreamHandlePayload {
 	streamId: string;
 }
 
@@ -1107,7 +1107,7 @@ interface WorkspaceLifecyclePayload {
 	blocking_apps: WorkspaceLifecycleBlockingAppPayload[];
 }
 
-interface HitechcloudSessionStreamEventPayload {
+interface HolabossSessionStreamEventPayload {
 	streamId: string;
 	type: "event" | "error" | "done";
 	event?: {
@@ -1126,7 +1126,7 @@ interface HolaEmployeeSummaryPayload {
 	mandate?: string;
 	model?: string;
 	connectorCount?: number;
-	/** The permanent preset "Hola" employee (Hitechcloud brand mark; not archivable). */
+	/** The permanent preset "Hola" employee (Holaboss brand mark; not archivable). */
 	preset?: boolean;
 	/** The caller's latest conversation with this employee (roster preview). */
 	lastActivityAt?: string | null;
@@ -1155,7 +1155,7 @@ interface HolaEmployeeEquipmentPayload {
 	integrations: { slug: string; name: string }[];
 }
 
-interface HitechcloudSessionStreamDebugEntry {
+interface HolabossSessionStreamDebugEntry {
 	at: string;
 	streamId: string;
 	phase: string;
@@ -1962,7 +1962,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 		install: (config: {
 			id: string;
 			mcpUrl: string;
-			hitechcloudHosted: boolean;
+			holabossHosted: boolean;
 			headerKeys: Record<string, string>;
 			queryKeys: Record<string, string>;
 			envKeys: Record<string, string>;
@@ -1973,7 +1973,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 		attachAppOwned: (config: {
 			id: string;
 			mcpUrl: string;
-			hitechcloudHosted: boolean;
+			holabossHosted: boolean;
 			headerKeys: Record<string, string>;
 			queryKeys: Record<string, string>;
 			envKeys: Record<string, string>;
@@ -1990,7 +1990,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 			configs: {
 				id: string;
 				mcpUrl: string;
-				hitechcloudHosted: boolean;
+				holabossHosted: boolean;
 				headerKeys: Record<string, string>;
 				queryKeys: Record<string, string>;
 				envKeys: Record<string, string>;
@@ -2004,7 +2004,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 			configs: {
 				id: string;
 				mcpUrl: string;
-				hitechcloudHosted: boolean;
+				holabossHosted: boolean;
 				headerKeys: Record<string, string>;
 				queryKeys: Record<string, string>;
 				envKeys: Record<string, string>;
@@ -2018,7 +2018,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 			) as Promise<void>,
 	},
 	// Shell-side receiver for the host bridge: main emits HOST_RENDERER_EVENT
-	// after a hosted HolaApp page calls window.__hitechcloudHost.chat.start, having
+	// after a hosted HolaApp page calls window.__holabossHost.chat.start, having
 	// already created the session. The shell opens it + prefills the composer.
 	host: {
 		onOpenChat: (
@@ -2100,7 +2100,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 		getClientConfig: () =>
 			ipcRenderer.invoke(
 				"workspace:getClientConfig",
-			) as Promise<HitechcloudClientConfigPayload>,
+			) as Promise<HolabossClientConfigPayload>,
 		pickTemplateFolder: () =>
 			ipcRenderer.invoke(
 				"workspace:pickTemplateFolder",
@@ -2477,40 +2477,40 @@ contextBridge.exposeInMainWorld("electronAPI", {
 				"workspace:stageSessionAttachmentPaths",
 				payload,
 			) as Promise<StageSessionAttachmentsResponsePayload>,
-		queueSessionInput: (payload: HitechcloudQueueSessionInputPayload) =>
+		queueSessionInput: (payload: HolabossQueueSessionInputPayload) =>
 			ipcRenderer.invoke(
 				"workspace:queueSessionInput",
 				payload,
 			) as Promise<EnqueueSessionInputResponsePayload>,
-		pauseSessionRun: (payload: HitechcloudPauseSessionRunPayload) =>
+		pauseSessionRun: (payload: HolabossPauseSessionRunPayload) =>
 			ipcRenderer.invoke(
 				"workspace:pauseSessionRun",
 				payload,
 			) as Promise<PauseSessionRunResponsePayload>,
-		answerUserQuestion: (payload: HitechcloudAnswerUserQuestionPayload) =>
+		answerUserQuestion: (payload: HolabossAnswerUserQuestionPayload) =>
 			ipcRenderer.invoke(
 				"workspace:answerUserQuestion",
 				payload,
 			) as Promise<AnswerUserQuestionResponsePayload>,
 		updateQueuedSessionInput: (
-			payload: HitechcloudUpdateQueuedSessionInputPayload,
+			payload: HolabossUpdateQueuedSessionInputPayload,
 		) =>
 			ipcRenderer.invoke(
 				"workspace:updateQueuedSessionInput",
 				payload,
 			) as Promise<UpdateQueuedSessionInputResponsePayload>,
 		cancelQueuedSessionInput: (
-			payload: HitechcloudCancelQueuedSessionInputPayload,
+			payload: HolabossCancelQueuedSessionInputPayload,
 		) =>
 			ipcRenderer.invoke(
 				"workspace:cancelQueuedSessionInput",
 				payload,
 			) as Promise<CancelQueuedSessionInputResponsePayload>,
-		openSessionOutputStream: (payload: HitechcloudStreamSessionOutputsPayload) =>
+		openSessionOutputStream: (payload: HolabossStreamSessionOutputsPayload) =>
 			ipcRenderer.invoke(
 				"workspace:openSessionOutputStream",
 				payload,
-			) as Promise<HitechcloudSessionStreamHandlePayload>,
+			) as Promise<HolabossSessionStreamHandlePayload>,
 		closeSessionOutputStream: (streamId: string, reason?: string) =>
 			ipcRenderer.invoke(
 				"workspace:closeSessionOutputStream",
@@ -2519,7 +2519,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 			) as Promise<void>,
 		getSessionStreamDebug: () =>
 			ipcRenderer.invoke("workspace:getSessionStreamDebug") as Promise<
-				HitechcloudSessionStreamDebugEntry[]
+				HolabossSessionStreamDebugEntry[]
 			>,
 		isVerboseTelemetryEnabled: () =>
 			ipcRenderer.invoke(
@@ -2795,7 +2795,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 				"workspace:composioMcpEnsureRunning",
 				workspaceId,
 			) as Promise<unknown>,
-		resolveTemplateIntegrations: (payload: HitechcloudCreateWorkspacePayload) =>
+		resolveTemplateIntegrations: (payload: HolabossCreateWorkspacePayload) =>
 			ipcRenderer.invoke(
 				"workspace:resolveTemplateIntegrations",
 				payload,
@@ -2876,11 +2876,11 @@ contextBridge.exposeInMainWorld("electronAPI", {
 				context,
 			) as Promise<void>,
 		onSessionStreamEvent: (
-			listener: (payload: HitechcloudSessionStreamEventPayload) => void,
+			listener: (payload: HolabossSessionStreamEventPayload) => void,
 		) => {
 			const wrapped = (
 				_event: Electron.IpcRendererEvent,
-				payload: HitechcloudSessionStreamEventPayload,
+				payload: HolabossSessionStreamEventPayload,
 			) => listener(payload);
 			ipcRenderer.on("workspace:sessionStream", wrapped);
 			return () =>
@@ -2916,18 +2916,18 @@ contextBridge.exposeInMainWorld("electronAPI", {
 			ipcRenderer.invoke(
 				"holaemployee:openChatStream",
 				payload,
-			) as Promise<HitechcloudSessionStreamHandlePayload>,
+			) as Promise<HolabossSessionStreamHandlePayload>,
 		closeChatStream: (streamId: string) =>
 			ipcRenderer.invoke(
 				"holaemployee:closeChatStream",
 				streamId,
 			) as Promise<void>,
 		onChatStreamEvent: (
-			listener: (payload: HitechcloudSessionStreamEventPayload) => void,
+			listener: (payload: HolabossSessionStreamEventPayload) => void,
 		) => {
 			const wrapped = (
 				_event: Electron.IpcRendererEvent,
-				payload: HitechcloudSessionStreamEventPayload,
+				payload: HolabossSessionStreamEventPayload,
 			) => listener(payload);
 			ipcRenderer.on("holaemployee:chatStream", wrapped);
 			return () =>
@@ -2937,7 +2937,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 	auth: {
 		getUser: () =>
 			ipcRenderer.invoke("auth:getUser") as Promise<AuthUserPayload | null>,
-		// Renderer-direct BFF clients (e.g. @hitechcloud/app-sdk in renderer,
+		// Renderer-direct BFF clients (e.g. @holaboss/app-sdk in renderer,
 		// billing RPC) reach the BFF via the bff:fetch bridge below — the
 		// raw cookie stays in main. These two accessors expose only the host
 		// URL the renderer should target.
@@ -2950,7 +2950,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 		requestAuth: () => ipcRenderer.invoke("auth:requestAuth") as Promise<void>,
 		signOut: () => ipcRenderer.invoke("auth:signOut") as Promise<void>,
 		// Organization (tenant) context. Switching the active org re-scopes every
-		// backend call (the gateway injects x-hitechcloud-org-id from the session).
+		// backend call (the gateway injects x-holaboss-org-id from the session).
 		listOrganizations: () =>
 			ipcRenderer.invoke("auth:listOrganizations") as Promise<
 				DesktopOrganizationPayload[]

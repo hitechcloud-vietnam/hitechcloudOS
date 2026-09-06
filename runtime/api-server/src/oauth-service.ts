@@ -1,6 +1,6 @@
 import { createServer, type Server } from "node:http";
 import { randomBytes, createHash, randomUUID } from "node:crypto";
-import { type RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import { type RuntimeStateStore } from "@holaboss/runtime-state-store";
 import { invalidateComposioInlineToolCache } from "./composio-cache-invalidation.js";
 
 export class OAuthService {
@@ -59,7 +59,7 @@ export class OAuthService {
           server.close(); return;
         }
         res.writeHead(200, { "Content-Type": "text/html" });
-        res.end("<html><body><h2>Connected!</h2><p>You can close this window and return to Hitechcloud.</p></body></html>");
+        res.end("<html><body><h2>Connected!</h2><p>You can close this window and return to Holaboss.</p></body></html>");
         resolve(code);
         server.close();
       });

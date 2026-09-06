@@ -51,7 +51,7 @@ test("pi harness enables browser tools for every session kind except onboarding"
     browserSpace: "agent",
     request: {
       ...baseParams.request,
-      model: "hitechcloud_model_proxy/gpt-5.4",
+      model: "holaboss_model_proxy/gpt-5.4",
       session_kind: "subagent",
       context: { workflow_owned_subagent: true },
     },
@@ -81,7 +81,7 @@ test("pi harness enables browser tools for every session kind except onboarding"
   assert.equal(workspaceRequest.browser_space, "agent");
   assert.equal(onboardingRequest.browser_tools_enabled, false);
   assert.equal(onboardingRequest.browser_space, null);
-  assert.equal(subagentRequest.selected_model, "hitechcloud_model_proxy/gpt-5.4");
+  assert.equal(subagentRequest.selected_model, "holaboss_model_proxy/gpt-5.4");
   assert.equal(workspaceRequest.selected_model, null);
   assert.equal(onboardingRequest.selected_model, null);
   assert.equal(subagentRequest.workflow_owned_subagent, true);

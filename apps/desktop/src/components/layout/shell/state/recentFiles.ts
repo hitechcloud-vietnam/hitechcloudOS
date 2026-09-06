@@ -19,7 +19,7 @@ export type RecentFile = {
 };
 
 export const recentFilesAtom = atomWithStorage<RecentFile[]>(
-  "hitechcloud-new-shell-recent-files-v1",
+  "holaboss-new-shell-recent-files-v1",
   [],
 );
 

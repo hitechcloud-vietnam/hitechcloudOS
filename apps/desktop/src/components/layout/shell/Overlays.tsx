@@ -27,7 +27,7 @@ export function Overlays() {
   );
 }
 
-// Web deep link (ai.hitechcloud.app://open-app?appId=…) → main forwards it here;
+// Web deep link (ai.holaboss.app://open-app?appId=…) → main forwards it here;
 // open the app surface via the normal useOpenHolaApp() flow. Title falls back to
 // the appId — the web surface renders its own branding once loaded.
 function DeepLinkAppOpener() {

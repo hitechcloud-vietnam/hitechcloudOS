@@ -5,7 +5,7 @@
 # DMG and zip are built as separate electron-builder passes to work around a
 # packing bug that stripped the Electron Framework main binary from the DMG
 # when both targets were packed in a single `--mac dmg zip` call (shipped on
-# hitechcloudOS-2026.608.2, see commit history).
+# holaOS-2026.608.2, see commit history).
 #
 # The split has a manifest race: the zip pass writes the `*-mac.yml` updater
 # manifests with the zip in `files:` and the dmg pass overwrites them with a

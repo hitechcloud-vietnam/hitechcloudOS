@@ -182,7 +182,7 @@ export class FeishuConnector implements ChannelConnector {
       appSecret: this.#appSecret,
       transport: "websocket",
       domain: this.#domain === "lark" ? lark.Domain.Lark : lark.Domain.Feishu,
-      source: "hitechcloudos",
+      source: "holaos",
       handshakeTimeoutMs: 20000,
     });
     channel.on("message", (msg) => this.#onMessage(msg));

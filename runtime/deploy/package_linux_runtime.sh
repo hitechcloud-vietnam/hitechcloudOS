@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RUNTIME_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 REPO_ROOT="$(cd "${RUNTIME_ROOT}/.." && pwd)"
 OUTPUT_ROOT="${1:-${REPO_ROOT}/out/runtime-linux}"
-STAGING_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/hitechcloud-runtime-linux.XXXXXX")"
+STAGING_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/holaboss-runtime-linux.XXXXXX")"
 
 cleanup() {
   rm -rf "${STAGING_ROOT}"
@@ -41,7 +41,7 @@ NODE_RUNTIME_DIR="${OUTPUT_ROOT}/node-runtime"
 PYTHON_RUNTIME_DIR="${OUTPUT_ROOT}/python-runtime"
 BIN_DIR="${OUTPUT_ROOT}/bin"
 PACKAGE_METADATA_PATH="${OUTPUT_ROOT}/package-metadata.json"
-SKIP_NODE_DEPS="${HITECHCLOUD_SKIP_NODE_DEPS:-0}"
+SKIP_NODE_DEPS="${HOLABOSS_SKIP_NODE_DEPS:-0}"
 BUILD_NODE_RUNTIME_DIR="${STAGING_ROOT}/build-node-runtime"
 BUILD_NODE_BIN="${BUILD_NODE_RUNTIME_DIR}/node_modules/node/bin/node"
 LOCAL_NODE_BIN="${NODE_RUNTIME_DIR}/node_modules/node/bin/node"
@@ -49,16 +49,16 @@ LOCAL_NPM_BIN="${NODE_RUNTIME_DIR}/node_modules/.bin/npm"
 LOCAL_PYTHON_BIN="${PYTHON_RUNTIME_DIR}/bin/python"
 
 DEFAULT_RUNTIME_NODE_VERSION="24.14.1"
-NODE_VERSION="${HITECHCLOUD_RUNTIME_NODE_VERSION:-${DEFAULT_RUNTIME_NODE_VERSION}}"
+NODE_VERSION="${HOLABOSS_RUNTIME_NODE_VERSION:-${DEFAULT_RUNTIME_NODE_VERSION}}"
 
-NPM_VERSION="${HITECHCLOUD_RUNTIME_NPM_VERSION:-}"
+NPM_VERSION="${HOLABOSS_RUNTIME_NPM_VERSION:-}"
 if [ -z "${NPM_VERSION}" ]; then
   require_cmd npm
   NPM_VERSION="$(npm --version)"
 fi
 
-PYTHON_VERSION="${HITECHCLOUD_RUNTIME_PYTHON_VERSION:-3.12.13}"
-PYTHON_ARCH_RAW="${HITECHCLOUD_RUNTIME_PYTHON_ARCH:-$(uname -m)}"
+PYTHON_VERSION="${HOLABOSS_RUNTIME_PYTHON_VERSION:-3.12.13}"
+PYTHON_ARCH_RAW="${HOLABOSS_RUNTIME_PYTHON_ARCH:-$(uname -m)}"
 case "${PYTHON_ARCH_RAW}" in
   x64|amd64|x86_64)
     PYTHON_TARGET="x86_64-unknown-linux-gnu"
@@ -131,15 +131,15 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUNDLE_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-TOOLCHAIN_ROOT="${HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT:-${BUNDLE_ROOT}}"
+TOOLCHAIN_ROOT="${HOLABOSS_RUNTIME_TOOLCHAIN_ROOT:-${BUNDLE_ROOT}}"
 BUNDLED_NODE_BIN="${TOOLCHAIN_ROOT}/node-runtime/node_modules/node/bin/node"
 
-export HITECHCLOUD_RUNTIME_APP_ROOT="${BUNDLE_ROOT}/runtime"
-export HITECHCLOUD_RUNTIME_ROOT="${BUNDLE_ROOT}/runtime"
-export HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT="${TOOLCHAIN_ROOT}"
+export HOLABOSS_RUNTIME_APP_ROOT="${BUNDLE_ROOT}/runtime"
+export HOLABOSS_RUNTIME_ROOT="${BUNDLE_ROOT}/runtime"
+export HOLABOSS_RUNTIME_TOOLCHAIN_ROOT="${TOOLCHAIN_ROOT}"
 export PATH="${TOOLCHAIN_ROOT}/python-runtime/bin:${TOOLCHAIN_ROOT}/python-runtime/python/bin:${TOOLCHAIN_ROOT}/node-runtime/node_modules/node/bin:${TOOLCHAIN_ROOT}/node-runtime/node_modules/.bin:${PATH}"
 if [ -x "${BUNDLED_NODE_BIN}" ]; then
-  export HITECHCLOUD_RUNTIME_NODE_BIN="${BUNDLED_NODE_BIN}"
+  export HOLABOSS_RUNTIME_NODE_BIN="${BUNDLED_NODE_BIN}"
 fi
 
 exec "${BUNDLE_ROOT}/runtime/bootstrap/linux.sh" "$@"

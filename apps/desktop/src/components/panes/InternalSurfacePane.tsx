@@ -20,7 +20,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { MarkdownEditor } from "@hitechcloud/editor";
+import { MarkdownEditor } from "@holaboss/editor";
 import { PresentationPreview } from "@/components/panes/PresentationPreview";
 import { useWorkspaceSelection } from "@/lib/workspaceSelection";
 
@@ -540,7 +540,7 @@ export function InternalSurfacePane({
       return (
         <EmptyState
           title="Event detail"
-          detail="This output remains inside hitechcloudOS and does not resolve to a file-backed preview."
+          detail="This output remains inside holaOS and does not resolve to a file-backed preview."
         />
       );
     }

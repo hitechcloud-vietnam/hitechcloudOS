@@ -653,7 +653,7 @@ function ShellMainArea({
         ) : workspaceOverlay === "rewards" ? (
           <RewardsPane />
         ) : workspaceOverlay === "holahub" ? (
-          // HolaHub is a hosted web surface on its own subdomain (hub.hitechcloud.vn /
+          // HolaHub is a hosted web surface on its own subdomain (hub.holaos.ai /
           // hub.imerchstaging.com — the main process routes the "holahub" surface
           // to HUB_APP_BASE_URL). As a workspace overlay it takes the whole main
           // area (sidebar kept, no chat panel) — like Customize/Browsers —

@@ -47,7 +47,7 @@ export function runtimeStatusVisual(status: RuntimeStatus | undefined): StatusVi
         dotVariant: "destructive",
         dotPulse: false,
         label: "Runtime error",
-        description: "hitechcloudOS couldn't reach the local runtime.",
+        description: "holaOS couldn't reach the local runtime.",
         recoverable: true,
       };
     case "missing":
@@ -56,7 +56,7 @@ export function runtimeStatusVisual(status: RuntimeStatus | undefined): StatusVi
         dotPulse: false,
         label: "Runtime missing",
         description:
-          "Some files hitechcloudOS needs aren't in place. Try restarting; reinstall if it keeps failing.",
+          "Some files holaOS needs aren't in place. Try restarting; reinstall if it keeps failing.",
         recoverable: true,
       };
     case "stopped":

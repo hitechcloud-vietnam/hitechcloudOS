@@ -1,4 +1,4 @@
-import type { ShareDraftSessionTurn } from "@hitechcloud/app-host/protocol";
+import type { ShareDraftSessionTurn } from "@holaboss/app-host/protocol";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useMemo, useState } from "react";
 import { fileNameFromPath } from "@/components/layout/shell/state/internalTabs";

@@ -37,7 +37,7 @@ const GLOBAL_IGNORE_DIR_NAMES = new Set([
   ".cache",
   ".turbo",
   "coverage",
-  ".hitechcloud",
+  ".holaboss",
 ]);
 
 /** Glob-style patterns matched against the full relative path (forward-slash separated). */

@@ -67,9 +67,9 @@ The session artifacts endpoint remains the canonical write API for turn-bound ap
 
 The runtime must propagate active execution context from the claimed input executor into every module-app MCP request:
 
-- `X-Hitechcloud-Workspace-Id`
-- `X-Hitechcloud-Session-Id`
-- `X-Hitechcloud-Input-Id`
+- `X-Holaboss-Workspace-Id`
+- `X-Holaboss-Session-Id`
+- `X-Holaboss-Input-Id`
 
 This turns session artifact publishing into a capability the app can use without bespoke plumbing.
 
@@ -84,7 +84,7 @@ This helper should:
 - require session scope for chat artifacts
 - call the session artifacts endpoint
 - normalize request shape
-- no-op in local dev when Hitechcloud workspace context is absent
+- no-op in local dev when Holaboss workspace context is absent
 
 App authors should not choose between `/outputs` and `/artifacts` for draft tools. The SDK should choose the correct path.
 

@@ -1,11 +1,11 @@
 ---
 title: Environment Engineering
-description: The core technical thesis behind hitechcloudOS — long-horizon agent systems need environment engineering as well as harness engineering.
+description: The core technical thesis behind holaOS — long-horizon agent systems need environment engineering as well as harness engineering.
 ---
 
-This page explains the core technical thesis behind `hitechcloudOS`: long-horizon agent systems need environment engineering as well as harness engineering.
+This page explains the core technical thesis behind `holaOS`: long-horizon agent systems need environment engineering as well as harness engineering.
 
-In many agent systems, the word "harness" is used broadly. It often refers to the whole execution and control layer around an agent: tools, permissions, context handling, retries, approvals, streaming, and stop rules. `hitechcloudOS` agrees that this layer matters. Its stronger claim is that some of those responsibilities should be pulled into a durable environment contract rather than left implicit inside one swappable execution runtime.
+In many agent systems, the word "harness" is used broadly. It often refers to the whole execution and control layer around an agent: tools, permissions, context handling, retries, approvals, streaming, and stop rules. `holaOS` agrees that this layer matters. Its stronger claim is that some of those responsibilities should be pulled into a durable environment contract rather than left implicit inside one swappable execution runtime.
 
 The key distinction is not between easy tasks and hard tasks. A strong harness can support very capable task execution. The more important distinction is between a task and a role. A task is bounded work with a local objective and a stopping point. A role is an ongoing operating responsibility across many tasks, runs, and changing context. Roles are therefore inherently long-horizon: the system has to remain coherent, retain what it learns, and improve over time. A harness can help an agent execute a task well. An environment helps a system sustain a role across runs. That is why long-horizon agent systems need environment engineering as well as harness engineering.
 
@@ -13,7 +13,7 @@ The key distinction is not between easy tasks and hard tasks. A strong harness c
 
 ## Harnesses and environments are different layers
 
-In `hitechcloudOS`, the harness is the execution subsystem for a run. A large part of its job is context management: deciding what state becomes active for a given step, what stays out of the prompt, what tools are visible, and how the loop continues. The environment is the durable operating context around that subsystem.
+In `holaOS`, the harness is the execution subsystem for a run. A large part of its job is context management: deciding what state becomes active for a given step, what stays out of the prompt, what tools are visible, and how the loop continues. The environment is the durable operating context around that subsystem.
 
 That split is the point of this page:
 
@@ -42,7 +42,7 @@ Harnesses can implement the mechanics of a run extremely well. They should not b
 
 You can test the idea with one question: if you replaced the harness tomorrow, what should still remain true?
 
-![Harness-swap test diagram showing the harness changing while cold context, warm context, capability rules, and outputs remain stable.](/images/hitechcloudos/harness-swap.png)
+![Harness-swap test diagram showing the harness changing while cold context, warm context, capability rules, and outputs remain stable.](/images/holaos/harness-swap.png)
 
 *Harness-swap test: the harness can change while the broader environment remains stable.*
 
@@ -58,7 +58,7 @@ This is why memory should not be treated as synonymous with context. Most memory
 
 It also clarifies the harness. In large part, the harness is a context compiler operating against a larger environment: it selects from warm and cold state, builds the hot context for the current step, exposes the allowed action surface, and manages the control loop around that step.
 
-In `hitechcloudOS`, these things should still hold:
+In `holaOS`, these things should still hold:
 
 - the workspace contract and authored structure as durable cold context
 - memory and continuity surfaces as warm and cold context that survive across runs
@@ -71,7 +71,7 @@ When those invariants must survive a harness swap, the environment is not incide
 
 ## The environment contract
 
-The `hitechcloudOS` environment is not one flat bag of features. It defines several layers of state around the harness boundary.
+The `holaOS` environment is not one flat bag of features. It defines several layers of state around the harness boundary.
 
 | Layer | What it contains | Why it exists |
 | --- | --- | --- |
@@ -111,13 +111,13 @@ The `hitechcloudOS` environment is not one flat bag of features. It defines seve
 - selected model routing, attachments, MCP visibility, permissions, and run metadata
 - the step-specific hot context package compiled from warm and cold state
 
-Some of these surfaces are already concrete in `hitechcloudOS` today. Others are part of the architectural direction. The thesis is about the system boundary: these concerns should be modeled as one environment contract rather than scattered across executor-specific behavior.
+Some of these surfaces are already concrete in `holaOS` today. Others are part of the architectural direction. The thesis is about the system boundary: these concerns should be modeled as one environment contract rather than scattered across executor-specific behavior.
 
 ## Portability is a design goal, not just an export button
 
 Long-horizon systems need more than persistence. They need a durable unit that can be inspected, packaged, moved, and rehydrated without losing the operating shape of the role they are meant to carry.
 
-In `hitechcloudOS`, that means treating authored workspace content, learned state, and runtime-owned residue as different categories with different packaging rules. The architectural goal is not that every piece of runtime state travels everywhere. The goal is that the durable environment can be reproduced deliberately, with clear boundaries around what belongs in the portable unit and what remains transient.
+In `holaOS`, that means treating authored workspace content, learned state, and runtime-owned residue as different categories with different packaging rules. The architectural goal is not that every piece of runtime state travels everywhere. The goal is that the durable environment can be reproduced deliberately, with clear boundaries around what belongs in the portable unit and what remains transient.
 
 That distinction matters because portability should be designed into the environment contract, not retrofitted after the fact.
 
@@ -132,17 +132,17 @@ Continual learning, memory evolution, reflection, and reinforcement are importan
 - the outcomes, evaluations, and operator feedback that judged the run
 - the review boundary that decides what may become durable memory, skill, policy, or capability
 
-If those trajectories and feedback signals are trapped inside one executor, they may help that one loop, but they do not reliably improve the system's ability to handle long-horizon work across time. In `hitechcloudOS`, the point is to give roles a durable operating boundary where useful evidence can accumulate into better memory, stronger skills, safer policy, and other reviewed capability over time. Today, the clearest landing zones are durable markdown memory, background durable writeback, and reviewed candidate skills. The broader direction is larger than that: repeated good work should become inspectable system capability rather than staying trapped inside a transient execution loop. Over time, that could expand into stronger policy, reusable packaged behavior, and other reviewed capability surfaces.
+If those trajectories and feedback signals are trapped inside one executor, they may help that one loop, but they do not reliably improve the system's ability to handle long-horizon work across time. In `holaOS`, the point is to give roles a durable operating boundary where useful evidence can accumulate into better memory, stronger skills, safer policy, and other reviewed capability over time. Today, the clearest landing zones are durable markdown memory, background durable writeback, and reviewed candidate skills. The broader direction is larger than that: repeated good work should become inspectable system capability rather than staying trapped inside a transient execution loop. Over time, that could expand into stronger policy, reusable packaged behavior, and other reviewed capability surfaces.
 
 ## Why this is a system thesis
 
 This page is not mainly arguing about where current frameworks draw the line. Its point is narrower and more architectural: if a role spans many runs and many possible improvement loops, then the system needs a durable contract that organizes the relevant state and evidence across them.
 
-That is the role of environment engineering in `hitechcloudOS`. The environment owns the durable state. The harness compiles that state into hot context and action for each step. Portability, inspectability, continuity, capability governance, and optional learning loops all sit inside that operating boundary rather than existing as a loose collection of adjacent features.
+That is the role of environment engineering in `holaOS`. The environment owns the durable state. The harness compiles that state into hot context and action for each step. Portability, inspectability, continuity, capability governance, and optional learning loops all sit inside that operating boundary rather than existing as a loose collection of adjacent features.
 
 ## What this means in practice
 
-If you are building on `hitechcloudOS`, you are building against an environment contract, not just writing tools for a harness:
+If you are building on `holaOS`, you are building against an environment contract, not just writing tools for a harness:
 
 - apps are packaged into workspace-local `apps/<app-id>/`
 - skills are packaged into workspace-local `skills/`
@@ -171,7 +171,7 @@ That shift is what makes the system easier to inspect, package, resume, and exte
     description="Learn how durable memory and runtime continuity make work resume coherently."
   />
   <DocCard
-    title="Build on hitechcloudOS"
+    title="Build on holaOS"
     eyebrow="Developer Path"
     href="/docs/contribute"
     description="Move from the thesis into the concrete developer paths for runtime work, apps, and templates."

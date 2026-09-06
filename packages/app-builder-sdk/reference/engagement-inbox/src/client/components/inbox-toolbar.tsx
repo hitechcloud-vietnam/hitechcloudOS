@@ -1,4 +1,4 @@
-import { Button } from "@hitechcloud/ui"
+import { Button } from "@holaboss/ui"
 import { ArrowDownUp, Filter, Search } from "lucide-react"
 import type { ThreadKind } from "../lib/sample-data"
 

@@ -129,7 +129,7 @@ function writeSidecarStateFile(statePath: string, entries: Record<string, Sideca
 
 function migrateLegacySidecarArtifactsForWorkspace(workspaceDir: string, physicalServerId: string): void {
   const resolvedWorkspaceDir = path.resolve(workspaceDir);
-  const legacySharedDir = path.join(path.dirname(resolvedWorkspaceDir), ".hitechcloud");
+  const legacySharedDir = path.join(path.dirname(resolvedWorkspaceDir), ".holaboss");
   const legacyStatePath = path.join(legacySharedDir, "workspace-mcp-sidecar-state.json");
   const targetStatePath = workspaceMcpStatePath(resolvedWorkspaceDir);
 

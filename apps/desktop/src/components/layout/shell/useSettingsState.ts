@@ -12,10 +12,10 @@ import {
 } from "@/components/layout/themes";
 import { defaultMainViewModeAtom } from "./state/ui";
 
-const THEME_STORAGE_KEY = "hitechcloud-theme-v1";
-const COLOR_SCHEME_STORAGE_KEY = "hitechcloud-color-scheme";
-const THEME_VARIANT_STORAGE_KEY = "hitechcloud-theme-variant";
-const FONT_FAMILY_STORAGE_KEY = "hitechcloud-font-family";
+const THEME_STORAGE_KEY = "holaboss-theme-v1";
+const COLOR_SCHEME_STORAGE_KEY = "holaboss-color-scheme";
+const THEME_VARIANT_STORAGE_KEY = "holaboss-theme-variant";
+const FONT_FAMILY_STORAGE_KEY = "holaboss-font-family";
 
 function loadFontFamily(): FontFamily {
   try {
@@ -52,8 +52,8 @@ function loadColorScheme(): ColorScheme {
  */
 export function useSettingsState() {
   const [colorScheme, setColorScheme] = useState<ColorScheme>(loadColorScheme);
-  // Palette picker removed; the app ships only the Hitechcloud theme.
-  const themeVariant: ThemeVariant = "hitechcloudos";
+  // Palette picker removed; the app ships only the Holaboss theme.
+  const themeVariant: ThemeVariant = "holaos";
   const [fontFamily, setFontFamily] = useState<FontFamily>(loadFontFamily);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [keepAwakeEnabled, setKeepAwakeEnabled] = useState(true);

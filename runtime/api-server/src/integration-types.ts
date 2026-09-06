@@ -32,7 +32,7 @@ export interface ResolvedIntegrationRequirement {
   scopes: string[];
   required: boolean;
   credentialSource: IntegrationCredentialSource;
-  hitechcloudUserIdRequired: boolean;
+  holabossUserIdRequired: boolean;
   whoami?: WhoamiConfig | null;
 }
 
@@ -174,8 +174,8 @@ function parseIntegrationRequirement(
     scopes,
     required: parseBool(value.required, true),
     credentialSource: parseCredentialSource(value.credential_source ?? value.credentialSource),
-    hitechcloudUserIdRequired: parseBool(
-      value.hitechcloud_user_id_required ?? value.hitechcloudUserIdRequired,
+    holabossUserIdRequired: parseBool(
+      value.holaboss_user_id_required ?? value.holabossUserIdRequired,
       false,
     ),
     ...(whoami ? { whoami } : {}),

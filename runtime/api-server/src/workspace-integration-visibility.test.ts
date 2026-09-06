@@ -5,7 +5,7 @@ import type {
   IntegrationTreeRecord,
   RuntimeStateStore,
   SemanticMemoryNodeRecord,
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 import {
   ensureWorkspaceIntegrationRootsMigrated,

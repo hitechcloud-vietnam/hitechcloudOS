@@ -5,7 +5,7 @@ export interface DesktopBillingLinks {
   usageUrl: string;
 }
 
-export const HITECHCLOUDOS_HOME_URL = "https://www.hitechcloud.vn";
+export const HOLAOS_HOME_URL = "https://www.holaos.ai";
 
 export function normalizeBaseUrl(value: string | null | undefined): string {
   return (value ?? "").replace(/\/+$/u, "");
@@ -13,7 +13,7 @@ export function normalizeBaseUrl(value: string | null | undefined): string {
 
 export function deriveAppBaseUrl(apiBaseUrl: string): string {
   if (!apiBaseUrl) {
-    return HITECHCLOUDOS_HOME_URL;
+    return HOLAOS_HOME_URL;
   }
   try {
     const parsed = new URL(apiBaseUrl);
@@ -25,11 +25,11 @@ export function deriveAppBaseUrl(apiBaseUrl: string): string {
       parsed.hostname = parsed.hostname.replace(/^api-preview\./u, "preview.");
       return parsed.origin;
     }
-    if (parsed.hostname === "api.hitechcloud.vn") {
-      // hitechcloud.vn's web app is served from www., not app. (the app. subdomain
-      // is unused). Other api.* hosts (e.g. api.hitechcloud.vn, api.imerchstaging.com)
+    if (parsed.hostname === "api.holaos.ai") {
+      // holaos.ai's web app is served from www., not app. (the app. subdomain
+      // is unused). Other api.* hosts (e.g. api.holaboss.ai, api.imerchstaging.com)
       // still pair with app.* per their deploy layouts.
-      parsed.hostname = "www.hitechcloud.vn";
+      parsed.hostname = "www.holaos.ai";
       return parsed.origin;
     }
     if (parsed.hostname.startsWith("api.")) {
@@ -38,12 +38,12 @@ export function deriveAppBaseUrl(apiBaseUrl: string): string {
     }
     return parsed.origin;
   } catch {
-    return HITECHCLOUDOS_HOME_URL;
+    return HOLAOS_HOME_URL;
   }
 }
 
 export function buildDesktopBillingLinks(appBaseUrl: string): DesktopBillingLinks {
-  const normalizedBaseUrl = normalizeBaseUrl(appBaseUrl) || HITECHCLOUDOS_HOME_URL;
+  const normalizedBaseUrl = normalizeBaseUrl(appBaseUrl) || HOLAOS_HOME_URL;
   return {
     billingPageUrl: `${normalizedBaseUrl}/app/settings?tab=billing`,
     addCreditsUrl: `${normalizedBaseUrl}/app/settings?tab=billing&intent=add-credits`,

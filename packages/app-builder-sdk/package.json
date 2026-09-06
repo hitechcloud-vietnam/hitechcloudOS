@@ -1,10 +1,10 @@
 {
-  "name": "@hitechcloud/app-builder-sdk",
+  "name": "@holaboss/app-builder-sdk",
   "version": "0.1.0",
   "license": "Apache-2.0",
-  "description": "SDK for building Hitechcloud app modules — 5 orthogonal primitives (connection / resource / action / sync / start), declarative state machines, typed bridge, pluggable state backend.",
+  "description": "SDK for building Holaboss app modules — 5 orthogonal primitives (connection / resource / action / sync / start), declarative state machines, typed bridge, pluggable state backend.",
   "keywords": [
-    "hitechcloud",
+    "holaboss",
     "app-builder",
     "sdk",
     "mcp",
@@ -12,11 +12,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/hitechcloud-vietnam/hitechcloudOS.git",
+    "url": "https://github.com/holaboss-ai/holaOS.git",
     "directory": "packages/app-builder-sdk"
   },
-  "homepage": "https://github.com/hitechcloud-vietnam/hitechcloudOS/tree/main/packages/app-builder-sdk",
-  "bugs": "https://github.com/hitechcloud-vietnam/hitechcloudOS/issues",
+  "homepage": "https://github.com/holaboss-ai/holaOS/tree/main/packages/app-builder-sdk",
+  "bugs": "https://github.com/holaboss-ai/holaOS/issues",
   "publishConfig": {
     "access": "public"
   },

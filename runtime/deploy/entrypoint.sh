@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-source /opt/hitechcloud-runtime/bootstrap/shared.sh
-source /opt/hitechcloud-runtime/bootstrap/container.sh
+source /opt/holaboss-runtime/bootstrap/shared.sh
+source /opt/holaboss-runtime/bootstrap/container.sh
 
-hitechcloud_container_bootstrap
-hitechcloud_runtime_shared_main "$@"
+holaboss_container_bootstrap
+holaboss_runtime_shared_main "$@"

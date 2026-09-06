@@ -22,7 +22,7 @@ const repoRoot = path.resolve(scriptDir, "..");
 const runtimePlatform = resolveRuntimePlatform();
 const stageParentDir = path.join(repoRoot, "out");
 const stageDir = path.join(stageParentDir, runtimeBundleDirName(runtimePlatform));
-const defaultLocalRuntimeDir = path.join(os.tmpdir(), `hitechcloud-runtime-${runtimePlatform}-full`);
+const defaultLocalRuntimeDir = path.join(os.tmpdir(), `holaboss-runtime-${runtimePlatform}-full`);
 
 function log(message) {
   process.stdout.write(`[stage-runtime] ${message}\n`);
@@ -77,7 +77,7 @@ async function syncStageCacheKey(sourceDir) {
 
 async function extractRuntimeTarball(tarballPath) {
   log(`extracting runtime tarball from ${tarballPath}`);
-  const extractDir = await fs.mkdtemp(path.join(os.tmpdir(), "hitechcloud-runtime-extract-"));
+  const extractDir = await fs.mkdtemp(path.join(os.tmpdir(), "holaboss-runtime-extract-"));
   await execFileAsync("tar", ["-xzf", tarballPath, "-C", extractDir]);
 
   const entries = await fs.readdir(extractDir);
@@ -105,8 +105,8 @@ async function extractRuntimeTarball(tarballPath) {
 async function downloadRuntimeTarball(url, destinationTarball) {
   log(`downloading runtime tarball from ${url}`);
   const headers = {};
-  if (process.env.HITECHCLOUD_RUNTIME_BUNDLE_TOKEN) {
-    headers.Authorization = `Bearer ${process.env.HITECHCLOUD_RUNTIME_BUNDLE_TOKEN}`;
+  if (process.env.HOLABOSS_RUNTIME_BUNDLE_TOKEN) {
+    headers.Authorization = `Bearer ${process.env.HOLABOSS_RUNTIME_BUNDLE_TOKEN}`;
   }
 
   const response = await fetch(url, { headers });
@@ -138,9 +138,9 @@ async function validateStageDir() {
 // Incremental copy gate: the upstream packager script writes a
 // .cache-key into its OUTPUT_ROOT. If our staged copy carries the same
 // key already, the underlying ~800MB cp is pointless. Skip and reuse
-// the existing stage. Bypass with HITECHCLOUD_RUNTIME_FORCE_STAGE=1.
+// the existing stage. Bypass with HOLABOSS_RUNTIME_FORCE_STAGE=1.
 async function tryReuseStagedBundle(sourceDir) {
-  if (process.env.HITECHCLOUD_RUNTIME_FORCE_STAGE === "1") {
+  if (process.env.HOLABOSS_RUNTIME_FORCE_STAGE === "1") {
     return false;
   }
   const sourceKeyPath = path.join(sourceDir, ".cache-key");
@@ -161,9 +161,9 @@ async function tryReuseStagedBundle(sourceDir) {
 }
 
 async function stageRuntimeBundle() {
-  const runtimeDir = process.env.HITECHCLOUD_RUNTIME_DIR?.trim();
-  const runtimeTarball = process.env.HITECHCLOUD_RUNTIME_TARBALL?.trim();
-  const runtimeBundleUrl = process.env.HITECHCLOUD_RUNTIME_BUNDLE_URL?.trim();
+  const runtimeDir = process.env.HOLABOSS_RUNTIME_DIR?.trim();
+  const runtimeTarball = process.env.HOLABOSS_RUNTIME_TARBALL?.trim();
+  const runtimeBundleUrl = process.env.HOLABOSS_RUNTIME_BUNDLE_URL?.trim();
 
   // Fast path: when the source is a local dir AND its .cache-key matches
   // our staged copy's .cache-key, we don't need to do anything. Validate
@@ -190,7 +190,7 @@ async function stageRuntimeBundle() {
   }
 
   if (runtimeBundleUrl) {
-    const downloadDir = await fs.mkdtemp(path.join(os.tmpdir(), "hitechcloud-runtime-download-"));
+    const downloadDir = await fs.mkdtemp(path.join(os.tmpdir(), "holaboss-runtime-download-"));
     const downloadPath = path.join(downloadDir, `runtime-${runtimePlatform}.tar.gz`);
     await downloadRuntimeTarball(runtimeBundleUrl, downloadPath);
     await extractRuntimeTarball(downloadPath);
@@ -207,14 +207,14 @@ async function stageRuntimeBundle() {
   }
 
   throw new Error(
-    "No runtime bundle source found. Set HITECHCLOUD_RUNTIME_DIR, HITECHCLOUD_RUNTIME_TARBALL, or HITECHCLOUD_RUNTIME_BUNDLE_URL, or run npm run prepare:runtime:local first."
+    "No runtime bundle source found. Set HOLABOSS_RUNTIME_DIR, HOLABOSS_RUNTIME_TARBALL, or HOLABOSS_RUNTIME_BUNDLE_URL, or run npm run prepare:runtime:local first."
   );
 }
 
 stageRuntimeBundle()
   // On Windows, also tar the staged tree into a single archive the installer
   // ships in place of ~41k loose files (see archive-runtime-bundle.mjs). No-op
-  // on macOS/Linux and when HITECHCLOUD_RUNTIME_NO_ARCHIVE=1.
+  // on macOS/Linux and when HOLABOSS_RUNTIME_NO_ARCHIVE=1.
   .then(() => archiveRuntimeBundle())
   .catch((error) => {
     const message = error instanceof Error ? error.message : String(error);

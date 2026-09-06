@@ -98,12 +98,12 @@ output:
 
 ## Files changed
 
-Runtime (`hitechcloudOS/runtime/api-server/src/`):
+Runtime (`holaOS/runtime/api-server/src/`):
 
 - `app.ts` — `/api/v1/apps` reads yaml `name` per entry, returns it
   alongside `integrations[]`.
 
-Desktop (`hitechcloudOS/desktop/`):
+Desktop (`holaOS/desktop/`):
 
 - `src/types/electron.d.ts` — `InstalledWorkspaceAppPayload.name?`.
 - `src/lib/workspaceApps.ts` — `APP_CATALOG` /
@@ -127,7 +127,7 @@ Desktop (`hitechcloudOS/desktop/`):
 
 1. Build / restart:
    ```bash
-   cd hitechcloudOS
+   cd holaOS
    npm run desktop:prepare-runtime:local
    npm run desktop:dev
    ```
@@ -145,8 +145,8 @@ Desktop (`hitechcloudOS/desktop/`):
 
 ## Cross-stage typecheck
 
-`bunx tsc --noEmit` clean for `hitechcloudOS/desktop`, `hitechcloudOS/runtime/api-server`,
-and `hitechcloudOS/experiments/app-builder-sdk`. Runtime test suite: 100/100
+`bunx tsc --noEmit` clean for `holaOS/desktop`, `holaOS/runtime/api-server`,
+and `holaOS/experiments/app-builder-sdk`. Runtime test suite: 100/100
 relevant integration tests pass (`integration-types`,
 `runtime-agent-tools`, `claimed-input-executor`,
 `workspace-runtime-plan`).

@@ -64,24 +64,24 @@ test("desktop runtime refreshes stale managed catalogs immediately when a defaul
   );
 });
 
-test("desktop runtime backfills managed Hitechcloud defaults into runtime config after catalog refresh", async () => {
+test("desktop runtime backfills managed Holaboss defaults into runtime config after catalog refresh", async () => {
   const source = await readFile(mainSourcePath, "utf8");
 
   assert.match(
     source,
-    /async function syncManagedHitechcloudDefaultsToRuntimeConfigIfNeeded\([\s\S]*await writeRuntimeConfigFile\(\{\s*defaultBackgroundModel: managedCatalog\.defaultBackgroundModel,\s*defaultEmbeddingModel: managedCatalog\.defaultEmbeddingModel,\s*defaultImageModel: managedCatalog\.defaultImageModel,\s*\}\);[\s\S]*return true;/,
+    /async function syncManagedHolabossDefaultsToRuntimeConfigIfNeeded\([\s\S]*await writeRuntimeConfigFile\(\{\s*defaultBackgroundModel: managedCatalog\.defaultBackgroundModel,\s*defaultEmbeddingModel: managedCatalog\.defaultEmbeddingModel,\s*defaultImageModel: managedCatalog\.defaultImageModel,\s*\}\);[\s\S]*return true;/,
   );
   assert.match(
     source,
-    /await persistRuntimeModelCatalog\(payload\);[\s\S]*syncManagedHitechcloudDefaultsToRuntimeConfigIfNeeded\(payload\)[\s\S]*await emitRuntimeConfig\(\);/,
+    /await persistRuntimeModelCatalog\(payload\);[\s\S]*syncManagedHolabossDefaultsToRuntimeConfigIfNeeded\(payload\)[\s\S]*await emitRuntimeConfig\(\);/,
   );
   assert.match(
     source,
-    /if \(!shouldRefreshRuntimeModelCatalog\(Boolean\(options\?\.force\)\)\) \{[\s\S]*syncManagedHitechcloudDefaultsToRuntimeConfigIfNeeded\(\)[\s\S]*await emitRuntimeConfig\(\);[\s\S]*return runtimeModelCatalogState;\s*\}/,
+    /if \(!shouldRefreshRuntimeModelCatalog\(Boolean\(options\?\.force\)\)\) \{[\s\S]*syncManagedHolabossDefaultsToRuntimeConfigIfNeeded\(\)[\s\S]*await emitRuntimeConfig\(\);[\s\S]*return runtimeModelCatalogState;\s*\}/,
   );
   assert.match(
     source,
-    /async function getRuntimeConfigWithoutCatalogRefresh\(\): Promise<RuntimeConfigPayload> \{[\s\S]*syncManagedHitechcloudDefaultsToRuntimeConfigIfNeeded\(managedCatalog\)[\s\S]*return getRuntimeConfigSnapshot\(runtimeModelCatalogState\);[\s\S]*return getRuntimeConfigSnapshot\(managedCatalog\);[\s\S]*\}/,
+    /async function getRuntimeConfigWithoutCatalogRefresh\(\): Promise<RuntimeConfigPayload> \{[\s\S]*syncManagedHolabossDefaultsToRuntimeConfigIfNeeded\(managedCatalog\)[\s\S]*return getRuntimeConfigSnapshot\(runtimeModelCatalogState\);[\s\S]*return getRuntimeConfigSnapshot\(managedCatalog\);[\s\S]*\}/,
   );
 });
 

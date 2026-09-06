@@ -43,17 +43,17 @@ This plan does not assume:
 
 The current system already has the right major pieces:
 
-- artifact persistence in [workspace-attachment-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts)
-- turn writeback orchestration in [turn-memory-writeback.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/turn-memory-writeback.ts)
-- owner assignment and semantic rebuild in [interaction-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts)
-- retrieval and relation-aware scoring in [workspace-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-memory.ts)
-- markdown relation round-trip in [memory-related-entities.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/memory-related-entities.ts)
+- artifact persistence in [workspace-attachment-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts)
+- turn writeback orchestration in [turn-memory-writeback.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/turn-memory-writeback.ts)
+- owner assignment and semantic rebuild in [interaction-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts)
+- retrieval and relation-aware scoring in [workspace-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-memory.ts)
+- markdown relation round-trip in [memory-related-entities.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/memory-related-entities.ts)
 
 The biggest remaining problems are not missing subsystems. They are mismatches between those subsystems.
 
 ### 1. Identity is generated too early and from labels
 
-In [memory-related-entities.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/memory-related-entities.ts), both `normalizeRelatedEntities(...)` and `normalizeRelations(...)` currently call `stableRelatedEntityKey(...)` directly on free-form labels.
+In [memory-related-entities.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/memory-related-entities.ts), both `normalizeRelatedEntities(...)` and `normalizeRelations(...)` currently call `stableRelatedEntityKey(...)` directly on free-form labels.
 
 That is where keys like these come from:
 
@@ -61,7 +61,7 @@ That is where keys like these come from:
 - `artifact:artifact`
 - `topic:topic`
 
-The same problem exists in [interaction-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts), where `workspaceArtifactSemanticTargets(...)` derives artifact relation targets by calling `stableRelatedEntityKey("artifact", title)`.
+The same problem exists in [interaction-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts), where `workspaceArtifactSemanticTargets(...)` derives artifact relation targets by calling `stableRelatedEntityKey("artifact", title)`.
 
 So the relation system is treating identity as a label-normalization problem when the runtime already has stronger IDs for:
 
@@ -80,9 +80,9 @@ The runtime already persists first-class artifact trees for:
 - tool results
 - outputs
 
-That all happens in [workspace-attachment-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts).
+That all happens in [workspace-attachment-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts).
 
-But relation rebuild in [interaction-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts) still tries to resolve artifact targets by matching those title-derived keys.
+But relation rebuild in [interaction-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts) still tries to resolve artifact targets by matching those title-derived keys.
 
 This is why sibling memories about the same output can diverge:
 
@@ -93,7 +93,7 @@ The plumbing exists. Identity is what is inconsistent.
 
 ### 3. Writeback still compresses structured artifact evidence too aggressively
 
-[turn-memory-writeback.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/turn-memory-writeback.ts) persists artifact docs before extraction, which is correct.
+[turn-memory-writeback.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/turn-memory-writeback.ts) persists artifact docs before extraction, which is correct.
 
 But `loadTurnWritebackBatchContext(...)` still flattens chunk evidence back into a single assistant-text block via:
 
@@ -114,7 +114,7 @@ The structured artifact documents already exist. The extractor should consume th
 
 ### 4. Current backfill only repairs artifact graph wiring, not memory quality
 
-[workspace-attachment-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts) has `ensureWorkspaceArtifactRelationsBackfilled(...)`, which is useful.
+[workspace-attachment-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts) has `ensureWorkspaceArtifactRelationsBackfilled(...)`, which is useful.
 
 But that backfill only restores artifact relation rows from stored artifact markdown and output provenance. It does not:
 
@@ -222,17 +222,17 @@ This keeps the system from producing relationless durable leaves when the runtim
 
 Create a new runtime module:
 
-- [workspace-related-entity-resolver.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-related-entity-resolver.ts)
+- [workspace-related-entity-resolver.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-related-entity-resolver.ts)
 
 This module should build a workspace-scoped resolver from existing runtime state.
 
 ### Inputs
 
-From [interaction-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts):
+From [interaction-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts):
 
 - `store.listInteractionEntities(...)`
 
-From [workspace-attachment-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts):
+From [workspace-attachment-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts):
 
 - `listWorkspaceAttachmentDocumentTrees(...)`
 - `listWorkspaceImageUrlDocumentTrees(...)`
@@ -304,7 +304,7 @@ That directly blocks `topic:topic` and `artifact:artifact`.
 
 ## B. Update related-entity extraction to persist canonical keys
 
-Change [memory-related-entities.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/memory-related-entities.ts).
+Change [memory-related-entities.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/memory-related-entities.ts).
 
 ### New internal shape
 
@@ -361,7 +361,7 @@ Validation rules:
 
 ## C. Make interaction rebuild resolve canonical keys first
 
-Change [interaction-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts).
+Change [interaction-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts).
 
 ### Current weakness
 
@@ -394,7 +394,7 @@ This keeps browser and retrieval logic simple and inspectable.
 
 ## D. Replace flattened artifact evidence with structured artifact context
 
-Change [turn-memory-writeback.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/turn-memory-writeback.ts) and [memory-writeback-extractor.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/memory-writeback-extractor.ts).
+Change [turn-memory-writeback.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/turn-memory-writeback.ts) and [memory-writeback-extractor.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/memory-writeback-extractor.ts).
 
 ### Current issue
 
@@ -440,7 +440,7 @@ The related-entity extraction pass should receive the same `artifactContexts[]`,
 
 ## E. Backfill missing artifact trees before repairing memory leaves
 
-Change [workspace-attachment-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts).
+Change [workspace-attachment-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts).
 
 ### New repair entrypoints
 
@@ -478,7 +478,7 @@ The current code already uses this pattern for artifact relation backfill, so th
 
 Create:
 
-- [workspace-memory-repair.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-memory-repair.ts)
+- [workspace-memory-repair.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-memory-repair.ts)
 
 This should repair active durable leaves after artifact backfill.
 
@@ -506,7 +506,7 @@ Do not repair by free-form paraphrasing when source evidence no longer exists. I
 
 ## G. Make retrieval consume canonical resolver aliases
 
-Change [workspace-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-memory.ts).
+Change [workspace-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-memory.ts).
 
 ### Current issue
 
@@ -542,7 +542,7 @@ If a relation remains synthetic while a real resolver target exists, apply a ran
 
 ## H. Expose relation quality explicitly in the browser
 
-Change [memory-browser.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/memory-browser.ts) and [MemoryPane.tsx](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/apps/desktop/src/components/panes/MemoryPane.tsx).
+Change [memory-browser.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/memory-browser.ts) and [MemoryPane.tsx](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/apps/desktop/src/components/panes/MemoryPane.tsx).
 
 ### New payload field
 
@@ -587,9 +587,9 @@ That is the baseline workflow this plan is optimizing for.
 
 Files:
 
-- new [workspace-related-entity-resolver.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-related-entity-resolver.ts)
-- [workspace-attachment-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts)
-- [interaction-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts)
+- new [workspace-related-entity-resolver.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-related-entity-resolver.ts)
+- [workspace-attachment-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts)
+- [interaction-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/interaction-memory.ts)
 
 Exit criteria:
 
@@ -601,9 +601,9 @@ Exit criteria:
 
 Files:
 
-- [memory-related-entities.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/memory-related-entities.ts)
-- [turn-memory-writeback.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/turn-memory-writeback.ts)
-- [memory-writeback-extractor.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/memory-writeback-extractor.ts)
+- [memory-related-entities.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/memory-related-entities.ts)
+- [turn-memory-writeback.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/turn-memory-writeback.ts)
+- [memory-writeback-extractor.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/memory-writeback-extractor.ts)
 
 Exit criteria:
 
@@ -615,10 +615,10 @@ Exit criteria:
 
 Files:
 
-- [workspace-attachment-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts)
-- new [workspace-memory-repair.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-memory-repair.ts)
-- [workspace-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-memory.ts)
-- [memory-browser.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/memory-browser.ts)
+- [workspace-attachment-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.ts)
+- new [workspace-memory-repair.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-memory-repair.ts)
+- [workspace-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-memory.ts)
+- [memory-browser.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/memory-browser.ts)
 
 Exit criteria:
 
@@ -631,10 +631,10 @@ Exit criteria:
 
 Files:
 
-- [workspace-memory.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-memory.ts)
-- [memory-browser.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/memory-browser.ts)
-- [MemoryPane.tsx](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/apps/desktop/src/components/panes/MemoryPane.tsx)
-- [memoryPaneModel.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/apps/desktop/src/components/panes/memoryPaneModel.ts)
+- [workspace-memory.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-memory.ts)
+- [memory-browser.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/memory-browser.ts)
+- [MemoryPane.tsx](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/apps/desktop/src/components/panes/MemoryPane.tsx)
+- [memoryPaneModel.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/apps/desktop/src/components/panes/memoryPaneModel.ts)
 
 Exit criteria:
 
@@ -656,13 +656,13 @@ The plan is only complete when it passes the rubric in [2026-06-04-memory-qualit
 
 Extend:
 
-- [memory-related-entities.test.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/memory-related-entities.test.ts)
-- [interaction-memory.test.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/interaction-memory.test.ts)
-- [workspace-attachment-memory.test.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.test.ts)
-- [turn-memory-writeback.test.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/turn-memory-writeback.test.ts)
-- [workspace-memory.test.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/workspace-memory.test.ts)
-- [memory-browser.test.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/memory-browser.test.ts)
-- [app.test.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/runtime/api-server/src/app.test.ts)
+- [memory-related-entities.test.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/memory-related-entities.test.ts)
+- [interaction-memory.test.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/interaction-memory.test.ts)
+- [workspace-attachment-memory.test.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-attachment-memory.test.ts)
+- [turn-memory-writeback.test.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/turn-memory-writeback.test.ts)
+- [workspace-memory.test.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/workspace-memory.test.ts)
+- [memory-browser.test.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/memory-browser.test.ts)
+- [app.test.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/runtime/api-server/src/app.test.ts)
 
 Required scenarios:
 
@@ -676,8 +676,8 @@ Required scenarios:
 
 Extend:
 
-- [MemoryPane.test.mjs](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/apps/desktop/src/components/panes/MemoryPane.test.mjs)
-- [memoryPaneModel.test.ts](/Users/you/Desktop/hitechcloud/hitechcloudOS-perf-mem-v1/apps/desktop/src/components/panes/memoryPaneModel.test.ts)
+- [MemoryPane.test.mjs](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/apps/desktop/src/components/panes/MemoryPane.test.mjs)
+- [memoryPaneModel.test.ts](/Users/you/Desktop/holaboss/holaOS-perf-mem-v1/apps/desktop/src/components/panes/memoryPaneModel.test.ts)
 
 Required scenarios:
 

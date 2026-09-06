@@ -4,19 +4,19 @@ import {
 } from "./types.js";
 import { browserToolsEnabledForSessionKind } from "./browser-session-gate.js";
 
-const HITECHCLOUD_RUNTIME_MCP_SERVER_NAME = "hitechcloud_runtime";
-const HITECHCLOUD_RUNTIME_TOOLS_MCP_SERVER_NAME = "hitechcloud_runtime_tools";
-const HITECHCLOUD_RUNTIME_TOOLS_MCP_PATH = "/mcp/runtime-tools";
-const HITECHCLOUD_RUNTIME_MCP_TIMEOUT_MS = 30_000;
+const HOLABOSS_RUNTIME_MCP_SERVER_NAME = "holaboss_runtime";
+const HOLABOSS_RUNTIME_TOOLS_MCP_SERVER_NAME = "holaboss_runtime_tools";
+const HOLABOSS_RUNTIME_TOOLS_MCP_PATH = "/mcp/runtime-tools";
+const HOLABOSS_RUNTIME_MCP_TIMEOUT_MS = 30_000;
 
 /**
- * Prepend the Hitechcloud runtime MCP servers to the workspace MCP list so every
- * CLI harness reaches the Hitechcloud tool surface. Shared by the CLI harnesses so
+ * Prepend the Holaboss runtime MCP servers to the workspace MCP list so every
+ * CLI harness reaches the Holaboss tool surface. Shared by the CLI harnesses so
  * the "expose the runtime endpoint" rule lives in exactly one place.
  *
  * Two entries are injected:
- *  - `hitechcloud_runtime` → `/mcp` (oRPC bridge; workspace read tools).
- *  - `hitechcloud_runtime_tools` → `/mcp/runtime-tools` (the runtime-tool surface
+ *  - `holaboss_runtime` → `/mcp` (oRPC bridge; workspace read tools).
+ *  - `holaboss_runtime_tools` → `/mcp/runtime-tools` (the runtime-tool surface
  *    pi wires in-process: web_search, image/video gen, reports, memory,
  *    cronjobs, …). Its handlers need per-run context, so this entry also
  *    carries the session/input/model headers, not just the workspace id.
@@ -31,11 +31,11 @@ export function buildHarnessMcpServers(
   const userServers = params.mcpServers.map((server) => ({
     name: server.name,
     config: { ...server.config },
-    ...(server._hitechcloud_force_refresh ? { _hitechcloud_force_refresh: true } : {}),
+    ...(server._holaboss_force_refresh ? { _holaboss_force_refresh: true } : {}),
   }));
   const runtimeServers = [
-    buildHitechcloudRuntimeToolsMcpServerEntry(params),
-    buildHitechcloudRuntimeMcpServerEntry(params),
+    buildHolabossRuntimeToolsMcpServerEntry(params),
+    buildHolabossRuntimeMcpServerEntry(params),
   ].filter((entry): entry is Record<string, unknown> => entry !== null);
   return [...runtimeServers, ...userServers];
 }
@@ -44,7 +44,7 @@ function optionalTrimmed(value: unknown): string | null {
   return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
-function buildHitechcloudRuntimeToolsMcpServerEntry(
+function buildHolabossRuntimeToolsMcpServerEntry(
   params: HarnessHostRequestBuildParams,
 ): Record<string, unknown> | null {
   const baseUrl = params.runtimeApiBaseUrl?.trim();
@@ -56,19 +56,19 @@ function buildHitechcloudRuntimeToolsMcpServerEntry(
   // the runtime reads back off the MCP connection (see runtime-tools-mcp.ts).
   // Session/input/model are known at request-build time, so bake them in here.
   const headers: Record<string, string> = {
-    "x-hitechcloud-workspace-id": params.request.workspace_id,
+    "x-holaboss-workspace-id": params.request.workspace_id,
   };
   const sessionId = optionalTrimmed(params.request.session_id);
   if (sessionId) {
-    headers["x-hitechcloud-session-id"] = sessionId;
+    headers["x-holaboss-session-id"] = sessionId;
   }
   const inputId = optionalTrimmed(params.request.input_id);
   if (inputId) {
-    headers["x-hitechcloud-input-id"] = inputId;
+    headers["x-holaboss-input-id"] = inputId;
   }
   const selectedModel = optionalTrimmed(params.request.model);
   if (selectedModel) {
-    headers["x-hitechcloud-selected-model"] = selectedModel;
+    headers["x-holaboss-selected-model"] = selectedModel;
   }
   // Browser tools are a separate capability family (not curated runtime tools,
   // not Composio) that pi wires in-process only when enabled for the session
@@ -77,26 +77,26 @@ function buildHitechcloudRuntimeToolsMcpServerEntry(
   // merges the browser family in (it still self-gates on the desktop browser
   // being reachable, so a run without a live browser gets none — same as pi).
   if (browserToolsEnabledForSessionKind(params.request.session_kind)) {
-    headers["x-hitechcloud-browser-tools-enabled"] = "true";
+    headers["x-holaboss-browser-tools-enabled"] = "true";
     const browserSpace = optionalTrimmed(params.browserSpace);
     if (browserSpace) {
-      headers["x-hitechcloud-browser-space"] = browserSpace;
+      headers["x-holaboss-browser-space"] = browserSpace;
     }
   }
   const config: HarnessPreparedMcpServerPayload["config"] = {
     type: "remote",
     enabled: true,
-    url: `${cleanBase}${HITECHCLOUD_RUNTIME_TOOLS_MCP_PATH}`,
+    url: `${cleanBase}${HOLABOSS_RUNTIME_TOOLS_MCP_PATH}`,
     headers,
-    timeout: HITECHCLOUD_RUNTIME_MCP_TIMEOUT_MS,
+    timeout: HOLABOSS_RUNTIME_MCP_TIMEOUT_MS,
   };
   return {
-    name: HITECHCLOUD_RUNTIME_TOOLS_MCP_SERVER_NAME,
+    name: HOLABOSS_RUNTIME_TOOLS_MCP_SERVER_NAME,
     config,
   };
 }
 
-function buildHitechcloudRuntimeMcpServerEntry(
+function buildHolabossRuntimeMcpServerEntry(
   params: HarnessHostRequestBuildParams,
 ): Record<string, unknown> | null {
   const baseUrl = params.runtimeApiBaseUrl?.trim();
@@ -104,7 +104,7 @@ function buildHitechcloudRuntimeMcpServerEntry(
     return null;
   }
   const cleanBase = baseUrl.replace(/\/+$/, "");
-  // See claude-code.ts for the rationale on x-hitechcloud-workspace-id —
+  // See claude-code.ts for the rationale on x-holaboss-workspace-id —
   // identity is no-op until the runtime parses tokens; the workspace
   // header is the today-only carrier.
   const config: HarnessPreparedMcpServerPayload["config"] = {
@@ -112,12 +112,12 @@ function buildHitechcloudRuntimeMcpServerEntry(
     enabled: true,
     url: `${cleanBase}/mcp`,
     headers: {
-      "x-hitechcloud-workspace-id": params.request.workspace_id,
+      "x-holaboss-workspace-id": params.request.workspace_id,
     },
-    timeout: HITECHCLOUD_RUNTIME_MCP_TIMEOUT_MS,
+    timeout: HOLABOSS_RUNTIME_MCP_TIMEOUT_MS,
   };
   return {
-    name: HITECHCLOUD_RUNTIME_MCP_SERVER_NAME,
+    name: HOLABOSS_RUNTIME_MCP_SERVER_NAME,
     config,
   };
 }

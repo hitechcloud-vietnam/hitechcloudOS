@@ -9,7 +9,7 @@ function printHelp() {
   console.log(`Usage: bun run desktop:dev:isolated -- [name] [options]
 
 Launch an extra Electron desktop instance against the existing dev server,
-with its own isolated user-data path under ~/.hitechcloudos/desktop/.
+with its own isolated user-data path under ~/.holaos/desktop/.
 
 Options:
   --name <name>              Instance name. Defaults to "isolated".

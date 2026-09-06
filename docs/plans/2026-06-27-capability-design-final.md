@@ -23,7 +23,7 @@ Deferred (not yet built):
 - **Manual create picker** (§9 option 2) — `+` → Create still routes to the agent-assembled
   flow; the name + pick-skills + pick-integrations form is not built.
 - **Plugin importer** (§10).
-- **Central Hono catalog + Directory Skills/Connectors tabs** (§12) — only the hitechcloudOS-served
+- **Central Hono catalog + Directory Skills/Connectors tabs** (§12) — only the holaOS-served
   Capabilities directory exists; the cross-repo central catalog and the other two tabs are open.
 - **Visual verification** — the readable-skills data flow has been typechecked, not yet run in
   Electron.
@@ -205,18 +205,18 @@ starter prompts (what to type) → agent assembly (state intent, it builds).
 
 A browsable catalog (like Claude's Directory) — the storefront for the seed library and the
 answer to discovery. **Served by the Hono backend** (central, curated, updatable without a
-desktop release), consumed renderer-first per CLAUDE.md (`@hitechcloud/app-sdk/react`), same
+desktop release), consumed renderer-first per CLAUDE.md (`@holaboss/app-sdk/react`), same
 pattern as marketplace/templates/skills today.
 
 ```
 Hono backend (frontend/apps/server)   ← catalog source of truth
   /directory/skills · /connectors · /capabilities  (search / filter / sort + install payload)
-        │ @hitechcloud/app-sdk/react (renderer-first)
+        │ @holaboss/app-sdk/react (renderer-first)
         ▼
 Desktop  ← Directory pane: Skills / Connectors / Capabilities tabs, search, cards, +add, installed-state
         │ "add" → install into local runtime
         ▼
-hitechcloudOS runtime  ← install target (materialize skill / write capability.yaml+record / start integration connect)
+holaOS runtime  ← install target (materialize skill / write capability.yaml+record / start integration connect)
 ```
 
 - Three tabs map to our model: **Skills**, **Connectors** (integrations), **Capabilities**.

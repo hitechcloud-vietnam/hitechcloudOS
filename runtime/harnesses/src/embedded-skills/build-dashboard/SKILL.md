@@ -1,6 +1,6 @@
 ---
 name: build-dashboard
-description: Build the visual layer of a hitechcloudOS dashboard app — TanStack Start + @hitechcloud/ui + workspace tokens. Use when an app has SDK primitives wired (via app-builder-sdk) AND needs a `src/client/` UI surface. NOT for marketing pages, NOT for snapshot HTML reports.
+description: Build the visual layer of a holaOS dashboard app — TanStack Start + @holaboss/ui + workspace tokens. Use when an app has SDK primitives wired (via app-builder-sdk) AND needs a `src/client/` UI surface. NOT for marketing pages, NOT for snapshot HTML reports.
 ---
 
 # build-dashboard
@@ -21,7 +21,7 @@ The agent before you reliably produces ugly dashboards because it starts from a 
 ## The two non-negotiables
 
 1. **Copy the bundled reference. Don't invent.** `reference/messaging-dashboard/src/client/` is the canonical starting point. Three files below are verbatim across every dashboard; the rest gets customized per shape.
-2. **Two style imports, not one.** `@hitechcloud/ui/styles.css` only bakes in utilities used inside the library. Every Tailwind class your `src/client/` writes needs your own app-side compile pass. The register-time lint `workspace_app_missing_tailwind_compile` rejects apps missing this.
+2. **Two style imports, not one.** `@holaboss/ui/styles.css` only bakes in utilities used inside the library. Every Tailwind class your `src/client/` writes needs your own app-side compile pass. The register-time lint `workspace_app_missing_tailwind_compile` rejects apps missing this.
 
 ## The shape catalog — pick one
 
@@ -33,7 +33,7 @@ Look at the user's data, NOT at "what dashboards usually have". Most apps are sh
 | 2 | **Dense table** | flat records (CRM contacts, log rows, ticket list) that the user scans like a spreadsheet | Replace shape-1's `messages-table.tsx` with the `<Table>` primitive (see snippet below) |
 | 3 | **Kanban** | rows that move between named statuses; user drags between columns | Replace shape-1's main column with horizontal status columns (see snippet below) |
 | 4 | **Detail / form** | a single resource the user edits or watches in depth | Replace shape-1's main column with `<Field>` form (see snippet below) |
-| 5 | **Calendar week** | rows with `start_time` + duration that pin to a day-grid | Replace shape-1's main column with `@hitechcloud/ui`'s `Calendar` primitive |
+| 5 | **Calendar week** | rows with `start_time` + duration that pin to a day-grid | Replace shape-1's main column with `@holaboss/ui`'s `Calendar` primitive |
 
 Shapes 2–5 still keep shape 1's header, app.css, connection pill, status badge, and tokens. **Only the main content area changes.**
 
@@ -73,7 +73,7 @@ These five files do NOT vary per shape. Copy them exactly.
 ```css
 /* App-local Tailwind compile entry.
  *
- * `@hitechcloud/ui/styles.css` only bakes in utilities used INSIDE the library.
+ * `@holaboss/ui/styles.css` only bakes in utilities used INSIDE the library.
  * Every Tailwind class your `src/client/` writes (max-w-3xl, grid-cols-*,
  * text-fg-48, bg-card, flex-1, etc.) needs an app-side compile pass to land
  * in the bundle. Without it the page renders mostly unstyled.
@@ -89,18 +89,18 @@ These five files do NOT vary per shape. Copy them exactly.
 ### `src/client/routes/__root.tsx`
 
 ```tsx
-import "@hitechcloud/ui/styles.css"
+import "@holaboss/ui/styles.css"
 import "../app.css"
 
 import type { ReactNode } from "react"
 
 export function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" data-theme="hitechcloudos-light">
+    <html lang="en" data-theme="holaos-light">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Your App — hitechcloudOS</title>
+        <title>Your App — holaOS</title>
       </head>
       <body className="antialiased">{children}</body>
     </html>
@@ -111,7 +111,7 @@ export function RootLayout({ children }: { children: ReactNode }) {
 ### `src/client/components/connection-pill.tsx`
 
 ```tsx
-import { StatusDot } from "@hitechcloud/ui"
+import { StatusDot } from "@holaboss/ui"
 
 type Props = {
   state: "ready" | "needs_connect" | "needs_reauth" | "checking"
@@ -142,7 +142,7 @@ Wire `state` from `getIntegrationStatus()` — `ready === true` → `"ready"`, `
 ### `src/client/components/header-bar.tsx`
 
 ```tsx
-import { Button, StatusDot } from "@hitechcloud/ui"
+import { Button, StatusDot } from "@holaboss/ui"
 import { Plus } from "lucide-react"
 import type { ReactNode } from "react"
 
@@ -188,7 +188,7 @@ export function HeaderBar({ title, subtitle, rightSlot, onCompose }: Props) {
 ### `src/client/components/status-badge.tsx`
 
 ```tsx
-import { StatusDot } from "@hitechcloud/ui"
+import { StatusDot } from "@holaboss/ui"
 
 // REPLACE this union with your resource's state machine.
 type MyStatus = "draft" | "scheduled" | "sent" | "edited" | "failed"
@@ -239,7 +239,7 @@ What to swap when copying shape 1:
 When the data is naturally rows-and-columns and the user scans like a spreadsheet, replace shape-1's `messages-table.tsx` with the `<Table>` primitive. Header + connection pill + `app.css` setup stay.
 
 ```tsx
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge } from "@hitechcloud/ui"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Badge } from "@holaboss/ui"
 import { StatusBadge } from "./status-badge"
 
 export function RecordsTable({ rows }: { rows: MyRow[] }) {
@@ -277,7 +277,7 @@ Layout shape: drop the time-rail; keep `max-w-3xl` (or bump to `max-w-5xl` if 5+
 When rows move between named statuses and the user drags between them. Replace shape-1's main column with horizontally-arranged status columns. Header + connection pill + `app.css` stay.
 
 ```tsx
-import { Card } from "@hitechcloud/ui"
+import { Card } from "@holaboss/ui"
 import { StatusBadge } from "./status-badge"
 
 const COLUMNS = ["draft", "scheduled", "sent", "failed"] as const
@@ -325,7 +325,7 @@ Layout shape: change `max-w-3xl` on the outer container to `max-w-6xl` for breat
 For workflows where the user edits one resource at a time (settings, single-record CRM contact, single bookmark editor). Replace shape-1's main column with a `<Field>`-based form. Header + connection pill + `app.css` stay.
 
 ```tsx
-import { Button, Field, FieldDescription, FieldGroup, FieldLabel, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "@hitechcloud/ui"
+import { Button, Field, FieldDescription, FieldGroup, FieldLabel, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "@holaboss/ui"
 
 export function RecordForm({ record, onSave }: { record: MyRow; onSave: (r: MyRow) => void }) {
   return (
@@ -364,10 +364,10 @@ Layout shape: tighter column (`max-w-2xl`). No attention strip; surface validati
 
 ## Shape 5: calendar week
 
-When rows have a real `start_time` + duration that pin to a day-grid. Use `@hitechcloud/ui`'s `Calendar` primitive. This shape is intentionally less battle-tested — extend the base only when calendar truly fits.
+When rows have a real `start_time` + duration that pin to a day-grid. Use `@holaboss/ui`'s `Calendar` primitive. This shape is intentionally less battle-tested — extend the base only when calendar truly fits.
 
 ```tsx
-import { Calendar } from "@hitechcloud/ui"
+import { Calendar } from "@holaboss/ui"
 
 export function WeekCalendar({ rows }: { rows: MyRow[] }) {
   // Calendar is the base-ui primitive; for full week-view with custom
@@ -390,8 +390,8 @@ Everything below is the same as the `app-builder-sdk` skill describes for any ap
 ```json
 {
   "dependencies": {
-    "@hitechcloud/app-builder-sdk": "latest",
-    "@hitechcloud/ui": "latest",
+    "@holaboss/app-builder-sdk": "latest",
+    "@holaboss/ui": "latest",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "lucide-react": "^0.542.0"
@@ -405,7 +405,7 @@ Everything below is the same as the `app-builder-sdk` skill describes for any ap
 }
 ```
 
-Use `"latest"` literally for the two `@hitechcloud/*` packages — pre-1.0 caret semver drifts.
+Use `"latest"` literally for the two `@holaboss/*` packages — pre-1.0 caret semver drifts.
 
 ### Required `vite.config.ts`
 
@@ -424,7 +424,7 @@ Without `@tailwindcss/vite`, the `@import "tailwindcss"` in `app.css` is a no-op
 ### `server.ts` boots BOTH MCP and the dashboard
 
 ```ts
-import { startMcpServer, SqliteStateBackend, createRuntimeBrokerTransport } from "@hitechcloud/app-builder-sdk"
+import { startMcpServer, SqliteStateBackend, createRuntimeBrokerTransport } from "@holaboss/app-builder-sdk"
 import { buildMyApp } from "./app.ts"
 
 const state = new SqliteStateBackend({ path: process.env.WORKSPACE_DB_PATH! })
@@ -453,7 +453,7 @@ The register-time lint rejects dashboard apps that fail any of these. Run throug
 
 | Check | Lint code (if fails) |
 |---|---|
-| `src/client/` has ≥3 distinct named imports from `@hitechcloud/ui` | `workspace_app_hitechcloud_ui_named_imports_too_few` |
+| `src/client/` has ≥3 distinct named imports from `@holaboss/ui` | `workspace_app_holaboss_ui_named_imports_too_few` |
 | At least one `.css` file under `src/client/` contains `@import "tailwindcss"` | `workspace_app_missing_tailwind_compile` |
 | No hex / `rgb()` / `hsl()` / `oklch()` literals in `src/client/**/*.css` | `workspace_app_parallel_design_system` |
 | No custom `--<token>:` definitions in CSS (passthroughs like `--mine: var(--background)` allowed) | `workspace_app_parallel_design_system` |
@@ -466,8 +466,8 @@ These are hard rules. The lint catches some; the rest are caught by review (or b
 
 - **No `font-bold` / `font-semibold` / `font-extrabold` / inline `style={{ fontWeight: ... }}`.** Design system clamps all of those to 500. Hierarchy comes from **size** (`text-2xl` for hero numbers, `text-base` for headings, `text-xs` for labels) and **color** (`text-foreground` → `text-fg-80` → `text-fg-64` → `text-fg-48`).
 - **No hex / `rgb()` / `oklch()` literals anywhere.** Lint rejects in CSS; review catches in JSX. Use tokens: `bg-background`, `bg-card`, `bg-muted`, `text-foreground`, `text-fg-{12,16,32,48,64,80,92}`, `border`, `border-warning`, `bg-warning/[0.06]`, `text-primary`.
-- **No second component library.** No MUI, Ant, Chakra, raw Radix, Headless UI, react-aria. The `@hitechcloud/ui` package wraps base-ui's shadcn-flavored primitives; that is the only allowed source.
-- **No `components/ui/` directory** (shadcn-add copy). Import primitives from `@hitechcloud/ui` only.
+- **No second component library.** No MUI, Ant, Chakra, raw Radix, Headless UI, react-aria. The `@holaboss/ui` package wraps base-ui's shadcn-flavored primitives; that is the only allowed source.
+- **No `components/ui/` directory** (shadcn-add copy). Import primitives from `@holaboss/ui` only.
 - **No `bg-gradient-*` on cards, no `hover:shadow-*`, no `hover:-translate-y-*` lift effects.** Subtle hover via `hover:bg-muted/40` only.
 - **No per-app theme toggle.** Theme is workspace-level; the app inherits via CSS variables.
 - **No custom CSS files beyond `app.css`** (and `app.css` must contain only `@import "tailwindcss"` + `@source`, possibly empty `@layer` blocks).
@@ -480,8 +480,8 @@ These are hard rules. The lint catches some; the rest are caught by review (or b
 - **Read `reference/messaging-dashboard/` end-to-end** (it lives next to this skill — 4 component files, 1 lib file, 1 routes file). Even if your shape isn't queue/feed, the patterns transfer.
 - **Spend 30 seconds on a one-line spatial sketch BEFORE writing JSX.** Single sentence: "Header strip + grouped sections of rows" or "Header + 4-column kanban". If you can't say it in one sentence, pick from the shape catalog above.
 - **Replace `lib/sample-data.ts` with TanStack Start server functions** that read from the SDK's `SqliteStateBackend` (the table `app.resource()` declared). Never spin up a second DB. Never call MCP tools from the dashboard.
-- **Wire `ConnectionPill` to `getIntegrationStatus()`** (helper from `@hitechcloud/app-builder-sdk`). The four `state` values map directly to readiness codes.
-- **Test in both light AND dark.** Workspace theme can be either; the dashboard inherits via `[data-theme]`. Set `data-theme="hitechcloudos-dark"` on `<html>` to verify dark renders correctly.
+- **Wire `ConnectionPill` to `getIntegrationStatus()`** (helper from `@holaboss/app-builder-sdk`). The four `state` values map directly to readiness codes.
+- **Test in both light AND dark.** Workspace theme can be either; the dashboard inherits via `[data-theme]`. Set `data-theme="holaos-dark"` on `<html>` to verify dark renders correctly.
 
 ## Examples
 
@@ -517,8 +517,8 @@ Run through this list — if any item is uncertain, fix before declaring done:
    - Connection pill shows correct state (Connected / Reauth / Not connected)
    - Empty state renders when filtered to a status with no rows
    - Hover affordances on rows (subtle bg shift, no shadow lift)
-   - Light mode AND dark mode both look intentional (set `data-theme="hitechcloudos-dark"` on `<html>` to test)
-5. The dashboard looks like the rest of the workspace (same fonts, borders, radii, card surface color). If it looks alien, you've broken a token import, imported from outside `@hitechcloud/ui`, or redefined a primitive.
+   - Light mode AND dark mode both look intentional (set `data-theme="holaos-dark"` on `<html>` to test)
+5. The dashboard looks like the rest of the workspace (same fonts, borders, radii, card surface color). If it looks alien, you've broken a token import, imported from outside `@holaboss/ui`, or redefined a primitive.
 
 If all 5 pass, you're done. **Do not invoke `interface-design`.** The build pass should already produce shipping-quality output via this skill + the bundled reference + the register-time lints.
 

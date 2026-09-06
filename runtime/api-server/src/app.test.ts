@@ -11,7 +11,7 @@ import { afterEach, test } from "node:test";
 import { randomUUID } from "node:crypto";
 import { once } from "node:events";
 
-import { RuntimeStateStore, utcNowIso } from "@hitechcloud/runtime-state-store";
+import { RuntimeStateStore, utcNowIso } from "@holaboss/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 import yazl from "yazl";
 import * as tar from "tar";
@@ -54,8 +54,8 @@ import {
 const tempDirs: string[] = [];
 const ORIGINAL_ENV = {
   HB_SANDBOX_ROOT: process.env.HB_SANDBOX_ROOT,
-  HITECHCLOUD_EMBEDDED_RUNTIME: process.env.HITECHCLOUD_EMBEDDED_RUNTIME,
-  HITECHCLOUD_RUNTIME_CONFIG_PATH: process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH,
+  HOLABOSS_EMBEDDED_RUNTIME: process.env.HOLABOSS_EMBEDDED_RUNTIME,
+  HOLABOSS_RUNTIME_CONFIG_PATH: process.env.HOLABOSS_RUNTIME_CONFIG_PATH,
 };
 
 // The download / apply-template tests fetch from ephemeral loopback HTTP
@@ -91,16 +91,16 @@ afterEach(() => {
   } else {
     process.env.HB_SANDBOX_ROOT = ORIGINAL_ENV.HB_SANDBOX_ROOT;
   }
-  if (ORIGINAL_ENV.HITECHCLOUD_EMBEDDED_RUNTIME === undefined) {
-    delete process.env.HITECHCLOUD_EMBEDDED_RUNTIME;
+  if (ORIGINAL_ENV.HOLABOSS_EMBEDDED_RUNTIME === undefined) {
+    delete process.env.HOLABOSS_EMBEDDED_RUNTIME;
   } else {
-    process.env.HITECHCLOUD_EMBEDDED_RUNTIME =
-      ORIGINAL_ENV.HITECHCLOUD_EMBEDDED_RUNTIME;
+    process.env.HOLABOSS_EMBEDDED_RUNTIME =
+      ORIGINAL_ENV.HOLABOSS_EMBEDDED_RUNTIME;
   }
-  if (ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH === undefined) {
-    delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+  if (ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH === undefined) {
+    delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
   } else {
-    process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+    process.env.HOLABOSS_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH;
   }
 });
 
@@ -115,7 +115,7 @@ function writeRuntimeConfig(root: string, document: Record<string, unknown>): vo
   fs.mkdirSync(path.dirname(configPath), { recursive: true });
   fs.writeFileSync(configPath, `${JSON.stringify(document, null, 2)}\n`, "utf8");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
 }
 
 function buildTestRuntimeApiServer(options: BuildRuntimeApiServerOptions) {
@@ -315,9 +315,9 @@ test("browser capability routes proxy to the browser tool service", async () => 
     method: "GET",
     url: "/api/v1/capabilities/browser",
     headers: {
-      "x-hitechcloud-workspace-id": "workspace-1",
-      "x-hitechcloud-session-id": "session-1",
-      "x-hitechcloud-browser-space": "user"
+      "x-holaboss-workspace-id": "workspace-1",
+      "x-holaboss-session-id": "session-1",
+      "x-holaboss-browser-space": "user"
     }
   });
   assert.equal(statusResponse.statusCode, 200);
@@ -334,9 +334,9 @@ test("browser capability routes proxy to the browser tool service", async () => 
     method: "POST",
     url: "/api/v1/capabilities/browser/tools/browser_click",
     headers: {
-      "x-hitechcloud-workspace-id": "workspace-1",
-      "x-hitechcloud-session-id": "session-1",
-      "x-hitechcloud-browser-space": "agent"
+      "x-holaboss-workspace-id": "workspace-1",
+      "x-holaboss-session-id": "session-1",
+      "x-holaboss-browser-space": "agent"
     },
     payload: {
       index: 3
@@ -419,9 +419,9 @@ test("browser capability preview mode spills screenshot data and trims browser_g
       method: "POST",
       url: "/api/v1/capabilities/browser/tools/browser_get_state",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
-        "x-hitechcloud-session-id": "session-main",
-        "x-hitechcloud-tool-result-mode": "preview",
+        "x-holaboss-workspace-id": "workspace-1",
+        "x-holaboss-session-id": "session-main",
+        "x-holaboss-tool-result-mode": "preview",
       },
       payload: { include_screenshot: true },
     });
@@ -444,14 +444,14 @@ test("browser capability preview mode spills screenshot data and trims browser_g
     );
     assert.match(
       String(body.screenshot.file_path ?? ""),
-      /^\.hitechcloud\/state\/tool-results\/browser_get_state\/session-main\//,
+      /^\.holaboss\/state\/tool-results\/browser_get_state\/session-main\//,
     );
     assert.equal(body._preview.mode, "preview");
     assert.equal(body._preview.truncated, true);
     assert.equal(body._preview.spilled, true);
     assert.match(
       String(body.full_state_path ?? ""),
-      /^\.hitechcloud\/state\/tool-results\/browser_get_state\/session-main\//,
+      /^\.holaboss\/state\/tool-results\/browser_get_state\/session-main\//,
     );
     assert.equal(
       fs.existsSync(
@@ -595,9 +595,9 @@ test("terminal session routes proxy to the terminal session manager", async () =
     method: "POST",
     url: "/api/v1/terminal-sessions",
     headers: {
-      "x-hitechcloud-workspace-id": "workspace-1",
-      "x-hitechcloud-session-id": "session-1",
-      "x-hitechcloud-input-id": "input-1",
+      "x-holaboss-workspace-id": "workspace-1",
+      "x-holaboss-session-id": "session-1",
+      "x-holaboss-input-id": "input-1",
     },
     payload: {
       title: "Build",
@@ -786,7 +786,7 @@ test("runtime tools capability routes expose local onboarding and cronjob action
       method: "GET",
       url: "/api/v1/capabilities/runtime-tools",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1"
+        "x-holaboss-workspace-id": "workspace-1"
       }
     });
     assert.equal(capabilityStatus.statusCode, 200);
@@ -898,7 +898,7 @@ test("runtime tools capability routes expose local onboarding and cronjob action
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/workspace-integrations/catalog",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1"
+        "x-holaboss-workspace-id": "workspace-1"
       },
       payload: {}
     });
@@ -910,9 +910,9 @@ test("runtime tools capability routes expose local onboarding and cronjob action
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/cronjobs",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
-        "x-hitechcloud-session-id": "session-main",
-        "x-hitechcloud-selected-model": "openai/gpt-5.4"
+        "x-holaboss-workspace-id": "workspace-1",
+        "x-holaboss-session-id": "session-main",
+        "x-holaboss-selected-model": "openai/gpt-5.4"
       },
       payload: {
         cron: "0 9 * * *",
@@ -936,7 +936,7 @@ test("runtime tools capability routes expose local onboarding and cronjob action
       method: "GET",
       url: "/api/v1/capabilities/runtime-tools/cronjobs",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1"
+        "x-holaboss-workspace-id": "workspace-1"
       }
     });
     assert.equal(listedJobs.statusCode, 200);
@@ -986,7 +986,7 @@ test("workspace app capability routes scaffold, register, and inspect a managed 
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/workspace-apps/scaffold",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {
         app_id: "demo-app",
@@ -1000,7 +1000,7 @@ test("workspace app capability routes scaffold, register, and inspect a managed 
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/workspace-apps/register",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {
         app_id: "demo-app",
@@ -1032,7 +1032,7 @@ test("workspace app capability routes scaffold, register, and inspect a managed 
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/workspace-apps/demo-app/build",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {},
     });
@@ -1044,7 +1044,7 @@ test("workspace app capability routes scaffold, register, and inspect a managed 
       method: "GET",
       url: "/api/v1/capabilities/runtime-tools/workspace-apps/demo-app/status",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
     });
     assert.equal(status.statusCode, 200);
@@ -1060,7 +1060,7 @@ test("workspace app capability routes scaffold, register, and inspect a managed 
       method: "GET",
       url: "/api/v1/capabilities/runtime-tools/workspace-apps/demo-app/ports",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
     });
     assert.equal(ports.statusCode, 200);
@@ -1121,7 +1121,7 @@ test("workspace app capability routes restart-and-wait and probe managed endpoin
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/workspace-apps/scaffold",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {
         app_id: "demo-app",
@@ -1132,7 +1132,7 @@ test("workspace app capability routes restart-and-wait and probe managed endpoin
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/workspace-apps/register",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {
         app_id: "demo-app",
@@ -1159,7 +1159,7 @@ mcp:
   tools:
     - demo_tool
 env_contract:
-  - HITECHCLOUD_WORKSPACE_ID
+  - HOLABOSS_WORKSPACE_ID
 `,
       "utf8",
     );
@@ -1175,7 +1175,7 @@ env_contract:
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/workspace-apps/demo-app/restart-and-wait-ready",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {
         timeout_ms: 1000,
@@ -1275,7 +1275,7 @@ env_contract:
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/workspace-apps/demo-app/probe-endpoints",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {},
     });
@@ -1365,10 +1365,10 @@ test("runtime task capability routes create, inspect, rerun, and cancel delegate
     method: "POST",
     url: "/api/v1/capabilities/runtime-tools/subagents",
     headers: {
-      "x-hitechcloud-workspace-id": workspace.id,
-      "x-hitechcloud-session-id": "session-main",
-      "x-hitechcloud-input-id": parentInput.inputId,
-      "x-hitechcloud-selected-model": "openai/gpt-5.4",
+      "x-holaboss-workspace-id": workspace.id,
+      "x-holaboss-session-id": "session-main",
+      "x-holaboss-input-id": parentInput.inputId,
+      "x-holaboss-selected-model": "openai/gpt-5.4",
     },
     payload: {
       goal: "Research topic A",
@@ -1435,8 +1435,8 @@ test("runtime task capability routes create, inspect, rerun, and cancel delegate
     method: "GET",
     url: "/api/v1/capabilities/runtime-tools/tasks?limit=10",
     headers: {
-      "x-hitechcloud-workspace-id": workspace.id,
-      "x-hitechcloud-session-id": "session-main",
+      "x-holaboss-workspace-id": workspace.id,
+      "x-holaboss-session-id": "session-main",
     },
   });
   assert.equal(listedTasksViaCapability.statusCode, 200);
@@ -1447,8 +1447,8 @@ test("runtime task capability routes create, inspect, rerun, and cancel delegate
     method: "GET",
     url: `/api/v1/capabilities/runtime-tools/tasks/${encodeURIComponent(task.issue_id)}`,
     headers: {
-      "x-hitechcloud-workspace-id": workspace.id,
-      "x-hitechcloud-session-id": "session-main",
+      "x-holaboss-workspace-id": workspace.id,
+      "x-holaboss-session-id": "session-main",
     },
   });
   assert.equal(fetchedTaskViaCapability.statusCode, 200);
@@ -1459,9 +1459,9 @@ test("runtime task capability routes create, inspect, rerun, and cancel delegate
     method: "GET",
     url: `/api/v1/capabilities/runtime-tools/tasks/${encodeURIComponent(task.issue_id)}`,
     headers: {
-      "x-hitechcloud-workspace-id": workspace.id,
-      "x-hitechcloud-session-id": "session-main",
-      "x-hitechcloud-input-id": parentInput.inputId,
+      "x-holaboss-workspace-id": workspace.id,
+      "x-holaboss-session-id": "session-main",
+      "x-holaboss-input-id": parentInput.inputId,
     },
   });
   assert.equal(blockedSameTurnTaskFetch.statusCode, 409);
@@ -1474,9 +1474,9 @@ test("runtime task capability routes create, inspect, rerun, and cancel delegate
     method: "GET",
     url: "/api/v1/capabilities/runtime-tools/tasks?limit=10",
     headers: {
-      "x-hitechcloud-workspace-id": workspace.id,
-      "x-hitechcloud-session-id": "session-main",
-      "x-hitechcloud-input-id": parentInput.inputId,
+      "x-holaboss-workspace-id": workspace.id,
+      "x-holaboss-session-id": "session-main",
+      "x-holaboss-input-id": parentInput.inputId,
     },
   });
   assert.equal(blockedSameTurnTaskList.statusCode, 409);
@@ -1489,8 +1489,8 @@ test("runtime task capability routes create, inspect, rerun, and cancel delegate
     method: "POST",
     url: `/api/v1/capabilities/runtime-tools/tasks/${encodeURIComponent(task.issue_id)}/cancel`,
     headers: {
-      "x-hitechcloud-workspace-id": workspace.id,
-      "x-hitechcloud-session-id": "session-main",
+      "x-holaboss-workspace-id": workspace.id,
+      "x-holaboss-session-id": "session-main",
     },
     payload: {},
   });
@@ -1510,10 +1510,10 @@ test("runtime task capability routes create, inspect, rerun, and cancel delegate
     method: "POST",
     url: `/api/v1/capabilities/runtime-tools/tasks/${encodeURIComponent(task.issue_id)}/rerun`,
     headers: {
-      "x-hitechcloud-workspace-id": workspace.id,
-      "x-hitechcloud-session-id": "session-main",
-      "x-hitechcloud-input-id": parentInput.inputId,
-      "x-hitechcloud-selected-model": "openai_codex/gpt-5.5",
+      "x-holaboss-workspace-id": workspace.id,
+      "x-holaboss-session-id": "session-main",
+      "x-holaboss-input-id": parentInput.inputId,
+      "x-holaboss-selected-model": "openai_codex/gpt-5.5",
     },
     payload: {
       model: "openai_codex/gpt-5.4",
@@ -1538,8 +1538,8 @@ test("runtime task capability routes create, inspect, rerun, and cancel delegate
     method: "POST",
     url: `/api/v1/capabilities/runtime-tools/tasks/${encodeURIComponent(task.issue_id)}/cancel`,
     headers: {
-      "x-hitechcloud-workspace-id": workspace.id,
-      "x-hitechcloud-session-id": "session-main",
+      "x-holaboss-workspace-id": workspace.id,
+      "x-holaboss-session-id": "session-main",
     },
     payload: {},
   });
@@ -1605,9 +1605,9 @@ test("delegated subagents use the configured global subagent model instead of re
     method: "POST",
     url: "/api/v1/capabilities/runtime-tools/subagents",
     headers: {
-      "x-hitechcloud-workspace-id": workspace.id,
-      "x-hitechcloud-session-id": "session-main",
-      "x-hitechcloud-selected-model": "openai_direct/gpt-5.4-mini",
+      "x-holaboss-workspace-id": workspace.id,
+      "x-holaboss-session-id": "session-main",
+      "x-holaboss-selected-model": "openai_direct/gpt-5.4-mini",
     },
     payload: {
       goal: "Summarize the repo status.",
@@ -1726,7 +1726,7 @@ test("runtime skill tool resolves a workspace skill through shared runtime state
       "---",
       "name: deploy-helper",
       "description: Deployment helper",
-      "hitechcloud:",
+      "holaboss:",
       "  granted_tools: [bash]",
       "  granted_commands: [deploy-docs]",
       "---",
@@ -1744,7 +1744,7 @@ test("runtime skill tool resolves a workspace skill through shared runtime state
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/skill",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {
         name: "deploy-helper",
@@ -1815,8 +1815,8 @@ test("runtime skill tool resolves workspace-scoped local skills through the assi
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/skill",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
-        "x-hitechcloud-session-id": issue.sessionId,
+        "x-holaboss-workspace-id": "workspace-1",
+        "x-holaboss-session-id": issue.sessionId,
       },
       payload: {
         name: "frontend-playbook",
@@ -1907,7 +1907,7 @@ test("runtime memory_retrieve tool returns interaction leaf hits from the tree b
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {
         query: "how do I deploy?",
@@ -2044,7 +2044,7 @@ test("runtime memory_retrieve tool finds older non-ASCII interaction memories ev
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {
         query: "渠道设计",
@@ -2175,7 +2175,7 @@ test("runtime memory_retrieve tool finds older non-ASCII memories from spaced to
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {
         query: "渠道设计 方案",
@@ -2356,7 +2356,7 @@ test("runtime memory_retrieve tool prefers artifact docs for non-ASCII artifact 
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
         query: "主叙事阶段",
@@ -2435,8 +2435,8 @@ test("runtime memory_retrieve tool returns integration leaf hits through the wor
     leafId: "leaf-release-pr",
     treeId: "integration:github:acct-1",
     subjectKey: "pr:release-123",
-    entityKey: "repo:hitechcloud-vietnam/release",
-    entityLabel: "hitechcloud-vietnam/release",
+    entityKey: "repo:holaboss-ai/release",
+    entityLabel: "holaboss-ai/release",
     branchKey: "pull_requests",
     branchLabel: "Pull requests",
     path: "integration/accounts/github-jeff-acct-1/leaves/leaf-release-pr.md",
@@ -2478,7 +2478,7 @@ test("runtime memory_retrieve tool returns integration leaf hits through the wor
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
         query: "who owns release pr 123?",
@@ -2531,7 +2531,7 @@ test("runtime memory_retrieve rejects legacy interaction and integration scope c
         method: "POST",
         url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
         headers: {
-          "x-hitechcloud-workspace-id": "workspace-1",
+          "x-holaboss-workspace-id": "workspace-1",
         },
         payload: {
           query: "deploy",
@@ -2581,11 +2581,11 @@ test("runtime memory routes reclassify stale uncategorized interaction leaves on
     leafId: "leaf-outreach",
     entityId: "interaction:uncategorized",
     subjectKey:
-      "hitechcloud_personal_outreach_external_contacts:individuals-have-emailed-the-user-personally",
+      "holaboss_personal_outreach_external_contacts:individuals-have-emailed-the-user-personally",
     path: "workspace/root/interaction/entities/uncategorized/leaves/leaf-outreach.md",
-    title: "External individuals have emailed the user personally about hitechcloud",
+    title: "External individuals have emailed the user personally about holaboss",
     summary:
-      "At least two external individuals reached out to the user specifically about hitechcloud as a direct personal contact.",
+      "At least two external individuals reached out to the user specifically about holaboss as a direct personal contact.",
     fingerprint: "fingerprint-leaf-outreach",
     bodySha256: "sha-leaf-outreach",
     tags: ["outreach", "contacts"],
@@ -2612,9 +2612,9 @@ test("runtime memory routes reclassify stale uncategorized interaction leaves on
   fs.writeFileSync(
     originalLeafPath,
     [
-      "# External individuals have emailed the user personally about hitechcloud",
+      "# External individuals have emailed the user personally about holaboss",
       "",
-      "At least two external individuals reached out to the user specifically about hitechcloud as a direct personal contact.",
+      "At least two external individuals reached out to the user specifically about holaboss as a direct personal contact.",
     ].join("\n"),
     "utf8",
   );
@@ -2649,7 +2649,7 @@ test("runtime memory routes reclassify stale uncategorized interaction leaves on
     const topicEntity = store.getInteractionEntity({
       workspaceId: "root",
       entityId:
-        "interaction:topic:external-individuals-have-emailed-the-user-personally-about-hitechcloud",
+        "interaction:topic:external-individuals-have-emailed-the-user-personally-about-holaboss",
     });
 
     assert.ok(leaf);
@@ -2657,7 +2657,7 @@ test("runtime memory routes reclassify stale uncategorized interaction leaves on
     assert.equal(leaf?.entityId, topicEntity?.entityId);
     assert.match(
       leaf?.path ?? "",
-      /interaction\/entities\/topic-external-individuals-have-emailed-the-user-personally-about-hitechcloud\/leaves\/leaf-outreach\.md$/,
+      /interaction\/entities\/topic-external-individuals-have-emailed-the-user-personally-about-holaboss\/leaves\/leaf-outreach\.md$/,
     );
     const topicBrowserPath = `workspace/knowledge/${topicEntity?.slug}/content.md`;
     assert.equal(treeContainsPath(treeResponse.json().root, topicBrowserPath), true);
@@ -2667,16 +2667,16 @@ test("runtime memory routes reclassify stale uncategorized interaction leaves on
       url: `/api/v1/memory/browser/file?workspace_id=root&path=${encodeURIComponent(topicBrowserPath)}`,
     });
     assert.equal(fileResponse.statusCode, 200);
-    assert.match(fileResponse.json().content, /External individuals have emailed the user personally about hitechcloud/);
+    assert.match(fileResponse.json().content, /External individuals have emailed the user personally about holaboss/);
 
     const retrieveResponse = await app.inject({
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
-        query: "hitechcloud personal outreach",
+        query: "holaboss personal outreach",
         retrieval_policy: {
           max_evidence: 4,
         },
@@ -2685,7 +2685,7 @@ test("runtime memory routes reclassify stale uncategorized interaction leaves on
     assert.equal(retrieveResponse.statusCode, 200);
     assert.equal(
       retrieveResponse.json().evidence[0]?.title,
-      "External individuals have emailed the user personally about hitechcloud",
+      "External individuals have emailed the user personally about holaboss",
     );
   } finally {
     await app.close();
@@ -2872,7 +2872,7 @@ test("runtime memory routes repair clipped stale leaves from backfilled output a
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
         query: "Nina Patel Dana Moss builder mode rollout",
@@ -3212,7 +3212,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled output arti
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
         query: "Ben Book anyIP builder mode rollout",
@@ -3298,7 +3298,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled output arti
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
         query: "anyIP builder mode",
@@ -3412,8 +3412,8 @@ test("runtime memory routes enrich stale weak leaves from backfilled tool-result
     eventType: "tool_call",
     payload: {
       phase: "completed",
-      tool_name: "hitechcloud_composio.gmail_fetch_emails",
-      tool_id: "hitechcloud_composio.gmail_fetch_emails",
+      tool_name: "holaboss_composio.gmail_fetch_emails",
+      tool_id: "holaboss_composio.gmail_fetch_emails",
       call_id: "call-gmail-stale-repair-1",
       error: false,
       result: {
@@ -3426,7 +3426,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled tool-result
         details: {
           raw: {
             _meta: {
-              hitechcloud_integration_account: {
+              holaboss_integration_account: {
                 provider_id: "gmail",
                 connected_account_id: "ca_gmail_primary",
                 account_namespace: "ops@example.com",
@@ -3572,7 +3572,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled tool-result
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
         query: "Ben Book anyIP builder mode rollout",
@@ -3669,7 +3669,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled tool-result
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
         query: "ops@example.com builder mode rollout",
@@ -3712,10 +3712,10 @@ test("runtime memory routes enrich stale weak leaves from backfilled attachment 
   });
   store.upsertInteractionEntity({
     workspaceId: "root",
-    entityId: "interaction:topic:hitechcloud-personal-outreach",
+    entityId: "interaction:topic:holaboss-personal-outreach",
     entityType: "topic",
-    canonicalName: "hitechcloud personal outreach",
-    slug: "topic-hitechcloud-personal-outreach",
+    canonicalName: "holaboss personal outreach",
+    slug: "topic-holaboss-personal-outreach",
     summary: "Personal outreach memory.",
     aliases: [],
     isSystem: false,
@@ -3758,7 +3758,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled attachment 
     embeddingClient: null,
   });
 
-  const attachmentRelativePath = ".hitechcloud/input-attachments/batch-legacy/outreach-note.html";
+  const attachmentRelativePath = ".holaboss/input-attachments/batch-legacy/outreach-note.html";
   const attachmentAbsolutePath = path.join(workspaceRoot, "root", attachmentRelativePath);
   fs.mkdirSync(path.dirname(attachmentAbsolutePath), { recursive: true });
   fs.writeFileSync(
@@ -3766,7 +3766,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled attachment 
     [
       "<html><body>",
       "<h1>Personal Outreach</h1>",
-      "<p>Ben Book at anyIP emailed the user personally about hitechcloud.</p>",
+      "<p>Ben Book at anyIP emailed the user personally about holaboss.</p>",
       "<p>Keep this attachment tied to the durable personal outreach memory.</p>",
       "</body></html>",
     ].join(""),
@@ -3804,14 +3804,14 @@ test("runtime memory routes enrich stale weak leaves from backfilled attachment 
   store.upsertInteractionLeaf({
     workspaceId: "root",
     leafId: "leaf-personal-outreach-attachment",
-    entityId: "interaction:topic:hitechcloud-personal-outreach",
-    subjectKey: "hitechcloud_personal_outreach_attachment",
-    path: "workspace/root/interaction/entities/topic-hitechcloud-personal-outreach/leaves/leaf-personal-outreach-attachment.md",
-    title: "hitechcloud personal outreach attachment preserved in a legacy note",
+    entityId: "interaction:topic:holaboss-personal-outreach",
+    subjectKey: "holaboss_personal_outreach_attachment",
+    path: "workspace/root/interaction/entities/topic-holaboss-personal-outreach/leaves/leaf-personal-outreach-attachment.md",
+    title: "holaboss personal outreach attachment preserved in a legacy note",
     summary: "The personal outreach attachment was preserved in a legacy note.",
     fingerprint: "fingerprint-personal-outreach-attachment",
     bodySha256: "sha-personal-outreach-attachment",
-    tags: ["hitechcloud", "outreach", "attachment"],
+    tags: ["holaboss", "outreach", "attachment"],
     secondaryEntityIds: [],
     sourceType: "assistant_turn",
     sourceEventId: queuedInput.inputId,
@@ -3827,7 +3827,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled attachment 
     workspaceMemoryDir(path.join(workspaceRoot, "root")),
     "interaction",
     "entities",
-    "topic-hitechcloud-personal-outreach",
+    "topic-holaboss-personal-outreach",
     "leaves",
     "leaf-personal-outreach-attachment.md",
   );
@@ -3835,7 +3835,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled attachment 
   fs.writeFileSync(
     originalLeafPath,
     [
-      "# hitechcloud personal outreach attachment preserved in a legacy note",
+      "# holaboss personal outreach attachment preserved in a legacy note",
       "",
       "## Summary",
       "",
@@ -3933,10 +3933,10 @@ test("runtime memory routes enrich stale weak leaves from backfilled attachment 
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
-        query: "Ben Book anyIP hitechcloud personal outreach",
+        query: "Ben Book anyIP holaboss personal outreach",
         retrieval_policy: {
           max_evidence: 6,
         },
@@ -3945,7 +3945,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled attachment 
     assert.equal(retrieveResponse.statusCode, 200);
     assert.equal(
       retrieveResponse.json().evidence[0]?.title,
-      "hitechcloud personal outreach attachment preserved in a legacy note",
+      "holaboss personal outreach attachment preserved in a legacy note",
     );
     assert.ok(requestCount >= 1);
 
@@ -3984,19 +3984,19 @@ test("runtime memory routes enrich stale weak leaves from backfilled attachment 
     const leafNode = store.listSemanticMemoryNodes({
       category: "workspace",
       workspaceId: "root",
-      treeId: "interaction:topic:hitechcloud-personal-outreach",
+      treeId: "interaction:topic:holaboss-personal-outreach",
       status: "active",
       limit: 10_000,
       offset: 0,
     }).find((node) =>
       node.nodeClass === "leaf"
-      && node.title === "hitechcloud personal outreach attachment preserved in a legacy note"
+      && node.title === "holaboss personal outreach attachment preserved in a legacy note"
     );
     assert.ok(leafNode);
 
     const leafDetailResponse = await app.inject({
       method: "GET",
-      url: `/api/v1/memory/browser/node-detail?workspace_id=root&tree_id=${encodeURIComponent("interaction:topic:hitechcloud-personal-outreach")}&node_id=${encodeURIComponent(leafNode!.nodeId)}`,
+      url: `/api/v1/memory/browser/node-detail?workspace_id=root&tree_id=${encodeURIComponent("interaction:topic:holaboss-personal-outreach")}&node_id=${encodeURIComponent(leafNode!.nodeId)}`,
     });
     assert.equal(leafDetailResponse.statusCode, 200);
     assert.ok(leafDetailResponse.json().outgoing_relations.some((relation: {
@@ -4053,10 +4053,10 @@ test("runtime memory routes enrich stale weak leaves from backfilled image-url a
   });
   store.upsertInteractionEntity({
     workspaceId: "root",
-    entityId: "interaction:topic:hitechcloud-personal-outreach",
+    entityId: "interaction:topic:holaboss-personal-outreach",
     entityType: "topic",
-    canonicalName: "hitechcloud personal outreach",
-    slug: "topic-hitechcloud-personal-outreach",
+    canonicalName: "holaboss personal outreach",
+    slug: "topic-holaboss-personal-outreach",
     summary: "Personal outreach memory.",
     aliases: [],
     isSystem: false,
@@ -4132,14 +4132,14 @@ test("runtime memory routes enrich stale weak leaves from backfilled image-url a
   store.upsertInteractionLeaf({
     workspaceId: "root",
     leafId: "leaf-personal-outreach-image-url",
-    entityId: "interaction:topic:hitechcloud-personal-outreach",
-    subjectKey: "hitechcloud_personal_outreach_image_url",
-    path: "workspace/root/interaction/entities/topic-hitechcloud-personal-outreach/leaves/leaf-personal-outreach-image-url.md",
-    title: "hitechcloud personal outreach referenced image preserved in a legacy note",
+    entityId: "interaction:topic:holaboss-personal-outreach",
+    subjectKey: "holaboss_personal_outreach_image_url",
+    path: "workspace/root/interaction/entities/topic-holaboss-personal-outreach/leaves/leaf-personal-outreach-image-url.md",
+    title: "holaboss personal outreach referenced image preserved in a legacy note",
     summary: "The personal outreach referenced image was preserved in a legacy note.",
     fingerprint: "fingerprint-personal-outreach-image-url",
     bodySha256: "sha-personal-outreach-image-url",
-    tags: ["hitechcloud", "outreach", "image_url"],
+    tags: ["holaboss", "outreach", "image_url"],
     secondaryEntityIds: [],
     sourceType: "assistant_turn",
     sourceEventId: queuedInput.inputId,
@@ -4155,7 +4155,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled image-url a
     workspaceMemoryDir(path.join(workspaceRoot, "root")),
     "interaction",
     "entities",
-    "topic-hitechcloud-personal-outreach",
+    "topic-holaboss-personal-outreach",
     "leaves",
     "leaf-personal-outreach-image-url.md",
   );
@@ -4163,7 +4163,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled image-url a
   fs.writeFileSync(
     originalLeafPath,
     [
-      "# hitechcloud personal outreach referenced image preserved in a legacy note",
+      "# holaboss personal outreach referenced image preserved in a legacy note",
       "",
       "## Summary",
       "",
@@ -4263,10 +4263,10 @@ test("runtime memory routes enrich stale weak leaves from backfilled image-url a
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
-        query: "Ben Book anyIP hitechcloud personal outreach",
+        query: "Ben Book anyIP holaboss personal outreach",
         retrieval_policy: {
           max_evidence: 6,
         },
@@ -4275,7 +4275,7 @@ test("runtime memory routes enrich stale weak leaves from backfilled image-url a
     assert.equal(retrieveResponse.statusCode, 200);
     assert.equal(
       retrieveResponse.json().evidence[0]?.title,
-      "hitechcloud personal outreach referenced image preserved in a legacy note",
+      "holaboss personal outreach referenced image preserved in a legacy note",
     );
     assert.ok(requestCount >= 1);
 
@@ -4317,19 +4317,19 @@ test("runtime memory routes enrich stale weak leaves from backfilled image-url a
     const leafNode = store.listSemanticMemoryNodes({
       category: "workspace",
       workspaceId: "root",
-      treeId: "interaction:topic:hitechcloud-personal-outreach",
+      treeId: "interaction:topic:holaboss-personal-outreach",
       status: "active",
       limit: 10_000,
       offset: 0,
     }).find((node) =>
       node.nodeClass === "leaf"
-      && node.title === "hitechcloud personal outreach referenced image preserved in a legacy note"
+      && node.title === "holaboss personal outreach referenced image preserved in a legacy note"
     );
     assert.ok(leafNode);
 
     const leafDetailResponse = await app.inject({
       method: "GET",
-      url: `/api/v1/memory/browser/node-detail?workspace_id=root&tree_id=${encodeURIComponent("interaction:topic:hitechcloud-personal-outreach")}&node_id=${encodeURIComponent(leafNode!.nodeId)}`,
+      url: `/api/v1/memory/browser/node-detail?workspace_id=root&tree_id=${encodeURIComponent("interaction:topic:holaboss-personal-outreach")}&node_id=${encodeURIComponent(leafNode!.nodeId)}`,
     });
     assert.equal(leafDetailResponse.statusCode, 200);
     assert.ok(leafDetailResponse.json().outgoing_relations.some((relation: {
@@ -4384,10 +4384,10 @@ test("runtime memory routes rewrite legacy related keys to canonical workspace i
   });
   store.upsertInteractionEntity({
     workspaceId: "workspace-1",
-    entityId: "interaction:topic:hitechcloud-personal-outreach",
+    entityId: "interaction:topic:holaboss-personal-outreach",
     entityType: "topic",
-    canonicalName: "hitechcloud personal outreach",
-    slug: "topic-hitechcloud-personal-outreach",
+    canonicalName: "holaboss personal outreach",
+    slug: "topic-holaboss-personal-outreach",
     summary: "Personal outreach memory.",
     aliases: [],
     isSystem: false,
@@ -4433,14 +4433,14 @@ test("runtime memory routes rewrite legacy related keys to canonical workspace i
   store.upsertInteractionLeaf({
     workspaceId: "workspace-1",
     leafId: "leaf-legacy-related-keys",
-    entityId: "interaction:topic:hitechcloud-personal-outreach",
-    subjectKey: "hitechcloud_personal_outreach_legacy_related_keys",
-    path: "workspace/workspace-1/interaction/entities/topic-hitechcloud-personal-outreach/leaves/leaf-legacy-related-keys.md",
+    entityId: "interaction:topic:holaboss-personal-outreach",
+    subjectKey: "holaboss_personal_outreach_legacy_related_keys",
+    path: "workspace/workspace-1/interaction/entities/topic-holaboss-personal-outreach/leaves/leaf-legacy-related-keys.md",
     title: "Legacy outreach contact memory",
     summary: "Legacy outreach contact memory kept older related keys.",
     fingerprint: "fingerprint-legacy-related-keys",
     bodySha256: "sha-legacy-related-keys",
-    tags: ["hitechcloud", "outreach"],
+    tags: ["holaboss", "outreach"],
     secondaryEntityIds: [],
     sourceType: "assistant_turn",
     sourceEventId: "input-legacy-related-keys",
@@ -4456,7 +4456,7 @@ test("runtime memory routes rewrite legacy related keys to canonical workspace i
     workspaceMemoryDir(path.join(workspaceRoot, "workspace-1")),
     "interaction",
     "entities",
-    "topic-hitechcloud-personal-outreach",
+    "topic-holaboss-personal-outreach",
     "leaves",
     "leaf-legacy-related-keys.md",
   );
@@ -4472,7 +4472,7 @@ test("runtime memory routes rewrite legacy related keys to canonical workspace i
       "",
       "## Evidence",
       "",
-      "Ben Book at anyIP emailed the user personally about hitechcloud.",
+      "Ben Book at anyIP emailed the user personally about holaboss.",
       "",
       "## Related Entities",
       "",
@@ -4525,7 +4525,7 @@ test("runtime memory routes rewrite legacy related keys to canonical workspace i
     const leafNode = store.listSemanticMemoryNodes({
       category: "workspace",
       workspaceId: "workspace-1",
-      treeId: "interaction:topic:hitechcloud-personal-outreach",
+      treeId: "interaction:topic:holaboss-personal-outreach",
       status: "active",
       limit: 10_000,
       offset: 0,
@@ -4537,7 +4537,7 @@ test("runtime memory routes rewrite legacy related keys to canonical workspace i
 
     const leafDetailResponse = await app.inject({
       method: "GET",
-      url: `/api/v1/memory/browser/node-detail?workspace_id=workspace-1&tree_id=${encodeURIComponent("interaction:topic:hitechcloud-personal-outreach")}&node_id=${encodeURIComponent(leafNode!.nodeId)}`,
+      url: `/api/v1/memory/browser/node-detail?workspace_id=workspace-1&tree_id=${encodeURIComponent("interaction:topic:holaboss-personal-outreach")}&node_id=${encodeURIComponent(leafNode!.nodeId)}`,
     });
     assert.equal(leafDetailResponse.statusCode, 200);
     assert.ok(leafDetailResponse.json().outgoing_relations.some((relation: {
@@ -5260,7 +5260,7 @@ test("runtime memory routes archive request-shaped junk memories on first read",
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {
         query: "billing-related emails",
@@ -5524,7 +5524,7 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
     [
       "# Delegated Outreach Report",
       "",
-      "Ben Book at anyIP reached out to the user personally about hitechcloud.",
+      "Ben Book at anyIP reached out to the user personally about holaboss.",
       "Keep this subagent deliverable attached to the durable outreach memory.",
     ].join("\n"),
     "utf8",
@@ -5534,7 +5534,7 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
     workspaceId: workspace.id,
     sessionId: "session-subagent",
     payload: {
-      text: "Investigate the external hitechcloud outreach thread.",
+      text: "Investigate the external holaboss outreach thread.",
     },
   });
   store.createSubagentRun({
@@ -5549,7 +5549,7 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
     currentChildInputId: subagentInput.inputId,
     latestChildInputId: subagentInput.inputId,
     title: "Delegated outreach review",
-    goal: "Investigate the external hitechcloud outreach thread.",
+    goal: "Investigate the external holaboss outreach thread.",
     status: "completed",
   });
   const subagentTurnResult = store.upsertTurnResult({
@@ -5565,8 +5565,8 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
       total_calls: 1,
       completed_calls: 1,
       failed_calls: 0,
-      tool_names: ["hitechcloud_composio.gmail_fetch_emails"],
-      tool_ids: ["hitechcloud_composio.gmail_fetch_emails"],
+      tool_names: ["holaboss_composio.gmail_fetch_emails"],
+      tool_ids: ["holaboss_composio.gmail_fetch_emails"],
     },
   });
   store.appendOutputEvent({
@@ -5577,21 +5577,21 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
     eventType: "tool_call",
     payload: {
       phase: "completed",
-      tool_name: "hitechcloud_composio.gmail_fetch_emails",
-      tool_id: "hitechcloud_composio.gmail_fetch_emails",
+      tool_name: "holaboss_composio.gmail_fetch_emails",
+      tool_id: "holaboss_composio.gmail_fetch_emails",
       call_id: "call-gmail-subagent-1",
       error: false,
       result: {
         content: [
           {
             type: "text",
-            text: "Ben Book at anyIP reached out to the user personally about hitechcloud and followed up on the same Gmail thread.",
+            text: "Ben Book at anyIP reached out to the user personally about holaboss and followed up on the same Gmail thread.",
           },
         ],
         details: {
           raw: {
             _meta: {
-              hitechcloud_integration_account: {
+              holaboss_integration_account: {
                 provider_id: "gmail",
                 connected_account_id: "ca_gmail_primary",
                 account_namespace: "ops@example.com",
@@ -5744,11 +5744,11 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
                       {
                         scope: "workspace",
                         memory_type: "reference",
-                        subject_key: "hitechcloud-personal-outreach-delegated",
-                        title: "External individuals contacted the user personally about hitechcloud",
-                        summary: "A small set of external individuals reached out to the user personally about hitechcloud and those outreach details should stay discoverable.",
-                        tags: ["hitechcloud", "outreach", "reference"],
-                        evidence: "The forwarded subagent report says Ben Book at anyIP reached out to the user personally about hitechcloud.",
+                        subject_key: "holaboss-personal-outreach-delegated",
+                        title: "External individuals contacted the user personally about holaboss",
+                        summary: "A small set of external individuals reached out to the user personally about holaboss and those outreach details should stay discoverable.",
+                        tags: ["holaboss", "outreach", "reference"],
+                        evidence: "The forwarded subagent report says Ben Book at anyIP reached out to the user personally about holaboss.",
                         confidence: 0.97,
                       },
                     ],
@@ -5770,13 +5770,13 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
                     related_entities: [
                       { entity_type: "person", label: "Ben Book" },
                       { entity_type: "organization", label: "anyIP" },
-                      { entity_type: "topic", label: "hitechcloud" },
+                      { entity_type: "topic", label: "holaboss" },
                       { entity_type: "artifact", label: "outreach-delegated.md" },
                     ],
                     relations: [
                       { relation_type: "contacted_by", entity_type: "person", entity_label: "Ben Book" },
                       { relation_type: "works_at", entity_type: "organization", entity_label: "anyIP" },
-                      { relation_type: "about", entity_type: "topic", entity_label: "hitechcloud" },
+                      { relation_type: "about", entity_type: "topic", entity_label: "holaboss" },
                       { relation_type: "mentions", entity_type: "artifact", entity_label: "outreach-delegated.md" },
                     ],
                   }),
@@ -5797,7 +5797,7 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
                     action: "create_new",
                     existing_entity_id: null,
                     new_entity_type: "topic",
-                    new_entity_name: "hitechcloud personal outreach",
+                    new_entity_name: "holaboss personal outreach",
                     secondary_entity_ids: [],
                     confidence: 0.96,
                     rationale: "This memory is a durable outreach topic rather than a single person or workflow.",
@@ -5816,7 +5816,7 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
               {
                 message: {
                   content: JSON.stringify({
-                    summary: "This topic captures durable personal outreach contacts and delegated subagent artifacts related to hitechcloud.",
+                    summary: "This topic captures durable personal outreach contacts and delegated subagent artifacts related to holaboss.",
                   }),
                 },
               },
@@ -5874,7 +5874,7 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": workspace.id,
+        "x-holaboss-workspace-id": workspace.id,
       },
       payload: {
         query: "ops@example.com",
@@ -5893,14 +5893,14 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
       account_namespace?: string | null;
     }) =>
       item.account_namespace === "ops@example.com"
-      && /hitechcloud_composio\.gmail_fetch_emails/i.test(item.title ?? ""),
+      && /holaboss_composio\.gmail_fetch_emails/i.test(item.title ?? ""),
     ));
 
     const benResponse = await app.inject({
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": workspace.id,
+        "x-holaboss-workspace-id": workspace.id,
       },
       payload: {
         query: "Ben Book",
@@ -5919,7 +5919,7 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": workspace.id,
+        "x-holaboss-workspace-id": workspace.id,
       },
       payload: {
         query: "outreach-delegated.md",
@@ -5942,7 +5942,7 @@ test("runtime memory routes recover delegated subagent artifact provenance and s
       metadata?: Record<string, unknown>;
     }) =>
       relation.relation_type === "derived_from"
-      && /hitechcloud_composio\.gmail_fetch_emails result/i.test(relation.target_label ?? "")
+      && /holaboss_composio\.gmail_fetch_emails result/i.test(relation.target_label ?? "")
       && relation.metadata?.source_subagent_id === "subagent-1",
     ));
 
@@ -6000,15 +6000,15 @@ test("runtime memory routes recover attachment artifact provenance and surface d
     kind: "main_session",
   });
 
-  const attachmentRelativePath = ".hitechcloud/input-attachments/batch-1/outreach-report.html";
+  const attachmentRelativePath = ".holaboss/input-attachments/batch-1/outreach-report.html";
   const attachmentAbsolutePath = path.join(workspaceRoot, workspace.id, attachmentRelativePath);
   fs.mkdirSync(path.dirname(attachmentAbsolutePath), { recursive: true });
   fs.writeFileSync(
     attachmentAbsolutePath,
     [
       "<html><body>",
-      "<h1>hitechcloud personal outreach</h1>",
-      "<p>Ben Book from anyIP emailed the user personally about hitechcloud.</p>",
+      "<h1>holaboss personal outreach</h1>",
+      "<p>Ben Book from anyIP emailed the user personally about holaboss.</p>",
       "<p>Keep the named outreach contact attached to durable memory.</p>",
       "</body></html>",
     ].join(""),
@@ -6045,8 +6045,8 @@ test("runtime memory routes recover attachment artifact provenance and surface d
       total_calls: 1,
       completed_calls: 1,
       failed_calls: 0,
-      tool_names: ["hitechcloud_composio.gmail_fetch_emails"],
-      tool_ids: ["hitechcloud_composio.gmail_fetch_emails"],
+      tool_names: ["holaboss_composio.gmail_fetch_emails"],
+      tool_ids: ["holaboss_composio.gmail_fetch_emails"],
     },
   });
   store.appendOutputEvent({
@@ -6057,21 +6057,21 @@ test("runtime memory routes recover attachment artifact provenance and surface d
     eventType: "tool_call",
     payload: {
       phase: "completed",
-      tool_name: "hitechcloud_composio.gmail_fetch_emails",
-      tool_id: "hitechcloud_composio.gmail_fetch_emails",
+      tool_name: "holaboss_composio.gmail_fetch_emails",
+      tool_id: "holaboss_composio.gmail_fetch_emails",
       call_id: "call-gmail-attachment-1",
       error: false,
       result: {
         content: [
           {
             type: "text",
-            text: "Ben Book at anyIP reached out to the user personally about hitechcloud and followed up on the same Gmail thread.",
+            text: "Ben Book at anyIP reached out to the user personally about holaboss and followed up on the same Gmail thread.",
           },
         ],
         details: {
           raw: {
             _meta: {
-              hitechcloud_integration_account: {
+              holaboss_integration_account: {
                 provider_id: "gmail",
                 connected_account_id: "ca_gmail_primary",
                 account_namespace: "ops@example.com",
@@ -6104,11 +6104,11 @@ test("runtime memory routes recover attachment artifact provenance and surface d
                       {
                         scope: "workspace",
                         memory_type: "reference",
-                        subject_key: "hitechcloud-personal-outreach-attachment",
-                        title: "External individuals contacted the user personally about hitechcloud",
-                        summary: "A small set of external individuals reached out to the user personally about hitechcloud and those outreach details should stay discoverable.",
-                        tags: ["hitechcloud", "outreach", "reference"],
-                        evidence: "The Gmail result and attachment both identify Ben Book at anyIP as a personal outreach contact for hitechcloud.",
+                        subject_key: "holaboss-personal-outreach-attachment",
+                        title: "External individuals contacted the user personally about holaboss",
+                        summary: "A small set of external individuals reached out to the user personally about holaboss and those outreach details should stay discoverable.",
+                        tags: ["holaboss", "outreach", "reference"],
+                        evidence: "The Gmail result and attachment both identify Ben Book at anyIP as a personal outreach contact for holaboss.",
                         confidence: 0.97,
                       },
                     ],
@@ -6153,7 +6153,7 @@ test("runtime memory routes recover attachment artifact provenance and surface d
                     action: "create_new",
                     existing_entity_id: null,
                     new_entity_type: "topic",
-                    new_entity_name: "hitechcloud personal outreach",
+                    new_entity_name: "holaboss personal outreach",
                     secondary_entity_ids: [],
                     confidence: 0.96,
                     rationale: "This memory is a durable outreach topic rather than a single person or workflow.",
@@ -6172,7 +6172,7 @@ test("runtime memory routes recover attachment artifact provenance and surface d
               {
                 message: {
                   content: JSON.stringify({
-                    summary: "This topic captures durable personal outreach contacts and attachment evidence related to hitechcloud.",
+                    summary: "This topic captures durable personal outreach contacts and attachment evidence related to holaboss.",
                   }),
                 },
               },
@@ -6228,7 +6228,7 @@ test("runtime memory routes recover attachment artifact provenance and surface d
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": workspace.id,
+        "x-holaboss-workspace-id": workspace.id,
       },
       payload: {
         query: "Ben Book",
@@ -6247,7 +6247,7 @@ test("runtime memory routes recover attachment artifact provenance and surface d
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": workspace.id,
+        "x-holaboss-workspace-id": workspace.id,
       },
       payload: {
         query: "ops@example.com",
@@ -6266,14 +6266,14 @@ test("runtime memory routes recover attachment artifact provenance and surface d
       account_namespace?: string | null;
     }) =>
       item.account_namespace === "ops@example.com"
-      && /hitechcloud_composio\.gmail_fetch_emails/i.test(item.title ?? ""),
+      && /holaboss_composio\.gmail_fetch_emails/i.test(item.title ?? ""),
     ));
 
     const attachmentResponse = await app.inject({
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": workspace.id,
+        "x-holaboss-workspace-id": workspace.id,
       },
       payload: {
         query: "outreach-report.html",
@@ -6485,7 +6485,7 @@ test("runtime memory_retrieve tool treats non-ASCII filename queries as artifact
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
         query: "主叙事阶段.md",
@@ -6578,7 +6578,7 @@ test("runtime memory routes surface fresh non-ASCII owner relations as canonical
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
+        "x-holaboss-workspace-id": "workspace-1",
       },
       payload: {
         query: "渠道设计阶段",
@@ -6656,19 +6656,19 @@ test("runtime memory browser node-detail route returns evidence refs and relatio
 
   store.upsertInteractionEntity({
     workspaceId: "workspace-1",
-    entityId: "interaction:topic:hitechcloud-personal-outreach",
+    entityId: "interaction:topic:holaboss-personal-outreach",
     entityType: "topic",
-    canonicalName: "Hitechcloud personal outreach",
-    slug: "topic-hitechcloud-personal-outreach",
+    canonicalName: "Holaboss personal outreach",
+    slug: "topic-holaboss-personal-outreach",
     summary: "External outreach memory.",
     aliases: [],
     isSystem: false,
     status: "active",
   });
 
-  const treeId = "interaction:topic:hitechcloud-personal-outreach";
-  const rootNodeId = "semantic:interaction:interaction:topic:hitechcloud-personal-outreach:tree";
-  const leafNodeId = "semantic:interaction:interaction:topic:hitechcloud-personal-outreach:leaf:leaf-1";
+  const treeId = "interaction:topic:holaboss-personal-outreach";
+  const rootNodeId = "semantic:interaction:interaction:topic:holaboss-personal-outreach:tree";
+  const leafNodeId = "semantic:interaction:interaction:topic:holaboss-personal-outreach:leaf:leaf-1";
   store.syncSemanticMemoryTree({
     category: "workspace",
     workspaceId: "workspace-1",
@@ -6678,8 +6678,8 @@ test("runtime memory browser node-detail route returns evidence refs and relatio
         nodeId: rootNodeId,
         nodeClass: "semantic",
         nodeKind: "tree",
-        path: "semantic/workspace/knowledge/topic-hitechcloud-personal-outreach/content.md",
-        title: "Hitechcloud personal outreach",
+        path: "semantic/workspace/knowledge/topic-holaboss-personal-outreach/content.md",
+        title: "Holaboss personal outreach",
         summary: "External outreach memory.",
         bodySha256: "sha-root",
         childCount: 1,
@@ -6691,8 +6691,8 @@ test("runtime memory browser node-detail route returns evidence refs and relatio
         nodeClass: "leaf",
         nodeKind: "leaf",
         sourceLeafId: "leaf-1",
-        path: "semantic/workspace/knowledge/topic-hitechcloud-personal-outreach/leaf-1.md",
-        title: "External individuals contacted the user personally about hitechcloud",
+        path: "semantic/workspace/knowledge/topic-holaboss-personal-outreach/leaf-1.md",
+        title: "External individuals contacted the user personally about holaboss",
         summary: "Personal outreach memory.",
         bodySha256: "sha-leaf",
         childCount: 0,
@@ -6744,7 +6744,7 @@ test("runtime memory browser node-detail route returns evidence refs and relatio
     sourceTurnInputId: "input-7",
     observedAt: "2026-06-03T00:00:00.000Z",
     metadata: {
-      tool_name: "hitechcloud_composio.gmail_fetch_emails",
+      tool_name: "holaboss_composio.gmail_fetch_emails",
     },
   });
 
@@ -6774,7 +6774,7 @@ test("runtime memory browser node-detail route returns evidence refs and relatio
     assert.equal(relatedResponse.json().incoming_relations[0]?.source_node_id, leafNodeId);
     assert.equal(
       relatedResponse.json().incoming_relations[0]?.source_label,
-      "External individuals contacted the user personally about hitechcloud",
+      "External individuals contacted the user personally about holaboss",
     );
     assert.equal(
       relatedResponse.json().incoming_relations[0]?.target_resolution_kind,
@@ -6918,8 +6918,8 @@ test("runtime memory_retrieve searches both interaction and integration trees wh
     leafId: "leaf-atlas-pr-owner",
     treeId: "integration:github:acct-2",
     subjectKey: "release-pr-owner",
-    entityKey: "repo:hitechcloud-vietnam/atlas-api",
-    entityLabel: "hitechcloud-vietnam/atlas-api",
+    entityKey: "repo:holaboss-ai/atlas-api",
+    entityLabel: "holaboss-ai/atlas-api",
     branchKey: "pull_requests",
     branchLabel: "Pull requests",
     path: "integration/accounts/github-atlas-acct-2/leaves/leaf-atlas-pr-owner.md",
@@ -6961,7 +6961,7 @@ test("runtime memory_retrieve searches both interaction and integration trees wh
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/memory/retrieve",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
         query: "atlas api",
@@ -7019,7 +7019,7 @@ test("runtime download_url tool saves a remote asset into the workspace", async 
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/downloads",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
+        "x-holaboss-workspace-id": "root",
       },
       payload: {
         url: `${assetServer.url}/cover`,
@@ -7070,8 +7070,8 @@ test("runtime todo tools read, write, and block session todo state", async () =>
       method: "GET",
       url: "/api/v1/capabilities/runtime-tools/todo",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
-        "x-hitechcloud-session-id": "session-main",
+        "x-holaboss-workspace-id": "root",
+        "x-holaboss-session-id": "session-main",
       },
     });
     assert.equal(initialRead.statusCode, 200);
@@ -7082,8 +7082,8 @@ test("runtime todo tools read, write, and block session todo state", async () =>
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/todo",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
-        "x-hitechcloud-session-id": "session-main",
+        "x-holaboss-workspace-id": "root",
+        "x-holaboss-session-id": "session-main",
       },
       payload: {
         ops: [
@@ -7111,8 +7111,8 @@ test("runtime todo tools read, write, and block session todo state", async () =>
       method: "GET",
       url: "/api/v1/capabilities/runtime-tools/todo",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
-        "x-hitechcloud-session-id": "session-main",
+        "x-holaboss-workspace-id": "root",
+        "x-holaboss-session-id": "session-main",
       },
     });
     assert.equal(reread.statusCode, 200);
@@ -7124,8 +7124,8 @@ test("runtime todo tools read, write, and block session todo state", async () =>
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/todo/block",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
-        "x-hitechcloud-session-id": "session-main",
+        "x-holaboss-workspace-id": "root",
+        "x-holaboss-session-id": "session-main",
       },
       payload: {
         detail: "Blocked waiting for user input: Should I deploy to production?",
@@ -7139,14 +7139,14 @@ test("runtime todo tools read, write, and block session todo state", async () =>
       method: "GET",
       url: "/api/v1/capabilities/runtime-tools/todo/status",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
-        "x-hitechcloud-session-id": "session-main",
+        "x-holaboss-workspace-id": "root",
+        "x-holaboss-session-id": "session-main",
       },
     });
     assert.equal(status.statusCode, 200);
     assert.equal(status.json().blocked, true);
 
-  const todoPath = path.join(workspaceRoot, "root", ".hitechcloud", "state", "todos", "session-main.json");
+  const todoPath = path.join(workspaceRoot, "root", ".holaboss", "state", "todos", "session-main.json");
     const persisted = JSON.parse(fs.readFileSync(todoPath, "utf8"));
     assert.equal(persisted.phases[0]?.tasks[0]?.status, "blocked");
     assert.equal(persisted.phases[0]?.tasks[1]?.status, "pending");
@@ -7295,8 +7295,8 @@ test("runtime terminal session tools proxy terminal session manager operations",
     method: "GET",
     url: "/api/v1/capabilities/runtime-tools/terminal-sessions",
     headers: {
-      "x-hitechcloud-workspace-id": "workspace-1",
-      "x-hitechcloud-session-id": "session-main",
+      "x-holaboss-workspace-id": "workspace-1",
+      "x-holaboss-session-id": "session-main",
     },
   });
   assert.equal(listResponse.statusCode, 200);
@@ -7307,10 +7307,10 @@ test("runtime terminal session tools proxy terminal session manager operations",
     method: "POST",
     url: "/api/v1/capabilities/runtime-tools/terminal-sessions",
     headers: {
-      "x-hitechcloud-workspace-id": "workspace-1",
-      "x-hitechcloud-session-id": "session-main",
-      "x-hitechcloud-input-id": "input-1",
-      "x-hitechcloud-selected-model": "openai/gpt-5.4",
+      "x-holaboss-workspace-id": "workspace-1",
+      "x-holaboss-session-id": "session-main",
+      "x-holaboss-input-id": "input-1",
+      "x-holaboss-selected-model": "openai/gpt-5.4",
     },
     payload: {
       title: "Build",
@@ -7326,7 +7326,7 @@ test("runtime terminal session tools proxy terminal session manager operations",
     method: "GET",
     url: "/api/v1/capabilities/runtime-tools/terminal-sessions/term-1",
     headers: {
-      "x-hitechcloud-workspace-id": "workspace-1",
+      "x-holaboss-workspace-id": "workspace-1",
     },
   });
   assert.equal(getResponse.statusCode, 200);
@@ -7336,7 +7336,7 @@ test("runtime terminal session tools proxy terminal session manager operations",
     method: "POST",
     url: "/api/v1/capabilities/runtime-tools/terminal-sessions/term-1/read",
     headers: {
-      "x-hitechcloud-workspace-id": "workspace-1",
+      "x-holaboss-workspace-id": "workspace-1",
     },
     payload: {
       after_sequence: 0,
@@ -7356,7 +7356,7 @@ test("runtime terminal session tools proxy terminal session manager operations",
     method: "POST",
     url: "/api/v1/capabilities/runtime-tools/terminal-sessions/term-1/wait",
     headers: {
-      "x-hitechcloud-workspace-id": "workspace-1",
+      "x-holaboss-workspace-id": "workspace-1",
     },
     payload: {
       after_sequence: 1,
@@ -7397,7 +7397,7 @@ test("runtime terminal session tools proxy terminal session manager operations",
     method: "POST",
     url: "/api/v1/capabilities/runtime-tools/terminal-sessions/term-1/input",
     headers: {
-      "x-hitechcloud-workspace-id": "workspace-1",
+      "x-holaboss-workspace-id": "workspace-1",
     },
     payload: {
       data: "npm test\r",
@@ -7410,7 +7410,7 @@ test("runtime terminal session tools proxy terminal session manager operations",
     method: "POST",
     url: "/api/v1/capabilities/runtime-tools/terminal-sessions/term-1/signal",
     headers: {
-      "x-hitechcloud-workspace-id": "workspace-1",
+      "x-holaboss-workspace-id": "workspace-1",
     },
     payload: {
       signal: "SIGINT",
@@ -7423,7 +7423,7 @@ test("runtime terminal session tools proxy terminal session manager operations",
     method: "POST",
     url: "/api/v1/capabilities/runtime-tools/terminal-sessions/term-1/close",
     headers: {
-      "x-hitechcloud-workspace-id": "workspace-1",
+      "x-holaboss-workspace-id": "workspace-1",
     },
     payload: {},
   });
@@ -7511,9 +7511,9 @@ test("runtime terminal read preview mode clips large event streams and spills fu
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/terminal-sessions/term-1/read",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
-        "x-hitechcloud-session-id": "session-main",
-        "x-hitechcloud-tool-result-mode": "preview",
+        "x-holaboss-workspace-id": "workspace-1",
+        "x-holaboss-session-id": "session-main",
+        "x-holaboss-tool-result-mode": "preview",
       },
       payload: {
         after_sequence: 0,
@@ -7534,7 +7534,7 @@ test("runtime terminal read preview mode clips large event streams and spills fu
     assert.equal(body._preview.spilled, true);
     assert.match(
       String(body.full_events_path ?? ""),
-      /^\.hitechcloud\/state\/tool-results\/terminal_session_read\/session-main\//,
+      /^\.holaboss\/state\/tool-results\/terminal_session_read\/session-main\//,
     );
     assert.equal(
       fs.existsSync(
@@ -7582,10 +7582,10 @@ test("runtime write_report tool writes an HTML report and persists it as a sessi
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/reports",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
-        "x-hitechcloud-session-id": "session-main",
-        "x-hitechcloud-input-id": "input-1",
-        "x-hitechcloud-selected-model": "openai/gpt-5.4",
+        "x-holaboss-workspace-id": "root",
+        "x-holaboss-session-id": "session-main",
+        "x-holaboss-input-id": "input-1",
+        "x-holaboss-selected-model": "openai/gpt-5.4",
       },
       payload: {
         title: "Tariff update brief",
@@ -7665,9 +7665,9 @@ test("runtime write_report tool writes reports into a custom workspace path", as
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/reports",
       headers: {
-        "x-hitechcloud-workspace-id": "workspace-1",
-        "x-hitechcloud-session-id": "session-main",
-        "x-hitechcloud-input-id": "input-1",
+        "x-holaboss-workspace-id": "workspace-1",
+        "x-holaboss-session-id": "session-main",
+        "x-holaboss-input-id": "input-1",
       },
       payload: {
         title: "Workspace custom path report",
@@ -7753,7 +7753,7 @@ test("runtime image generation tool writes a generated image into the workspace"
     "utf8",
   );
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
 
   const originalFetch = globalThis.fetch;
   let recordedRequestBody: Record<string, unknown> | null = null;
@@ -7784,9 +7784,9 @@ test("runtime image generation tool writes a generated image into the workspace"
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/images/generate",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
-        "x-hitechcloud-session-id": "session-main",
-        "x-hitechcloud-selected-model": "openai_direct/gpt-5.4",
+        "x-holaboss-workspace-id": "root",
+        "x-holaboss-session-id": "session-main",
+        "x-holaboss-selected-model": "openai_direct/gpt-5.4",
       },
       payload: {
         prompt: "Generate a tiny test image",
@@ -7850,7 +7850,7 @@ test("runtime image generation tool uses native Gemini image generation for gemi
     "utf8",
   );
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
 
   const originalFetch = globalThis.fetch;
   let recordedUrl = "";
@@ -7896,9 +7896,9 @@ test("runtime image generation tool uses native Gemini image generation for gemi
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/images/generate",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
-        "x-hitechcloud-session-id": "session-main",
-        "x-hitechcloud-selected-model": "gemini_direct/gemini-2.5-flash",
+        "x-holaboss-workspace-id": "root",
+        "x-holaboss-session-id": "session-main",
+        "x-holaboss-selected-model": "gemini_direct/gemini-2.5-flash",
       },
       payload: {
         prompt: "Generate a tiny Gemini test image",
@@ -7981,7 +7981,7 @@ test("runtime image generation tool uses OpenRouter's image router for openroute
     "utf8",
   );
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
 
   const originalFetch = globalThis.fetch;
   let recordedUrl = "";
@@ -8029,9 +8029,9 @@ test("runtime image generation tool uses OpenRouter's image router for openroute
       method: "POST",
       url: "/api/v1/capabilities/runtime-tools/images/generate",
       headers: {
-        "x-hitechcloud-workspace-id": "root",
-        "x-hitechcloud-session-id": "session-main",
-        "x-hitechcloud-selected-model": "openrouter_direct/openai/gpt-5.4",
+        "x-holaboss-workspace-id": "root",
+        "x-holaboss-session-id": "session-main",
+        "x-holaboss-selected-model": "openrouter_direct/openai/gpt-5.4",
       },
       payload: {
         prompt: "Generate a Nano Banana 2 style image",
@@ -8048,8 +8048,8 @@ test("runtime image generation tool uses OpenRouter's image router for openroute
     assert.deepEqual(recordedHeaders, {
       "Content-Type": "application/json",
       Authorization: "Bearer sk-or-test",
-      "HTTP-Referer": "https://hitechcloud.vn",
-      "X-OpenRouter-Title": "hitechcloudOS",
+      "HTTP-Referer": "https://holaboss.ai",
+      "X-OpenRouter-Title": "holaOS",
       "X-OpenRouter-Categories": "personal-agent,general-chat",
     });
     // Flat prompt/aspect_ratio/resolution body; the chat-shaped one this used to
@@ -8103,7 +8103,7 @@ test("runtime config routes delegate to the runtime config executor", async () =
         default_model: "openai/gpt-5.4",
         runtime_mode: "oss",
         default_provider: null,
-        hitechcloud_enabled: false,
+        holaboss_enabled: false,
         desktop_browser_enabled: false,
         desktop_browser_url: null
       };
@@ -8133,8 +8133,8 @@ test("runtime config routes delegate to the runtime config executor", async () =
         model_proxy_base_url: "https://runtime.example/api/v1/model-proxy",
         default_model: "openai/gpt-5.4",
         runtime_mode: "oss",
-        default_provider: "hitechcloud_model_proxy",
-        hitechcloud_enabled: true,
+        default_provider: "holaboss_model_proxy",
+        holaboss_enabled: true,
         desktop_browser_enabled: false,
         desktop_browser_url: null
       };
@@ -9059,7 +9059,7 @@ test("runtime states and history endpoints read TS state store", async () => {
   const sessionMemoryPath = path.join(
     store.workspaceRoot,
     workspace.id,
-    ".hitechcloud",
+    ".holaboss",
     "memory",
     "runtime",
     "session-memory",
@@ -10696,7 +10696,7 @@ test("app lifecycle routes delegate to the lifecycle executor and uninstall upda
   const started = await app.inject({
     method: "POST",
     url: "/api/v1/apps/app-b/start",
-    payload: { workspace_id: workspace.id, hitechcloud_user_id: "user-1" }
+    payload: { workspace_id: workspace.id, holaboss_user_id: "user-1" }
   });
 
   assert.equal(started.statusCode, 200);
@@ -10741,7 +10741,7 @@ test("app lifecycle routes delegate to the lifecycle executor and uninstall upda
       appDir: path.join(workspaceDir, "apps", "app-b"),
       httpPort: 18081,
       mcpPort: 13101,
-      hitechcloudUserId: "user-1",
+      holabossUserId: "user-1",
       workspaceId: "workspace-1",
       skipSetup: true,
       resolvedApp: {
@@ -10884,7 +10884,7 @@ test("app start queues lifecycle setup apps in background", async () => {
   const started = await app.inject({
     method: "POST",
     url: "/api/v1/apps/app-a/start",
-    payload: { workspace_id: workspace.id, hitechcloud_user_id: "user-1" }
+    payload: { workspace_id: workspace.id, holaboss_user_id: "user-1" }
   });
 
   assert.equal(started.statusCode, 200);
@@ -11084,8 +11084,8 @@ test("ensure-running dedupes concurrent setup/start for the same app", async () 
 test("auto-start on ready reuses a healthy untracked shell-managed app", async () => {
   // Single-tenant root alignment: the runtime resolves every request to the
   // synthetic "root" workspace, so this test's workspace ids + fs paths use "root".
-  const previousEmbeddedRuntime = process.env.HITECHCLOUD_EMBEDDED_RUNTIME;
-  process.env.HITECHCLOUD_EMBEDDED_RUNTIME = "1";
+  const previousEmbeddedRuntime = process.env.HOLABOSS_EMBEDDED_RUNTIME;
+  process.env.HOLABOSS_EMBEDDED_RUNTIME = "1";
   const root = makeTempDir("hb-runtime-api-");
   const workspaceRoot = path.join(root, "workspace");
   const store = new RuntimeStateStore({
@@ -11262,9 +11262,9 @@ test("auto-start on ready reuses a healthy untracked shell-managed app", async (
     patchedStore.allocateAppPort = originalAllocateAppPort;
     patchedStore.getAppPort = originalGetAppPort;
     if (previousEmbeddedRuntime === undefined) {
-      delete process.env.HITECHCLOUD_EMBEDDED_RUNTIME;
+      delete process.env.HOLABOSS_EMBEDDED_RUNTIME;
     } else {
-      process.env.HITECHCLOUD_EMBEDDED_RUNTIME = previousEmbeddedRuntime;
+      process.env.HOLABOSS_EMBEDDED_RUNTIME = previousEmbeddedRuntime;
     }
     await app.close();
     store.close();
@@ -11272,8 +11272,8 @@ test("auto-start on ready reuses a healthy untracked shell-managed app", async (
 });
 
 test("auto-start on ready does not reuse a healthy untracked shell-managed app without prior running state", async () => {
-  const previousEmbeddedRuntime = process.env.HITECHCLOUD_EMBEDDED_RUNTIME;
-  process.env.HITECHCLOUD_EMBEDDED_RUNTIME = "1";
+  const previousEmbeddedRuntime = process.env.HOLABOSS_EMBEDDED_RUNTIME;
+  process.env.HOLABOSS_EMBEDDED_RUNTIME = "1";
   const root = makeTempDir("hb-runtime-api-");
   const workspaceRoot = path.join(root, "workspace");
   const store = new RuntimeStateStore({
@@ -11432,9 +11432,9 @@ test("auto-start on ready does not reuse a healthy untracked shell-managed app w
     patchedStore.allocateAppPort = originalAllocateAppPort;
     patchedStore.getAppPort = originalGetAppPort;
     if (previousEmbeddedRuntime === undefined) {
-      delete process.env.HITECHCLOUD_EMBEDDED_RUNTIME;
+      delete process.env.HOLABOSS_EMBEDDED_RUNTIME;
     } else {
-      process.env.HITECHCLOUD_EMBEDDED_RUNTIME = previousEmbeddedRuntime;
+      process.env.HOLABOSS_EMBEDDED_RUNTIME = previousEmbeddedRuntime;
     }
     await app.close();
     store.close();
@@ -11546,13 +11546,13 @@ test("internal resolved app bootstrap route starts resolved apps and returns MCP
     url: "/api/v1/internal/workspaces/root/resolved-apps/start",
     payload: {
       workspace_dir: path.join(workspaceRoot, "root"),
-      hitechcloud_user_id: "user-1",
+      holaboss_user_id: "user-1",
       resolved_applications: [
         {
           app_id: "app-a",
           mcp: { transport: "http-sse", port: 4100, path: "/mcp" },
           health_check: { path: "/health", timeout_s: 60, interval_s: 5 },
-          env_contract: ["HITECHCLOUD_USER_ID"],
+          env_contract: ["HOLABOSS_USER_ID"],
           start_command: "",
           base_dir: "apps/app-a",
           lifecycle: { setup: "", start: "npm run start", stop: "npm run stop" }
@@ -11591,7 +11591,7 @@ test("internal resolved app bootstrap route starts resolved apps and returns MCP
   assert.equal(calls[0]?.appId, "app-a");
   assert.equal(calls[0]?.httpPort, appA.ports.http);
   assert.equal(calls[0]?.mcpPort, appA.ports.mcp);
-  assert.equal(calls[0]?.hitechcloudUserId, "user-1");
+  assert.equal(calls[0]?.holabossUserId, "user-1");
   assert.equal(calls[0]?.skipSetup, true);
   assert.equal(calls[1]?.appId, "app-b");
   assert.equal(calls[1]?.httpPort, appB.ports.http);
@@ -12376,7 +12376,7 @@ test("queue route persists input and runtime state without writing session histo
   const queued = store.getInput({ workspaceId: workspace.id, inputId: response.json().input_id });
   assert.ok(queued);
   assert.equal(queued.payload.text, "hello world");
-  assert.equal("hitechcloud_user_id" in queued.payload, false);
+  assert.equal("holaboss_user_id" in queued.payload, false);
   assert.equal(queued.sessionId, sessionId);
 
   const runtimeStates = store.listRuntimeStates(workspace.id);
@@ -13173,7 +13173,7 @@ test("queue route accepts staged file and folder attachments and history hydrate
   });
 
   const workspaceDir = store.workspaceDir(workspace.id);
-  const attachmentPath = path.join(workspaceDir, ".hitechcloud", "input-attachments", "batch-1", "diagram.png");
+  const attachmentPath = path.join(workspaceDir, ".holaboss", "input-attachments", "batch-1", "diagram.png");
   const attachedFolderPath = path.join(workspaceDir, "docs");
   fs.mkdirSync(path.dirname(attachmentPath), { recursive: true });
   fs.mkdirSync(attachedFolderPath, { recursive: true });
@@ -13193,7 +13193,7 @@ test("queue route accepts staged file and folder attachments and history hydrate
           name: "diagram.png",
           mime_type: "image/png",
           size_bytes: 9,
-          workspace_path: ".hitechcloud/input-attachments/batch-1/diagram.png"
+          workspace_path: ".holaboss/input-attachments/batch-1/diagram.png"
         },
         {
           id: "attachment-2",
@@ -13217,7 +13217,7 @@ test("queue route accepts staged file and folder attachments and history hydrate
       name: "diagram.png",
       mime_type: "image/png",
       size_bytes: 9,
-      workspace_path: ".hitechcloud/input-attachments/batch-1/diagram.png"
+      workspace_path: ".holaboss/input-attachments/batch-1/diagram.png"
     },
     {
       id: "attachment-2",
@@ -13266,7 +13266,7 @@ test("queue route accepts staged file and folder attachments and history hydrate
             name: "diagram.png",
             mime_type: "image/png",
             size_bytes: 9,
-            workspace_path: ".hitechcloud/input-attachments/batch-1/diagram.png"
+            workspace_path: ".holaboss/input-attachments/batch-1/diagram.png"
           },
           {
             id: "attachment-2",
@@ -13318,7 +13318,7 @@ test("session history prefers attachment metadata stored on the session message"
           name: "report.html",
           mime_type: "text/html",
           size_bytes: 128,
-          workspace_path: ".hitechcloud/input-attachments/batch-1/report.html"
+          workspace_path: ".holaboss/input-attachments/batch-1/report.html"
         }
       ]
     },
@@ -13346,7 +13346,7 @@ test("session history prefers attachment metadata stored on the session message"
             name: "report.html",
             mime_type: "text/html",
             size_bytes: 128,
-            workspace_path: ".hitechcloud/input-attachments/batch-1/report.html"
+            workspace_path: ".holaboss/input-attachments/batch-1/report.html"
           }
         ]
       }
@@ -13492,7 +13492,7 @@ test("POST /api/v1/apps/catalog/sync rejects invalid source", async () => {
 
 test("isAllowedArchivePath accepts tmpdir and rejects arbitrary paths", async () => {
   const { isAllowedArchivePath } = await import("./app.js");
-  const tmp = path.join(os.tmpdir(), "hitechcloud-test-archive.tar.gz");
+  const tmp = path.join(os.tmpdir(), "holaboss-test-archive.tar.gz");
   assert.equal(isAllowedArchivePath(tmp), true);
   assert.equal(isAllowedArchivePath("/etc/passwd"), false);
   assert.equal(isAllowedArchivePath(""), false);
@@ -14037,7 +14037,7 @@ mcp:
 // ── archive_url tests ──────────────────────────────────────────────────────────
 
 test("isAllowedArchiveUrl honors the configured allowlist and rejects others", async () => {
-  process.env.HITECHCLOUD_APP_ARCHIVE_URL_ALLOWLIST =
+  process.env.HOLABOSS_APP_ARCHIVE_URL_ALLOWLIST =
     "https://github.com/example-org/example-repo/releases/download/";
   const { isAllowedArchiveUrl } = await import("./app.js");
   assert.equal(
@@ -14053,7 +14053,7 @@ test("isAllowedArchiveUrl honors the configured allowlist and rejects others", a
   );
   assert.equal(isAllowedArchiveUrl(""), false);
   assert.equal(isAllowedArchiveUrl("not-a-url"), false);
-  delete process.env.HITECHCLOUD_APP_ARCHIVE_URL_ALLOWLIST;
+  delete process.env.HOLABOSS_APP_ARCHIVE_URL_ALLOWLIST;
 });
 
 test("POST /apps/install-archive rejects url outside allowlist", async () => {
@@ -14121,7 +14121,7 @@ test("POST /apps/install-archive rejects both archive_path and archive_url", asy
         app_id: "twitter",
         archive_path: "/tmp/x.tar.gz",
         archive_url:
-          "https://github.com/hitechcloud-vietnam/hitechcloud-modules/releases/download/v0.1.0/twitter-module-darwin-arm64.tar.gz",
+          "https://github.com/holaboss-ai/holaboss-modules/releases/download/v0.1.0/twitter-module-darwin-arm64.tar.gz",
       },
     });
     assert.equal(res.statusCode, 400);
@@ -14191,8 +14191,8 @@ test("POST /apps/install-archive with archive_url downloads and installs", async
   if (!addr || typeof addr === "string") throw new Error("no server address");
   const url = `http://127.0.0.1:${addr.port}/minimal.tar.gz`;
 
-  const savedEnv = process.env.HITECHCLOUD_APP_ARCHIVE_URL_ALLOWLIST;
-  process.env.HITECHCLOUD_APP_ARCHIVE_URL_ALLOWLIST = `http://127.0.0.1:${addr.port}/`;
+  const savedEnv = process.env.HOLABOSS_APP_ARCHIVE_URL_ALLOWLIST;
+  process.env.HOLABOSS_APP_ARCHIVE_URL_ALLOWLIST = `http://127.0.0.1:${addr.port}/`;
 
   try {
     const res = await app.inject({
@@ -14220,9 +14220,9 @@ test("POST /apps/install-archive with archive_url downloads and installs", async
       server.close((err) => (err ? reject(err) : resolve())),
     );
     if (savedEnv === undefined) {
-      delete process.env.HITECHCLOUD_APP_ARCHIVE_URL_ALLOWLIST;
+      delete process.env.HOLABOSS_APP_ARCHIVE_URL_ALLOWLIST;
     } else {
-      process.env.HITECHCLOUD_APP_ARCHIVE_URL_ALLOWLIST = savedEnv;
+      process.env.HOLABOSS_APP_ARCHIVE_URL_ALLOWLIST = savedEnv;
     }
     await app.close();
     store.close();
@@ -14325,8 +14325,8 @@ test("POST /apps/install-archive serializes concurrent archive_url installs", as
   if (!addr || typeof addr === "string") throw new Error("no server address");
   const url = `http://127.0.0.1:${addr.port}/minimal.tar.gz`;
 
-  const savedEnv = process.env.HITECHCLOUD_APP_ARCHIVE_URL_ALLOWLIST;
-  process.env.HITECHCLOUD_APP_ARCHIVE_URL_ALLOWLIST = `http://127.0.0.1:${addr.port}/`;
+  const savedEnv = process.env.HOLABOSS_APP_ARCHIVE_URL_ALLOWLIST;
+  process.env.HOLABOSS_APP_ARCHIVE_URL_ALLOWLIST = `http://127.0.0.1:${addr.port}/`;
 
   try {
     const payload = {
@@ -14362,9 +14362,9 @@ test("POST /apps/install-archive serializes concurrent archive_url installs", as
       server.close((err) => (err ? reject(err) : resolve())),
     );
     if (savedEnv === undefined) {
-      delete process.env.HITECHCLOUD_APP_ARCHIVE_URL_ALLOWLIST;
+      delete process.env.HOLABOSS_APP_ARCHIVE_URL_ALLOWLIST;
     } else {
-      process.env.HITECHCLOUD_APP_ARCHIVE_URL_ALLOWLIST = savedEnv;
+      process.env.HOLABOSS_APP_ARCHIVE_URL_ALLOWLIST = savedEnv;
     }
     await app.close();
     store.close();

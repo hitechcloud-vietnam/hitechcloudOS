@@ -2,7 +2,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 import type {
   OutputEventRetentionPolicy,
   TurnRequestSnapshotRetentionPolicy,
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 /**
  * Background maintenance for the runtime DB (`data.db`).

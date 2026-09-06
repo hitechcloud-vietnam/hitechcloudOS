@@ -40,7 +40,7 @@ POST /api/v1/marketplace/submissions
 Request:
 {
   "workspace_id": "ws-abc",
-  "hitechcloud_user_id": "user-123",
+  "holaboss_user_id": "user-123",
   "name": "Social Operator",                    // required, 1-100 chars
   "description": "AI social media automation",   // required, 1-500 chars
   "category": "marketing",                       // default: "general"
@@ -64,7 +64,7 @@ class CreateSubmissionPayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     workspace_id: str
-    hitechcloud_user_id: str | None = None
+    holaboss_user_id: str | None = None
     name: str = Field(..., min_length=1, max_length=100)
     description: str = Field(..., min_length=1, max_length=500)
     category: str = "general"
@@ -82,7 +82,7 @@ POST /api/v1/marketplace/submissions/{submission_id}/package-from-sandbox
 
 Request:
 {
-  "hitechcloud_user_id": "user-123"
+  "holaboss_user_id": "user-123"
 }
 
 Response (200):
@@ -138,7 +138,7 @@ POST /api/v1/marketplace/submissions/{submission_id}/finalize
 
 Request:
 {
-  "hitechcloud_user_id": "user-123"
+  "holaboss_user_id": "user-123"
 }
 
 Response (200):
@@ -185,7 +185,7 @@ When `apps` is non-empty, the archive includes:
 When `apps` is empty, include everything (current behavior).
 
 Excluded always (in addition to `.hbignore`):
-- `.hitechcloud/` (runtime state)
+- `.holaboss/` (runtime state)
 - `node_modules/`
 - `data/*.db` (SQLite runtime data)
 

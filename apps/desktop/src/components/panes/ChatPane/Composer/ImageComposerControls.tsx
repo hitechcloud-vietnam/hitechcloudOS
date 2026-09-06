@@ -116,7 +116,7 @@ export function ImageComposerControls() {
     mediaGenerationDefaultModel("image", runtimeConfig ?? null);
 
   const selectModel = useCallback(async (model: string) => {
-    setDraft({ providerId: "hitechcloud", model });
+    setDraft({ providerId: "holaboss", model });
     try {
       await persistMediaGenerationModel("image", model);
     } catch {

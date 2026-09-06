@@ -1,7 +1,7 @@
 import type {
   IntegrationConnectionRecord,
   RuntimeStateStore,
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 import {
   WORKSPACE_DEFAULT_TARGET_TYPE,

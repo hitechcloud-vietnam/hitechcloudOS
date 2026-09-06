@@ -137,13 +137,13 @@ test("Pi memory_retrieve tool executes through the local runtime capability API"
     requests.push({
       method: String(init?.method ?? "GET"),
       url,
-      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-workspace-id"] ?? ""),
-      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-session-id"] ?? ""),
+      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-workspace-id"] ?? ""),
+      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-session-id"] ?? ""),
       selectedModel: String(
-        (init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-selected-model"] ?? ""
+        (init?.headers as Record<string, string> | undefined)?.["x-holaboss-selected-model"] ?? ""
       ),
       resultMode: String(
-        (init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-tool-result-mode"] ?? ""
+        (init?.headers as Record<string, string> | undefined)?.["x-holaboss-tool-result-mode"] ?? ""
       ),
       body,
     });
@@ -222,8 +222,8 @@ test("Pi runtime subagent tools normalize delegated task bodies and control rout
     requests.push({
       method: String(init?.method ?? "GET"),
       url,
-      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-workspace-id"] ?? ""),
-      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-session-id"] ?? ""),
+      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-workspace-id"] ?? ""),
+      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-session-id"] ?? ""),
       body: init?.body ? String(init.body) : "",
     });
 
@@ -404,10 +404,10 @@ test("Pi runtime image generation tool forwards prompt and optional output setti
     requests.push({
       method: String(init?.method ?? "GET"),
       url,
-      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-workspace-id"] ?? ""),
-      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-session-id"] ?? ""),
+      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-workspace-id"] ?? ""),
+      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-session-id"] ?? ""),
       selectedModel: String(
-        (init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-selected-model"] ?? ""
+        (init?.headers as Record<string, string> | undefined)?.["x-holaboss-selected-model"] ?? ""
       ),
       body,
     });
@@ -538,10 +538,10 @@ test("Pi runtime download_url tool forwards remote download parameters and guida
     requests.push({
       method: String(init?.method ?? "GET"),
       url,
-      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-workspace-id"] ?? ""),
-      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-session-id"] ?? ""),
+      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-workspace-id"] ?? ""),
+      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-session-id"] ?? ""),
       selectedModel: String(
-        (init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-selected-model"] ?? ""
+        (init?.headers as Record<string, string> | undefined)?.["x-holaboss-selected-model"] ?? ""
       ),
       body,
     });
@@ -652,11 +652,11 @@ test("Pi runtime write_report tool forwards report content and current run heade
     requests.push({
       method: String(init?.method ?? "GET"),
       url,
-      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-workspace-id"] ?? ""),
-      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-session-id"] ?? ""),
-      inputId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-input-id"] ?? ""),
+      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-workspace-id"] ?? ""),
+      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-session-id"] ?? ""),
+      inputId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-input-id"] ?? ""),
       selectedModel: String(
-        (init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-selected-model"] ?? ""
+        (init?.headers as Record<string, string> | undefined)?.["x-holaboss-selected-model"] ?? ""
       ),
       body,
     });
@@ -758,9 +758,9 @@ test("Pi runtime tools fall back to node http when no fetch implementation is pr
         requests.push({
           method: request.method ?? "GET",
           url,
-          workspaceId: String(request.headers["x-hitechcloud-workspace-id"] ?? ""),
-          sessionId: String(request.headers["x-hitechcloud-session-id"] ?? ""),
-          selectedModel: String(request.headers["x-hitechcloud-selected-model"] ?? ""),
+          workspaceId: String(request.headers["x-holaboss-workspace-id"] ?? ""),
+          sessionId: String(request.headers["x-holaboss-session-id"] ?? ""),
+          selectedModel: String(request.headers["x-holaboss-selected-model"] ?? ""),
           body,
         });
         response.writeHead(200, { "content-type": "application/json; charset=utf-8" });
@@ -841,10 +841,10 @@ test("Pi runtime terminal session tools proxy terminal session routes and includ
     requests.push({
       method: String(init?.method ?? "GET"),
       url,
-      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-workspace-id"] ?? ""),
-      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-session-id"] ?? ""),
+      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-workspace-id"] ?? ""),
+      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-session-id"] ?? ""),
       selectedModel: String(
-        (init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-selected-model"] ?? ""
+        (init?.headers as Record<string, string> | undefined)?.["x-holaboss-selected-model"] ?? ""
       ),
       body,
     });
@@ -979,10 +979,10 @@ test("Pi runtime web_search tool forwards pagination window params", async () =>
     requests.push({
       method: String(init?.method ?? "GET"),
       url,
-      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-workspace-id"] ?? ""),
-      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-session-id"] ?? ""),
+      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-workspace-id"] ?? ""),
+      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-session-id"] ?? ""),
       selectedModel: String(
-        (init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-selected-model"] ?? ""
+        (init?.headers as Record<string, string> | undefined)?.["x-holaboss-selected-model"] ?? ""
       ),
       body,
     });

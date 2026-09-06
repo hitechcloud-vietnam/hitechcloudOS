@@ -54,14 +54,14 @@ function encodeRequest(payload: Record<string, unknown>): string {
 }
 
 function runtimeAppRoot(): string {
-  return (process.env.HITECHCLOUD_RUNTIME_APP_ROOT ?? "/app").trim() || "/app";
+  return (process.env.HOLABOSS_RUNTIME_APP_ROOT ?? "/app").trim() || "/app";
 }
 
 let cachedModuleAnchoredRuntimeRoot: string | null | undefined;
 
 /**
  * Derive the runtime root from this module's own on-disk location, as a
- * fallback when HITECHCLOUD_RUNTIME_ROOT is unset. The bundled layout is
+ * fallback when HOLABOSS_RUNTIME_ROOT is unset. The bundled layout is
  * `<bundle>/runtime/api-server/{dist,src}/<thisfile>`, and `runtimeApiServerRoot`
  * relies on `<runtimeRoot>/api-server` existing — so the runtime root is the
  * nearest ancestor directory that contains an `api-server` child. Returns null
@@ -93,7 +93,7 @@ function moduleAnchoredRuntimeRoot(): string | null {
 }
 
 function runtimeRoot(): string {
-  const configured = (process.env.HITECHCLOUD_RUNTIME_ROOT ?? "").trim();
+  const configured = (process.env.HOLABOSS_RUNTIME_ROOT ?? "").trim();
   if (configured) {
     return configured;
   }
@@ -111,7 +111,7 @@ function runtimeBundleRoot(): string {
 }
 
 function runtimeNode(): string {
-  const configured = (process.env.HITECHCLOUD_RUNTIME_NODE_BIN ?? "").trim();
+  const configured = (process.env.HOLABOSS_RUNTIME_NODE_BIN ?? "").trim();
   return configured || "node";
 }
 
@@ -330,7 +330,7 @@ function warnIfBundledPythonMissing(pythonPathEntries: string[]): void {
       warnedBundledPythonMissing = true;
       console.warn(
         `[runner] bundled Python not found at ${interpreterDir}; agent shells will fall back to a system Python on PATH. ` +
-          `Set HITECHCLOUD_RUNTIME_ROOT to the runtime bundle, or stage python-runtime.`,
+          `Set HOLABOSS_RUNTIME_ROOT to the runtime bundle, or stage python-runtime.`,
       );
     }
   } catch {
@@ -381,7 +381,7 @@ export interface RunnerInvocation {
  * context otherwise overflows it and fails the spawn with `ENAMETOOLONG`.
  */
 function writeRunnerRequestFile(payload: Record<string, unknown>): string {
-  const filePath = path.join(os.tmpdir(), `hitechcloud-runner-${randomUUID()}.b64`);
+  const filePath = path.join(os.tmpdir(), `holaboss-runner-${randomUUID()}.b64`);
   fs.writeFileSync(filePath, encodeRequest(payload), "utf-8");
   return filePath;
 }
@@ -601,7 +601,7 @@ export async function executeRunnerRequest(
   const env = buildRunnerEnv();
   const workspaceId = typeof payload.workspace_id === "string" ? payload.workspace_id.trim() : "";
   if (workspaceId) {
-    env.HITECHCLOUD_WORKSPACE_ID = workspaceId;
+    env.HOLABOSS_WORKSPACE_ID = workspaceId;
   }
   // TTFT dissection — capture spawn + key event arrival times. Logged via
   // console.log at the end so it lands in runtime.log (the ts-runner subprocess

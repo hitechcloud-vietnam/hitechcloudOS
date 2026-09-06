@@ -25,13 +25,13 @@ function restoreEnv(key: string, prev: string | undefined): void {
 
 test("wrapToolWithOutputCap tightens once the run's inlined tool output crosses the session budget", async () => {
   const prev = {
-    max: process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES,
-    budget: process.env.HITECHCLOUD_SESSION_TOOL_OUTPUT_BUDGET_BYTES,
-    tight: process.env.HITECHCLOUD_TOOL_OUTPUT_TIGHTENED_BYTES,
+    max: process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES,
+    budget: process.env.HOLABOSS_SESSION_TOOL_OUTPUT_BUDGET_BYTES,
+    tight: process.env.HOLABOSS_TOOL_OUTPUT_TIGHTENED_BYTES,
   };
-  process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES = String(50 * 1024);
-  process.env.HITECHCLOUD_SESSION_TOOL_OUTPUT_BUDGET_BYTES = String(40 * 1024);
-  process.env.HITECHCLOUD_TOOL_OUTPUT_TIGHTENED_BYTES = String(8 * 1024);
+  process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES = String(50 * 1024);
+  process.env.HOLABOSS_SESSION_TOOL_OUTPUT_BUDGET_BYTES = String(40 * 1024);
+  process.env.HOLABOSS_TOOL_OUTPUT_TIGHTENED_BYTES = String(8 * 1024);
   const root = mkdtempSync(join(tmpdir(), "hb-tool-cap-"));
   try {
     // One shared accumulator across every wrapped tool — like a runPi.
@@ -54,16 +54,16 @@ test("wrapToolWithOutputCap tightens once the run's inlined tool output crosses 
     const r4 = await call(4 * 1024);
     assert.equal(r4.content[0].text.length, 4 * 1024);
   } finally {
-    restoreEnv("HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES", prev.max);
-    restoreEnv("HITECHCLOUD_SESSION_TOOL_OUTPUT_BUDGET_BYTES", prev.budget);
-    restoreEnv("HITECHCLOUD_TOOL_OUTPUT_TIGHTENED_BYTES", prev.tight);
+    restoreEnv("HOLABOSS_MAX_TOOL_OUTPUT_BYTES", prev.max);
+    restoreEnv("HOLABOSS_SESSION_TOOL_OUTPUT_BUDGET_BYTES", prev.budget);
+    restoreEnv("HOLABOSS_TOOL_OUTPUT_TIGHTENED_BYTES", prev.tight);
     rmSync(root, { recursive: true, force: true });
   }
 });
 
 test("wrapToolWithOutputCap without a shared accumulator applies only the per-call cap", async () => {
-  const prevMax = process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES;
-  process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES = String(50 * 1024);
+  const prevMax = process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES;
+  process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES = String(50 * 1024);
   const root = mkdtempSync(join(tmpdir(), "hb-tool-cap-"));
   try {
     // No shared state → each wrapper accumulates independently; a 20KB result
@@ -73,7 +73,7 @@ test("wrapToolWithOutputCap without a shared accumulator applies only the per-ca
       assert.equal(r.content[0].text.length, 20 * 1024, `call ${i} should inline`);
     }
   } finally {
-    restoreEnv("HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES", prevMax);
+    restoreEnv("HOLABOSS_MAX_TOOL_OUTPUT_BYTES", prevMax);
     rmSync(root, { recursive: true, force: true });
   }
 });
@@ -85,8 +85,8 @@ test("wrapToolWithOutputCap without a shared accumulator applies only the per-ca
 // carry a usable head of the payload, and the offloaded file must be the payload
 // itself rather than the envelope.
 test("an over-cap result returns a head preview of the payload, not just a pointer", async () => {
-  const prev = process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES;
-  process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES = String(16 * 1024);
+  const prev = process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES;
+  process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES = String(16 * 1024);
   const root = mkdtempSync(join(tmpdir(), "hb-tool-cap-preview-"));
   try {
     const payload = Array.from({ length: 4000 }, (_, i) => `issue-${i}`).join("\n");
@@ -111,14 +111,14 @@ test("an over-cap result returns a head preview of the payload, not just a point
       `replacement (${Buffer.byteLength(text, "utf8")}B) must stay under the cap`,
     );
   } finally {
-    restoreEnv("HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES", prev);
+    restoreEnv("HOLABOSS_MAX_TOOL_OUTPUT_BYTES", prev);
     rmSync(root, { recursive: true, force: true });
   }
 });
 
 test("the offloaded file holds the payload verbatim (.txt), not the result envelope", async () => {
-  const prev = process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES;
-  process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES = String(4 * 1024);
+  const prev = process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES;
+  process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES = String(4 * 1024);
   const root = mkdtempSync(join(tmpdir(), "hb-tool-cap-file-"));
   try {
     const payload = "LINE-A\n" + "x".repeat(8 * 1024) + "\nLINE-Z";
@@ -140,7 +140,7 @@ test("the offloaded file holds the payload verbatim (.txt), not the result envel
     assert.equal(onDisk, payload, "file is the payload verbatim — directly readable");
     assert.ok(!onDisk.includes("envelope-only field"), "no envelope wrapper to parse");
   } finally {
-    restoreEnv("HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES", prev);
+    restoreEnv("HOLABOSS_MAX_TOOL_OUTPUT_BYTES", prev);
     rmSync(root, { recursive: true, force: true });
   }
 });

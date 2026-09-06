@@ -112,7 +112,7 @@ export async function beginFeishuRegistration(
   if (!deviceCode || !qrUrl) {
     throw new Error("feishu registration did not return a device_code / verification_uri");
   }
-  qrUrl += (qrUrl.includes("?") ? "&" : "?") + "from=hitechcloudos&tp=hitechcloudos";
+  qrUrl += (qrUrl.includes("?") ? "&" : "?") + "from=holaos&tp=holaos";
 
   return {
     deviceCode,

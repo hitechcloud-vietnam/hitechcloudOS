@@ -127,36 +127,36 @@ function parseFrontmatterStringList(frontmatter: string, keyName: string): strin
   return [];
 }
 
-function parseHitechcloudNestedStringList(frontmatter: string, nestedKeyNames: string[]): string[] {
+function parseHolabossNestedStringList(frontmatter: string, nestedKeyNames: string[]): string[] {
   const lines = frontmatter.split(/\r?\n/);
-  let hitechcloudStart = -1;
-  let hitechcloudIndent = -1;
+  let holabossStart = -1;
+  let holabossIndent = -1;
   for (let index = 0; index < lines.length; index += 1) {
     const line = lines[index] ?? "";
-    const match = line.match(/^(\s*)hitechcloud\s*:\s*$/i);
+    const match = line.match(/^(\s*)holaboss\s*:\s*$/i);
     if (!match) {
       continue;
     }
-    hitechcloudStart = index + 1;
-    hitechcloudIndent = match[1]?.length ?? 0;
+    holabossStart = index + 1;
+    holabossIndent = match[1]?.length ?? 0;
     break;
   }
-  if (hitechcloudStart < 0) {
+  if (holabossStart < 0) {
     return [];
   }
 
   const nestedLines: string[] = [];
-  for (let index = hitechcloudStart; index < lines.length; index += 1) {
+  for (let index = holabossStart; index < lines.length; index += 1) {
     const line = lines[index] ?? "";
     if (!line.trim()) {
       nestedLines.push(line);
       continue;
     }
     const indent = line.match(/^\s*/)?.[0]?.length ?? 0;
-    if (indent <= hitechcloudIndent) {
+    if (indent <= holabossIndent) {
       break;
     }
-    nestedLines.push(line.slice(hitechcloudIndent + 2));
+    nestedLines.push(line.slice(holabossIndent + 2));
   }
 
   const nestedFrontmatter = nestedLines.join("\n");
@@ -300,10 +300,10 @@ export function parseHarnessGrantedToolsFromSkillFrontmatter(frontmatter: string
     return [];
   }
   const directKeys = [
-    "hitechcloud_granted_tools",
-    "hitechcloud-granted-tools",
-    "hitechcloud_tools",
-    "hitechcloud-tools",
+    "holaboss_granted_tools",
+    "holaboss-granted-tools",
+    "holaboss_tools",
+    "holaboss-tools",
     "capability_grants",
     "capability-grants",
   ];
@@ -313,7 +313,7 @@ export function parseHarnessGrantedToolsFromSkillFrontmatter(frontmatter: string
       return [...new Set(parsed)];
     }
   }
-  const nested = parseHitechcloudNestedStringList(frontmatter, ["granted_tools", "granted-tools", "tools"]);
+  const nested = parseHolabossNestedStringList(frontmatter, ["granted_tools", "granted-tools", "tools"]);
   if (nested.length > 0) {
     return [...new Set(nested)];
   }
@@ -325,10 +325,10 @@ export function parseHarnessGrantedCommandsFromSkillFrontmatter(frontmatter: str
     return [];
   }
   const directKeys = [
-    "hitechcloud_granted_commands",
-    "hitechcloud-granted-commands",
-    "hitechcloud_commands",
-    "hitechcloud-commands",
+    "holaboss_granted_commands",
+    "holaboss-granted-commands",
+    "holaboss_commands",
+    "holaboss-commands",
     "command_grants",
     "command-grants",
   ];
@@ -340,7 +340,7 @@ export function parseHarnessGrantedCommandsFromSkillFrontmatter(frontmatter: str
       return [...new Set(parsed)];
     }
   }
-  const nested = parseHitechcloudNestedStringList(frontmatter, ["granted_commands", "granted-commands", "commands"])
+  const nested = parseHolabossNestedStringList(frontmatter, ["granted_commands", "granted-commands", "commands"])
     .map((commandId) => normalizeWorkspaceCommandId(commandId))
     .filter((commandId): commandId is string => Boolean(commandId));
   if (nested.length > 0) {

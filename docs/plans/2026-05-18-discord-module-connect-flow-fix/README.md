@@ -19,8 +19,8 @@ Each stage is locally verifiable on its own (see each stage doc's
 
 | Stage | Bug | Layer | Deploys via |
 |---|---|---|---|
-| [1](stage-1-broaden-pending-integrations-emit.md) | Connect button | hitechcloudOS runtime | rebuild + `npm run desktop:prepare-runtime:local` |
-| [2](stage-2-restart-app-after-bind.md) | Stale grant after bind | hitechcloudOS desktop (electron main + preload + renderer) | `npm run desktop:dev` |
+| [1](stage-1-broaden-pending-integrations-emit.md) | Connect button | holaOS runtime | rebuild + `npm run desktop:prepare-runtime:local` |
+| [2](stage-2-restart-app-after-bind.md) | Stale grant after bind | holaOS desktop (electron main + preload + renderer) | `npm run desktop:dev` |
 | [3](stage-3-hono-remove-toolkit-mapping-and-upsert.md) | First-time 502 + non-extensible toolkit map | Hono (frontend/apps/server) | `bun run deploy:staging` |
 | [4](stage-4-account-display.md) | Account labels show as hex hash for any toolkit not in `PROVIDER_WHOAMI` | UI fallback (Tier 1) + per-yaml whoami passthrough across runtime/desktop/Hono (Tier 2) | desktop rebuild + `bun run deploy:staging` |
 | [5](stage-5-toolkit-slug-fix.md) | `not_connected` / 401 on send-message after a clean OAuth (identity probe works) | `provider.ts` + yaml use the **actual Composio toolkit slug** (`discordbot`, not `discord`); skill rewritten to enforce one-value-everywhere; `composioToolkit` deprecated | edit-in-workspace + `bun run desktop:prepare-runtime:local` (skill ships in runtime bundle) |
@@ -43,7 +43,7 @@ longer the source of truth for these bugs.
    their browser (Stage 3, no 502 on the first attempt).
 4. Card transitions to "Bound to discordbot-module …" within seconds
    of the user clicking through OAuth (Stage 2 has restarted the app
-   in the background so HITECHCLOUD_APP_GRANT is freshly injected).
+   in the background so HOLABOSS_APP_GRANT is freshly injected).
 5. Ask the agent "list my Discord guilds" — it must succeed on the
    first call without any restart hint or manual intervention.
 ```

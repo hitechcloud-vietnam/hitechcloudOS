@@ -16,7 +16,7 @@ function jsonResponse(body: unknown, init: ResponseInit = {}): Response {
 
 function createService(fetchImpl: typeof fetch, overrides: Partial<ComposioServiceConfig> = {}): ComposioService {
   return new ComposioService({
-    honoBaseUrl: "https://app.hitechcloud.test/",
+    honoBaseUrl: "https://app.holaboss.test/",
     authCookie: "hb_session=abc123",
     fetchImpl,
     ...overrides
@@ -42,7 +42,7 @@ test("proxyRequest forwards the Hono session cookie and returns the envelope pay
   });
 
   assert.equal(calls.length, 1);
-  assert.equal(String(calls[0]?.input), "https://app.hitechcloud.test/api/composio/proxy");
+  assert.equal(String(calls[0]?.input), "https://app.holaboss.test/api/composio/proxy");
   assert.equal(calls[0]?.init?.method, "POST");
   assert.equal((calls[0]?.init?.headers as Record<string, string>)?.Cookie, "hb_session=abc123");
 
@@ -70,7 +70,7 @@ test("proxyRequest includes the optional request body for mutating calls", async
     });
   };
 
-  const service = createService(fetchImpl, { honoBaseUrl: "https://edge.hitechcloud.test" });
+  const service = createService(fetchImpl, { honoBaseUrl: "https://edge.holaboss.test" });
   const result = await service.proxyRequest<{ id: string }>({
     connectedAccountId: "ca_600",
     method: "POST",
@@ -195,7 +195,7 @@ test("executeTool posts to /api/composio/execute with tool_slug + arguments and 
     calls.push({ input, init });
     return jsonResponse({
       ok: true,
-      data: { emailAddress: "teammate@hitechcloud.vn", messagesTotal: 626 },
+      data: { emailAddress: "teammate@holaboss.ai", messagesTotal: 626 },
       log_id: "log_-Ttzl7Tql0Y3"
     });
   };
@@ -208,7 +208,7 @@ test("executeTool posts to /api/composio/execute with tool_slug + arguments and 
   });
 
   assert.equal(calls.length, 1);
-  assert.equal(String(calls[0]?.input), "https://app.hitechcloud.test/api/composio/execute");
+  assert.equal(String(calls[0]?.input), "https://app.holaboss.test/api/composio/execute");
   assert.equal(calls[0]?.init?.method, "POST");
 
   const body = JSON.parse(String(calls[0]?.init?.body));
@@ -218,7 +218,7 @@ test("executeTool posts to /api/composio/execute with tool_slug + arguments and 
     arguments: {}
   });
 
-  assert.equal(result.data?.emailAddress, "teammate@hitechcloud.vn");
+  assert.equal(result.data?.emailAddress, "teammate@holaboss.ai");
   assert.equal(result.data?.messagesTotal, 626);
   assert.equal(result.logId, "log_-Ttzl7Tql0Y3");
 });
@@ -309,7 +309,7 @@ test("listConnections forwards the cookie and maps the Hono /connections payload
   const connections = await service.listConnections();
 
   assert.equal(calls.length, 1);
-  assert.equal(String(calls[0]?.input), "https://app.hitechcloud.test/api/composio/connections");
+  assert.equal(String(calls[0]?.input), "https://app.holaboss.test/api/composio/connections");
   assert.equal(calls[0]?.init?.method, "GET");
   assert.equal((calls[0]?.init?.headers as Record<string, string>)?.Cookie, "hb_session=abc123");
 

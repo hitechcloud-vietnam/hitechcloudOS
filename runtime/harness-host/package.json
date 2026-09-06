@@ -1,10 +1,10 @@
 {
-  "name": "@hitechcloud/runtime-harness-host",
+  "name": "@holaboss/runtime-harness-host",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "bin": {
-    "hitechcloud-harness-host": "dist/index.mjs"
+    "holaboss-harness-host": "dist/index.mjs"
   },
   "scripts": {
     "build": "tsup --config tsup.config.ts",

@@ -118,7 +118,7 @@ export const piHarnessDefinition: HarnessDefinition = {
         mcp_servers: params.mcpServers.map((server) => ({
           name: server.name,
           config: { ...server.config },
-          ...(server._hitechcloud_force_refresh ? { _hitechcloud_force_refresh: true } : {}),
+          ...(server._holaboss_force_refresh ? { _holaboss_force_refresh: true } : {}),
         })),
         mcp_tool_refs: params.mcpToolRefs.map((toolRef) => ({ ...toolRef })),
         workspace_config_checksum: params.runtimeConfig.workspace_config_checksum,

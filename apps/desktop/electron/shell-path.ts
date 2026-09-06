@@ -38,7 +38,7 @@ import path from "node:path";
 
 // Unique marker so we can extract PATH cleanly even when rc files print
 // banners/noise to stdout during shell init.
-const DELIMITER = "__HITECHCLOUD_SHELL_PATH__";
+const DELIMITER = "__HOLABOSS_SHELL_PATH__";
 
 function defaultLoginShell(): string {
   if (process.env.SHELL) {
@@ -158,7 +158,7 @@ export function applyLoginShellPathToEnv(): void {
     );
     if (merged !== before) {
       process.env.PATH = merged;
-      if (process.env.HITECHCLOUD_DEBUG_SHELL_PATH) {
+      if (process.env.HOLABOSS_DEBUG_SHELL_PATH) {
         console.info(
           `[shell-path] appended Windows per-user install dirs\n  before: ${before}\n  after:  ${merged}`,
         );
@@ -175,7 +175,7 @@ export function applyLoginShellPathToEnv(): void {
   if (merged.length > 0) {
     process.env.PATH = merged;
   }
-  if (process.env.HITECHCLOUD_DEBUG_SHELL_PATH && merged !== before) {
+  if (process.env.HOLABOSS_DEBUG_SHELL_PATH && merged !== before) {
     // Early startup: logging infra isn't wired yet, so console is all we have.
     console.info(
       `[shell-path] augmented PATH from login shell\n  before: ${before}\n  after:  ${merged}`,

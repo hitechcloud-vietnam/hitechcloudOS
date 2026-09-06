@@ -5,7 +5,7 @@ import {
   type IntegrationTreeRecord,
   type RuntimeStateStore,
   type SemanticMemoryNodeRecord,
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 import { listConnectionsMerged } from "./integration-connections-merged.js";
 

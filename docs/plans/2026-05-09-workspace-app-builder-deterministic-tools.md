@@ -12,7 +12,7 @@ related:
 
 ## 0. Status & decision summary
 
-This document proposes a deterministic tool layer for hitechcloudOS app-building agents.
+This document proposes a deterministic tool layer for holaOS app-building agents.
 
 The goal is not to replace vibe coding. The goal is to remove platform-critical guesswork from vibe coding.
 
@@ -32,7 +32,7 @@ The goal is not to replace vibe coding. The goal is to remove platform-critical 
 
 ## 1. Why this exists
 
-hitechcloudOS app generation is not the same problem as generic app generation.
+holaOS app generation is not the same problem as generic app generation.
 
 A generic app generator can stop at:
 
@@ -40,9 +40,9 @@ A generic app generator can stop at:
 - dev server runs
 - browser preview renders
 
-A hitechcloudOS app builder cannot.
+A holaOS app builder cannot.
 
-Success in hitechcloudOS means:
+Success in holaOS means:
 
 - the app is registered in the workspace
 - the runtime recognizes it
@@ -123,7 +123,7 @@ These are the highest-value first tools.
 
 | Tool | Purpose | Why it should be deterministic |
 |---|---|---|
-| `workspace.apps.scaffold` | Create the minimum valid hitechcloudOS app skeleton in `apps/<app_id>/` | Prevents the agent from reinventing file layout and boilerplate |
+| `workspace.apps.scaffold` | Create the minimum valid holaOS app skeleton in `apps/<app_id>/` | Prevents the agent from reinventing file layout and boilerplate |
 | `workspace.apps.register` | Add or update the app entry in `workspace.yaml` | Registration is mandatory and easy to forget |
 | `workspace.apps.validate_manifest` | Validate `app.runtime.yaml` shape and key contract fields | Prevents invalid manifest drift |
 | `workspace.apps.get_status` | Return install/build/run/ready status for one app | Lets the agent reason from system truth instead of assumptions |
@@ -346,7 +346,7 @@ The skill can focus on:
 
 ## 11. Recommendation
 
-We should not treat hitechcloudOS app building as generic vibe coding.
+We should not treat holaOS app building as generic vibe coding.
 
 We should treat it as:
 

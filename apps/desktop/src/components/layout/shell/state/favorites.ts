@@ -93,7 +93,7 @@ export function favoriteKey(
 }
 
 export const favoritesAtom = atomWithStorage<FavoriteItem[]>(
-  "hitechcloud-shell-favorites-v1",
+  "holaboss-shell-favorites-v1",
   [],
 );
 

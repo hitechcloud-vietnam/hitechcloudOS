@@ -19,7 +19,7 @@ export interface HarnessPreparedMcpServerConfig {
     url?: string | null;
     timeout: number;
   };
-  _hitechcloud_force_refresh?: boolean;
+  _holaboss_force_refresh?: boolean;
 }
 
 export type HarnessMcpServerBinding = {
@@ -358,7 +358,7 @@ function toHarnessMcpServerBinding(
   }
 
   const timeoutMs = typeof config.timeout === "number" && Number.isFinite(config.timeout) ? config.timeout : 30000;
-  const description = `Hitechcloud MCP server ${name}`;
+  const description = `Holaboss MCP server ${name}`;
   if (config.type === "local") {
     const command = Array.isArray(config.command)
       ? config.command.filter((item): item is string => typeof item === "string")

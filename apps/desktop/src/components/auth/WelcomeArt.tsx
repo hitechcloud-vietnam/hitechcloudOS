@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { hitechcloudLogoUrl } from "@/lib/assetPaths";
+import { holabossLogoUrl } from "@/lib/assetPaths";
 import { cn } from "@/lib/utils";
 
 /**
@@ -27,7 +27,7 @@ export function WelcomeHero() {
           alt=""
           aria-hidden
           className="size-12 object-contain"
-          src={hitechcloudLogoUrl}
+          src={holabossLogoUrl}
         />
       </div>
     </div>

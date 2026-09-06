@@ -5,7 +5,7 @@ This "frontend-design" skill is a derivative work based on Anthropic's
 
 - Original work: "frontend-design" skill, Copyright Anthropic, PBC,
   licensed under the Apache License, Version 2.0.
-- Modifications: Copyright (c) 2026 Hitechcloud, licensed under the Apache
+- Modifications: Copyright (c) 2026 Holaboss, licensed under the Apache
   License, Version 2.0.
 
 You may obtain a copy of the Apache License, Version 2.0 at:

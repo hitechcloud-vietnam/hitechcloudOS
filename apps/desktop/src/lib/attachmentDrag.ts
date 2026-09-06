@@ -1,4 +1,4 @@
-export const EXPLORER_ATTACHMENT_DRAG_TYPE = "application/x-hitechcloud-explorer-attachment";
+export const EXPLORER_ATTACHMENT_DRAG_TYPE = "application/x-holaboss-explorer-attachment";
 
 export type ExplorerAttachmentKind = "image" | "file" | "folder";
 

@@ -16,13 +16,13 @@ test("desktop user-data dir honors configured env before the dev fallback", asyn
   // silently points a configured desktop at the wrong profile directory.
   assert.match(
     source,
-    /const configuredDesktopUserDataDir =\s*process\.env\.HITECHCLOUD_DESKTOP_USER_DATA_DIR/,
+    /const configuredDesktopUserDataDir =\s*process\.env\.HOLABOSS_DESKTOP_USER_DATA_DIR/,
   );
   assert.match(
     source,
     /const DESKTOP_USER_DATA_DIR = \(\s*configuredDesktopUserDataDir \|\|/,
   );
-  assert.match(source, /isDev \? "hitechcloud-local-dev" : "hitechcloud-local"/);
+  assert.match(source, /isDev \? "holaboss-local-dev" : "holaboss-local"/);
   // Path separators are collapsed so a configured value can never escape the
   // appData root.
   assert.ok(
@@ -31,7 +31,7 @@ test("desktop user-data dir honors configured env before the dev fallback", asyn
   );
 });
 
-test("desktop dev script does not override HITECHCLOUD_DESKTOP_USER_DATA_DIR", async () => {
+test("desktop dev script does not override HOLABOSS_DESKTOP_USER_DATA_DIR", async () => {
   const packageJson = JSON.parse(await readFile(desktopPackageJsonPath, "utf8"));
 
   // `dev` used to invoke concurrently directly and now goes through
@@ -39,7 +39,7 @@ test("desktop dev script does not override HITECHCLOUD_DESKTOP_USER_DATA_DIR", a
   // not pin the user-data dir, which would override a developer's own env.
   assert.ok(packageJson.scripts?.dev, "no dev script in package.json");
   assert.equal(
-    packageJson.scripts.dev.includes("HITECHCLOUD_DESKTOP_USER_DATA_DIR="),
+    packageJson.scripts.dev.includes("HOLABOSS_DESKTOP_USER_DATA_DIR="),
     false,
   );
 });

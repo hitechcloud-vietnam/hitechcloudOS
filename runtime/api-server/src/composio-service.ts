@@ -6,7 +6,7 @@
  */
 
 export interface ComposioServiceConfig {
-  /** Hono server base URL, e.g. "http://localhost:4000" or "https://api.hitechcloud.vn" */
+  /** Hono server base URL, e.g. "http://localhost:4000" or "https://api.holaboss.ai" */
   honoBaseUrl: string;
   /** Better Auth session cookie from the desktop */
   authCookie: string;

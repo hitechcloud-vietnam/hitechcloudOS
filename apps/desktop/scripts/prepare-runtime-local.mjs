@@ -15,10 +15,10 @@ const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const desktopRoot = path.resolve(scriptDir, "..");
 const repoRoot = process.cwd();
 const runtimePlatform = resolveRuntimePlatform();
-const explicitRuntimeRepoRoot = process.env.HITECHCLOUD_OSS_ROOT || process.env.HITECHCLOUD_RUNTIME_REPO_ROOT;
+const explicitRuntimeRepoRoot = process.env.HOLABOSS_OSS_ROOT || process.env.HOLABOSS_RUNTIME_REPO_ROOT;
 const localRuntimeRepoRoot = repoRoot;
 const monorepoRuntimeRepoRoot = path.resolve(repoRoot, "..", "..");
-const legacySiblingRuntimeRepoRoot = path.resolve(repoRoot, "..", "..", "..", "hitechcloud-local");
+const legacySiblingRuntimeRepoRoot = path.resolve(repoRoot, "..", "..", "..", "hola-boss-oss");
 const packagerFileNames = localRuntimePackagerFileNames(runtimePlatform);
 const inferredRuntimeRepoRoot = hasPackagerAtRoot(localRuntimeRepoRoot, packagerFileNames)
   ? localRuntimeRepoRoot
@@ -28,7 +28,7 @@ const inferredRuntimeRepoRoot = hasPackagerAtRoot(localRuntimeRepoRoot, packager
 const runtimeRepoRoot = path.resolve(repoRoot, explicitRuntimeRepoRoot || inferredRuntimeRepoRoot);
 const runtimeOutDir = path.resolve(
   runtimeRepoRoot,
-  process.env.HITECHCLOUD_RUNTIME_OUT_DIR || `out/runtime-${runtimePlatform}`
+  process.env.HOLABOSS_RUNTIME_OUT_DIR || `out/runtime-${runtimePlatform}`
 );
 const packagerPath = packagerFileNames
   .map((fileName) => path.join(runtimeRepoRoot, "runtime", "deploy", fileName))
@@ -39,7 +39,7 @@ if (!packagerPath) {
     `[prepare-runtime:local] package script not found for ${runtimePlatform}: ${packagerFileNames.join(", ")}`
   );
   console.error(
-    `[prepare-runtime:local] local runtime packaging is not implemented for ${runtimePlatform}. Set HITECHCLOUD_OSS_ROOT if the script lives in another checkout.`
+    `[prepare-runtime:local] local runtime packaging is not implemented for ${runtimePlatform}. Set HOLABOSS_OSS_ROOT if the script lives in another checkout.`
   );
   process.exit(1);
 }
@@ -67,11 +67,11 @@ const stageRuntime = spawnSync(process.execPath, [path.join(desktopRoot, "script
   stdio: "inherit",
   env: {
     ...process.env,
-    HITECHCLOUD_RUNTIME_PLATFORM: runtimePlatform,
-    HITECHCLOUD_RUNTIME_DIR: runtimeOutDir,
+    HOLABOSS_RUNTIME_PLATFORM: runtimePlatform,
+    HOLABOSS_RUNTIME_DIR: runtimeOutDir,
     // Local dev never needs the packaging archive (that's only for the Windows
     // installer). Skip it so `bun dev`'s runtime rebuild doesn't tar ~41k files.
-    HITECHCLOUD_RUNTIME_NO_ARCHIVE: "1"
+    HOLABOSS_RUNTIME_NO_ARCHIVE: "1"
   }
 });
 

@@ -1,7 +1,7 @@
 {
-  "name": "@hitechcloud/remote-api",
+  "name": "@holaboss/remote-api",
   "version": "0.1.0",
-  "description": "Hitechcloud Remote API — oRPC contracts, server bindings, and typed client shared between the runtime and desktop",
+  "description": "Holaboss Remote API — oRPC contracts, server bindings, and typed client shared between the runtime and desktop",
   "private": true,
   "type": "module",
   "main": "./dist/index.cjs",

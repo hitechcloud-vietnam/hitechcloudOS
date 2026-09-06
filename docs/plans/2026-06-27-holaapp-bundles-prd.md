@@ -1,6 +1,6 @@
 # Product Requirements Document: HolaApp Bundles
 
-**Author**: Hitechcloud Team
+**Author**: Holaboss Team
 **Date**: 2026-06-27
 **Status**: Draft
 **Branch**: `feat/hola-app-int`
@@ -20,7 +20,7 @@
 
 ### 1. Executive Summary
 
-A **HolaApp bundle** is one named, installable app for the Hitechcloud desktop. A user
+A **HolaApp bundle** is one named, installable app for the Holaboss desktop. A user
 installs it and it shows up in their HolaApps launcher — exactly like `need-review`
 and `gofunds` appear today. Behind that single action, install transparently provisions
 the app's **skills** (agent know-how) and **MCP tools** (agent actions) into the

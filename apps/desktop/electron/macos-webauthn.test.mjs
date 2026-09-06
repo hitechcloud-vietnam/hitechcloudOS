@@ -31,7 +31,7 @@ test("macOS browser builds configure Electron WebAuthn from packaged config", as
   );
   assert.match(
     mainSource,
-    /function configuredMacWebAuthnKeychainAccessGroup\(\): string \{[\s\S]*HITECHCLOUD_MAC_WEBAUTHN_KEYCHAIN_ACCESS_GROUP[\s\S]*packagedDesktopConfig\.macWebAuthnKeychainAccessGroup[\s\S]*\}/,
+    /function configuredMacWebAuthnKeychainAccessGroup\(\): string \{[\s\S]*HOLABOSS_MAC_WEBAUTHN_KEYCHAIN_ACCESS_GROUP[\s\S]*packagedDesktopConfig\.macWebAuthnKeychainAccessGroup[\s\S]*\}/,
   );
   assert.match(
     mainSource,
@@ -43,7 +43,7 @@ test("macOS browser builds configure Electron WebAuthn from packaged config", as
   );
   assert.match(
     packagedConfigSource,
-    /function resolveMacWebAuthnKeychainAccessGroup\(\) \{[\s\S]*return resolveEnvValue\([\s\S]*HITECHCLOUD_MAC_WEBAUTHN_KEYCHAIN_ACCESS_GROUP[\s\S]*\);[\s\S]*\}/,
+    /function resolveMacWebAuthnKeychainAccessGroup\(\) \{[\s\S]*return resolveEnvValue\([\s\S]*HOLABOSS_MAC_WEBAUTHN_KEYCHAIN_ACCESS_GROUP[\s\S]*\);[\s\S]*\}/,
   );
   assert.match(
     packagedConfigSource,

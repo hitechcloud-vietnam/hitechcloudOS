@@ -6,7 +6,7 @@
 
 **Architecture:** A new plugin template (`geo`) registered alongside Research Feed in the runtime api-server, defined via the existing `defineTemplate` SDK (objects + dashboard surface + chat onboarding + scheduled workflows). A new React dashboard surface (`geo_visibility_browser`) renders the data in the desktop app. Visibility scoring is pure, display-derived (not stored), so the data-collection mechanism stays swappable.
 
-**Tech Stack:** TypeScript, `node:test` (runtime api-server + desktop), the `@hitechcloud/runtime-state-store` base model, React + Jotai (desktop surfaces).
+**Tech Stack:** TypeScript, `node:test` (runtime api-server + desktop), the `@holaboss/runtime-state-store` base model, React + Jotai (desktop surfaces).
 
 **Source spec:** `docs/superpowers/specs/2026-06-16-geo-plugin-design.md`
 
@@ -142,7 +142,7 @@ Create `runtime/api-server/src/geo-plugin-template.ts` with the config types, he
 import type {
   WorkflowEdgeRecord,
   WorkflowNodeRecord,
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 import {
   defineTemplate,

@@ -4,9 +4,9 @@
 
 **Goal:** Define and implement a contact-centric CRM output protocol so Gmail- and Sheets-mediated results can both land in the shared `outputs` table and reopen into the correct app view from the desktop UI.
 
-**Architecture:** Keep `outputs` as the single durable result ledger, but stop overloading `output_type` as a UI route hint. Introduce a standard app-output protocol carried in `metadata.presentation`, exposed through the module-local Hitechcloud Bridge SDK, then adopt it first in Gmail and Sheets. Gmail becomes the communication surface for draft/thread outputs; Sheets becomes the CRM record surface for contact-row outputs. The desktop reads the same protocol for any app output and opens the correct iframe route.
+**Architecture:** Keep `outputs` as the single durable result ledger, but stop overloading `output_type` as a UI route hint. Introduce a standard app-output protocol carried in `metadata.presentation`, exposed through the module-local Holaboss Bridge SDK, then adopt it first in Gmail and Sheets. Gmail becomes the communication surface for draft/thread outputs; Sheets becomes the CRM record surface for contact-row outputs. The desktop reads the same protocol for any app output and opens the correct iframe route.
 
-**Tech Stack:** runtime `outputs` API + state store, Electron desktop renderer, module-local Hitechcloud Bridge SDKs in `../../hitechcloud-modules/*/src/server/hitechcloud-bridge.ts`, TanStack Router module apps, node:test
+**Tech Stack:** runtime `outputs` API + state store, Electron desktop renderer, module-local Holaboss Bridge SDKs in `../../holaboss-modules/*/src/server/holaboss-bridge.ts`, TanStack Router module apps, node:test
 
 ### Task 1: Define the platform app-output protocol
 
@@ -74,9 +74,9 @@ Add desktop-focused tests that assert:
 ### Task 2: Extend the module-local Bridge SDK for app outputs
 
 **Files:**
-- Modify: `../../hitechcloud-modules/gmail/src/server/hitechcloud-bridge.ts`
-- Modify: `../../hitechcloud-modules/sheets/src/server/hitechcloud-bridge.ts`
-- Later mirror to: `../../hitechcloud-modules/twitter/src/server/hitechcloud-bridge.ts`, `../../hitechcloud-modules/reddit/src/server/hitechcloud-bridge.ts`, `../../hitechcloud-modules/linkedin/src/server/hitechcloud-bridge.ts`, `../../hitechcloud-modules/_template/src/server/hitechcloud-bridge.ts`
+- Modify: `../../holaboss-modules/gmail/src/server/holaboss-bridge.ts`
+- Modify: `../../holaboss-modules/sheets/src/server/holaboss-bridge.ts`
+- Later mirror to: `../../holaboss-modules/twitter/src/server/holaboss-bridge.ts`, `../../holaboss-modules/reddit/src/server/holaboss-bridge.ts`, `../../holaboss-modules/linkedin/src/server/holaboss-bridge.ts`, `../../holaboss-modules/_template/src/server/holaboss-bridge.ts`
 
 **Step 1: Add a small app-output writer API**
 
@@ -135,12 +135,12 @@ Do not absorb direct-output helpers yet. This SDK expansion is only for `applica
 ### Task 3: Adopt the protocol in Gmail
 
 **Files:**
-- Modify: `../../hitechcloud-modules/gmail/src/server/hitechcloud-bridge.ts`
-- Modify: `../../hitechcloud-modules/gmail/src/server/mcp.ts`
-- Modify: `../../hitechcloud-modules/gmail/src/routes/index.tsx`
-- Create: `../../hitechcloud-modules/gmail/src/routes/drafts.$draftId.tsx`
-- Optional create later: `../../hitechcloud-modules/gmail/src/routes/threads.$threadId.tsx`
-- Modify: `../../hitechcloud-modules/gmail/src/lib/types.ts`
+- Modify: `../../holaboss-modules/gmail/src/server/holaboss-bridge.ts`
+- Modify: `../../holaboss-modules/gmail/src/server/mcp.ts`
+- Modify: `../../holaboss-modules/gmail/src/routes/index.tsx`
+- Create: `../../holaboss-modules/gmail/src/routes/drafts.$draftId.tsx`
+- Optional create later: `../../holaboss-modules/gmail/src/routes/threads.$threadId.tsx`
+- Modify: `../../holaboss-modules/gmail/src/lib/types.ts`
 
 **Step 1: Define Gmail app resources**
 
@@ -204,12 +204,12 @@ When `gmail_send_draft` succeeds:
 ### Task 4: Define the Sheets contact-record surface
 
 **Files:**
-- Modify: `../../hitechcloud-modules/sheets/src/server/hitechcloud-bridge.ts`
-- Modify: `../../hitechcloud-modules/sheets/src/routes/index.tsx`
-- Create: `../../hitechcloud-modules/sheets/src/routes/contacts.$contactRef.tsx`
-- Modify: `../../hitechcloud-modules/sheets/src/server/actions.ts`
-- Modify: `../../hitechcloud-modules/sheets/src/server/demo-actions.ts`
-- Modify: `../../hitechcloud-modules/sheets/src/lib/types.ts`
+- Modify: `../../holaboss-modules/sheets/src/server/holaboss-bridge.ts`
+- Modify: `../../holaboss-modules/sheets/src/routes/index.tsx`
+- Create: `../../holaboss-modules/sheets/src/routes/contacts.$contactRef.tsx`
+- Modify: `../../holaboss-modules/sheets/src/server/actions.ts`
+- Modify: `../../holaboss-modules/sheets/src/server/demo-actions.ts`
+- Modify: `../../holaboss-modules/sheets/src/lib/types.ts`
 
 **Step 1: Choose the canonical CRM resource**
 
@@ -281,8 +281,8 @@ Output shape:
 ### Task 5: Define the contact-centric CRM workflow
 
 **Files:**
-- Modify: `../../hitechcloud-modules/gmail/src/server/mcp.ts`
-- Modify: `../../hitechcloud-modules/sheets/src/server/demo-actions.ts`
+- Modify: `../../holaboss-modules/gmail/src/server/mcp.ts`
+- Modify: `../../holaboss-modules/sheets/src/server/demo-actions.ts`
 - Modify: desktop output opening logic in `desktop/src/components/layout/AppShell.tsx`
 
 **Step 1: Establish the CRM source of truth**

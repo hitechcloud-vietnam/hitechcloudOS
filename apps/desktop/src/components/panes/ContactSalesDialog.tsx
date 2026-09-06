@@ -2,7 +2,7 @@
  * Enable / install gate for the fingerprint Browser Profiles engine.
  *
  * Shown instead of the fingerprint editor when the engine isn't attached yet — the
- * anti-detect engine is the licensed `@hitechcloud/fingerprint-ee` package, loaded at
+ * anti-detect engine is the licensed `@holaboss/fingerprint-ee` package, loaded at
  * runtime (open-core). This dialog lets the user ATTACH it as a one-click plugin:
  *   • "Install" — downloads the bundle from the configured source (if any),
  *   • "Install from file…" — picks a downloaded `fingerprint-ee-*.zip`,
@@ -16,7 +16,7 @@ import { Loader2, ShieldCheck, X } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 
 // Where "Contact sales" sends the user. Update to the real enterprise/contact page.
-const CONTACT_SALES_URL = "https://www.hitechcloud.vn/enterprise";
+const CONTACT_SALES_URL = "https://www.holaos.ai/enterprise";
 
 const BULLETS = [
   "Unique canvas / WebGL / GPU / timezone per profile",

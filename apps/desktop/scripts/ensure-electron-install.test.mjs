@@ -7,7 +7,7 @@ import test from "node:test";
 import { ensureElectronInstall, resolveElectronInstallState } from "./ensure-electron-install.mjs";
 
 function createFakeElectronDesktopRoot() {
-  const desktopRoot = mkdtempSync(path.join(os.tmpdir(), "hitechcloud-electron-"));
+  const desktopRoot = mkdtempSync(path.join(os.tmpdir(), "holaboss-electron-"));
   const electronDir = path.join(desktopRoot, "node_modules", "electron");
   mkdirSync(path.join(electronDir, "dist"), { recursive: true });
   writeFileSync(

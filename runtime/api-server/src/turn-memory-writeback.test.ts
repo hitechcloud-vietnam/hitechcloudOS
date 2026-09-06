@@ -7,7 +7,7 @@ import path from "node:path";
 import { afterEach, test } from "node:test";
 import { pathToFileURL } from "node:url";
 
-import { RuntimeStateStore, type TurnResultRecord } from "@hitechcloud/runtime-state-store";
+import { RuntimeStateStore, type TurnResultRecord } from "@holaboss/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import { FilesystemMemoryService } from "./memory.js";

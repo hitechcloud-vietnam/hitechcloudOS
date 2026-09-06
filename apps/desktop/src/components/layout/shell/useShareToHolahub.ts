@@ -6,7 +6,7 @@ import type {
   ShareDraftItem,
   ShareDraftRecipe,
   ShareDraftSessionTurn,
-} from "@hitechcloud/app-host/protocol";
+} from "@holaboss/app-host/protocol";
 import { useCallback } from "react";
 import { useOpenDiscover } from "./useOpenDiscover";
 

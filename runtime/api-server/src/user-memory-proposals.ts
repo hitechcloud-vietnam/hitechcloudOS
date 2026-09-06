@@ -2,7 +2,7 @@ import type {
   MemoryUpdateProposalKind,
   MemoryUpdateProposalRecord,
   RuntimeUserProfileNameSource,
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 import type { AgentPendingUserMemoryContext } from "./agent-runtime-prompt.js";
 import { governanceRuleForMemoryType } from "./memory-governance.js";

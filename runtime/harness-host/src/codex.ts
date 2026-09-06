@@ -69,7 +69,7 @@ export async function runCodex(request: HarnessHostCodexRequest): Promise<number
 
   // Allow operators to pin a non-PATH codex binary (e.g. a sandboxed
   // install) without re-plumbing the runtime.
-  const codexBin = (process.env.HITECHCLOUD_CODEX_PATH ?? "").trim() || "codex";
+  const codexBin = (process.env.HOLABOSS_CODEX_PATH ?? "").trim() || "codex";
   // On Windows, codex installs as a `codex.cmd` npm shim; spawn the Node CLI it
   // wraps (`node codex.js …`) directly so the bidirectional stdio JSON-RPC
   // survives — the old `.ps1` route deadlocked app-server's handshake (no-op
@@ -357,7 +357,7 @@ export async function runCodex(request: HarnessHostCodexRequest): Promise<number
         return;
       }
       if (itemType === "mcpToolCall" || itemType === "webSearch") {
-        // Codex reaches Hitechcloud + Composio tools and web search over MCP;
+        // Codex reaches Holaboss + Composio tools and web search over MCP;
         // those arrive as mcpToolCall / webSearch items (NOT commandExecution),
         // so without this branch tool use left no trace at all.
         emit("tool_call", {
@@ -463,8 +463,8 @@ export async function runCodex(request: HarnessHostCodexRequest): Promise<number
   try {
     await sendRequest("initialize", {
       clientInfo: {
-        name: "hitechcloud-harness-host",
-        title: "Hitechcloud",
+        name: "holaboss-harness-host",
+        title: "Holaboss",
         version: "0.1.0",
       },
       capabilities: { experimentalApi: true },
@@ -491,15 +491,15 @@ export async function runCodex(request: HarnessHostCodexRequest): Promise<number
         ? { model_reasoning_effort: connectionTestEffort }
         : null;
     // Fresh threads honor the session's selected model, falling back to a
-    // per-host default (HITECHCLOUD_CODEX_MODEL) and finally codex's own
+    // per-host default (HOLABOSS_CODEX_MODEL) and finally codex's own
     // default. Resume keeps the existing thread's model, so we only set
     // it on thread/start.
     let codexModel =
       request.selected_model?.trim() ||
-      (process.env.HITECHCLOUD_CODEX_MODEL ?? "").trim() ||
+      (process.env.HOLABOSS_CODEX_MODEL ?? "").trim() ||
       null;
     if (!codexModel) {
-      // Neither Hitechcloud nor the host pinned a model (e.g. the connection
+      // Neither Holaboss nor the host pinned a model (e.g. the connection
       // test). Resolve the account's default from model/list rather than
       // letting codex fall through to the user's config.toml: app-server only
       // accepts the account's own models, so a config.toml pinning an API-only
@@ -719,7 +719,7 @@ function codexDefaultModelId(models: HarnessSupportedModel[]): string | null {
  * failure so the api-server falls back to the static catalogue.
  */
 export async function discoverCodexModels(cwd: string): Promise<HarnessSupportedModel[]> {
-  const codexBin = (process.env.HITECHCLOUD_CODEX_PATH ?? "").trim() || "codex";
+  const codexBin = (process.env.HOLABOSS_CODEX_PATH ?? "").trim() || "codex";
   const invocation = resolveWindowsCliInvocation("codex", codexBin, [
     "app-server",
     "--listen",
@@ -785,7 +785,7 @@ export async function discoverCodexModels(cwd: string): Promise<HarnessSupported
     void (async () => {
       try {
         await request("initialize", {
-          clientInfo: { name: "hitechcloud-harness-host", title: "Hitechcloud", version: "0.1.0" },
+          clientInfo: { name: "holaboss-harness-host", title: "Holaboss", version: "0.1.0" },
           capabilities: { experimentalApi: true },
         });
         write({ jsonrpc: "2.0", method: "initialized", params: null });
@@ -839,7 +839,7 @@ export function prepareCodexHome(
   request: HarnessHostCodexRequest,
 ): CodexHomePreparation | null {
   const sections = buildCodexMcpSections(request.mcp_servers);
-  // url-based MCP servers (including the hitechcloud_runtime /mcp bridge) only
+  // url-based MCP servers (including the holaboss_runtime /mcp bridge) only
   // connect under codex's experimental rmcp client — enable it whenever the
   // managed home carries at least one remote server.
   const hasRemoteMcpServer =
@@ -862,7 +862,7 @@ export function prepareCodexHome(
   if (sections.length === 0 && skillDirs.length === 0) {
     return null;
   }
-  const codexHome = mkdtempSync(join(tmpdir(), "hitechcloud-codex-home-"));
+  const codexHome = mkdtempSync(join(tmpdir(), "holaboss-codex-home-"));
   // Seed auth + sessions first so a failure writing skills/config still
   // leaves an authenticated home.
   seedCodexAuthAndSessions(codexHome);
@@ -987,8 +987,8 @@ function isTruthyEnv(value: string | undefined): boolean {
  *     under $CODEX_HOME/memories (and may read ~/.codex/memories), which
  *     leaks context across tasks/workspaces and the runtime can't audit.
  *
- * Per-feature escape hatches: a truthy HITECHCLOUD_CODEX_MULTI_AGENT /
- * HITECHCLOUD_CODEX_MEMORY leaves that codex feature at its native default.
+ * Per-feature escape hatches: a truthy HOLABOSS_CODEX_MULTI_AGENT /
+ * HOLABOSS_CODEX_MEMORY leaves that codex feature at its native default.
  */
 function buildCodexManagedFeatureOverrides(options: {
   enableRmcpClient: boolean;
@@ -998,13 +998,13 @@ function buildCodexManagedFeatureOverrides(options: {
     // Streamable-HTTP (url-based) MCP servers only work under codex's
     // experimental rmcp client; the default client speaks stdio only and
     // silently drops remote servers. Required for both workspace.yaml
-    // remote servers and the hitechcloud_runtime /mcp bridge.
+    // remote servers and the holaboss_runtime /mcp bridge.
     keys.push("features.experimental_use_rmcp_client = true");
   }
-  if (!isTruthyEnv(process.env.HITECHCLOUD_CODEX_MULTI_AGENT)) {
+  if (!isTruthyEnv(process.env.HOLABOSS_CODEX_MULTI_AGENT)) {
     keys.push("features.multi_agent = false");
   }
-  if (!isTruthyEnv(process.env.HITECHCLOUD_CODEX_MEMORY)) {
+  if (!isTruthyEnv(process.env.HOLABOSS_CODEX_MEMORY)) {
     keys.push("features.memories = false");
     keys.push("memories.generate_memories = false");
     keys.push("memories.use_memories = false");
@@ -1013,16 +1013,16 @@ function buildCodexManagedFeatureOverrides(options: {
     return "";
   }
   return [
-    "# Hitechcloud-managed: codex native multi-agent + auto-memory are",
+    "# Holaboss-managed: codex native multi-agent + auto-memory are",
     "# disabled for sealed runtime task sessions (override per feature",
-    "# with HITECHCLOUD_CODEX_MULTI_AGENT=1 / HITECHCLOUD_CODEX_MEMORY=1).",
+    "# with HOLABOSS_CODEX_MULTI_AGENT=1 / HOLABOSS_CODEX_MEMORY=1).",
     ...keys,
   ].join("\n");
 }
 
 /**
  * Build the `[mcp_servers.NAME]` TOML sections for codex's config.toml
- * from Hitechcloud's mcp_servers payload — one string per server.
+ * from Holaboss's mcp_servers payload — one string per server.
  */
 function buildCodexMcpSections(servers: JsonObject[] | undefined): string[] {
   if (!Array.isArray(servers) || servers.length === 0) {

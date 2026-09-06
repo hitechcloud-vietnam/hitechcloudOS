@@ -114,8 +114,8 @@ describe("createLocalAppActionApi", () => {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          "x-hitechcloud-session-id": "session-2",
-          "x-hitechcloud-input-id": "input-2",
+          "x-holaboss-session-id": "session-2",
+          "x-holaboss-input-id": "input-2",
         },
         body: JSON.stringify({
           action_name: "queue",

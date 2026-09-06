@@ -19,11 +19,11 @@ import { normalizeWrappedMarkdownFence } from "./markdownFenceNormalization.mjs"
 
 /** Hand-shake URL scheme for `@`-mentions injected into markdown
  *  before render. The host pre-processes its source text to turn each
- *  `@<handle>` into `[@<handle>](hitechcloud-mention://<handle>)`; this
+ *  `@<handle>` into `[@<handle>](holaboss-mention://<handle>)`; this
  *  module's link renderer recognises the scheme and delegates to
  *  `renderMention(handle)`. Keeping the contract here so callers don't
  *  guess the prefix. */
-export const MENTION_URL_SCHEME = "hitechcloud-mention://";
+export const MENTION_URL_SCHEME = "holaboss-mention://";
 const STANDALONE_HTML_ANCHOR_PATTERN =
   /^<a\b[^>]*(?:id|name)=(["'])([^"'<>]+)\1[^>]*>\s*<\/a>$/i;
 const ATX_HEADING_PATTERN = /^\s{0,3}(#{1,6})\s+(.+?)\s*#*\s*$/;
@@ -333,7 +333,7 @@ interface SimpleMarkdownProps {
   className?: string;
   onLinkClick?: (url: string) => void;
   onLocalLinkClick?: (href: string) => void;
-  /** Optional renderer for `hitechcloud-mention://<handle>` links —
+  /** Optional renderer for `holaboss-mention://<handle>` links —
    *  callers pre-process their source to inject this scheme and pass
    *  a chip-style component (e.g. `EntityMention`). Without this
    *  prop, mention links fall through to the regular link renderer. */

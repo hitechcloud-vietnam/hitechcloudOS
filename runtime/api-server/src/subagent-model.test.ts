@@ -12,7 +12,7 @@ import {
 const tempDirs: string[] = [];
 const ORIGINAL_ENV = {
   HB_SANDBOX_ROOT: process.env.HB_SANDBOX_ROOT,
-  HITECHCLOUD_RUNTIME_CONFIG_PATH: process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH,
+  HOLABOSS_RUNTIME_CONFIG_PATH: process.env.HOLABOSS_RUNTIME_CONFIG_PATH,
 };
 
 afterEach(() => {
@@ -24,10 +24,10 @@ afterEach(() => {
   } else {
     process.env.HB_SANDBOX_ROOT = ORIGINAL_ENV.HB_SANDBOX_ROOT;
   }
-  if (ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH === undefined) {
-    delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+  if (ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH === undefined) {
+    delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
   } else {
-    process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+    process.env.HOLABOSS_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH;
   }
 });
 
@@ -42,7 +42,7 @@ function writeRuntimeConfig(root: string, document: Record<string, unknown>): vo
   fs.mkdirSync(path.dirname(configPath), { recursive: true });
   fs.writeFileSync(configPath, `${JSON.stringify(document, null, 2)}\n`, "utf8");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
 }
 
 test("subagent execution model prefers the configured runtime.subagents.model", () => {

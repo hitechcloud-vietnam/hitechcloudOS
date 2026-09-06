@@ -134,8 +134,8 @@ export function BrowserOnboardingStage({
             </h2>
             <p className="max-w-[440px] text-[13.5px] text-muted-foreground leading-[1.55]">
               {phase.kind === "ready" && found.length === 0
-                ? "No Chromium browser turned up on this Mac, so hitechcloudOS will start with a fresh profile. You can import one later from Browsers."
-                : "Copy a browser you're already signed into and hitechcloudOS browses as you — same logins, same bookmarks. Nothing leaves this machine."}
+                ? "No Chromium browser turned up on this Mac, so holaOS will start with a fresh profile. You can import one later from Browsers."
+                : "Copy a browser you're already signed into and holaOS browses as you — same logins, same bookmarks. Nothing leaves this machine."}
             </p>
           </div>
 

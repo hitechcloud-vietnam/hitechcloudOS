@@ -391,8 +391,8 @@ Exit criteria:
 
 At minimum, validate each migration stage with:
 
-- `bun --filter=@hitechcloud/runtime-state-store run typecheck`
-- `bun --filter=@hitechcloud/runtime-api-server run typecheck`
+- `bun --filter=@holaboss/runtime-state-store run typecheck`
+- `bun --filter=@holaboss/runtime-api-server run typecheck`
 - `cd runtime/state-store && ./node_modules/.bin/tsx --test --test-force-exit src/store.test.ts src/migrations.test.ts`
 - `cd runtime/api-server && ./node_modules/.bin/tsx --test --test-force-exit src/interaction-memory.test.ts src/integration-memory.test.ts src/integration-context-fetch.test.ts src/memory-recall.test.ts src/memory.test.ts src/turn-memory-writeback.test.ts`
 

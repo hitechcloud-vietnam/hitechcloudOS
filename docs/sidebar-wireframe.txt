@@ -43,7 +43,7 @@ SCENE 1 — Sidebar (workspace = "Competitor Intelligence")
 │  ○  New chat                                 │
 │  ○  New chat                                 │
 │                                              │
-│  HITECHCLOUD  ⌄                           4  [+]│  ← project section
+│  HOLABOSS  ⌄                           4  [+]│  ← project section
 │  ○  Untitled session                   ⋮     │  ← row overflow on hover
 │  ○  YouTube transcript translation           │
 │  ○  What needs my attention                  │
@@ -69,7 +69,7 @@ SCENE 2 — Projects index page (opened from [▢] Projects)
 │  🔍 Search projects…                                                  │
 │                                                                        │
 │  ┌──────────────────────┐  ┌──────────────────────┐                  │
-│  │ Hitechcloud              │  │ Competitor Intel      │                  │
+│  │ Holaboss              │  │ Competitor Intel      │                  │
 │  │                       │  │                       │                  │
 │  │ Updated 1 hour ago    │  │ Updated yesterday     │                  │
 │  └──────────────────────┘  └──────────────────────┘                  │
@@ -164,7 +164,7 @@ Step 2 — form
 │                                                                        │
 │  Choose project location                                               │
 │  ┌──────────────────────────────────────────────────────────────────┐│
-│  │ 📁  ~/Hitechcloud/Projects/<name>                                     ││  ← clickable
+│  │ 📁  ~/Holaboss/Projects/<name>                                     ││  ← clickable
 │  └──────────────────────────────────────────────────────────────────┘│
 │                                                                        │
 │                                                  [Cancel]  [Create]    │

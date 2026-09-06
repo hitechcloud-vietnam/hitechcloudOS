@@ -63,7 +63,7 @@ function harness(
   let registered: ((event: IpcMainInvokeEvent, req: BffFetchRequest) => Promise<BffFetchResponse>) | null = null;
   installBffFetchHandler({
     getCookieHeader: () => "session=abc; csrf=xyz",
-    allowedHosts: () => ["api.hitechcloud.vn", "api.imerchstaging.com"],
+    allowedHosts: () => ["api.holaboss.ai", "api.imerchstaging.com"],
     register: (channel, handler) => {
       assert.equal(channel, BFF_FETCH_CHANNEL);
       registered = handler as (
@@ -100,7 +100,7 @@ test("registers on the BFF_FETCH_CHANNEL constant", () => {
   let seen = "";
   installBffFetchHandler({
     getCookieHeader: () => "",
-    allowedHosts: () => ["api.hitechcloud.vn"],
+    allowedHosts: () => ["api.holaboss.ai"],
     register: (channel) => {
       seen = channel;
     },
@@ -112,7 +112,7 @@ test("registers on the BFF_FETCH_CHANNEL constant", () => {
 test("forwards a GET to an allowlisted host and returns a serialized response", async () => {
   const h = harness();
   const resp = await h.invoke({
-    url: "https://api.hitechcloud.vn/rpc/billing",
+    url: "https://api.holaboss.ai/rpc/billing",
     method: "GET",
     headers: { accept: "application/json" },
   });
@@ -125,7 +125,7 @@ test("forwards a GET to an allowlisted host and returns a serialized response", 
 test("injects the auth cookie even when the renderer didn't send one", async () => {
   const h = harness();
   await h.invoke({
-    url: "https://api.hitechcloud.vn/rpc/billing",
+    url: "https://api.holaboss.ai/rpc/billing",
     method: "GET",
     headers: {},
   });
@@ -137,7 +137,7 @@ test("injects the auth cookie even when the renderer didn't send one", async () 
 test("strips a renderer-supplied Cookie header (the dep-injected cookie wins)", async () => {
   const h = harness();
   await h.invoke({
-    url: "https://api.hitechcloud.vn/rpc/billing",
+    url: "https://api.holaboss.ai/rpc/billing",
     method: "POST",
     headers: { cookie: "evil=injected", "content-type": "application/json" },
     body: '{"x":1}',
@@ -151,7 +151,7 @@ test("strips a renderer-supplied Cookie header (the dep-injected cookie wins)", 
 test("strips other forbidden headers (host, content-length, connection)", async () => {
   const h = harness();
   await h.invoke({
-    url: "https://api.hitechcloud.vn/rpc/billing",
+    url: "https://api.holaboss.ai/rpc/billing",
     method: "POST",
     headers: {
       host: "evil.example.com",
@@ -171,7 +171,7 @@ test("strips other forbidden headers (host, content-length, connection)", async 
 test("forwards body verbatim on non-GET", async () => {
   const h = harness();
   await h.invoke({
-    url: "https://api.hitechcloud.vn/rpc/widgets",
+    url: "https://api.holaboss.ai/rpc/widgets",
     method: "POST",
     headers: { "content-type": "application/json" },
     body: '{"hello":"world"}',
@@ -192,7 +192,7 @@ test("rejects requests to a host outside the allowlist", async () => {
 });
 
 test("allowlist is re-evaluated per request (no startup-time freezing)", async () => {
-  let allowed = ["api.hitechcloud.vn"];
+  let allowed = ["api.holaboss.ai"];
   const events: BffFetchLogEvent[] = [];
   let registered: ((event: IpcMainInvokeEvent, req: BffFetchRequest) => Promise<BffFetchResponse>) | null = null;
   const originalFetch = globalThis.fetch;
@@ -251,7 +251,7 @@ test("times out long-running fetches and surfaces an abort error", async () => {
   const startedAt = Date.now();
   await assert.rejects(
     h.invoke({
-      url: "https://api.hitechcloud.vn/slow",
+      url: "https://api.holaboss.ai/slow",
       method: "GET",
       headers: {},
     }),
@@ -263,7 +263,7 @@ test("times out long-running fetches and surfaces an abort error", async () => {
 test("emits structured log events on success", async () => {
   const h = harness();
   await h.invoke({
-    url: "https://api.hitechcloud.vn/rpc/billing",
+    url: "https://api.holaboss.ai/rpc/billing",
     method: "GET",
     headers: {},
   });
@@ -281,7 +281,7 @@ test("emits structured error log when fetch throws", async () => {
   });
   await assert.rejects(
     h.invoke({
-      url: "https://api.hitechcloud.vn/rpc/billing",
+      url: "https://api.holaboss.ai/rpc/billing",
       method: "GET",
       headers: {},
     }),
@@ -302,7 +302,7 @@ test("propagates non-2xx response bodies as ok=false (caller decides what to do)
     }),
   );
   const resp = await h.invoke({
-    url: "https://api.hitechcloud.vn/rpc/private",
+    url: "https://api.holaboss.ai/rpc/private",
     method: "GET",
     headers: {},
   });
@@ -318,24 +318,24 @@ test("does not auto-follow redirects (BFF stays explicit about 3xx)", async () =
     new Response("", {
       status: 302,
       headers: {
-        location: "https://api.hitechcloud.vn/elsewhere",
+        location: "https://api.holaboss.ai/elsewhere",
         "content-type": "text/plain",
       },
     }),
   );
   const resp = await h.invoke({
-    url: "https://api.hitechcloud.vn/rpc/redir",
+    url: "https://api.holaboss.ai/rpc/redir",
     method: "GET",
     headers: {},
   });
   assert.equal(resp.status, 302);
-  assert.equal(resp.headers["location"], "https://api.hitechcloud.vn/elsewhere");
+  assert.equal(resp.headers["location"], "https://api.holaboss.ai/elsewhere");
 });
 
 test("handles empty cookie (unauthenticated) by not sending Cookie header", async () => {
   const h = harness({ getCookieHeader: () => "" });
   await h.invoke({
-    url: "https://api.hitechcloud.vn/rpc/public",
+    url: "https://api.holaboss.ai/rpc/public",
     method: "GET",
     headers: {},
   });
@@ -346,7 +346,7 @@ test("handles empty cookie (unauthenticated) by not sending Cookie header", asyn
 test("forbidden-header drop is case-insensitive", async () => {
   const h = harness();
   await h.invoke({
-    url: "https://api.hitechcloud.vn/rpc/x",
+    url: "https://api.holaboss.ai/rpc/x",
     method: "POST",
     headers: { COOKIE: "evil=1", "Content-Length": "9", "Content-Type": "application/json" },
     body: '{"x":1}',
@@ -376,7 +376,7 @@ test("retries once on a transient network error, then succeeds", async () => {
     });
   });
   const resp = await h.invoke({
-    url: "https://api.hitechcloud.vn/rpc/billing",
+    url: "https://api.holaboss.ai/rpc/billing",
     method: "GET",
     headers: {},
   });
@@ -389,7 +389,7 @@ test("does not retry a non-transient error (single attempt)", async () => {
     throw new Error("boom");
   });
   await assert.rejects(
-    h.invoke({ url: "https://api.hitechcloud.vn/rpc/billing", method: "GET", headers: {} }),
+    h.invoke({ url: "https://api.holaboss.ai/rpc/billing", method: "GET", headers: {} }),
   );
   assert.equal(h.fetchCalls.length, 1);
 });
@@ -399,7 +399,7 @@ test("surfaces the undici cause in the error log and thrown message", async () =
     throw transientError("EAI_AGAIN");
   });
   await assert.rejects(
-    h.invoke({ url: "https://api.hitechcloud.vn/rpc/billing", method: "GET", headers: {} }),
+    h.invoke({ url: "https://api.holaboss.ai/rpc/billing", method: "GET", headers: {} }),
     /EAI_AGAIN/,
   );
   // Both attempts failed transiently.

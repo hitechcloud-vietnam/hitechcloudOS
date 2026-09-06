@@ -1,4 +1,4 @@
-import { Button } from "@hitechcloud/ui"
+import { Button } from "@holaboss/ui"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 type Props = {

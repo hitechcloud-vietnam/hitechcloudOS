@@ -1,5 +1,5 @@
 /**
- * Hitechcloud Integration Store catalog — the curated list of Composio
+ * Holaboss Integration Store catalog — the curated list of Composio
  * toolkits we expose to users in Settings → Integrations and let the
  * agent reach.
  *

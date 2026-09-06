@@ -6,7 +6,7 @@
 //
 // Event start_time/end_time are intrinsic event attributes (the user books
 // a meeting for March 5 at 2pm). This is NOT the "schedule this action to
-// run later" concept — that lives in Hitechcloud automations.
+// run later" concept — that lives in Holaboss automations.
 //
 // Copy this directory as a template when building a real calendar / event
 // module; do not deploy it as-is.

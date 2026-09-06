@@ -6,25 +6,25 @@ import {
 } from "./harness-registry.js";
 import { resolveHarnessAvailabilityWithModels } from "./harness-availability.js";
 
-const HITECHCLOUD_MODEL_PROXY_BASE_URL_ENV = "HITECHCLOUD_MODEL_PROXY_BASE_URL";
-const HITECHCLOUD_MODEL_PROXY_BASE_URL_DEFAULT_ENV = "HITECHCLOUD_MODEL_PROXY_BASE_URL_DEFAULT";
-const HITECHCLOUD_SANDBOX_AUTH_TOKEN_ENV = "HITECHCLOUD_SANDBOX_AUTH_TOKEN";
-const HITECHCLOUD_USER_ID_ENV = "HITECHCLOUD_USER_ID";
-const HITECHCLOUD_DEFAULT_MODEL_ENV = "HITECHCLOUD_DEFAULT_MODEL";
-const HITECHCLOUD_RUNTIME_CONFIG_PATH_ENV = "HITECHCLOUD_RUNTIME_CONFIG_PATH";
-const HITECHCLOUD_DESKTOP_BROWSER_ENABLED_ENV = "HITECHCLOUD_DESKTOP_BROWSER_ENABLED";
-const HITECHCLOUD_DESKTOP_BROWSER_URL_ENV = "HITECHCLOUD_DESKTOP_BROWSER_URL";
-const HITECHCLOUD_DESKTOP_BROWSER_AUTH_TOKEN_ENV = "HITECHCLOUD_DESKTOP_BROWSER_AUTH_TOKEN";
-const HITECHCLOUD_DESKTOP_BROWSER_ALLOWED_DOMAINS_ENV = "HITECHCLOUD_DESKTOP_BROWSER_ALLOWED_DOMAINS";
-const HITECHCLOUD_DESKTOP_BROWSER_BLOCKED_ACTIONS_ENV = "HITECHCLOUD_DESKTOP_BROWSER_BLOCKED_ACTIONS";
-const HITECHCLOUD_DESKTOP_BROWSER_CONFIRM_ACTIONS_ENV = "HITECHCLOUD_DESKTOP_BROWSER_CONFIRM_ACTIONS";
-const HITECHCLOUD_DESKTOP_BROWSER_UNTRUSTED_BOUNDARIES_ENV = "HITECHCLOUD_DESKTOP_BROWSER_UNTRUSTED_BOUNDARIES";
+const HOLABOSS_MODEL_PROXY_BASE_URL_ENV = "HOLABOSS_MODEL_PROXY_BASE_URL";
+const HOLABOSS_MODEL_PROXY_BASE_URL_DEFAULT_ENV = "HOLABOSS_MODEL_PROXY_BASE_URL_DEFAULT";
+const HOLABOSS_SANDBOX_AUTH_TOKEN_ENV = "HOLABOSS_SANDBOX_AUTH_TOKEN";
+const HOLABOSS_USER_ID_ENV = "HOLABOSS_USER_ID";
+const HOLABOSS_DEFAULT_MODEL_ENV = "HOLABOSS_DEFAULT_MODEL";
+const HOLABOSS_RUNTIME_CONFIG_PATH_ENV = "HOLABOSS_RUNTIME_CONFIG_PATH";
+const HOLABOSS_DESKTOP_BROWSER_ENABLED_ENV = "HOLABOSS_DESKTOP_BROWSER_ENABLED";
+const HOLABOSS_DESKTOP_BROWSER_URL_ENV = "HOLABOSS_DESKTOP_BROWSER_URL";
+const HOLABOSS_DESKTOP_BROWSER_AUTH_TOKEN_ENV = "HOLABOSS_DESKTOP_BROWSER_AUTH_TOKEN";
+const HOLABOSS_DESKTOP_BROWSER_ALLOWED_DOMAINS_ENV = "HOLABOSS_DESKTOP_BROWSER_ALLOWED_DOMAINS";
+const HOLABOSS_DESKTOP_BROWSER_BLOCKED_ACTIONS_ENV = "HOLABOSS_DESKTOP_BROWSER_BLOCKED_ACTIONS";
+const HOLABOSS_DESKTOP_BROWSER_CONFIRM_ACTIONS_ENV = "HOLABOSS_DESKTOP_BROWSER_CONFIRM_ACTIONS";
+const HOLABOSS_DESKTOP_BROWSER_UNTRUSTED_BOUNDARIES_ENV = "HOLABOSS_DESKTOP_BROWSER_UNTRUSTED_BOUNDARIES";
 const HB_SANDBOX_ROOT_ENV = "HB_SANDBOX_ROOT";
 const SANDBOX_AGENT_HARNESS_ENV = "SANDBOX_AGENT_HARNESS";
 
 const DEFAULT_MODEL = "gpt-5.4";
 const DEFAULT_RUNTIME_MODE = "oss";
-const HITECHCLOUD_PROXY_PROVIDER = "hitechcloud_model_proxy";
+const HOLABOSS_PROXY_PROVIDER = "holaboss_model_proxy";
 
 type StringMap = Record<string, unknown>;
 
@@ -32,14 +32,14 @@ export type ProductRuntimeConfig = {
   authToken: string;
   userId: string;
   // Org-billing: the active org the desktop is scoped to. Forwarded as
-  // X-Hitechcloud-Org-Id on model-proxy calls so consumption attributes to this org
+  // X-Holaboss-Org-Id on model-proxy calls so consumption attributes to this org
   // (else the product side falls back to the user's personal org). Attribution
   // only — no wallet is debited by it yet (that's org-billing Slice 3).
   orgId?: string;
   // BYO (bring-your-own-key) org — the org whose stored provider keys this run
   // may use. Distinct from orgId (billing): desktop Personal deliberately keeps
   // orgId null (bills the personal wallet), yet still owns BYO keys under a real
-  // personal-org id, which travels here and is forwarded as X-Hitechcloud-Byo-Org-Id
+  // personal-org id, which travels here and is forwarded as X-Holaboss-Byo-Org-Id
   // for key lookup only. Falls back to orgId (team orgs) when absent.
   byoOrgId?: string;
   sandboxId: string;
@@ -48,7 +48,7 @@ export type ProductRuntimeConfig = {
   subagentModel?: string;
   runtimeMode: string;
   defaultProvider: string;
-  hitechcloudEnabled: boolean;
+  holabossEnabled: boolean;
   desktopBrowserEnabled: boolean;
   desktopBrowserUrl: string;
   desktopBrowserAuthToken: string;
@@ -91,7 +91,7 @@ function firstEnvValue(...names: string[]): string {
 }
 
 function runtimeConfigPath(): string {
-  const explicit = firstEnvValue(HITECHCLOUD_RUNTIME_CONFIG_PATH_ENV);
+  const explicit = firstEnvValue(HOLABOSS_RUNTIME_CONFIG_PATH_ENV);
   if (explicit) {
     return path.resolve(explicit);
   }
@@ -99,7 +99,7 @@ function runtimeConfigPath(): string {
 }
 
 function sandboxRootPath(): string {
-  return firstEnvValue(HB_SANDBOX_ROOT_ENV) || "/hitechcloud";
+  return firstEnvValue(HB_SANDBOX_ROOT_ENV) || "/holaboss";
 }
 
 function workspaceRootPath(): string {
@@ -203,38 +203,38 @@ function loadRuntimeConfigPayload(): {
   const providersPayload = asObject(document.providers);
   const integrationsPayload = asObject(document.integrations);
   const capabilitiesPayload = asObject(document.capabilities);
-  const hitechcloudIntegration = asObject(integrationsPayload.hitechcloud);
+  const holabossIntegration = asObject(integrationsPayload.holaboss);
   const desktopBrowserCapability = asObject(capabilitiesPayload.desktop_browser);
-  const hitechcloudProvider = asObject(providersPayload[HITECHCLOUD_PROXY_PROVIDER]);
+  const holabossProvider = asObject(providersPayload[HOLABOSS_PROXY_PROVIDER]);
   const legacyPayload =
-    Object.keys(asObject(document.hitechcloud)).length > 0 ? asObject(document.hitechcloud) : document;
+    Object.keys(asObject(document.holaboss)).length > 0 ? asObject(document.holaboss) : document;
 
   const authToken =
-    normalizeString(hitechcloudIntegration.auth_token) ||
-    normalizeString(hitechcloudProvider.api_key) ||
+    normalizeString(holabossIntegration.auth_token) ||
+    normalizeString(holabossProvider.api_key) ||
     normalizeString(legacyPayload.auth_token) ||
     normalizeString(legacyPayload.model_proxy_api_key);
-  const userId = normalizeString(hitechcloudIntegration.user_id) || normalizeString(legacyPayload.user_id);
+  const userId = normalizeString(holabossIntegration.user_id) || normalizeString(legacyPayload.user_id);
   // Org-owned sessions / billing: the active org, read from the same places as
   // user_id. Was previously never read here, so resolveProductRuntimeConfig().orgId
   // was always undefined — LLM spend + session stamping fell back to personal.
   const orgId =
-    normalizeString(hitechcloudIntegration.org_id) ||
+    normalizeString(holabossIntegration.org_id) ||
     normalizeString(legacyPayload.org_id);
   // BYO key org — read alongside org_id; personal keeps org_id null but carries a
   // real personal-org id here for BYO key lookup (see ProductRuntimeConfig.byoOrgId).
   const byoOrgId =
-    normalizeString(hitechcloudIntegration.byo_org_id) ||
+    normalizeString(holabossIntegration.byo_org_id) ||
     normalizeString(legacyPayload.byo_org_id);
   const bindingSandboxId =
-    normalizeString(hitechcloudIntegration.sandbox_id) ||
+    normalizeString(holabossIntegration.sandbox_id) ||
     normalizeString(legacyPayload.sandbox_id);
   const sandboxId =
     (authToken && bindingSandboxId) ||
     normalizeString(runtimePayload.sandbox_id) ||
     bindingSandboxId;
   const modelProxyBaseUrl =
-    normalizeString(hitechcloudProvider.base_url) || normalizeString(legacyPayload.model_proxy_base_url);
+    normalizeString(holabossProvider.base_url) || normalizeString(legacyPayload.model_proxy_base_url);
   const defaultModelValue =
     normalizeString(runtimePayload.default_model) || normalizeString(legacyPayload.default_model);
   const subagentModelValue = normalizeString(
@@ -243,26 +243,26 @@ function loadRuntimeConfigPayload(): {
       subagentsPayload.modelId,
   );
   const defaultProvider = normalizeString(runtimePayload.default_provider);
-  const explicitHitechcloudEnabled = normalizeBool(hitechcloudIntegration.enabled);
-  const hitechcloudEnabled =
-    explicitHitechcloudEnabled ??
-    Boolean(authToken || userId || modelProxyBaseUrl || defaultProvider === HITECHCLOUD_PROXY_PROVIDER);
+  const explicitHolabossEnabled = normalizeBool(holabossIntegration.enabled);
+  const holabossEnabled =
+    explicitHolabossEnabled ??
+    Boolean(authToken || userId || modelProxyBaseUrl || defaultProvider === HOLABOSS_PROXY_PROVIDER);
   const envDesktopBrowserEnabled = normalizeBool(
-    firstEnvValue(HITECHCLOUD_DESKTOP_BROWSER_ENABLED_ENV)
+    firstEnvValue(HOLABOSS_DESKTOP_BROWSER_ENABLED_ENV)
   );
-  const envDesktopBrowserUrl = firstEnvValue(HITECHCLOUD_DESKTOP_BROWSER_URL_ENV);
-  const envDesktopBrowserAuthToken = firstEnvValue(HITECHCLOUD_DESKTOP_BROWSER_AUTH_TOKEN_ENV);
+  const envDesktopBrowserUrl = firstEnvValue(HOLABOSS_DESKTOP_BROWSER_URL_ENV);
+  const envDesktopBrowserAuthToken = firstEnvValue(HOLABOSS_DESKTOP_BROWSER_AUTH_TOKEN_ENV);
   const envDesktopBrowserAllowedDomains = normalizeStringList(
-    firstEnvValue(HITECHCLOUD_DESKTOP_BROWSER_ALLOWED_DOMAINS_ENV),
+    firstEnvValue(HOLABOSS_DESKTOP_BROWSER_ALLOWED_DOMAINS_ENV),
   );
   const envDesktopBrowserBlockedActions = normalizeStringList(
-    firstEnvValue(HITECHCLOUD_DESKTOP_BROWSER_BLOCKED_ACTIONS_ENV),
+    firstEnvValue(HOLABOSS_DESKTOP_BROWSER_BLOCKED_ACTIONS_ENV),
   );
   const envDesktopBrowserConfirmActions = normalizeStringList(
-    firstEnvValue(HITECHCLOUD_DESKTOP_BROWSER_CONFIRM_ACTIONS_ENV),
+    firstEnvValue(HOLABOSS_DESKTOP_BROWSER_CONFIRM_ACTIONS_ENV),
   );
   const envDesktopBrowserUntrustedBoundariesEnabled = normalizeBool(
-    firstEnvValue(HITECHCLOUD_DESKTOP_BROWSER_UNTRUSTED_BOUNDARIES_ENV),
+    firstEnvValue(HOLABOSS_DESKTOP_BROWSER_UNTRUSTED_BOUNDARIES_ENV),
   );
   const explicitDesktopBrowserEnabled = normalizeBool(desktopBrowserCapability.enabled);
   const desktopBrowserEnabled =
@@ -292,10 +292,10 @@ function loadRuntimeConfigPayload(): {
     normalizeBool(desktopBrowserCapability.untrusted_boundaries) ??
     true;
   const runtimeMode =
-    normalizeString(runtimePayload.mode) || (hitechcloudEnabled ? "product" : DEFAULT_RUNTIME_MODE);
+    normalizeString(runtimePayload.mode) || (holabossEnabled ? "product" : DEFAULT_RUNTIME_MODE);
 
   const payload: Record<string, string> = {
-    hitechcloud_enabled: hitechcloudEnabled ? "true" : "false",
+    holaboss_enabled: holabossEnabled ? "true" : "false",
     desktop_browser_enabled: desktopBrowserEnabled ? "true" : "false"
   };
   if (authToken) {
@@ -358,9 +358,9 @@ function modelProxyBaseRootUrl(
 ): string {
   const includeDefault = options?.includeDefault ?? false;
   const required = options?.required ?? true;
-  const envNames = [HITECHCLOUD_MODEL_PROXY_BASE_URL_ENV];
+  const envNames = [HOLABOSS_MODEL_PROXY_BASE_URL_ENV];
   if (includeDefault) {
-    envNames.push(HITECHCLOUD_MODEL_PROXY_BASE_URL_DEFAULT_ENV);
+    envNames.push(HOLABOSS_MODEL_PROXY_BASE_URL_DEFAULT_ENV);
   }
   const baseRoot = (payload.model_proxy_base_url || firstEnvValue(...envNames)).replace(/\/+$/, "");
   if (!baseRoot) {
@@ -373,13 +373,13 @@ function modelProxyBaseRootUrl(
   try {
     parsed = new URL(baseRoot);
   } catch {
-    throw new RuntimeConfigServiceError(400, `${HITECHCLOUD_MODEL_PROXY_BASE_URL_ENV} must be an absolute http(s) URL`);
+    throw new RuntimeConfigServiceError(400, `${HOLABOSS_MODEL_PROXY_BASE_URL_ENV} must be an absolute http(s) URL`);
   }
   if (!["http:", "https:"].includes(parsed.protocol) || !parsed.host) {
-    throw new RuntimeConfigServiceError(400, `${HITECHCLOUD_MODEL_PROXY_BASE_URL_ENV} must be an absolute http(s) URL`);
+    throw new RuntimeConfigServiceError(400, `${HOLABOSS_MODEL_PROXY_BASE_URL_ENV} must be an absolute http(s) URL`);
   }
   if (parsed.search || parsed.hash) {
-    throw new RuntimeConfigServiceError(400, `${HITECHCLOUD_MODEL_PROXY_BASE_URL_ENV} must not include query or fragment`);
+    throw new RuntimeConfigServiceError(400, `${HOLABOSS_MODEL_PROXY_BASE_URL_ENV} must not include query or fragment`);
   }
   return baseRoot;
 }
@@ -389,7 +389,7 @@ function selectedHarness(): string {
 }
 
 function defaultModel(payload: Record<string, string>): string {
-  return payload.default_model || firstEnvValue(HITECHCLOUD_DEFAULT_MODEL_ENV) || DEFAULT_MODEL;
+  return payload.default_model || firstEnvValue(HOLABOSS_DEFAULT_MODEL_ENV) || DEFAULT_MODEL;
 }
 
 function runtimeMode(payload: Record<string, string>): string {
@@ -412,16 +412,16 @@ export function resolveProductRuntimeConfig(params?: {
   const requireBaseUrl = params?.requireBaseUrl ?? true;
   const includeDefaultBaseUrl = params?.includeDefaultBaseUrl ?? false;
 
-  const authToken = payload.auth_token || firstEnvValue(HITECHCLOUD_SANDBOX_AUTH_TOKEN_ENV);
+  const authToken = payload.auth_token || firstEnvValue(HOLABOSS_SANDBOX_AUTH_TOKEN_ENV);
   if (requireAuth && !authToken) {
     throw new RuntimeConfigServiceError(
       400,
-      `${HITECHCLOUD_SANDBOX_AUTH_TOKEN_ENV} or runtime-config.json:auth_token is required`
+      `${HOLABOSS_SANDBOX_AUTH_TOKEN_ENV} or runtime-config.json:auth_token is required`
     );
   }
-  const userId = payload.user_id || firstEnvValue(HITECHCLOUD_USER_ID_ENV);
+  const userId = payload.user_id || firstEnvValue(HOLABOSS_USER_ID_ENV);
   if (requireUser && !userId) {
-    throw new RuntimeConfigServiceError(400, `${HITECHCLOUD_USER_ID_ENV} or runtime-config.json:user_id is required`);
+    throw new RuntimeConfigServiceError(400, `${HOLABOSS_USER_ID_ENV} or runtime-config.json:user_id is required`);
   }
 
   return {
@@ -438,7 +438,7 @@ export function resolveProductRuntimeConfig(params?: {
     subagentModel: payload.subagent_model || "",
     runtimeMode: runtimeMode(payload),
     defaultProvider: defaultProvider(payload),
-    hitechcloudEnabled: payload.hitechcloud_enabled === "true",
+    holabossEnabled: payload.holaboss_enabled === "true",
     desktopBrowserEnabled: payload.desktop_browser_enabled === "true",
     desktopBrowserUrl: payload.desktop_browser_url || "",
     desktopBrowserAuthToken: payload.desktop_browser_auth_token || "",
@@ -464,7 +464,7 @@ export function runtimeConfigResponse(config: ProductRuntimeConfig): Record<stri
     subagent_model: config.subagentModel || null,
     runtime_mode: config.runtimeMode || null,
     default_provider: config.defaultProvider || null,
-    hitechcloud_enabled: config.hitechcloudEnabled,
+    holaboss_enabled: config.holabossEnabled,
     desktop_browser_enabled: config.desktopBrowserEnabled,
     desktop_browser_url: config.desktopBrowserUrl || null
   };
@@ -484,19 +484,19 @@ export function runtimeConfigHeaders(params?: {
     headers["X-API-Key"] = config.authToken;
   }
   if (config.userId) {
-    headers["X-Hitechcloud-User-Id"] = config.userId;
+    headers["X-Holaboss-User-Id"] = config.userId;
   }
   if (config.orgId) {
-    headers["X-Hitechcloud-Org-Id"] = config.orgId;
+    headers["X-Holaboss-Org-Id"] = config.orgId;
   }
   // BYO key lookup — prefer the dedicated byoOrgId, fall back to the billing org
   // so team orgs (where they're equal) keep working without setting byoOrgId.
   const byoOrgId = config.byoOrgId || config.orgId;
   if (byoOrgId) {
-    headers["X-Hitechcloud-Byo-Org-Id"] = byoOrgId;
+    headers["X-Holaboss-Byo-Org-Id"] = byoOrgId;
   }
   if (config.sandboxId) {
-    headers["X-Hitechcloud-Sandbox-Id"] = config.sandboxId;
+    headers["X-Holaboss-Sandbox-Id"] = config.sandboxId;
   }
   return headers;
 }
@@ -592,18 +592,18 @@ export function updateRuntimeConfigDocument(payload: Record<string, unknown>): P
   const providersPayload = asObject(document.providers);
   const integrationsPayload = asObject(document.integrations);
   const capabilitiesPayload = asObject(document.capabilities);
-  const hitechcloudIntegration = asObject(integrationsPayload.hitechcloud);
+  const holabossIntegration = asObject(integrationsPayload.holaboss);
   const desktopBrowserCapability = asObject(capabilitiesPayload.desktop_browser);
-  const hitechcloudProvider = asObject(providersPayload[HITECHCLOUD_PROXY_PROVIDER]);
-  const legacyPayload = asObject(document.hitechcloud);
+  const holabossProvider = asObject(providersPayload[HOLABOSS_PROXY_PROVIDER]);
+  const legacyPayload = asObject(document.holaboss);
 
-  assignOrRemove(hitechcloudIntegration, "auth_token", payload.auth_token);
-  assignOrRemove(hitechcloudIntegration, "user_id", payload.user_id);
-  assignOrRemove(hitechcloudIntegration, "org_id", payload.org_id);
-  assignOrRemove(hitechcloudIntegration, "byo_org_id", payload.byo_org_id);
-  assignOrRemove(hitechcloudIntegration, "sandbox_id", payload.sandbox_id);
-  assignOrRemove(hitechcloudProvider, "api_key", payload.auth_token);
-  assignOrRemove(hitechcloudProvider, "base_url", payload.model_proxy_base_url);
+  assignOrRemove(holabossIntegration, "auth_token", payload.auth_token);
+  assignOrRemove(holabossIntegration, "user_id", payload.user_id);
+  assignOrRemove(holabossIntegration, "org_id", payload.org_id);
+  assignOrRemove(holabossIntegration, "byo_org_id", payload.byo_org_id);
+  assignOrRemove(holabossIntegration, "sandbox_id", payload.sandbox_id);
+  assignOrRemove(holabossProvider, "api_key", payload.auth_token);
+  assignOrRemove(holabossProvider, "base_url", payload.model_proxy_base_url);
   assignOrRemove(runtimePayload, "sandbox_id", payload.sandbox_id);
   assignOrRemove(runtimePayload, "default_model", payload.default_model);
   assignOrRemove(subagentsPayload, "model", payload.subagent_model);
@@ -628,8 +628,8 @@ export function updateRuntimeConfigDocument(payload: Record<string, unknown>): P
     delete desktopBrowserCapability.mcp_url;
   }
 
-  if (Object.keys(hitechcloudProvider).length > 0 && !("kind" in hitechcloudProvider)) {
-    hitechcloudProvider.kind = "openai_compatible";
+  if (Object.keys(holabossProvider).length > 0 && !("kind" in holabossProvider)) {
+    holabossProvider.kind = "openai_compatible";
   }
   if (!runtimePayload.mode) {
     runtimePayload.mode = DEFAULT_RUNTIME_MODE;
@@ -641,16 +641,16 @@ export function updateRuntimeConfigDocument(payload: Record<string, unknown>): P
     delete runtimePayload.subagents;
   }
 
-  const hitechcloudEnabled = normalizeBool(payload.hitechcloud_enabled);
-  if (hitechcloudEnabled !== undefined) {
-    hitechcloudIntegration.enabled = hitechcloudEnabled;
-  } else if (hitechcloudProvider.api_key || hitechcloudProvider.base_url) {
+  const holabossEnabled = normalizeBool(payload.holaboss_enabled);
+  if (holabossEnabled !== undefined) {
+    holabossIntegration.enabled = holabossEnabled;
+  } else if (holabossProvider.api_key || holabossProvider.base_url) {
     if (!runtimePayload.default_provider) {
-      runtimePayload.default_provider = HITECHCLOUD_PROXY_PROVIDER;
+      runtimePayload.default_provider = HOLABOSS_PROXY_PROVIDER;
     }
-    hitechcloudIntegration.enabled = true;
-  } else if (!hitechcloudIntegration.auth_token && !hitechcloudIntegration.user_id && !hitechcloudIntegration.sandbox_id) {
-    hitechcloudIntegration.enabled = false;
+    holabossIntegration.enabled = true;
+  } else if (!holabossIntegration.auth_token && !holabossIntegration.user_id && !holabossIntegration.sandbox_id) {
+    holabossIntegration.enabled = false;
   }
 
   const desktopBrowserEnabled = normalizeBool(payload.desktop_browser_enabled);
@@ -664,9 +664,9 @@ export function updateRuntimeConfigDocument(payload: Record<string, unknown>): P
   document.providers = providersPayload;
   document.integrations = integrationsPayload;
   document.capabilities = capabilitiesPayload;
-  document.hitechcloud = legacyPayload;
-  providersPayload[HITECHCLOUD_PROXY_PROVIDER] = hitechcloudProvider;
-  integrationsPayload.hitechcloud = hitechcloudIntegration;
+  document.holaboss = legacyPayload;
+  providersPayload[HOLABOSS_PROXY_PROVIDER] = holabossProvider;
+  integrationsPayload.holaboss = holabossIntegration;
   capabilitiesPayload.desktop_browser = desktopBrowserCapability;
 
   writeRuntimeConfigDocument(document, configPath);

@@ -1,6 +1,6 @@
 // Verify the app.runtime.yaml manifest generator and the Slack v2 production
 // entry point. The entry point test spawns server.ts as a subprocess (which
-// is how the Hitechcloud runtime actually launches apps) and verifies the MCP
+// is how the Holaboss runtime actually launches apps) and verifies the MCP
 // health endpoint becomes reachable.
 
 import { describe, test, expect } from "bun:test"
@@ -48,8 +48,8 @@ describe("manifest generator — buildAppRuntimeManifest", () => {
     expect(yaml).toContain(`destination: "slack"`)
 
     // Env contract has the broker + workspace essentials
-    expect(yaml).toContain(`- "HITECHCLOUD_APP_GRANT"`)
-    expect(yaml).toContain(`- "HITECHCLOUD_INTEGRATION_BROKER_URL"`)
+    expect(yaml).toContain(`- "HOLABOSS_APP_GRANT"`)
+    expect(yaml).toContain(`- "HOLABOSS_INTEGRATION_BROKER_URL"`)
     expect(yaml).toContain(`- "WORKSPACE_DB_PATH"`)
     expect(yaml).toContain(`- "MCP_PORT"`)
   })
@@ -74,15 +74,15 @@ describe("production entry point — reference/slack-messaging/server.ts boots e
     const dbPath = join(tmp, "workspace.db")
     const port = 31099 + Math.floor(Math.random() * 1000)  // avoid collisions
 
-    // Spawn the real production entry — same way hitechcloudOS runtime would
+    // Spawn the real production entry — same way holaOS runtime would
     const child = spawn("bun", ["run", "reference/slack-messaging/server.ts"], {
       cwd: SDK_DIR,
       env: {
         ...process.env,
         WORKSPACE_DB_PATH: dbPath,
         MCP_PORT: String(port),
-        HITECHCLOUD_INTEGRATION_BROKER_URL: "http://localhost:8080",  // dummy; not called in this test
-        HITECHCLOUD_APP_GRANT: "grant:test_ws:slack:test_nonce",       // dummy
+        HOLABOSS_INTEGRATION_BROKER_URL: "http://localhost:8080",  // dummy; not called in this test
+        HOLABOSS_APP_GRANT: "grant:test_ws:slack:test_nonce",       // dummy
       },
       stdio: ["ignore", "pipe", "pipe"],
     })
@@ -142,8 +142,8 @@ describe("production entry point — reference/slack-messaging/server.ts boots e
         ...process.env,
         WORKSPACE_DB_PATH: "",   // explicitly empty
         MCP_PORT: "31199",
-        HITECHCLOUD_INTEGRATION_BROKER_URL: "http://localhost:8080",
-        HITECHCLOUD_APP_GRANT: "grant:x:x:x",
+        HOLABOSS_INTEGRATION_BROKER_URL: "http://localhost:8080",
+        HOLABOSS_APP_GRANT: "grant:x:x:x",
       },
       stdio: ["ignore", "pipe", "pipe"],
     })

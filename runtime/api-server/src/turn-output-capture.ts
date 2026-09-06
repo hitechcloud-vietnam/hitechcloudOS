@@ -20,7 +20,7 @@ export interface CapturedWorkspaceFileOutput {
 
 const SKIP_DIRECTORY_NAMES = new Set([
   ".git",
-  ".hitechcloud",
+  ".holaboss",
   ".npm-cache",
   // Capped tool results, offloaded by the harness so the model can `read` them.
   // Scratch by construction — the file exists because the output was too big to

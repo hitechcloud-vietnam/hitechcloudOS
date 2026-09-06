@@ -23,14 +23,14 @@ import type { ToolDefinition } from "@earendil-works/pi-coding-agent";
 /** Long-edge pixel cap (env-tunable). 2576 matches current vision models' own
  * high-res ceiling, so small text (numbers, fine print) in screenshots survives. */
 export const TOOL_IMAGE_MAX_DIM =
-  Number(process.env.HITECHCLOUD_TOOL_IMAGE_MAX_DIM) || 2576;
+  Number(process.env.HOLABOSS_TOOL_IMAGE_MAX_DIM) || 2576;
 /** Encoded-byte budget per tool-result image — tight enough that a burst of
  * generated images in one turn stays well under the provider request ceiling. */
 export const TOOL_IMAGE_MAX_BYTES =
-  Number(process.env.HITECHCLOUD_TOOL_IMAGE_MAX_BYTES) || 1_500_000;
+  Number(process.env.HOLABOSS_TOOL_IMAGE_MAX_BYTES) || 1_500_000;
 /** Skip images whose base64 is already comfortably small (no decode/re-encode). */
 export const TOOL_IMAGE_TRIGGER_BYTES =
-  Number(process.env.HITECHCLOUD_TOOL_IMAGE_TRIGGER_BYTES) || 700_000;
+  Number(process.env.HOLABOSS_TOOL_IMAGE_TRIGGER_BYTES) || 700_000;
 
 export interface ToolImageCapOptions {
   maxDim: number;

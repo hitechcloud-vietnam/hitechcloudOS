@@ -52,7 +52,7 @@ export const materializeMarketplaceTemplate500Schema = z.object({
     })
 
 export const materializeMarketplaceTemplateMutationRequestSchema = z.object({
-    "hitechcloud_user_id": z.string(),
+    "holaboss_user_id": z.string(),
 "template_name": z.string(),
 "template_ref": z.union([z.string(), z.null(), z.null()]).optional(),
 "template_commit": z.union([z.string(), z.null(), z.null()]).optional()

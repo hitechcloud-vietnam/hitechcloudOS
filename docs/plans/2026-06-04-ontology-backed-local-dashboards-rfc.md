@@ -12,7 +12,7 @@ related:
 
 ## 0. Status and decision summary
 
-This document proposes a new product foundation for hitechcloudOS.
+This document proposes a new product foundation for holaOS.
 
 The foundation is not:
 
@@ -1502,7 +1502,7 @@ The recommended direction is:
 - let agents build systems through first-class database, view, and dashboard tools
 - let the runtime own rendering, lifecycle, validation, preview, and publish
 
-That gives hitechcloudOS a stronger and more general product shape:
+That gives holaOS a stronger and more general product shape:
 
 - database core
 - workflow semantics

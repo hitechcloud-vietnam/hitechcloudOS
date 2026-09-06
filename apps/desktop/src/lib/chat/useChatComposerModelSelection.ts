@@ -26,7 +26,7 @@ function sessionUserId(
   return session?.user?.id?.trim() || "";
 }
 
-function isHitechcloudProxyModel(model: string) {
+function isHolabossProxyModel(model: string) {
   const normalized = model.trim().toLowerCase();
   if (!normalized) return false;
   return (
@@ -39,12 +39,12 @@ function isHitechcloudProxyModel(model: string) {
   );
 }
 
-function isHitechcloudProviderId(providerId: string) {
+function isHolabossProviderId(providerId: string) {
   const normalized = providerId.trim().toLowerCase();
   return (
-    normalized === "hitechcloud_model_proxy" ||
-    normalized === "hitechcloud" ||
-    normalized.includes("hitechcloud")
+    normalized === "holaboss_model_proxy" ||
+    normalized === "holaboss" ||
+    normalized.includes("holaboss")
   );
 }
 
@@ -224,7 +224,7 @@ export function useChatComposerModelSelection(): ChatComposerModelSelection {
   }, [chatThinkingPreferences]);
 
   const isSignedIn = Boolean(sessionUserId(authSessionState.data));
-  const hitechcloudProxyModelsAvailable =
+  const holabossProxyModelsAvailable =
     isSignedIn &&
     Boolean(runtimeConfig?.authTokenPresent) &&
     Boolean((runtimeConfig?.modelProxyBaseUrl || "").trim());
@@ -233,14 +233,14 @@ export function useChatComposerModelSelection(): ChatComposerModelSelection {
   const visibleConfiguredProviderModelGroups = configuredProviderModelGroups
     .filter(
       (providerGroup) =>
-        isSignedIn || !isHitechcloudProviderId(providerGroup.providerId),
+        isSignedIn || !isHolabossProviderId(providerGroup.providerId),
     )
     .map((providerGroup) => ({
       ...providerGroup,
       pending:
         isSignedIn &&
-        isHitechcloudProviderId(providerGroup.providerId) &&
-        !hitechcloudProxyModelsAvailable,
+        isHolabossProviderId(providerGroup.providerId) &&
+        !holabossProxyModelsAvailable,
       models: providerGroup.models.filter((model) => {
         const normalizedToken = model.token.trim();
         if (!normalizedToken || isDeprecatedChatModel(normalizedToken)) {
@@ -273,7 +273,7 @@ export function useChatComposerModelSelection(): ChatComposerModelSelection {
   const runtimeDefaultModel =
     runtimeConfig?.defaultModel?.trim() || DEFAULT_RUNTIME_MODEL;
   const requiresModelProviderSetup =
-    !hasConfiguredProviderCatalog && !hitechcloudProxyModelsAvailable;
+    !hasConfiguredProviderCatalog && !holabossProxyModelsAvailable;
   const runtimeDefaultModelAvailable =
     !requiresModelProviderSetup &&
     (hasConfiguredProviderCatalog
@@ -282,8 +282,8 @@ export function useChatComposerModelSelection(): ChatComposerModelSelection {
             (model) => model.token.trim() === runtimeDefaultModel,
           ),
         )
-      : hitechcloudProxyModelsAvailable ||
-        !isHitechcloudProxyModel(runtimeDefaultModel));
+      : holabossProxyModelsAvailable ||
+        !isHolabossProxyModel(runtimeDefaultModel));
 
   const availableChatModelOptionGroups: ChatModelOptionGroup[] =
     hasConfiguredProviderCatalog
@@ -328,7 +328,7 @@ export function useChatComposerModelSelection(): ChatComposerModelSelection {
           .filter((model) => !isDeprecatedChatModel(model))
           .filter(
             (model) =>
-              hitechcloudProxyModelsAvailable || !isHitechcloudProxyModel(model),
+              holabossProxyModelsAvailable || !isHolabossProxyModel(model),
           )
           .map((model) => ({
             value: model,
@@ -392,10 +392,10 @@ export function useChatComposerModelSelection(): ChatComposerModelSelection {
   const selectedFallbackModelMetadata =
     !selectedConfiguredModel &&
     !hasConfiguredProviderCatalog &&
-    hitechcloudProxyModelsAvailable &&
+    holabossProxyModelsAvailable &&
     resolvedChatModel
       ? modelCatalog.catalogMetadataForProviderModel(
-          "hitechcloud_model_proxy",
+          "holaboss_model_proxy",
           resolvedChatModel,
         )
       : null;

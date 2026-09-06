@@ -10,7 +10,7 @@ related:
 
 ## Goal
 
-Redesign hitechcloudOS durable memory around a tree-native backend with clear ownership, predictable retrieval, and no dependency on generated `MEMORY.md` indexes.
+Redesign holaOS durable memory around a tree-native backend with clear ownership, predictable retrieval, and no dependency on generated `MEMORY.md` indexes.
 
 The new memory structure should:
 
@@ -178,7 +178,7 @@ Examples:
 - `interaction/interaction:response-style`
 - `interaction/interaction:project-alpha`
 - `integration/gmail:account-primary`
-- `integration/github:repo-hitechcloudos-oss`
+- `integration/github:repo-holaos-oss`
 
 This hierarchy is organizational and should be understood separately from the summary hierarchy inside a tree.
 
@@ -670,7 +670,7 @@ The tree backend owns the disk layout. Generated `MEMORY.md` indexes are not par
 One concrete v1 layout is:
 
 ```text
-<workspace>/.hitechcloud/memory/
+<workspace>/.holaboss/memory/
   interaction/
     <tree_id>/
       leaves/

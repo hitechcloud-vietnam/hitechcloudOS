@@ -21,7 +21,7 @@ export function useMcpCatalog() {
     const next = await listMcpCatalog();
     setCatalog(next);
     // Keep main in sync with what's installed (covers app restart) so its per-turn
-    // re-attach refreshes the Hitechcloud session bearer for hosted servers.
+    // re-attach refreshes the Holaboss session bearer for hosted servers.
     await syncInstalledMcps(next);
   }, [setCatalog]);
 

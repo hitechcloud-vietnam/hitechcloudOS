@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import type { MemoryEntryRecord } from "@hitechcloud/runtime-state-store";
+import type { MemoryEntryRecord } from "@holaboss/runtime-state-store";
 
 import { recalledMemoryContextFromEntries } from "./memory-recall.js";
 

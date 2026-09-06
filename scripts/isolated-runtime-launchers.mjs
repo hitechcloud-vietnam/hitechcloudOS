@@ -28,7 +28,7 @@ const DESKTOP_RUNTIME_PORT_RANGE_SIZE = 2000;
 const STANDALONE_RUNTIME_PORT_RANGE_START = 42160;
 const STANDALONE_RUNTIME_PORT_RANGE_SIZE = 2000;
 const DEFAULT_DEV_SERVER_URL = "http://localhost:5173";
-const MULTI_RUNTIME_HOME_ENV = "HITECHCLOUD_MULTI_RUNTIME_HOME";
+const MULTI_RUNTIME_HOME_ENV = "HOLABOSS_MULTI_RUNTIME_HOME";
 
 function usageError(message) {
   const error = new Error(message);
@@ -87,7 +87,7 @@ export function sanitizeInstanceName(value) {
 
 export function multiRuntimeHomeRoot() {
   const explicitRoot = (process.env[MULTI_RUNTIME_HOME_ENV] ?? "").trim();
-  return path.resolve(explicitRoot || path.join(os.homedir(), ".hitechcloudos"));
+  return path.resolve(explicitRoot || path.join(os.homedir(), ".holaos"));
 }
 
 export function resolveDesktopUserDataPath(instanceName, homeRoot = multiRuntimeHomeRoot()) {
@@ -297,7 +297,7 @@ export async function ensureDesktopRuntimeBundle({ autoPrepare = true } = {}) {
       cwd: desktopRoot,
       env: {
         ...process.env,
-        HITECHCLOUD_RUNTIME_PLATFORM: bundleState.runtimePlatform,
+        HOLABOSS_RUNTIME_PLATFORM: bundleState.runtimePlatform,
       },
       stdio: "inherit",
     });
@@ -386,9 +386,9 @@ export async function launchIsolatedDesktop(options = {}) {
     cwd: desktopRoot,
     env: {
       ...process.env,
-      HITECHCLOUD_DESKTOP_USER_DATA_PATH: userDataPath,
-      HITECHCLOUD_DISABLE_SINGLE_INSTANCE_LOCK: "1",
-      HITECHCLOUD_RUNTIME_API_PORT: "",
+      HOLABOSS_DESKTOP_USER_DATA_PATH: userDataPath,
+      HOLABOSS_DISABLE_SINGLE_INSTANCE_LOCK: "1",
+      HOLABOSS_RUNTIME_API_PORT: "",
       SANDBOX_RUNTIME_API_PORT: "",
       VITE_DEV_SERVER_URL: devServerUrl,
     },
@@ -424,10 +424,10 @@ export async function launchStandaloneRuntime(options = {}) {
     env: {
       ...process.env,
       HB_SANDBOX_ROOT: sandboxRoot,
-      HITECHCLOUD_CONTROL_PLANE_DB_PATH: path.join(sandboxRoot, "state", "control-plane.db"),
-      HITECHCLOUD_HOST_STATE_DB_PATH: path.join(sandboxRoot, "state", "host-state.db"),
-      HITECHCLOUD_RUNTIME_CONFIG_PATH: path.join(sandboxRoot, "state", "runtime-config.json"),
-      HITECHCLOUD_RUNTIME_DB_PATH: path.join(sandboxRoot, "state", "host-state.db"),
+      HOLABOSS_CONTROL_PLANE_DB_PATH: path.join(sandboxRoot, "state", "control-plane.db"),
+      HOLABOSS_HOST_STATE_DB_PATH: path.join(sandboxRoot, "state", "host-state.db"),
+      HOLABOSS_RUNTIME_CONFIG_PATH: path.join(sandboxRoot, "state", "runtime-config.json"),
+      HOLABOSS_RUNTIME_DB_PATH: path.join(sandboxRoot, "state", "host-state.db"),
       SANDBOX_AGENT_BIND_HOST: "127.0.0.1",
       SANDBOX_AGENT_BIND_PORT: String(port),
       SANDBOX_RUNTIME_API_PORT: String(port),

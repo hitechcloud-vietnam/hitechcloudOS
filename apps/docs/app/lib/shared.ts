@@ -1,10 +1,10 @@
-export const appName = 'hitechcloudOS';
+export const appName = 'holaOS';
 export const docsRoute = '/docs';
 export const docsImageRoute = '/docs/og';
 export const docsContentRoute = '/docs/llms.mdx';
 
 export const gitConfig = {
-  user: 'hitechcloud-vietnam',
-  repo: 'hitechcloudOS',
+  user: 'holaboss-ai',
+  repo: 'holaOS',
   branch: 'main',
 };

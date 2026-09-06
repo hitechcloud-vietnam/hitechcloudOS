@@ -5,7 +5,7 @@ import type {
   ShareDraftItem,
   ShareDraftSessionStep,
   ShareDraftSessionTurn,
-} from "@hitechcloud/app-host/protocol";
+} from "@holaboss/app-host/protocol";
 import { remoteApi } from "@/lib/remoteApiClient";
 import { toolkitDisplayName } from "@/lib/toolkitDisplay";
 import { parseSerializedQuotedSkillPrompt } from "../helpers";

@@ -64,11 +64,11 @@ test("mapSkillFrontmatter: keeps body verbatim when name matches and no allowed-
   assert.equal(mapped.description, "Work with PDFs.");
 });
 
-test("mapSkillFrontmatter: maps allowed-tools to hitechcloud_granted_tools", () => {
+test("mapSkillFrontmatter: maps allowed-tools to holaboss_granted_tools", () => {
   const raw = "---\nname: pdf\ndescription: Work with PDFs.\nallowed-tools: bash, python\n---\n# PDF\nbody\n";
   const mapped = mapSkillFrontmatter(raw, "pdf");
   assert.deepEqual(mapped.grantedTools, ["bash", "python"]);
-  assert.match(mapped.content, /hitechcloud_granted_tools/);
+  assert.match(mapped.content, /holaboss_granted_tools/);
   assert.doesNotMatch(mapped.content, /allowed-tools/);
 });
 
@@ -134,7 +134,7 @@ test("importSkillFromGithub: extracts folder, maps frontmatter, writes all files
 
   const skillMd = fs.readFileSync(path.join(workspaceDir, "skills", "pdf", "SKILL.md"), "utf8");
   assert.match(skillMd, /name: pdf/);
-  assert.match(skillMd, /hitechcloud_granted_tools/);
+  assert.match(skillMd, /holaboss_granted_tools/);
   assert.doesNotMatch(skillMd, /allowed-tools/);
 
   const script = path.join(workspaceDir, "skills", "pdf", "scripts", "run.sh");

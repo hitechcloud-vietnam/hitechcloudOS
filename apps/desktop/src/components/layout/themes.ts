@@ -6,8 +6,8 @@
  */
 
 export const THEMES = [
-  "hitechcloudos-dark",
-  "hitechcloudos-light",
+  "holaos-dark",
+  "holaos-light",
   "catppuccin-dark",
   "catppuccin-light",
   "rose-pine-dark",
@@ -33,7 +33,7 @@ export function isAppTheme(value: string): value is AppTheme {
 // Appearance model — two orthogonal axes combined into the legacy
 // AppTheme string for Electron IPC and `data-theme` application.
 export const THEME_VARIANTS = [
-  "hitechcloudos",
+  "holaos",
   "catppuccin",
   "rose-pine",
   "solarized",
@@ -73,7 +73,7 @@ export const FONT_STACKS: Record<FontFamily, string> = {
 };
 
 /**
- * Decompose a legacy combined theme string ("hitechcloudos-dark") into the
+ * Decompose a legacy combined theme string ("holaos-dark") into the
  * (variant, scheme) tuple the new storage format uses. Returns null if
  * the string doesn't match any known theme.
  */

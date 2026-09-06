@@ -1,7 +1,7 @@
 {
-  "name": "@hitechcloud/runtime-client",
+  "name": "@holaboss/runtime-client",
   "version": "0.1.0",
-  "description": "Hitechcloud Runtime Client — TypeScript client for the in-sandbox runtime API server",
+  "description": "Holaboss Runtime Client — TypeScript client for the in-sandbox runtime API server",
   "private": true,
   "type": "module",
   "main": "./dist/index.cjs",
@@ -46,7 +46,7 @@
     "typescript": "^5"
   },
   "devDependencies": {
-    "@hitechcloud/tsconfig": "workspace:*",
+    "@holaboss/tsconfig": "workspace:*",
     "@types/node": "^24.3.0",
     "tsdown": "^0.21.4",
     "typescript": "^5.9.3",

@@ -53,7 +53,7 @@ This task adds the ability to parse integration requirements from a materialized
 - [ ] Add this method to `ElectronAPI.workspace`:
 
 ```ts
-      resolveTemplateIntegrations: (payload: HitechcloudCreateWorkspacePayload) => Promise<ResolveTemplateIntegrationsResult>;
+      resolveTemplateIntegrations: (payload: HolabossCreateWorkspacePayload) => Promise<ResolveTemplateIntegrationsResult>;
 ```
 
 ### Step 2: Add preload IPC
@@ -61,7 +61,7 @@ This task adds the ability to parse integration requirements from a materialized
 - [ ] Read `desktop/electron/preload.ts`. Add the matching type interfaces (same as electron.d.ts, following the existing pattern of local type redeclaration). Add inside the `workspace` property:
 
 ```ts
-    resolveTemplateIntegrations: (payload: HitechcloudCreateWorkspacePayload) =>
+    resolveTemplateIntegrations: (payload: HolabossCreateWorkspacePayload) =>
       ipcRenderer.invoke("workspace:resolveTemplateIntegrations", payload) as Promise<ResolveTemplateIntegrationsResult>,
 ```
 
@@ -144,7 +144,7 @@ function extractIntegrationRequirementsFromTemplateFiles(
 
 ```ts
 async function resolveTemplateIntegrations(
-  payload: HitechcloudCreateWorkspacePayload
+  payload: HolabossCreateWorkspacePayload
 ): Promise<ResolveTemplateIntegrationsResult> {
   // Materialize template to get files (same logic as createWorkspace)
   const templateRootPath = payload.template_root_path?.trim() || "";
@@ -155,7 +155,7 @@ async function resolveTemplateIntegrations(
     materializedTemplate = await materializeLocalTemplate({ template_root_path: templateRootPath });
   } else if (templateName) {
     materializedTemplate = await materializeMarketplaceTemplate({
-      hitechcloud_user_id: payload.hitechcloud_user_id,
+      holaboss_user_id: payload.holaboss_user_id,
       template_name: templateName,
       template_ref: payload.template_ref,
       template_commit: payload.template_commit,
@@ -217,7 +217,7 @@ async function resolveTemplateIntegrations(
   handleTrustedIpc(
     "workspace:resolveTemplateIntegrations",
     ["main"],
-    async (_event, payload: HitechcloudCreateWorkspacePayload) =>
+    async (_event, payload: HolabossCreateWorkspacePayload) =>
       resolveTemplateIntegrations(payload),
   );
 ```
@@ -311,16 +311,16 @@ Add a new function `resolveAndCreateWorkspace` that replaces the direct `createW
     }
     setIsResolvingIntegrations(true);
     try {
-      const payload: HitechcloudCreateWorkspacePayload = templateSourceMode === "marketplace"
+      const payload: HolabossCreateWorkspacePayload = templateSourceMode === "marketplace"
         ? {
-            hitechcloud_user_id: resolvedUserId,
+            holaboss_user_id: resolvedUserId,
             harness: selectedCreateHarness,
             name: newWorkspaceName.trim() || "Desktop Workspace",
             template_mode: "template",
             template_name: selectedMarketplaceTemplate?.name ?? ""
           }
         : {
-            hitechcloud_user_id: resolvedUserId || "local-oss",
+            holaboss_user_id: resolvedUserId || "local-oss",
             harness: selectedCreateHarness,
             name: newWorkspaceName.trim() || "Desktop Workspace",
             template_mode: "template",

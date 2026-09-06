@@ -18,15 +18,15 @@ import { TooltipProvider } from "./components/ui/tooltip";
 
 // localStorage keys we used to write but no longer do. Cleaned up on
 // boot so they don't sit forever as dead bytes.
-//   - "hitechcloud-new-layout-shell-v1": the experimental shell toggle that's
+//   - "holaboss-new-layout-shell-v1": the experimental shell toggle that's
 //     gone now that the new shell is the only shell.
-//   - "hitechcloud-theme-v1": the legacy combined "<variant>-<scheme>" theme
+//   - "holaboss-theme-v1": the legacy combined "<variant>-<scheme>" theme
 //     string. The shell now reads color-scheme + theme-variant separately;
 //     useSettingsState backfills the split form from this key on first run
 //     before we drop it here.
 const RETIRED_STORAGE_KEYS = [
-  "hitechcloud-new-layout-shell-v1",
-  "hitechcloud-theme-v1",
+  "holaboss-new-layout-shell-v1",
+  "holaboss-theme-v1",
 ] as const;
 
 function UmamiIdentity() {

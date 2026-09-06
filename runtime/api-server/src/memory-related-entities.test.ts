@@ -20,7 +20,7 @@ afterEach(() => {
 
 test("appendDurableMemoryRelatedSections round-trips through parseDurableMemoryRelatedInfo", () => {
   const baseMarkdown = [
-    "# External individuals have emailed the user personally about hitechcloud",
+    "# External individuals have emailed the user personally about holaboss",
     "",
     "## Summary",
     "",
@@ -220,10 +220,10 @@ test("extractDurableMemoryRelatedInfo normalizes entities, custom relation types
       apiStyle: "openai_compatible",
     },
     memoryType: "reference",
-    subjectKey: "hitechcloud_personal_outreach",
-    title: "External individuals have emailed the user personally about hitechcloud",
+    subjectKey: "holaboss_personal_outreach",
+    title: "External individuals have emailed the user personally about holaboss",
     summary: "Found durable outreach context.",
-    content: "# External individuals have emailed the user personally about hitechcloud\n\nFound durable outreach context.\n",
+    content: "# External individuals have emailed the user personally about holaboss\n\nFound durable outreach context.\n",
     tags: ["outreach"],
     artifactContexts: [
       {
@@ -233,7 +233,7 @@ test("extractDurableMemoryRelatedInfo normalizes entities, custom relation types
         provider: "gmail",
         accountNamespace: "ops@example.com",
         canonicalEntityKey: "artifact:tool-result:gmail:call-1",
-        excerpts: ["Ben Book at anyIP asked for a response about hitechcloud."],
+        excerpts: ["Ben Book at anyIP asked for a response about holaboss."],
       },
     ],
   });
@@ -313,10 +313,10 @@ test("extractDurableMemoryRelatedInfo includes structured artifact evidence in t
       apiStyle: "openai_compatible",
     },
     memoryType: "reference",
-    subjectKey: "hitechcloud_personal_outreach",
-    title: "External individuals have emailed the user personally about hitechcloud",
+    subjectKey: "holaboss_personal_outreach",
+    title: "External individuals have emailed the user personally about holaboss",
     summary: "Found durable outreach context.",
-    content: "# External individuals have emailed the user personally about hitechcloud\n\nFound durable outreach context.\n",
+    content: "# External individuals have emailed the user personally about holaboss\n\nFound durable outreach context.\n",
     tags: ["outreach"],
     artifactContexts: [
       {
@@ -496,10 +496,10 @@ test("extractDurableMemoryRelatedInfo retries once when the first pass returns o
       apiStyle: "openai_compatible",
     },
     memoryType: "reference",
-    subjectKey: "hitechcloud_personal_outreach",
-    title: "External individuals have emailed the user personally about hitechcloud",
+    subjectKey: "holaboss_personal_outreach",
+    title: "External individuals have emailed the user personally about holaboss",
     summary: "Found durable outreach context.",
-    content: "# External individuals have emailed the user personally about hitechcloud\n\nFound durable outreach context.\n",
+    content: "# External individuals have emailed the user personally about holaboss\n\nFound durable outreach context.\n",
     tags: ["outreach"],
     artifactContexts: [
       {

@@ -20,7 +20,7 @@ export const onboardingStageAtom = atom<number>(0);
  * users only see the flow once. Wipe the key in DevTools to re-trigger.
  */
 export const onboardingDismissedAtom = atomWithStorage(
-  "hitechcloudos.onboarding.dismissed",
+  "holaos.onboarding.dismissed",
   false,
   undefined,
   // `getOnInit: true` so the persisted value is read on the FIRST render.

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import type { RuntimeStateStore, WorkspaceCapabilityRecord } from "@hitechcloud/runtime-state-store";
+import type { RuntimeStateStore, WorkspaceCapabilityRecord } from "@holaboss/runtime-state-store";
 
 import { listConnectionsMerged } from "./integration-connections-merged.js";
 import yaml from "js-yaml";

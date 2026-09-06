@@ -158,7 +158,7 @@ export function CapabilityDetailView({
       id: mcp.id,
       name: mcp.name,
       mcpUrl: mcp.url,
-      hitechcloudHosted: false,
+      holabossHosted: false,
       requiredKeys: mcp.requiredKeys,
       comingSoon: false,
       verified: true,

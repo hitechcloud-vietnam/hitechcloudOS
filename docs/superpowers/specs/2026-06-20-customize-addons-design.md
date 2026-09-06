@@ -2,26 +2,26 @@
 
 **Date:** 2026-06-20
 **Status:** In implementation (worktree `feat/customize-addons`, base = `fix/drop-tools-invalid-schema-keys`)
-**Owner repo:** hitechcloudOS (runtime + desktop). Python backend only proxies for the web product later.
+**Owner repo:** holaOS (runtime + desktop). Python backend only proxies for the web product later.
 
 ## 1. What we're building
 
 A **Customize** surface (desktop) that unifies **Skills**, **Integrations**, and a new
 mid-weight bundle called an **Addon**. An Addon = *skill(s) + the integrations they need*,
 installed into an existing workspace. Mirrors Claude Cowork's `Customize ⊃ Plugins ⊃
-{Skills, Connectors}`, renamed so it doesn't collide with hitechcloudOS's existing "plugin".
+{Skills, Connectors}`, renamed so it doesn't collide with holaOS's existing "plugin".
 
 ## 2. Reconciliation with the real codebase (corrects earlier assumptions)
 
-| Earlier assumption | Reality in hitechcloudOS | Consequence |
+| Earlier assumption | Reality in holaOS | Consequence |
 |---|---|---|
-| No existing bundle concept | hitechcloudOS **"plugin"** already exists = a workflow/object/dashboard container from a `plugin-template` (`workspace_plugins` table, `RuntimeStateStore.*WorkspacePlugin*`). | "Addon" is genuinely new; **do not** build on plugins. Name "Addon" avoids the collision. |
-| Skills live in a `workspace_skills` DB table with install/toggle API | Runtime skills are **file-based, disk-discovered**: `{workspaceDir}/skills/{id}/SKILL.md` resolved by `resolveWorkspaceSkills` in `runtime/harnesses/src/workspace-skills.ts`. No DB, no toggle API. Frontmatter uses `hitechcloud.granted_tools` / `granted_commands`. | "Install a skill" = **write the SKILL.md file**. "Toggle/uninstall" = our `workspace_addons` row + remove the dir. The Supabase `workspace_skills` table is a *backend/web* layer, not the runtime. |
+| No existing bundle concept | holaOS **"plugin"** already exists = a workflow/object/dashboard container from a `plugin-template` (`workspace_plugins` table, `RuntimeStateStore.*WorkspacePlugin*`). | "Addon" is genuinely new; **do not** build on plugins. Name "Addon" avoids the collision. |
+| Skills live in a `workspace_skills` DB table with install/toggle API | Runtime skills are **file-based, disk-discovered**: `{workspaceDir}/skills/{id}/SKILL.md` resolved by `resolveWorkspaceSkills` in `runtime/harnesses/src/workspace-skills.ts`. No DB, no toggle API. Frontmatter uses `holaboss.granted_tools` / `granted_commands`. | "Install a skill" = **write the SKILL.md file**. "Toggle/uninstall" = our `workspace_addons` row + remove the dir. The Supabase `workspace_skills` table is a *backend/web* layer, not the runtime. |
 | Integrations = module apps to materialize | Integrations are a **catalog + connection + binding** model (`integration-catalog.ts`, `IntegrationConnectionRecord`, `IntegrationBindingRecord`). Apps (`workspace-apps.ts`) are a *separate* spawned-MCP concept. | An Addon's "needs Slack" = check/declare an **integration binding/connection**, NOT spawn an app. Simplifies MVP — no app materialization in v1. |
 | State in Supabase | Runtime state = **per-workspace SQLite** `runtime.db` via `RuntimeStateStore`; schema via numbered migrations in `runtime/state-store/src/migrations/` (next id = **018**). | `workspace_addons` is a SQLite migration + store methods. |
-| Tests = pytest / vitest | `node:test` + `node:assert/strict`; run via `bun --filter=@hitechcloud/runtime-state-store run test` (and `…runtime-api-server…`). | TDD with node:test. |
+| Tests = pytest / vitest | `node:test` + `node:assert/strict`; run via `bun --filter=@holaboss/runtime-state-store run test` (and `…runtime-api-server…`). | TDD with node:test. |
 
-## 3. Architecture (corrected, hitechcloudOS-centric)
+## 3. Architecture (corrected, holaOS-centric)
 
 ```
 Desktop Customize UI ──(oRPC remoteApi)──▶ Runtime API (Fastify, app.ts)
@@ -97,7 +97,7 @@ private `rowToWorkspaceAddon`.
 - **A3** Round-trip test passes: create → get → list (newest first) → setStatus('disabled') →
   delete → get returns null. JSON fields (`installed_skill_ids`, `integration_status`,
   `config`) survive serialization.
-- **A4** `bun --filter=@hitechcloud/runtime-state-store run test` and `typecheck` are green.
+- **A4** `bun --filter=@holaboss/runtime-state-store run test` and `typecheck` are green.
 
 ### Layer B — registry + orchestrator (`workspace-addons.ts`)
 - **B1** `loadAddonCatalog()` parses bundled `embedded-addons/*/addon.yaml` into validated

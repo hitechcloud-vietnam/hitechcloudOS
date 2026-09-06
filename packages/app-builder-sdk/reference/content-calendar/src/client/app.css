@@ -1,6 +1,6 @@
 /* App-local Tailwind compile entry.
  *
- * `@hitechcloud/ui/styles.css` only bakes in utilities used INSIDE the library.
+ * `@holaboss/ui/styles.css` only bakes in utilities used INSIDE the library.
  * Every Tailwind class your `src/client/` writes (grid-cols-7, grid-rows-*,
  * text-fg-48, bg-card, etc.) needs an app-side compile pass to land in the
  * bundle. Without it the page renders mostly unstyled.

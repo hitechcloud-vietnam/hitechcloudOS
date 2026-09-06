@@ -594,19 +594,19 @@ function workspacePolicyPromptSection(workspacePrompt: string): AgentPromptSecti
   };
 }
 
-// pi wires the Hitechcloud runtime tools in-process (with per-tool guidance gated
+// pi wires the Holaboss runtime tools in-process (with per-tool guidance gated
 // on the capability manifest), so this addendum is only for EXTERNAL harnesses
 // (claude-code / codex), which reach the same capabilities through the injected
-// `hitechcloud_runtime_tools` + `hitechcloud_runtime` MCP servers.
+// `holaboss_runtime_tools` + `holaboss_runtime` MCP servers.
 function isExternalHarness(harnessId: string | null | undefined): boolean {
   const id = (harnessId ?? "").trim().toLowerCase();
   return id.length > 0 && id !== "pi";
 }
 
 /**
- * Points external harnesses at the Hitechcloud-provided MCP tools and tells them to
+ * Points external harnesses at the Holaboss-provided MCP tools and tells them to
  * prefer those over ad-hoc shell / native web access. Tool names are referenced
- * bare (the client may namespace them, e.g. `mcp__hitechcloud_runtime_tools__…`);
+ * bare (the client may namespace them, e.g. `mcp__holaboss_runtime_tools__…`);
  * the agent matches by the name shown in its own tool list.
  */
 function externalHarnessMcpGuidancePromptSection(): AgentPromptSection {
@@ -618,8 +618,8 @@ function externalHarnessMcpGuidancePromptSection(): AgentPromptSection {
     priority: 650,
     volatility: "stable",
     content: linesSection([
-      "Hitechcloud workspace tools (MCP):",
-      "This workspace exposes first-class Hitechcloud capabilities through MCP servers. When one matches the task, prefer it over ad-hoc shell commands, your own built-in web access, or answering from memory alone.",
+      "Holaboss workspace tools (MCP):",
+      "This workspace exposes first-class Holaboss capabilities through MCP servers. When one matches the task, prefer it over ad-hoc shell commands, your own built-in web access, or answering from memory alone.",
       "- web_search — research the public web and discover sources; use instead of curl/wget or a built-in web fetch.",
       "- image_generate — generate an image file into the workspace.",
       "- video_generate — generate an MP4 from a text prompt.",
@@ -629,12 +629,12 @@ function externalHarnessMcpGuidancePromptSection(): AgentPromptSection {
       "- cronjobs_list / cronjobs_get / cronjobs_create / cronjobs_update / cronjobs_delete / cronjobs_run_now — create and manage scheduled recurring runs; use instead of your own native scheduler, routines, or cron so the schedule lives in this workspace, runs in this agent's context, and stays visible to the user here.",
       "- update_workspace_instructions / skill — read or append AGENTS.md, and load a workspace skill.",
       "- workspace_integrations_list_catalog — list connectable integration providers and see which accounts are already connected.",
-      "- hitechcloud_workspace_integrations_propose_connect — when a task needs a Composio-backed integration (Gmail, Slack, Notion, GitHub, …) that isn't connected yet, call this to post a Connect card instead of declaring it impossible; the run pauses and automatically resumes once the user completes the OAuth connection.",
-      "- hitechcloud_workspace_integrations_set_default_account — set the workspace's default account for a connected provider; the new account's tools apply from the next turn.",
-      "- open_macos_settings — when a host operation fails because macOS is missing a privacy permission (e.g. Screen Recording), open the relevant Settings pane, ask the user to enable Hitechcloud, then retry (macOS only).",
+      "- holaboss_workspace_integrations_propose_connect — when a task needs a Composio-backed integration (Gmail, Slack, Notion, GitHub, …) that isn't connected yet, call this to post a Connect card instead of declaring it impossible; the run pauses and automatically resumes once the user completes the OAuth connection.",
+      "- holaboss_workspace_integrations_set_default_account — set the workspace's default account for a connected provider; the new account's tools apply from the next turn.",
+      "- open_macos_settings — when a host operation fails because macOS is missing a privacy permission (e.g. Screen Recording), open the relevant Settings pane, ask the user to enable Holaboss, then retry (macOS only).",
       "- outputs_list — list the artifacts already produced in this workspace.",
-      "These come from the `hitechcloud_runtime_tools` and `hitechcloud_runtime` MCP servers. Your client may present them namespaced (for example `mcp__hitechcloud_runtime_tools__web_search`); match by the tool name shown in your available tools.",
-      "If a matching Hitechcloud tool is listed, call it rather than declaring the capability unavailable or reaching for a native equivalent. This applies especially to scheduling: when asked to schedule or automate a recurring task, use the cronjobs_* tools — never your own native scheduler, routines, or cron. Fall back to native abilities only when no matching tool is present.",
+      "These come from the `holaboss_runtime_tools` and `holaboss_runtime` MCP servers. Your client may present them namespaced (for example `mcp__holaboss_runtime_tools__web_search`); match by the tool name shown in your available tools.",
+      "If a matching Holaboss tool is listed, call it rather than declaring the capability unavailable or reaching for a native equivalent. This applies especially to scheduling: when asked to schedule or automate a recurring task, use the cronjobs_* tools — never your own native scheduler, routines, or cron. Fall back to native abilities only when no matching tool is present.",
     ]),
   };
 }
@@ -849,7 +849,7 @@ export function buildBaseAgentPromptSections(
       return String(record.tool_name ?? record.tool_id ?? "");
     })
     .filter((name) => name.length > 0);
-  // A browser "surface" is available when Hitechcloud's own browser tools are on OR a
+  // A browser "surface" is available when Holaboss's own browser tools are on OR a
   // connected MCP exposes browser-automation tools (a page screenshot, navigate,
   // page-text/HTML, or evaluate-script tool). Kept tool-source-agnostic so the
   // screenshot-first perception guidance below applies to any browser we can drive,

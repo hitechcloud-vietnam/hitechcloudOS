@@ -182,34 +182,34 @@ test("ensureMinimumSemanticOwnerRelatedInfo keeps richer semantic relations unch
 
 test("restoreInteractionLeafContentFromSourceEvidence replaces clipped summary and evidence with source evidence", () => {
   const restored = restoreInteractionLeafContentFromSourceEvidence({
-    title: "External individuals contacted the user personally about hitechcloud",
+    title: "External individuals contacted the user personally about holaboss",
     memoryType: "reference",
     body: [
-      "# External individuals contacted the user personally about hitechcloud",
+      "# External individuals contacted the user personally about holaboss",
       "",
       "- Type: `reference`",
       "",
       "## Summary",
       "",
-      "External individuals have emailed the user personally about hitechcloud...",
+      "External individuals have emailed the user personally about holaboss...",
       "",
       "## Evidence",
       "",
       "Ben Book at anyIP ...",
       "",
     ].join("\n"),
-    summary: "External individuals have emailed the user personally about hitechcloud...",
-    assistantText: "Ben Book at anyIP reached out to the user personally about hitechcloud and followed up on the same thread.",
+    summary: "External individuals have emailed the user personally about holaboss...",
+    assistantText: "Ben Book at anyIP reached out to the user personally about holaboss and followed up on the same thread.",
     evidenceLines: [
-      "[gmail ops@example.com] hitechcloud_composio.gmail_fetch_emails => Ben Book at anyIP reached out to the user personally about hitechcloud and followed up on the same thread.",
-      "[output_artifact document] outreach-deliverable.md => Ben Book at anyIP should stay attached to hitechcloud personal outreach memory.",
+      "[gmail ops@example.com] holaboss_composio.gmail_fetch_emails => Ben Book at anyIP reached out to the user personally about holaboss and followed up on the same thread.",
+      "[output_artifact document] outreach-deliverable.md => Ben Book at anyIP should stay attached to holaboss personal outreach memory.",
     ],
   });
 
   assert.equal(restored.changed, true);
   assert.equal(
     restored.summary,
-    "Ben Book at anyIP reached out to the user personally about hitechcloud and followed up on the same thread.",
+    "Ben Book at anyIP reached out to the user personally about holaboss and followed up on the same thread.",
   );
   assert.match(restored.content, /## Evidence/);
   assert.match(restored.content, /outreach-deliverable\.md/);
@@ -218,13 +218,13 @@ test("restoreInteractionLeafContentFromSourceEvidence replaces clipped summary a
 
 test("restoreInteractionLeafContentFromSourceEvidence leaves clipped memories unchanged when no source evidence exists", () => {
   const body = [
-    "# External individuals contacted the user personally about hitechcloud",
+    "# External individuals contacted the user personally about holaboss",
     "",
     "- Type: `reference`",
     "",
     "## Summary",
     "",
-    "External individuals have emailed the user personally about hitechcloud...",
+    "External individuals have emailed the user personally about holaboss...",
     "",
     "## Evidence",
     "",
@@ -233,16 +233,16 @@ test("restoreInteractionLeafContentFromSourceEvidence leaves clipped memories un
   ].join("\n");
 
   const restored = restoreInteractionLeafContentFromSourceEvidence({
-    title: "External individuals contacted the user personally about hitechcloud",
+    title: "External individuals contacted the user personally about holaboss",
     memoryType: "reference",
     body,
-    summary: "External individuals have emailed the user personally about hitechcloud...",
+    summary: "External individuals have emailed the user personally about holaboss...",
     assistantText: null,
     evidenceLines: [],
   });
 
   assert.equal(restored.changed, false);
-  assert.equal(restored.summary, "External individuals have emailed the user personally about hitechcloud...");
+  assert.equal(restored.summary, "External individuals have emailed the user personally about holaboss...");
   assert.equal(restored.content, body);
 });
 
@@ -336,7 +336,7 @@ test("interactionLeafNeedsQualityRepair selects clipped, placeholder, and missin
   assert.equal(
     interactionLeafNeedsQualityRepair({
       title: "External outreach contact",
-      summary: "Ben Book at anyIP emailed the user personally about hitechcloud.",
+      summary: "Ben Book at anyIP emailed the user personally about holaboss.",
       body: "# External outreach contact\n\nConcrete detail retained.",
       subjectKey: "external_outreach_contact",
       relatedInfo: {

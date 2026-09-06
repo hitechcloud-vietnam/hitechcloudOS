@@ -753,11 +753,11 @@ Add main-session orchestration tools to the runtime tool manifest in `runtime/ha
 
 Recommended tool ids:
 
-- `hitechcloud_delegate_task`
-- `hitechcloud_get_subagent`
-- `hitechcloud_list_background_tasks`
-- `hitechcloud_cancel_subagent`
-- `hitechcloud_resume_subagent`
+- `holaboss_delegate_task`
+- `holaboss_get_subagent`
+- `holaboss_list_background_tasks`
+- `holaboss_cancel_subagent`
+- `holaboss_resume_subagent`
 
 Why `resume_subagent` is required:
 
@@ -1057,7 +1057,7 @@ Migration goals:
 - introduce `conversation_bindings` without breaking current workspaces
 - pick one canonical desktop `main session` per workspace for the new UX
 - remove the legacy desktop session selector so desktop only shows one chat surface
-- export legacy desktop front-chat sessions into `.hitechcloud/legacy-session-histories`
+- export legacy desktop front-chat sessions into `.holaboss/legacy-session-histories`
 - archive those legacy front-chat sessions in the runtime DB after export
 - leave raw worker-style sessions accessible for debug or legacy inspection
 - start `subagent_runs` and `main_session_event_queue` from rollout forward rather than trying to fully reconstruct them from old transcripts
@@ -1093,7 +1093,7 @@ Recommended main-session selection order for legacy workspaces:
 Legacy-session handling rules:
 
 - archive and export legacy desktop front-chat sessions that are not selected as the bound desktop `main session`
-- write both `.json` and `.md` exports under `.hitechcloud/legacy-session-histories/`
+- write both `.json` and `.md` exports under `.holaboss/legacy-session-histories/`
 - maintain an `index.json` manifest in that folder so old histories remain discoverable
 - historical `task_proposal`, `cronjob`, and similar worker sessions remain as transcript history only
 - they should not appear as live background tasks unless a new `subagent_run` is created from rollout-forward activity
@@ -1104,7 +1104,7 @@ UX handling after migration:
 
 - desktop should open the bound desktop `main session` by default
 - the normal user-facing flow should stop exposing legacy session switching entirely on desktop
-- exported legacy front-chat histories remain available under `.hitechcloud` for later context lookup if needed
+- exported legacy front-chat histories remain available under `.holaboss` for later context lookup if needed
 - archived legacy sessions may still remain queryable for debugging, support, or developer tooling
 - the read-only `Background Tasks` panel should only show runs backed by real `subagent_runs`
 
@@ -1158,7 +1158,7 @@ Recommended implementation order:
    - add `main_session_event_queue`
    - add indexes, row converters, store methods, and `store.test.ts` coverage
 2. Runtime service and route surface
-   - add `hitechcloud_delegate_task`, `hitechcloud_get_subagent`, `hitechcloud_list_background_tasks`, `hitechcloud_cancel_subagent`, and `hitechcloud_resume_subagent`
+   - add `holaboss_delegate_task`, `holaboss_get_subagent`, `holaboss_list_background_tasks`, `holaboss_cancel_subagent`, and `holaboss_resume_subagent`
    - add capability-client normalization and `app.ts` routes
    - add read-only background-task APIs for the desktop panel
 3. Subagent execution writeback
@@ -1200,7 +1200,7 @@ Phase 1 exit decision:
 - [x] main-session and subagent prompt paths are split
 - [x] main-session and subagent tool surfaces are split
 - [x] child workers can receive browser tools through delegated capability buckets
-- [x] legacy desktop front-chat sessions are exported to `.hitechcloud/legacy-session-histories` and archived out of the normal UI flow
+- [x] legacy desktop front-chat sessions are exported to `.holaboss/legacy-session-histories` and archived out of the normal UI flow
 - [ ] expose a dedicated provider/model setting for subagents in the model-provider settings UI
 - [x] remove `wait_subagents` from the main-session runtime surface entirely
 - [x] add main-session inspection tools for both `get_subagent` and `list_background_tasks`

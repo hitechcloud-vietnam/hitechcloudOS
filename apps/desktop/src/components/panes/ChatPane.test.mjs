@@ -44,16 +44,16 @@ test("chat pane surfaces workspace activation errors before generic app-starting
   );
 });
 
-test("chat model picker hides hitechcloud models while signed out and only marks them pending after sign-in", async () => {
+test("chat model picker hides holaboss models while signed out and only marks them pending after sign-in", async () => {
   const source = await readFile(sourcePath, "utf8");
 
   assert.match(
     source,
-    /filter\(\s*\(providerGroup\) =>\s*isSignedIn \|\| !isHitechcloudProviderId\(providerGroup\.providerId\),?\s*\)/,
+    /filter\(\s*\(providerGroup\) =>\s*isSignedIn \|\| !isHolabossProviderId\(providerGroup\.providerId\),?\s*\)/,
   );
   assert.match(
     source,
-    /pending:\s*isSignedIn &&\s*isHitechcloudProviderId\(providerGroup\.providerId\)\s*&&\s*!hitechcloudProxyModelsAvailable/,
+    /pending:\s*isSignedIn &&\s*isHolabossProviderId\(providerGroup\.providerId\)\s*&&\s*!holabossProxyModelsAvailable/,
   );
   assert.match(source, /disabled: providerGroup\.pending/);
   assert.match(
@@ -66,7 +66,7 @@ test("chat model picker hides hitechcloud models while signed out and only marks
   );
 });
 
-test("chat model picker still renders pending signed-in hitechcloud options without collapsing back to provider setup", async () => {
+test("chat model picker still renders pending signed-in holaboss options without collapsing back to provider setup", async () => {
   const source = await readFile(sourcePath, "utf8");
 
   assert.match(await readSourceFile("components/panes/ChatPane/Composer/ModelCombobox.tsx"), /const displayLabel =[\s\S]*selectedModelLabel \|\| "Select model"/);
@@ -85,7 +85,7 @@ test("chat pane shows provider setup CTA when no chat models are available", asy
   assert.match(source, /No models available\. Configure a provider to start chatting\./);
   assert.match(
     source,
-    /const requiresModelProviderSetup =\s*!hasConfiguredProviderCatalog && !hitechcloudProxyModelsAvailable;/,
+    /const requiresModelProviderSetup =\s*!hasConfiguredProviderCatalog && !holabossProxyModelsAvailable;/,
   );
   assert.match(
     source,
@@ -114,7 +114,7 @@ test("chat pane shows provider setup CTA when no chat models are available", asy
   assert.doesNotMatch(source, /if \(!resolvedUserId\) \{/);
 });
 
-test("chat pane falls back to provider setup instead of hitechcloud pending state when signed out", async () => {
+test("chat pane falls back to provider setup instead of holaboss pending state when signed out", async () => {
   const source = await readFile(sourcePath, "utf8");
 
   assert.match(
@@ -127,7 +127,7 @@ test("chat pane falls back to provider setup instead of hitechcloud pending stat
   );
   assert.match(
     source,
-    /const requiresModelProviderSetup =\s*!hasConfiguredProviderCatalog && !hitechcloudProxyModelsAvailable;/,
+    /const requiresModelProviderSetup =\s*!hasConfiguredProviderCatalog && !holabossProxyModelsAvailable;/,
   );
 });
 
@@ -656,7 +656,7 @@ test("chat pane groups configured models under provider headings", async () => {
   assert.doesNotMatch(source, /filteredOptions\.map/);
 });
 
-test("chat pane does not suppress claude options for the hitechcloud proxy fallback path", async () => {
+test("chat pane does not suppress claude options for the holaboss proxy fallback path", async () => {
   const source = await readFile(sourcePath, "utf8");
   // CHAT_MODEL_PRESETS lives in ChatPane/constants.ts (re-exported into
   // index.tsx). Read it from there so the regex isn't silently matching
@@ -670,7 +670,7 @@ test("chat pane does not suppress claude options for the hitechcloud proxy fallb
       ?.[0] ?? "";
 
   // Claude IS expected in CHAT_MODEL_PRESETS now — the fallback list should
-  // surface both GPT and Claude families so users without a working hitechcloud
+  // surface both GPT and Claude families so users without a working holaboss
   // proxy still see their full provider options. The original "don't
   // suppress claude" intent (no isClaudeChatModel filter) is still enforced
   // by the !isClaudeChatModel doesNotMatch assertions below.
@@ -680,14 +680,14 @@ test("chat pane does not suppress claude options for the hitechcloud proxy fallb
   assert.match(source, /normalized\.startsWith\("gemini-"\)/);
   assert.match(
     source,
-    /const runtimeDefaultModelAvailable =[\s\S]*hasConfiguredProviderCatalog[\s\S]*visibleConfiguredProviderModelGroups\.some\([\s\S]*model\.token\.trim\(\) === runtimeDefaultModel[\s\S]*\)[\s\S]*: hitechcloudProxyModelsAvailable \|\|[\s\S]*!isHitechcloudProxyModel\(runtimeDefaultModel\)\);/,
+    /const runtimeDefaultModelAvailable =[\s\S]*hasConfiguredProviderCatalog[\s\S]*visibleConfiguredProviderModelGroups\.some\([\s\S]*model\.token\.trim\(\) === runtimeDefaultModel[\s\S]*\)[\s\S]*: holabossProxyModelsAvailable \|\|[\s\S]*!isHolabossProxyModel\(runtimeDefaultModel\)\);/,
   );
   assert.match(
     source,
-    /hitechcloudProxyModelsAvailable \|\| !isHitechcloudProxyModel\(model\)/,
+    /holabossProxyModelsAvailable \|\| !isHolabossProxyModel\(model\)/,
   );
   assert.doesNotMatch(source, /function isClaudeChatModel\(model: string\)/);
-  assert.doesNotMatch(source, /isUnsupportedHitechcloudProxyModel\(/);
+  assert.doesNotMatch(source, /isUnsupportedHolabossProxyModel\(/);
   assert.doesNotMatch(source, /!isClaudeChatModel\(runtimeDefaultModel\)/);
   assert.doesNotMatch(source, /!isClaudeChatModel\(model\) &&/);
 });
@@ -1122,7 +1122,7 @@ test("chat pane shows hosted billing warnings and blocks managed sends when cred
   const source = await readFile(sourcePath, "utf8");
 
   assert.match(source, /useDesktopBilling/);
-  assert.match(source, /selectedManagedProviderGroup\?\.kind === "hitechcloud_proxy"/);
+  assert.match(source, /selectedManagedProviderGroup\?\.kind === "holaboss_proxy"/);
   assert.match(source, /hasHostedBillingAccount/);
   assert.match(source, /Credits are running low\. Add more on web to avoid interruptions\./);
   assert.match(source, /You're out of credits for managed usage\./);
@@ -1601,13 +1601,13 @@ test("chat pane exposes a queued message preview hook for dev console inspection
 
   assert.match(
     await readSourceFile("components/panes/ChatPane/constants.ts"),
-    /const QUEUED_MESSAGES_PREVIEW_EVENT =\s*"hitechcloud:queued-messages-preview-change";/,
+    /const QUEUED_MESSAGES_PREVIEW_EVENT =\s*"holaboss:queued-messages-preview-change";/,
   );
-  assert.match(await readSourceFile("components/panes/ChatPane/types.ts"), /__hitechcloudQueuedMessagesPreviewState\?: QueuedSessionInputPreviewDescriptor\[\];/);
-  assert.match(await readSourceFile("components/panes/ChatPane/types.ts"), /__hitechcloudDevQueuedMessagesPreview\?: \{/);
+  assert.match(await readSourceFile("components/panes/ChatPane/types.ts"), /__holabossQueuedMessagesPreviewState\?: QueuedSessionInputPreviewDescriptor\[\];/);
+  assert.match(await readSourceFile("components/panes/ChatPane/types.ts"), /__holabossDevQueuedMessagesPreview\?: \{/);
   assert.match(source, /window\.dispatchEvent\(new CustomEvent\(QUEUED_MESSAGES_PREVIEW_EVENT\)\);/);
   assert.match(source, /function useQueuedSessionInputPreview\(params:/);
-  assert.match(source, /window\.__hitechcloudDevQueuedMessagesPreview = \{/);
+  assert.match(source, /window\.__holabossDevQueuedMessagesPreview = \{/);
   assert.match(
     source,
     /single:\s*\([\s\S]*Draft a concise follow-up after the current run finishes\.[\s\S]*=>/,
@@ -1765,7 +1765,7 @@ test("chat pane suppresses empty synthetic background follow-up failures and kee
 
   assert.match(
     await readSourceFile("components/panes/ChatPane/constants.ts"),
-    /const MAIN_SESSION_EVENT_BATCH_HEADER =\s*"\[Hitechcloud Main Session Event Batch v1\]";/,
+    /const MAIN_SESSION_EVENT_BATCH_HEADER =\s*"\[Holaboss Main Session Event Batch v1\]";/,
   );
   assert.match(
     await readSourceFile("components/panes/ChatPane/constants.ts"),

@@ -91,7 +91,7 @@ function defaultDeps(): WindowsInvocationDeps {
 /**
  * PATHEXT-aware resolution of `command` to a concrete file path. Handles both
  * bare names (searched across PATH) and explicit paths (an operator-pinned
- * HITECHCLOUD_*_PATH). Returns null when nothing resolves.
+ * HOLABOSS_*_PATH). Returns null when nothing resolves.
  */
 function resolveOnPath(
   command: string,

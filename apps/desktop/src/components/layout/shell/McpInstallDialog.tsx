@@ -90,7 +90,7 @@ export function McpInstallDialog({
               </DialogPrimitive.Title>
               <DialogPrimitive.Description className="mt-0.5 text-muted-foreground text-xs">
                 Enter your credentials — they stay on this device and are never
-                sent to hitechcloudOS.
+                sent to holaOS.
               </DialogPrimitive.Description>
             </div>
             <DialogPrimitive.Close

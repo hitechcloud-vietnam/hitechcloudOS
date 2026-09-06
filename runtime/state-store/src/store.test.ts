@@ -25,7 +25,7 @@ function makeTempDir(prefix: string): string {
 }
 
 function workspaceRuntimeDbFile(workspaceRoot: string, workspaceId: string): string {
-  return path.join(workspaceRoot, workspaceId, ".hitechcloud", "state", "runtime.db");
+  return path.join(workspaceRoot, workspaceId, ".holaboss", "state", "runtime.db");
 }
 
 // Workspace-removal (single-tenant synthetic root): the store no longer
@@ -101,7 +101,7 @@ function registerWorkspaceRow(
   const now = utcNowIso();
   const workspacePath =
     params.workspacePath ?? path.join(store.workspaceRoot, params.workspaceId);
-  const stateDir = path.join(workspacePath, ".hitechcloud", "state");
+  const stateDir = path.join(workspacePath, ".holaboss", "state");
   fs.mkdirSync(stateDir, { recursive: true });
   fs.writeFileSync(path.join(stateDir, "workspace_id"), `${params.workspaceId}\n`, "utf-8");
   for (const file of new Set([store.controlPlaneDbPath, store.dbPath])) {
@@ -971,7 +971,7 @@ test("integration connections round trip create list and reload persisted record
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@hitechcloud.vn",
+    accountLabel: "owner@holaboss.ai",
     accountExternalId: "google-account-1",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send", "gmail.readonly"],
@@ -982,7 +982,7 @@ test("integration connections round trip create list and reload persisted record
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@hitechcloud.vn",
+    accountLabel: "owner@holaboss.ai",
     accountExternalId: "google-account-1",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
@@ -1211,7 +1211,7 @@ test("integration bindings round trip upsert list filter and delete by workspace
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@hitechcloud.vn",
+    accountLabel: "owner@holaboss.ai",
     accountExternalId: "google-account-1",
     authMode: "platform",
     grantedScopes: ["gmail.send"],
@@ -1221,7 +1221,7 @@ test("integration bindings round trip upsert list filter and delete by workspace
     connectionId: "conn-github-1",
     providerId: "github",
     ownerUserId: "user-1",
-    accountLabel: "hitechcloud-bot",
+    accountLabel: "holaboss-bot",
     accountExternalId: "github-account-1",
     authMode: "managed",
     grantedScopes: ["repo:read"],
@@ -1301,7 +1301,7 @@ test("integration binding upsert replaces the same logical target even with a di
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@hitechcloud.vn",
+    accountLabel: "owner@holaboss.ai",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active"
@@ -1379,7 +1379,7 @@ test("integration lookup methods support target lookup and provider owner filter
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@hitechcloud.vn",
+    accountLabel: "owner@holaboss.ai",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active"
@@ -1388,7 +1388,7 @@ test("integration lookup methods support target lookup and provider owner filter
     connectionId: "conn-google-2",
     providerId: "google",
     ownerUserId: "user-2",
-    accountLabel: "owner+alt@hitechcloud.vn",
+    accountLabel: "owner+alt@holaboss.ai",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active"
@@ -1397,7 +1397,7 @@ test("integration lookup methods support target lookup and provider owner filter
     connectionId: "conn-github-1",
     providerId: "github",
     ownerUserId: "user-1",
-    accountLabel: "hitechcloud-bot",
+    accountLabel: "holaboss-bot",
     authMode: "managed",
     grantedScopes: ["repo:read"],
     status: "active"
@@ -2020,7 +2020,7 @@ test("session messages preserve ascending order and round trip metadata", () => 
           name: "report.html",
           mime_type: "text/html",
           size_bytes: 123,
-          workspace_path: ".hitechcloud/input-attachments/report.html",
+          workspace_path: ".holaboss/input-attachments/report.html",
         },
       ],
     },
@@ -2051,7 +2051,7 @@ test("session messages preserve ascending order and round trip metadata", () => 
             name: "report.html",
             mime_type: "text/html",
             size_bytes: 123,
-            workspace_path: ".hitechcloud/input-attachments/report.html",
+            workspace_path: ".holaboss/input-attachments/report.html",
           },
         ],
       }
@@ -2093,7 +2093,7 @@ test("session messages preserve ascending order and round trip metadata", () => 
               name: "report.html",
               mime_type: "text/html",
               size_bytes: 123,
-              workspace_path: ".hitechcloud/input-attachments/report.html",
+              workspace_path: ".holaboss/input-attachments/report.html",
             },
           ],
         }
@@ -2122,7 +2122,7 @@ test("session messages preserve ascending order and round trip metadata", () => 
               name: "report.html",
               mime_type: "text/html",
               size_bytes: 123,
-              workspace_path: ".hitechcloud/input-attachments/report.html",
+              workspace_path: ".holaboss/input-attachments/report.html",
             },
           ],
         }
@@ -4125,8 +4125,8 @@ test("semantic memory substrate round trips for interaction and integration cate
         nodeId: "integration-root",
         nodeClass: "semantic",
         nodeKind: "repo",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/content.md",
-        title: "hitechcloud-vietnam/hitechcloudOS",
+        path: "memory/integration/github/holaboss-ai-holaOS/content.md",
+        title: "holaboss-ai/holaOS",
         summary: "Repository memory.",
         bodySha256: "sha-integration-root",
         childCount: 2,
@@ -4136,7 +4136,7 @@ test("semantic memory substrate round trips for interaction and integration cate
         nodeId: "integration-issues",
         nodeClass: "semantic",
         nodeKind: "facet",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/issues/content.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/issues/content.md",
         title: "Issues",
         summary: "Open issue snapshots.",
         bodySha256: "sha-integration-issues",
@@ -4147,7 +4147,7 @@ test("semantic memory substrate round trips for interaction and integration cate
         nodeClass: "leaf",
         nodeKind: "leaf",
         sourceLeafId: "issue-101",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/issues/101.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/issues/101.md",
         title: "Issue #101",
         summary: "Fix memory browser layout mismatch.",
         bodySha256: "sha-integration-leaf-1",
@@ -4213,7 +4213,7 @@ test("semantic memory substrate round trips for interaction and integration cate
   const integrationLeaf = store.getSemanticMemoryNodeByPath({
     category: "integration",
     workspaceId: null,
-    path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/issues/101.md",
+    path: "memory/integration/github/holaboss-ai-holaOS/issues/101.md",
   });
   assert.ok(integrationLeaf);
   assert.equal(integrationLeaf.workspaceId, null);
@@ -4764,8 +4764,8 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeId: "integration-root",
         nodeClass: "semantic",
         nodeKind: "repo",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/content.md",
-        title: "hitechcloud-vietnam/hitechcloudOS",
+        path: "memory/integration/github/holaboss-ai-holaOS/content.md",
+        title: "holaboss-ai/holaOS",
         summary: "Repository memory.",
         bodySha256: "sha-integration-root-v1",
         childCount: 1,
@@ -4777,7 +4777,7 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeId: "integration-issues",
         nodeClass: "semantic",
         nodeKind: "facet",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/issues/content.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/issues/content.md",
         title: "Issues",
         summary: "Open issues.",
         bodySha256: "sha-integration-issues-v1",
@@ -4790,7 +4790,7 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeClass: "leaf",
         nodeKind: "leaf",
         sourceLeafId: "issue-101",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/issues/101.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/issues/101.md",
         title: "Issue #101",
         summary: "Fix layout mismatch.",
         bodySha256: "sha-integration-leaf-101",
@@ -4824,9 +4824,9 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeId: "integration-root",
         nodeClass: "semantic",
         nodeKind: "repo",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/content.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/content.md",
         childCount: 1,
-        title: "hitechcloud-vietnam/hitechcloudOS",
+        title: "holaboss-ai/holaOS",
         summary: "Repository memory.",
         bodyText: "Repository memory root body.",
         excerpt: "Repository memory root body.",
@@ -4836,7 +4836,7 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeId: "integration-issues",
         nodeClass: "semantic",
         nodeKind: "facet",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/issues/content.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/issues/content.md",
         childCount: 1,
         title: "Issues",
         summary: "Open issues.",
@@ -4848,7 +4848,7 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeId: "integration-issue-101",
         nodeClass: "leaf",
         nodeKind: "leaf",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/issues/101.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/issues/101.md",
         title: "Issue #101",
         summary: "Fix layout mismatch.",
         bodyText: "Layout mismatch appears in the memory browser.",
@@ -4906,12 +4906,12 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeId: "integration-root",
         nodeClass: "semantic",
         nodeKind: "repo",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/content.md",
-        title: "hitechcloud-vietnam/hitechcloudOS",
+        path: "memory/integration/github/holaboss-ai-holaOS/content.md",
+        title: "holaboss-ai/holaOS",
         summary: "Repository memory with release issues.",
         bodySha256: "sha-integration-root-v2",
         childCount: 1,
-        metadata: { provider: "github", owner: "hitechcloud-vietnam" },
+        metadata: { provider: "github", owner: "holaboss-ai" },
         createdAt: "2099-01-01T00:00:00.000Z",
         updatedAt: "2026-05-25T11:00:00.000Z",
       },
@@ -4919,7 +4919,7 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeId: "integration-issues",
         nodeClass: "semantic",
         nodeKind: "facet",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/issues/content.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/issues/content.md",
         title: "Issues",
         summary: "Open issues.",
         bodySha256: "sha-integration-issues-v1",
@@ -4932,7 +4932,7 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeClass: "leaf",
         nodeKind: "leaf",
         sourceLeafId: "issue-202",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/issues/202.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/issues/202.md",
         title: "Issue #202",
         summary: "Backfill release metrics after rollout.",
         bodySha256: "sha-integration-leaf-202",
@@ -4966,9 +4966,9 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeId: "integration-root",
         nodeClass: "semantic",
         nodeKind: "repo",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/content.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/content.md",
         childCount: 1,
-        title: "hitechcloud-vietnam/hitechcloudOS",
+        title: "holaboss-ai/holaOS",
         summary: "Repository memory with release issues.",
         bodyText: "Repository memory root body with release issues.",
         excerpt: "Repository memory root body with release issues.",
@@ -4978,7 +4978,7 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeId: "integration-issues",
         nodeClass: "semantic",
         nodeKind: "facet",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/issues/content.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/issues/content.md",
         childCount: 1,
         title: "Issues",
         summary: "Open issues.",
@@ -4990,7 +4990,7 @@ test("sync semantic memory substrate patches integration scope without rewriting
         nodeId: "integration-issue-202",
         nodeClass: "leaf",
         nodeKind: "leaf",
-        path: "memory/integration/github/hitechcloud-vietnam-hitechcloudOS/issues/202.md",
+        path: "memory/integration/github/holaboss-ai-holaOS/issues/202.md",
         title: "Issue #202",
         summary: "Backfill release metrics after rollout.",
         bodyText: "Release metrics backfill should start after the rollout settles.",
@@ -5095,7 +5095,7 @@ test("sync semantic memory substrate patches integration scope without rewriting
   assert.equal(rootAfter.updatedAt, "2026-05-25T11:00:00.000Z");
   assert.equal(issuesAfter.createdAt, issuesBefore.createdAt);
   assert.equal(issuesAfter.updatedAt, issuesBefore.updatedAt);
-  assert.deepEqual(rootAfter.metadata, { provider: "github", owner: "hitechcloud-vietnam" });
+  assert.deepEqual(rootAfter.metadata, { provider: "github", owner: "holaboss-ai" });
   assert.equal(issue202After.createdAt, "2026-05-25T11:01:00.000Z");
   assert.equal(rootDocAfter.updatedAt, "2026-05-25T11:03:00.000Z");
   assert.equal(issuesDocAfter.updatedAt, issuesDocBefore.updatedAt);

@@ -2,7 +2,7 @@
 
 ## Context
 
-The desktop app currently has a minimal workspace creation experience: a form with 4 radio-button source options (Local, Marketplace dropdown, Empty, Empty + Onboarding). Users who want to browse marketplace templates see only a dropdown picker — no descriptions, no previews, no discovery. This makes the first-time experience feel flat and doesn't showcase what Hitechcloud can do.
+The desktop app currently has a minimal workspace creation experience: a form with 4 radio-button source options (Local, Marketplace dropdown, Empty, Empty + Onboarding). Users who want to browse marketplace templates see only a dropdown picker — no descriptions, no previews, no discovery. This makes the first-time experience feel flat and doesn't showcase what Holaboss can do.
 
 **Goal**: Add a dedicated marketplace gallery with kit cards and detail views. It should be the primary experience for new users (onboarding) and also accessible as a left rail pane for browsing anytime.
 
@@ -67,7 +67,7 @@ interface KitDetailProps {
 3. Included Apps section: pill list of `template.apps[]` names
 4. Agents section: each `template.agents[]` with role + description
 5. Views section (if any): list of `template.views[]`
-6. CTA button: "Use this kit →" (hitechcloud brand accent)
+6. CTA button: "Use this kit →" (holaboss brand accent)
 
 ### 3. `MarketplaceGallery` — `desktop/src/components/marketplace/MarketplaceGallery.tsx`
 

@@ -22,10 +22,10 @@ function defaultLogger(): LoggerLike {
 function resolveSandboxRoot(): string {
   const raw = (process.env.HB_SANDBOX_ROOT ?? "").trim();
   if (!raw) {
-    return "/hitechcloud";
+    return "/holaboss";
   }
   const normalized = raw.replace(/\/+$/, "");
-  return normalized || "/hitechcloud";
+  return normalized || "/holaboss";
 }
 
 export function sanitizeWorkspaceId(workspaceId: string): string {
@@ -50,7 +50,7 @@ export function workspaceSessionStatePath(workspaceDir: string): string {
   return migrateLegacyWorkspaceStatePath({
     workspaceDir,
     relativeSegments: [SESSION_STATE_FILE_NAME],
-    legacyRelativeSegments: [".hitechcloud", SESSION_STATE_FILE_NAME],
+    legacyRelativeSegments: [".holaboss", SESSION_STATE_FILE_NAME],
   });
 }
 
@@ -62,7 +62,7 @@ export function workspaceDataDbPath(workspaceDir: string): string {
   return migrateLegacyWorkspaceStatePath({
     workspaceDir,
     relativeSegments: ["data.db"],
-    legacyRelativeSegments: [".hitechcloud", "data.db"],
+    legacyRelativeSegments: [".holaboss", "data.db"],
   });
 }
 
@@ -114,7 +114,7 @@ function normalizeHarness(value: unknown): string {
 /**
  * Map keys are persisted as `harness@<absolute-cwd>` (or bare `harness` for
  * the legacy single-cwd format). Lowercasing the whole key collapses
- * `pi@/Users/you/Hitechcloud/...` and `pi@/users/you/hitechcloud/...` into
+ * `pi@/Users/you/Holaboss/...` and `pi@/users/you/holaboss/...` into
  * the same entry, but `harnessSessionMapKey()` produces case-preserved keys
  * (it only `path.resolve()`s the cwd). That mismatch made every project
  * lookup with a non-all-lowercase path miss the map and fall through to the

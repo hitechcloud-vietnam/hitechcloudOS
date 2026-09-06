@@ -1632,7 +1632,7 @@ export function MemoryPane({ embedded }: { embedded?: boolean } = {}) {
         open={confirmClearOpen}
         onOpenChange={setConfirmClearOpen}
         title="Clear all memory?"
-        description="Every remembered fact, entity and indexed document for this workspace is deleted, along with the files under .hitechcloud/memory. Chats, outputs and files are not touched. This can't be undone."
+        description="Every remembered fact, entity and indexed document for this workspace is deleted, along with the files under .holaboss/memory. Chats, outputs and files are not touched. This can't be undone."
         confirmLabel={clearing ? "Clearing…" : "Clear memory"}
         destructive
         onConfirm={() => void handleClearMemory()}

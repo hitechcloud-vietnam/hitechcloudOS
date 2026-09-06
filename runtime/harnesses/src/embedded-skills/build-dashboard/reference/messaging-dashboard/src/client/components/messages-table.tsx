@@ -1,4 +1,4 @@
-import { Button } from "@hitechcloud/ui"
+import { Button } from "@holaboss/ui"
 import { Pencil, RotateCw } from "lucide-react"
 import type { MessageRow } from "../lib/sample-data"
 import { StatusBadge } from "./status-badge"

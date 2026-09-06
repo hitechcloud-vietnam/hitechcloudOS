@@ -5,7 +5,7 @@ import type {
 } from "./types";
 
 export const MAIN_SESSION_EVENT_BATCH_HEADER =
-  "[Hitechcloud Main Session Event Batch v1]";
+  "[Holaboss Main Session Event Batch v1]";
 export const BACKGROUND_DELIVERY_RETRY_STATUS_MESSAGE =
   "Background update delayed. Retrying automatically.";
 
@@ -49,13 +49,13 @@ export const COMPOSER_COMPACT_THINKING_CONTROL_MAX_WIDTH_PX = 124;
 // decision can't oscillate (the measured width swings between compact and full,
 // which made the model picker flicker at boundary widths).
 export const COMPOSER_SEND_BUTTON_WIDTH_PX = 32;
-export const CHAT_MODEL_STORAGE_KEY = "hitechcloud-chat-model-v1";
-export const CHAT_THINKING_STORAGE_KEY = "hitechcloud-chat-thinking-v1";
+export const CHAT_MODEL_STORAGE_KEY = "holaboss-chat-model-v1";
+export const CHAT_THINKING_STORAGE_KEY = "holaboss-chat-thinking-v1";
 export const CHAT_MODEL_USE_RUNTIME_DEFAULT = "__runtime_default__";
 export const CHAT_SERIALIZED_SKILL_COMMAND_PATTERN = /^\/([A-Za-z0-9_-]+)$/;
 export const CHAT_SERIALIZED_INTEGRATION_PATTERN = /^@([A-Za-z0-9_.-]+)$/;
 export const QUEUED_MESSAGES_PREVIEW_EVENT =
-  "hitechcloud:queued-messages-preview-change";
+  "holaboss:queued-messages-preview-change";
 export const LEGACY_UNAVAILABLE_CHAT_MODELS = new Set(["openai/gpt-5.2-mini"]);
 export const DEPRECATED_CHAT_MODELS = new Set([
   "openai/gpt-5.1",
@@ -68,7 +68,7 @@ export const DEPRECATED_CHAT_MODELS = new Set([
   "gpt-5.1-codex-max",
 ]);
 // Shown in the model selector ONLY when the runtime's configured provider
-// catalog is unavailable (e.g. hitechcloud proxy 401, no configured direct
+// catalog is unavailable (e.g. holaboss proxy 401, no configured direct
 // API keys yet). The list should reflect models we expect a user to be
 // able to dispatch once they add a direct OpenAI / Anthropic key — i.e.
 // the latest GPT and Claude families that the runtime knows how to route.

@@ -6,8 +6,8 @@ import {
 } from "./workspace-bundle-paths.js";
 
 const SESSION_TODO_DIR_SEGMENTS = ["todos"] as const;
-const LEGACY_SESSION_TODO_DIR_SEGMENTS = [".hitechcloud", "todos"] as const;
-const LEGACY_PI_TODO_DIR_SEGMENTS = [".hitechcloud", "pi-agent", "todos"] as const;
+const LEGACY_SESSION_TODO_DIR_SEGMENTS = [".holaboss", "todos"] as const;
+const LEGACY_PI_TODO_DIR_SEGMENTS = [".holaboss", "pi-agent", "todos"] as const;
 const SESSION_TODO_STATE_VERSION = 2;
 
 export const SESSION_TODO_STATUSES = [

@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "hitechcloud-docs",
+  "name": "holaboss-docs",
   "main": "./workers/app.ts",
   "compatibility_date": "2025-04-03",
   "compatibility_flags": ["nodejs_compat"],
@@ -15,13 +15,13 @@
   },
 
   "routes": [
-    { "pattern": "www.hitechcloud.vn/docs/*", "zone_name": "hitechcloud.vn" },
-    { "pattern": "www.hitechcloud.vn/docs/*", "zone_name": "hitechcloud.vn" },
+    { "pattern": "www.holaboss.ai/docs/*", "zone_name": "holaboss.ai" },
+    { "pattern": "www.holaos.ai/docs/*", "zone_name": "holaos.ai" },
   ],
 
   "env": {
     "preview": {
-      "name": "hitechcloud-docs-preview",
+      "name": "holaboss-docs-preview",
       "main": "./workers/app.ts",
       "compatibility_date": "2025-04-03",
       "compatibility_flags": ["nodejs_compat"],
@@ -37,7 +37,7 @@
     },
 
     "staging": {
-      "name": "hitechcloud-docs-staging",
+      "name": "holaboss-docs-staging",
       "main": "./workers/app.ts",
       "compatibility_date": "2025-04-03",
       "compatibility_flags": ["nodejs_compat"],
@@ -53,7 +53,7 @@
     },
 
     "production": {
-      "name": "hitechcloud-docs-production",
+      "name": "holaboss-docs-production",
       "main": "./workers/app.ts",
       "compatibility_date": "2025-04-03",
       "compatibility_flags": ["nodejs_compat"],
@@ -64,8 +64,8 @@
         "not_found_handling": "none",
       },
       "routes": [
-        { "pattern": "www.hitechcloud.vn/docs/*", "zone_name": "hitechcloud.vn" },
-        { "pattern": "www.hitechcloud.vn/docs/*", "zone_name": "hitechcloud.vn" },
+        { "pattern": "www.holaboss.ai/docs/*", "zone_name": "holaboss.ai" },
+        { "pattern": "www.holaos.ai/docs/*", "zone_name": "holaos.ai" },
       ],
     },
   },

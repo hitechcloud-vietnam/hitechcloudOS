@@ -1,7 +1,7 @@
 import type {
   IntegrationConnectionRecord,
   RuntimeStateStore,
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 import { listConnectionsMerged } from "./integration-connections-merged.js";
 

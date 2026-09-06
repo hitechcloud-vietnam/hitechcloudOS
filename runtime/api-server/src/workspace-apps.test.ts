@@ -21,7 +21,7 @@ function tmpWorkspace(): string {
 function seedWorkspaceYaml(dir: string, mcpRegistry: Record<string, unknown>): void {
   fs.writeFileSync(
     path.join(dir, "workspace.yaml"),
-    yaml.dump({ agents: { id: "hitechcloud" }, mcp_registry: mcpRegistry }),
+    yaml.dump({ agents: { id: "holaboss" }, mcp_registry: mcpRegistry }),
     "utf8",
   );
 }
@@ -30,13 +30,13 @@ test("readWorkspaceYamlDocument returns a valid workspace.yaml untouched", () =>
   const dir = tmpWorkspace();
   fs.writeFileSync(
     path.join(dir, "workspace.yaml"),
-    '"agents":\n  "id": "hitechcloud"\n"mcp_registry":\n  "servers": {}\n',
+    '"agents":\n  "id": "holaboss"\n"mcp_registry":\n  "servers": {}\n',
     "utf8",
   );
 
   const doc = readWorkspaceYamlDocument(dir);
 
-  assert.equal((doc.agents as { id?: string })?.id, "hitechcloud");
+  assert.equal((doc.agents as { id?: string })?.id, "holaboss");
   // No repair path taken → no quarantine copy.
   assert.equal(
     fs.readdirSync(dir).some((f) => f.includes("corrupt")),
@@ -48,18 +48,18 @@ test("readWorkspaceYamlDocument self-heals a corrupt workspace.yaml with trailin
   const dir = tmpWorkspace();
   const yamlPath = path.join(dir, "workspace.yaml");
   const valid =
-    '"agents":\n  "id": "hitechcloud"\n"mcp_registry":\n  "allowlist":\n    "tool_ids":\n      - "gofunds.go_live"\n      - "gofunds.set_status"\n';
+    '"agents":\n  "id": "holaboss"\n"mcp_registry":\n  "allowlist":\n    "tool_ids":\n      - "gofunds.go_live"\n      - "gofunds.set_status"\n';
   // A stray process PATH appended after the valid document — the observed bug.
   fs.writeFileSync(
     yamlPath,
-    `${valid}/Users/x/Developer/Hitechcloud/apps/node_modules/.bin:/usr/local/bin:/usr/bin\n`,
+    `${valid}/Users/x/Developer/Holaboss/apps/node_modules/.bin:/usr/local/bin:/usr/bin\n`,
     "utf8",
   );
 
   const doc = readWorkspaceYamlDocument(dir);
 
   // 1) Recovered the valid config (not an empty fallback).
-  assert.equal((doc.agents as { id?: string })?.id, "hitechcloud");
+  assert.equal((doc.agents as { id?: string })?.id, "holaboss");
   const toolIds = (doc.mcp_registry as { allowlist?: { tool_ids?: string[] } })?.allowlist
     ?.tool_ids;
   assert.deepEqual(toolIds, ["gofunds.go_live", "gofunds.set_status"]);

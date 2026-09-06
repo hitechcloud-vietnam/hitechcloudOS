@@ -25,31 +25,31 @@ function tableCount(dbPath, tableName) {
 test("cleanupWorkspaceMemory clears semantic memory, outputs, and runtime continuity state", () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "hb-memory-cleanup-"));
   const workspaceDir = path.join(root, "sandbox-host", "workspace", "ws-1");
-  const runtimeDb = path.join(workspaceDir, ".hitechcloud", "state", "runtime.db");
+  const runtimeDb = path.join(workspaceDir, ".holaboss", "state", "runtime.db");
   const controlPlaneDb = path.join(root, "sandbox-host", "state", "control-plane.db");
 
   fs.mkdirSync(path.dirname(runtimeDb), { recursive: true });
   fs.mkdirSync(path.dirname(controlPlaneDb), { recursive: true });
-  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud", "memory", "interaction", "entities"), { recursive: true });
-  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud", "memory", "integration", "trees"), { recursive: true });
-  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud", "memory", "semantic", "workspace"), { recursive: true });
-  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud", "memory", "runtime", "session-memory"), { recursive: true });
-  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud", "memory", "evolve", "skills", "candidate-1"), {
+  fs.mkdirSync(path.join(workspaceDir, ".holaboss", "memory", "interaction", "entities"), { recursive: true });
+  fs.mkdirSync(path.join(workspaceDir, ".holaboss", "memory", "integration", "trees"), { recursive: true });
+  fs.mkdirSync(path.join(workspaceDir, ".holaboss", "memory", "semantic", "workspace"), { recursive: true });
+  fs.mkdirSync(path.join(workspaceDir, ".holaboss", "memory", "runtime", "session-memory"), { recursive: true });
+  fs.mkdirSync(path.join(workspaceDir, ".holaboss", "memory", "evolve", "skills", "candidate-1"), {
     recursive: true,
   });
-  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud", "pi-sessions"), { recursive: true });
-  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud", "state", "legacy-session-histories"), {
+  fs.mkdirSync(path.join(workspaceDir, ".holaboss", "pi-sessions"), { recursive: true });
+  fs.mkdirSync(path.join(workspaceDir, ".holaboss", "state", "legacy-session-histories"), {
     recursive: true,
   });
 
   fs.writeFileSync(path.join(workspaceDir, "AGENTS.md"), "# Workspace Rules\n", "utf8");
   fs.writeFileSync(
-    path.join(workspaceDir, ".hitechcloud", "memory", "runtime", "session-memory", "snapshot.md"),
+    path.join(workspaceDir, ".holaboss", "memory", "runtime", "session-memory", "snapshot.md"),
     "resume snapshot",
     "utf8",
   );
   fs.writeFileSync(
-    path.join(workspaceDir, ".hitechcloud", "memory", "evolve", "skills", "candidate-1", "SKILL.md"),
+    path.join(workspaceDir, ".holaboss", "memory", "evolve", "skills", "candidate-1", "SKILL.md"),
     "# Generated Skill\n",
     "utf8",
   );
@@ -153,13 +153,13 @@ test("cleanupWorkspaceMemory clears semantic memory, outputs, and runtime contin
   assert.equal(tableCount(controlPlaneDb, "integration_trees"), 0);
   assert.equal(tableCount(controlPlaneDb, "integration_leaves"), 0);
 
-  assert.equal(fs.existsSync(path.join(workspaceDir, ".hitechcloud", "memory", "runtime")), false);
-  assert.equal(fs.existsSync(path.join(workspaceDir, ".hitechcloud", "memory", "evolve")), false);
-  assert.equal(fs.existsSync(path.join(workspaceDir, ".hitechcloud", "memory", "interaction", "entities")), true);
-  assert.equal(fs.existsSync(path.join(workspaceDir, ".hitechcloud", "memory", "integration", "trees")), true);
-  assert.equal(fs.existsSync(path.join(workspaceDir, ".hitechcloud", "memory", "semantic", "workspace")), true);
-  assert.equal(fs.existsSync(path.join(workspaceDir, ".hitechcloud", "memory", "semantic", "interaction")), true);
-  assert.equal(fs.existsSync(path.join(workspaceDir, ".hitechcloud", "pi-sessions")), true);
-  assert.equal(fs.existsSync(path.join(workspaceDir, ".hitechcloud", "state", "legacy-session-histories")), true);
+  assert.equal(fs.existsSync(path.join(workspaceDir, ".holaboss", "memory", "runtime")), false);
+  assert.equal(fs.existsSync(path.join(workspaceDir, ".holaboss", "memory", "evolve")), false);
+  assert.equal(fs.existsSync(path.join(workspaceDir, ".holaboss", "memory", "interaction", "entities")), true);
+  assert.equal(fs.existsSync(path.join(workspaceDir, ".holaboss", "memory", "integration", "trees")), true);
+  assert.equal(fs.existsSync(path.join(workspaceDir, ".holaboss", "memory", "semantic", "workspace")), true);
+  assert.equal(fs.existsSync(path.join(workspaceDir, ".holaboss", "memory", "semantic", "interaction")), true);
+  assert.equal(fs.existsSync(path.join(workspaceDir, ".holaboss", "pi-sessions")), true);
+  assert.equal(fs.existsSync(path.join(workspaceDir, ".holaboss", "state", "legacy-session-histories")), true);
   assert.equal(fs.readFileSync(path.join(workspaceDir, "AGENTS.md"), "utf8"), "# Workspace Rules\n");
 });

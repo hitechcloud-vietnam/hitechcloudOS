@@ -9,12 +9,12 @@ function printHelp() {
   console.log(`Usage: bun run runtime:start:isolated -- [name] [options]
        bun run runtime:start:evals -- [name] [options]
 
-Launch a standalone runtime with an isolated sandbox root under ~/.hitechcloudos/.
+Launch a standalone runtime with an isolated sandbox root under ~/.holaos/.
 
 Options:
   --name <name>            Instance name. Defaults to "isolated".
   --default-name <name>    Internal default used by script aliases.
-  --namespace <name>       Namespace folder under ~/.hitechcloudos/. Defaults to "runtime".
+  --namespace <name>       Namespace folder under ~/.holaos/. Defaults to "runtime".
   --sandbox-root <path>    Override the derived sandbox root.
   --port <port>            Override the derived runtime API port.
   --no-prepare             Fail instead of auto-preparing the runtime bundle.

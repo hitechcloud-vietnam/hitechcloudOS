@@ -2,7 +2,7 @@
 
 /**
  * Patches the dev-mode Electron.app Info.plist to include the
- * ai.hitechcloud.app custom URL scheme so that macOS can route auth
+ * ai.holaboss.app custom URL scheme so that macOS can route auth
  * callbacks back to the running Electron process.
  *
  * This is only needed in development — packaged builds already
@@ -25,7 +25,7 @@ if (!existsSync(plistPath)) {
   process.exit(0);
 }
 
-const SCHEME = "ai.hitechcloud.app";
+const SCHEME = "ai.holaboss.app";
 const PLIST_BUDDY = "/usr/libexec/PlistBuddy";
 
 function run(args) {
@@ -37,9 +37,9 @@ function run(args) {
   }
 }
 
-// Patch app identity so dev launches present as Hitechcloud in macOS chrome.
-const APP_NAME = "hitechcloudOS";
-const BUNDLE_ID = "com.hitechcloud.workspace";
+// Patch app identity so dev launches present as Holaboss in macOS chrome.
+const APP_NAME = "holaOS";
+const BUNDLE_ID = "com.holaboss.workspace";
 
 run(`Set :CFBundleName ${APP_NAME}`);
 run(`Set :CFBundleDisplayName ${APP_NAME}`);
@@ -66,7 +66,7 @@ if (!urlSchemeAlreadyPatched) {
   run("Add :CFBundleURLTypes:0:CFBundleURLSchemes array");
   run(`Add :CFBundleURLTypes:0:CFBundleURLSchemes:0 string ${SCHEME}`);
 }
-run(`Set :CFBundleURLTypes:0:CFBundleURLName 'Hitechcloud Auth Callback'`);
+run(`Set :CFBundleURLTypes:0:CFBundleURLName 'Holaboss Auth Callback'`);
 
 // Re-register with LaunchServices
 const electronApp = path.resolve(__dirname, "../node_modules/electron/dist/Electron.app");

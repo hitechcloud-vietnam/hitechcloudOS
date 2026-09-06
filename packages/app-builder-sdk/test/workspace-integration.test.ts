@@ -2,15 +2,15 @@
 //
 // Proves the SDK is usable from a "real workspace app" layout — i.e. an
 // app directory with its own package.json that depends on
-// @hitechcloud/app-builder-sdk via file: protocol, then `bun install` and
+// @holaboss/app-builder-sdk via file: protocol, then `bun install` and
 // `bun run server.ts` actually work end-to-end.
 //
-// This is what the Hitechcloud runtime will do when launching an SDK app:
+// This is what the Holaboss runtime will do when launching an SDK app:
 //   1. workspace.yaml registers `apps/slack-v2/`
 //   2. app-lifecycle-worker runs lifecycle.setup (bun install)
 //   3. app-lifecycle-worker runs lifecycle.start (bun run server.ts)
-//   4. injects WORKSPACE_DB_PATH / MCP_PORT / HITECHCLOUD_APP_GRANT /
-//      HITECHCLOUD_INTEGRATION_BROKER_URL via env
+//   4. injects WORKSPACE_DB_PATH / MCP_PORT / HOLABOSS_APP_GRANT /
+//      HOLABOSS_INTEGRATION_BROKER_URL via env
 //
 // We do exactly that here, against a temp workspace, to prove the contract
 // holds end-to-end without depending on a real desktop / runtime running.
@@ -39,7 +39,7 @@ describe("Workspace integration — slack v2 installed via file: dep", () => {
         type: "module",
         scripts: { start: "bun run server.ts" },
         dependencies: {
-          "@hitechcloud/app-builder-sdk": `file:${SDK_DIR}`,
+          "@holaboss/app-builder-sdk": `file:${SDK_DIR}`,
           zod: "^3.23.0",
         },
       }
@@ -51,8 +51,8 @@ describe("Workspace integration — slack v2 installed via file: dep", () => {
       // transform the in-experiment relative imports on the fly.
       const rewriteImports = (src: string) =>
         src
-          .replace(/from\s+"\.\.\/\.\.\/src\/index\.ts"/g, 'from "@hitechcloud/app-builder-sdk"')
-          .replace(/from\s+"\.\.\/\.\.\/src\/types\.ts"/g, 'from "@hitechcloud/app-builder-sdk"')
+          .replace(/from\s+"\.\.\/\.\.\/src\/index\.ts"/g, 'from "@holaboss/app-builder-sdk"')
+          .replace(/from\s+"\.\.\/\.\.\/src\/types\.ts"/g, 'from "@holaboss/app-builder-sdk"')
       for (const f of ["app.ts", "provider.ts", "server.ts"]) {
         const src = readFileSync(join(SDK_DIR, "reference/slack-messaging", f), "utf-8")
         writeFileSync(join(appDir, f), rewriteImports(src))
@@ -69,7 +69,7 @@ describe("Workspace integration — slack v2 installed via file: dep", () => {
 
       // Verify the SDK is actually linked (not duplicated)
       const linkedSdk = spawnSync("bun", ["pm", "ls"], { cwd: appDir, stdio: "pipe", encoding: "utf-8" })
-      expect(linkedSdk.stdout).toContain("@hitechcloud/app-builder-sdk")
+      expect(linkedSdk.stdout).toContain("@holaboss/app-builder-sdk")
 
       // Step 2: lifecycle.start
       const dbPath = join(workspace, "workspace.db")
@@ -81,9 +81,9 @@ describe("Workspace integration — slack v2 installed via file: dep", () => {
           ...process.env,
           WORKSPACE_DB_PATH: dbPath,
           MCP_PORT: String(port),
-          HITECHCLOUD_INTEGRATION_BROKER_URL: "http://localhost:9999",  // dummy
-          HITECHCLOUD_APP_GRANT: "grant:test_ws:slack:integration_nonce",  // dummy
-          HITECHCLOUD_WORKSPACE_ID: "test_ws",
+          HOLABOSS_INTEGRATION_BROKER_URL: "http://localhost:9999",  // dummy
+          HOLABOSS_APP_GRANT: "grant:test_ws:slack:integration_nonce",  // dummy
+          HOLABOSS_WORKSPACE_ID: "test_ws",
         },
         stdio: ["ignore", "pipe", "pipe"],
       })

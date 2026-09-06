@@ -12,7 +12,7 @@
 
 /* Tokens — themes override per [data-theme="<variant>-{light,dark}"]. */
 @import "./styles/tokens.css";
-@import "./styles/themes/hitechcloudos.css";
+@import "./styles/themes/holaos.css";
 @import "./styles/themes/catppuccin.css";
 @import "./styles/themes/rose-pine.css";
 @import "./styles/themes/solarized.css";

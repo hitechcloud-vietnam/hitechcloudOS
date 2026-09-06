@@ -1158,25 +1158,25 @@ function browserToolHeaders(
 ): Record<string, string> {
   const headers: Record<string, string> = {
     "content-type": "application/json; charset=utf-8",
-    "x-hitechcloud-desktop-token": config.desktopBrowserAuthToken
+    "x-holaboss-desktop-token": config.desktopBrowserAuthToken
   };
   const workspaceId = typeof context.workspaceId === "string" ? context.workspaceId.trim() : "";
   if (workspaceId) {
-    headers["x-hitechcloud-workspace-id"] = workspaceId;
+    headers["x-holaboss-workspace-id"] = workspaceId;
   }
   const sessionId = typeof context.sessionId === "string" ? context.sessionId.trim() : "";
   if (sessionId) {
-    headers["x-hitechcloud-session-id"] = sessionId;
+    headers["x-holaboss-session-id"] = sessionId;
   }
   const browserSpace =
     context.space === "agent" || context.space === "app" ? context.space : "";
   if (browserSpace) {
-    headers["x-hitechcloud-browser-space"] = browserSpace;
+    headers["x-holaboss-browser-space"] = browserSpace;
   }
   const browserProfileId =
     typeof context.browserProfileId === "string" ? context.browserProfileId.trim() : "";
   if (browserProfileId) {
-    headers["x-hitechcloud-browser-profile-id"] = browserProfileId;
+    headers["x-holaboss-browser-profile-id"] = browserProfileId;
   }
   return headers;
 }

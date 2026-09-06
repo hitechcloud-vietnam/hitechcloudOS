@@ -7,7 +7,7 @@ import path from "node:path";
 import { afterEach, test } from "node:test";
 import { pathToFileURL } from "node:url";
 
-import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import { RuntimeStateStore } from "@holaboss/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 import JSZip from "jszip";
 
@@ -207,11 +207,11 @@ test("persistTurnInputAttachmentsAsDocuments indexes attachments as first-class 
   const { store, workspaceRoot } = makeRuntimeState("hb-workspace-attachment-memory-");
   seedWorkspace(store);
 
-  const attachmentRelativePath = ".hitechcloud/input-attachments/batch-1/outreach-report.html";
+  const attachmentRelativePath = ".holaboss/input-attachments/batch-1/outreach-report.html";
   const attachmentAbsolutePath = path.join(
     workspaceRoot,
     "workspace-1",
-    ".hitechcloud",
+    ".holaboss",
     "input-attachments",
     "batch-1",
     "outreach-report.html",
@@ -221,8 +221,8 @@ test("persistTurnInputAttachmentsAsDocuments indexes attachments as first-class 
     attachmentAbsolutePath,
     [
       "<html><body>",
-      "<h1>hitechcloud personal outreach</h1>",
-      "<p>Ben Book from anyIP emailed the user personally about hitechcloud.</p>",
+      "<h1>holaboss personal outreach</h1>",
+      "<p>Ben Book from anyIP emailed the user personally about holaboss.</p>",
       "<p>Use the saved thread for future outreach follow-up.</p>",
       "</body></html>",
     ].join(""),
@@ -323,7 +323,7 @@ test("ensureWorkspaceArtifactRelationsBackfilled disambiguates repeated attachme
   const { store, workspaceRoot } = makeRuntimeState("hb-workspace-attachment-tree-repeat-backfill-");
   seedWorkspace(store);
 
-  const attachmentRelativePath = ".hitechcloud/input-attachments/shared/customer-notes.md";
+  const attachmentRelativePath = ".holaboss/input-attachments/shared/customer-notes.md";
   const attachmentAbsolutePath = path.join(workspaceRoot, "workspace-1", attachmentRelativePath);
   fs.mkdirSync(path.dirname(attachmentAbsolutePath), { recursive: true });
   fs.writeFileSync(
@@ -406,7 +406,7 @@ test("persistTurnInputAttachmentsAsDocuments extracts searchable text from docx 
   const { store, workspaceRoot } = makeRuntimeState("hb-workspace-docx-attachment-memory-");
   seedWorkspace(store);
 
-  const attachmentRelativePath = ".hitechcloud/input-attachments/batch-1/customer-brief.docx";
+  const attachmentRelativePath = ".holaboss/input-attachments/batch-1/customer-brief.docx";
   const attachmentAbsolutePath = path.join(workspaceRoot, "workspace-1", attachmentRelativePath);
   fs.mkdirSync(path.dirname(attachmentAbsolutePath), { recursive: true });
   fs.writeFileSync(
@@ -471,11 +471,11 @@ test("persistTurnInputAttachmentsAsDocuments extracts searchable text from PDF a
   const { store, workspaceRoot } = makeRuntimeState("hb-workspace-pdf-attachment-memory-");
   seedWorkspace(store);
 
-  const attachmentRelativePath = ".hitechcloud/input-attachments/batch-1/account-brief.pdf";
+  const attachmentRelativePath = ".holaboss/input-attachments/batch-1/account-brief.pdf";
   const attachmentAbsolutePath = path.join(
     workspaceRoot,
     "workspace-1",
-    ".hitechcloud",
+    ".holaboss",
     "input-attachments",
     "batch-1",
     "account-brief.pdf",
@@ -548,7 +548,7 @@ test("persistTurnInputAttachmentsAsDocuments extracts searchable text from pptx 
   const { store, workspaceRoot } = makeRuntimeState("hb-workspace-pptx-attachment-memory-");
   seedWorkspace(store);
 
-  const attachmentRelativePath = ".hitechcloud/input-attachments/batch-1/q2-review.pptx";
+  const attachmentRelativePath = ".holaboss/input-attachments/batch-1/q2-review.pptx";
   const attachmentAbsolutePath = path.join(workspaceRoot, "workspace-1", attachmentRelativePath);
   fs.mkdirSync(path.dirname(attachmentAbsolutePath), { recursive: true });
   fs.writeFileSync(
@@ -616,7 +616,7 @@ test(
     const { store, workspaceRoot } = makeRuntimeState("hb-workspace-image-attachment-memory-");
     seedWorkspace(store);
 
-    const attachmentRelativePath = ".hitechcloud/input-attachments/batch-1/escalation-note.png";
+    const attachmentRelativePath = ".holaboss/input-attachments/batch-1/escalation-note.png";
     const attachmentAbsolutePath = path.join(workspaceRoot, "workspace-1", attachmentRelativePath);
     fs.mkdirSync(path.dirname(attachmentAbsolutePath), { recursive: true });
     fs.writeFileSync(
@@ -679,7 +679,7 @@ test("persistTurnInputAttachmentsAsDocuments extracts searchable text from image
   const { store, workspaceRoot } = makeRuntimeState("hb-workspace-image-attachment-model-memory-");
   seedWorkspace(store);
 
-  const attachmentRelativePath = ".hitechcloud/input-attachments/batch-1/escalation-note.png";
+  const attachmentRelativePath = ".holaboss/input-attachments/batch-1/escalation-note.png";
   const attachmentAbsolutePath = path.join(workspaceRoot, "workspace-1", attachmentRelativePath);
   fs.mkdirSync(path.dirname(attachmentAbsolutePath), { recursive: true });
   fs.writeFileSync(attachmentAbsolutePath, Buffer.from("not-a-real-png"));
@@ -1082,21 +1082,21 @@ test("persistTurnIntegrationToolResultsAsDocuments indexes tool results as first
     eventType: "tool_call",
     payload: {
       phase: "completed",
-      tool_name: "hitechcloud_composio.gmail_fetch_emails",
-      tool_id: "hitechcloud_composio.gmail_fetch_emails",
+      tool_name: "holaboss_composio.gmail_fetch_emails",
+      tool_id: "holaboss_composio.gmail_fetch_emails",
       call_id: "call-gmail-1",
       error: false,
       result: {
         content: [
           {
             type: "text",
-            text: "Ben Book at anyIP reached out to the user personally about hitechcloud and followed up on the same thread.",
+            text: "Ben Book at anyIP reached out to the user personally about holaboss and followed up on the same thread.",
           },
         ],
         details: {
           raw: {
             _meta: {
-              hitechcloud_integration_account: {
+              holaboss_integration_account: {
                 provider_id: "gmail",
                 connected_account_id: "ca_gmail_primary",
                 account_namespace: "ops@example.com",
@@ -1205,8 +1205,8 @@ test("persistTurnIntegrationToolResultsAsDocuments stores related-entity relatio
     eventType: "tool_call",
     payload: {
       phase: "completed",
-      tool_name: "hitechcloud_composio.gmail_fetch_emails",
-      tool_id: "hitechcloud_composio.gmail_fetch_emails",
+      tool_name: "holaboss_composio.gmail_fetch_emails",
+      tool_id: "holaboss_composio.gmail_fetch_emails",
       call_id: "call-gmail-related-1",
       error: false,
       result: {
@@ -1219,7 +1219,7 @@ test("persistTurnIntegrationToolResultsAsDocuments stores related-entity relatio
         details: {
           raw: {
             _meta: {
-              hitechcloud_integration_account: {
+              holaboss_integration_account: {
                 provider_id: "gmail",
                 connected_account_id: "ca_gmail_primary",
                 account_namespace: "ops@example.com",
@@ -1332,21 +1332,21 @@ test("ensureWorkspaceArtifactRelationsBackfilled restores cleared tool-result ar
     eventType: "tool_call",
     payload: {
       phase: "completed",
-      tool_name: "hitechcloud_composio.gmail_fetch_emails",
-      tool_id: "hitechcloud_composio.gmail_fetch_emails",
+      tool_name: "holaboss_composio.gmail_fetch_emails",
+      tool_id: "holaboss_composio.gmail_fetch_emails",
       call_id: "call-gmail-backfill-1",
       error: false,
       result: {
         content: [
           {
             type: "text",
-            text: "Ben Book at anyIP reached out again about hitechcloud.",
+            text: "Ben Book at anyIP reached out again about holaboss.",
           },
         ],
         details: {
           raw: {
             _meta: {
-              hitechcloud_integration_account: {
+              holaboss_integration_account: {
                 provider_id: "gmail",
                 connected_account_id: "ca_gmail_primary",
                 account_namespace: "ops@example.com",
@@ -1531,11 +1531,11 @@ test("ensureWorkspaceArtifactRelationsBackfilled backfills missing attachment ar
   const { store, workspaceRoot } = makeRuntimeState("hb-workspace-attachment-tree-backfill-");
   seedWorkspace(store);
 
-  const attachmentRelativePath = ".hitechcloud/input-attachments/batch-legacy/personal-outreach.html";
+  const attachmentRelativePath = ".holaboss/input-attachments/batch-legacy/personal-outreach.html";
   const attachmentAbsolutePath = path.join(
     workspaceRoot,
     "workspace-1",
-    ".hitechcloud",
+    ".holaboss",
     "input-attachments",
     "batch-legacy",
     "personal-outreach.html",
@@ -1546,7 +1546,7 @@ test("ensureWorkspaceArtifactRelationsBackfilled backfills missing attachment ar
     [
       "<html><body>",
       "<h1>Personal Outreach</h1>",
-      "<p>Ben Book at anyIP emailed the user personally about hitechcloud.</p>",
+      "<p>Ben Book at anyIP emailed the user personally about holaboss.</p>",
       "</body></html>",
     ].join(""),
     "utf8",
@@ -1609,7 +1609,7 @@ test("ensureWorkspaceArtifactRelationsBackfilled backfills missing attachment ar
   const retrieval = await retrieveWorkspaceMemory({
     store,
     workspaceId: "workspace-1",
-    query: "emailed the user personally about hitechcloud",
+    query: "emailed the user personally about holaboss",
     executionProfile: {
       useEmbeddings: false,
       useLlmRerank: false,
@@ -1752,8 +1752,8 @@ test("ensureWorkspaceArtifactRelationsBackfilled backfills missing tool-result a
     eventType: "tool_call",
     payload: {
       phase: "completed",
-      tool_name: "hitechcloud_composio.gmail_fetch_emails",
-      tool_id: "hitechcloud_composio.gmail_fetch_emails",
+      tool_name: "holaboss_composio.gmail_fetch_emails",
+      tool_id: "holaboss_composio.gmail_fetch_emails",
       call_id: "call-gmail-legacy-tree-1",
       error: false,
       result: {
@@ -1766,7 +1766,7 @@ test("ensureWorkspaceArtifactRelationsBackfilled backfills missing tool-result a
         details: {
           raw: {
             _meta: {
-              hitechcloud_integration_account: {
+              holaboss_integration_account: {
                 provider_id: "gmail",
                 connected_account_id: "ca_gmail_primary",
                 account_namespace: "ops@example.com",
@@ -1960,8 +1960,8 @@ test("artifactContextsForSourceTurnInput prioritizes forwarded outputs ahead of 
       eventType: "tool_call",
       payload: {
         phase: "completed",
-        tool_name: "hitechcloud_composio.gmail_fetch_emails",
-        tool_id: "hitechcloud_composio.gmail_fetch_emails",
+        tool_name: "holaboss_composio.gmail_fetch_emails",
+        tool_id: "holaboss_composio.gmail_fetch_emails",
         call_id: `call-gmail-priority-${index + 1}`,
         error: false,
         result: {
@@ -1974,7 +1974,7 @@ test("artifactContextsForSourceTurnInput prioritizes forwarded outputs ahead of 
           details: {
             raw: {
               _meta: {
-                hitechcloud_integration_account: {
+                holaboss_integration_account: {
                   provider_id: "gmail",
                   connected_account_id: "ca_gmail_primary",
                   account_namespace: "ops@example.com",
@@ -2181,8 +2181,8 @@ test("artifactContextsForSourceTurnInput prioritizes latest same-turn tool resul
       eventType: "tool_call",
       payload: {
         phase: "completed",
-        tool_name: "hitechcloud_composio.gmail_fetch_emails",
-        tool_id: "hitechcloud_composio.gmail_fetch_emails",
+        tool_name: "holaboss_composio.gmail_fetch_emails",
+        tool_id: "holaboss_composio.gmail_fetch_emails",
         call_id: `call-gmail-latest-${index + 1}`,
         error: false,
         result: {
@@ -2195,7 +2195,7 @@ test("artifactContextsForSourceTurnInput prioritizes latest same-turn tool resul
           details: {
             raw: {
               _meta: {
-                hitechcloud_integration_account: {
+                holaboss_integration_account: {
                   provider_id: "gmail",
                   connected_account_id: "ca_gmail_primary",
                   account_namespace: "ops@example.com",
@@ -2253,7 +2253,7 @@ test("artifactContextsForSourceTurnInput preserves original attachment input ord
       name: "zeta-brief-1.txt",
       mime_type: "text/plain",
       size_bytes: 32,
-      workspace_path: ".hitechcloud/input-attachments/batch-order/zeta-brief-1.txt",
+      workspace_path: ".holaboss/input-attachments/batch-order/zeta-brief-1.txt",
     },
     {
       id: "att-order-2",
@@ -2261,7 +2261,7 @@ test("artifactContextsForSourceTurnInput preserves original attachment input ord
       name: "yankee-brief-2.txt",
       mime_type: "text/plain",
       size_bytes: 32,
-      workspace_path: ".hitechcloud/input-attachments/batch-order/yankee-brief-2.txt",
+      workspace_path: ".holaboss/input-attachments/batch-order/yankee-brief-2.txt",
     },
     {
       id: "att-order-3",
@@ -2269,7 +2269,7 @@ test("artifactContextsForSourceTurnInput preserves original attachment input ord
       name: "xray-brief-3.txt",
       mime_type: "text/plain",
       size_bytes: 32,
-      workspace_path: ".hitechcloud/input-attachments/batch-order/xray-brief-3.txt",
+      workspace_path: ".holaboss/input-attachments/batch-order/xray-brief-3.txt",
     },
     {
       id: "att-order-4",
@@ -2277,7 +2277,7 @@ test("artifactContextsForSourceTurnInput preserves original attachment input ord
       name: "whiskey-brief-4.txt",
       mime_type: "text/plain",
       size_bytes: 32,
-      workspace_path: ".hitechcloud/input-attachments/batch-order/whiskey-brief-4.txt",
+      workspace_path: ".holaboss/input-attachments/batch-order/whiskey-brief-4.txt",
     },
     {
       id: "att-order-5",
@@ -2285,7 +2285,7 @@ test("artifactContextsForSourceTurnInput preserves original attachment input ord
       name: "victor-brief-5.txt",
       mime_type: "text/plain",
       size_bytes: 32,
-      workspace_path: ".hitechcloud/input-attachments/batch-order/victor-brief-5.txt",
+      workspace_path: ".holaboss/input-attachments/batch-order/victor-brief-5.txt",
     },
     {
       id: "att-order-6",
@@ -2293,7 +2293,7 @@ test("artifactContextsForSourceTurnInput preserves original attachment input ord
       name: "uniform-brief-6.txt",
       mime_type: "text/plain",
       size_bytes: 32,
-      workspace_path: ".hitechcloud/input-attachments/batch-order/uniform-brief-6.txt",
+      workspace_path: ".holaboss/input-attachments/batch-order/uniform-brief-6.txt",
     },
     {
       id: "att-order-7",
@@ -2301,7 +2301,7 @@ test("artifactContextsForSourceTurnInput preserves original attachment input ord
       name: "alpha-brief-7.txt",
       mime_type: "text/plain",
       size_bytes: 32,
-      workspace_path: ".hitechcloud/input-attachments/batch-order/alpha-brief-7.txt",
+      workspace_path: ".holaboss/input-attachments/batch-order/alpha-brief-7.txt",
     },
   ];
 
@@ -2451,7 +2451,7 @@ test("ensureWorkspaceArtifactRelationsBackfilled repairs missing legacy attachme
       name: "zeta-legacy-1.txt",
       mime_type: "text/plain",
       size_bytes: 32,
-      workspace_path: ".hitechcloud/input-attachments/legacy-order/zeta-legacy-1.txt",
+      workspace_path: ".holaboss/input-attachments/legacy-order/zeta-legacy-1.txt",
     },
     {
       id: "att-legacy-2",
@@ -2459,7 +2459,7 @@ test("ensureWorkspaceArtifactRelationsBackfilled repairs missing legacy attachme
       name: "yankee-legacy-2.txt",
       mime_type: "text/plain",
       size_bytes: 32,
-      workspace_path: ".hitechcloud/input-attachments/legacy-order/yankee-legacy-2.txt",
+      workspace_path: ".holaboss/input-attachments/legacy-order/yankee-legacy-2.txt",
     },
     {
       id: "att-legacy-3",
@@ -2467,7 +2467,7 @@ test("ensureWorkspaceArtifactRelationsBackfilled repairs missing legacy attachme
       name: "alpha-legacy-3.txt",
       mime_type: "text/plain",
       size_bytes: 32,
-      workspace_path: ".hitechcloud/input-attachments/legacy-order/alpha-legacy-3.txt",
+      workspace_path: ".holaboss/input-attachments/legacy-order/alpha-legacy-3.txt",
     },
   ];
   for (const attachment of attachments) {
@@ -2684,7 +2684,7 @@ test("persistTurnOutputArtifactsAsDocuments preserves content-derived related-en
     [
       "# Outreach Escalation",
       "",
-      "Ben Book at anyIP needs a named escalation owner for the hitechcloud rollout.",
+      "Ben Book at anyIP needs a named escalation owner for the holaboss rollout.",
     ].join("\n"),
     "utf8",
   );
@@ -3286,21 +3286,21 @@ test("persistTurnOutputArtifactsAsDocuments links forwarded deliverables back to
     eventType: "tool_call",
     payload: {
       phase: "completed",
-      tool_name: "hitechcloud_composio.gmail_fetch_emails",
-      tool_id: "hitechcloud_composio.gmail_fetch_emails",
+      tool_name: "holaboss_composio.gmail_fetch_emails",
+      tool_id: "holaboss_composio.gmail_fetch_emails",
       call_id: "call-gmail-forwarded-1",
       error: false,
       result: {
         content: [
           {
             type: "text",
-            text: "Ben Book at anyIP reached out to the user personally about hitechcloud.",
+            text: "Ben Book at anyIP reached out to the user personally about holaboss.",
           },
         ],
         details: {
           raw: {
             _meta: {
-              hitechcloud_integration_account: {
+              holaboss_integration_account: {
                 provider_id: "gmail",
                 connected_account_id: "ca_gmail_primary",
                 account_namespace: "ops@example.com",

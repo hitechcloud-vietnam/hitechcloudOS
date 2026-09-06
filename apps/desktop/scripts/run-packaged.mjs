@@ -3,14 +3,14 @@ import path from "node:path";
 import { spawn } from "node:child_process";
 
 const root = process.cwd();
-const explicitBin = (process.env.HITECHCLOUD_PACKAGED_APP_BIN || "").trim();
+const explicitBin = (process.env.HOLABOSS_PACKAGED_APP_BIN || "").trim();
 const outRoot = path.join(root, "out");
 
 const candidates = [
   explicitBin,
-  path.join(root, "out", "release", "mac-arm64", "hitechcloudOS.app", "Contents", "MacOS", "hitechcloudOS"),
-  path.join(root, "out", "release", "mac", "hitechcloudOS.app", "Contents", "MacOS", "hitechcloudOS"),
-  path.join(root, "out", "release", "win-unpacked", "hitechcloudOS.exe")
+  path.join(root, "out", "release", "mac-arm64", "holaOS.app", "Contents", "MacOS", "holaOS"),
+  path.join(root, "out", "release", "mac", "holaOS.app", "Contents", "MacOS", "holaOS"),
+  path.join(root, "out", "release", "win-unpacked", "holaOS.exe")
 ].filter(Boolean);
 
 async function localReleaseCandidates() {
@@ -32,9 +32,9 @@ async function localReleaseCandidates() {
     ).sort((left, right) => right.mtimeMs - left.mtimeMs);
 
     return releaseDirs.flatMap(({ directoryPath }) => [
-      path.join(directoryPath, "mac-arm64", "hitechcloudOS.app", "Contents", "MacOS", "hitechcloudOS"),
-      path.join(directoryPath, "mac", "hitechcloudOS.app", "Contents", "MacOS", "hitechcloudOS"),
-      path.join(directoryPath, "win-unpacked", "hitechcloudOS.exe"),
+      path.join(directoryPath, "mac-arm64", "holaOS.app", "Contents", "MacOS", "holaOS"),
+      path.join(directoryPath, "mac", "holaOS.app", "Contents", "MacOS", "holaOS"),
+      path.join(directoryPath, "win-unpacked", "holaOS.exe"),
     ]);
   } catch {
     return [];
@@ -60,17 +60,17 @@ const binaryPath = await firstExisting([
 
 if (!binaryPath) {
   console.error("No packaged app binary found.");
-  console.error("Run `npm run dist:mac` or `npm run dist:win` first, or set HITECHCLOUD_PACKAGED_APP_BIN to an executable path.");
+  console.error("Run `npm run dist:mac` or `npm run dist:win` first, or set HOLABOSS_PACKAGED_APP_BIN to an executable path.");
   process.exit(1);
 }
 
 console.log(`[packaged:run] launching: ${binaryPath}`);
 console.log(
-  `[packaged:run] HITECHCLOUD_BACKEND_BASE_URL=${
-    process.env.HITECHCLOUD_BACKEND_BASE_URL || process.env.HITECHCLOUD_DESKTOP_CONTROL_PLANE_BASE_URL || "(default)"
+  `[packaged:run] HOLABOSS_BACKEND_BASE_URL=${
+    process.env.HOLABOSS_BACKEND_BASE_URL || process.env.HOLABOSS_DESKTOP_CONTROL_PLANE_BASE_URL || "(default)"
   }`
 );
-console.log(`[packaged:run] HITECHCLOUD_AUTH_BASE_URL=${process.env.HITECHCLOUD_AUTH_BASE_URL || "(default)"}`);
+console.log(`[packaged:run] HOLABOSS_AUTH_BASE_URL=${process.env.HOLABOSS_AUTH_BASE_URL || "(default)"}`);
 
 const child = spawn(binaryPath, [], {
   env: process.env,

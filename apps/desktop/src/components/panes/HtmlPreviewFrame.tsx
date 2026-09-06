@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
 
 export const HTML_PREVIEW_LINK_MESSAGE_TYPE =
-  "hitechcloud:html-preview-link";
+  "holaboss:html-preview-link";
 
-const HTML_PREVIEW_SCRIPT_NONCE = "hitechcloud-html-preview";
+const HTML_PREVIEW_SCRIPT_NONCE = "holaboss-html-preview";
 const CONTENT_SECURITY_POLICY_META_PATTERN =
   /<meta\b[^>]*http-equiv=(["'])content-security-policy\1[^>]*>/gi;
 

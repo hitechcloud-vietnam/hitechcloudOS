@@ -1,7 +1,7 @@
 import type {
   AppContext,
   ChatStartAttachment,
-} from "@hitechcloud/app-host/protocol";
+} from "@holaboss/app-host/protocol";
 import { useSetAtom } from "jotai";
 import { persistMediaGenerationModel } from "@/lib/mediaGenerationConfig";
 import { imageComposerModeAtom } from "@/components/panes/ChatPane/Composer/imageMode";
@@ -55,7 +55,7 @@ function appContextToText(ctx: AppContext): string {
 }
 
 /**
- * Bridges the host op `window.__hitechcloudHost.chat.start` into the shell. Main
+ * Bridges the host op `window.__holabossHost.chat.start` into the shell. Main
  * creates the session for the calling web HolaApp surface, then emits
  * `host:openChat`; here we open that session in the chat panel, prefill the
  * composer prompt, and drop each supplied AppContext into the composer as a

@@ -1,4 +1,4 @@
-import type { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import type { RuntimeStateStore } from "@holaboss/runtime-state-store";
 
 import {
   type IntegrationLeafCandidate,

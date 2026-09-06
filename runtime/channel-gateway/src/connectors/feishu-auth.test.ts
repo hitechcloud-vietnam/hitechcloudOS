@@ -63,7 +63,7 @@ test("begin returns a device code + QR url; poll pends then yields app credentia
     const start = await beginFeishuRegistration({ baseUrl: mock.baseUrl });
     assert.equal(start.deviceCode, "dev-123");
     assert.match(start.qrUrl, /qrcode\?code=abc/);
-    assert.match(start.qrUrl, /from=hitechcloudos/);
+    assert.match(start.qrUrl, /from=holaos/);
 
     const pending = await pollFeishuRegistration(start.deviceCode, { baseUrl: mock.baseUrl });
     assert.equal(pending.status, "pending");

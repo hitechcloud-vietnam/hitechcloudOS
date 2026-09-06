@@ -217,7 +217,7 @@ function seedWorkspaceRuntimeDbFile(
 }
 
 function workspaceRuntimeDbFile(workspaceRoot: string, workspaceId: string): string {
-  return path.join(workspaceRoot, workspaceId, ".hitechcloud", "state", "runtime.db");
+  return path.join(workspaceRoot, workspaceId, ".holaboss", "state", "runtime.db");
 }
 
 test("consolidateWorkspaceRuntimeDbsIntoRoot folds workspaces into the root data.db", () => {

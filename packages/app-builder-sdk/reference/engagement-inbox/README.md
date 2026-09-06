@@ -57,7 +57,7 @@ you open it dozens of times per session, so it lives on screen.
 - The `font-weight ≤ 500` rule. Hierarchy via size + color, not weight.
 - Token-only colors. No hex / `rgb()` / `oklch()` literals.
 - No `font-bold` / `font-semibold` / inline `style={{ fontWeight: ... }}`.
-- No second component library. Everything from `@hitechcloud/ui`.
+- No second component library. Everything from `@holaboss/ui`.
 - No `components/ui/` directory (shadcn-add copy).
 
 ## Required setup (lint-enforced)
@@ -75,7 +75,7 @@ Same Tailwind-compile setup as the other canonical references. The
 `src/client/routes/__root.tsx`:
 
 ```tsx
-import "@hitechcloud/ui/styles.css";
+import "@holaboss/ui/styles.css";
 import "../app.css";
 ```
 

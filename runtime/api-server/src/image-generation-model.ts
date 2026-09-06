@@ -7,16 +7,16 @@ import {
 import type { MemoryModelClientConfig } from "./memory-model-client.js";
 import { resolveProductRuntimeConfig } from "./runtime-config.js";
 
-const HITECHCLOUD_PROVIDER_ID = "hitechcloud_model_proxy";
+const HOLABOSS_PROVIDER_ID = "holaboss_model_proxy";
 const IMAGE_GENERATION_ALLOWED_PROVIDER_IDS = new Set([
-  HITECHCLOUD_PROVIDER_ID,
+  HOLABOSS_PROVIDER_ID,
   "openai_direct",
   "openrouter_direct",
   "gemini_direct",
 ]);
 const PROVIDER_ID_ALIASES: Record<string, string> = {
-  hitechcloud: HITECHCLOUD_PROVIDER_ID,
-  [HITECHCLOUD_PROVIDER_ID]: HITECHCLOUD_PROVIDER_ID,
+  holaboss: HOLABOSS_PROVIDER_ID,
+  [HOLABOSS_PROVIDER_ID]: HOLABOSS_PROVIDER_ID,
   openai: "openai_direct",
   openai_direct: "openai_direct",
   openrouter: "openrouter_direct",
@@ -35,7 +35,7 @@ const LEGACY_DIRECT_PROVIDER_MODEL_ALIASES: Record<
   },
 };
 const IMAGE_GENERATION_MODEL_DEFAULTS: Record<string, string | null> = {
-  [HITECHCLOUD_PROVIDER_ID]: "gpt-image-2",
+  [HOLABOSS_PROVIDER_ID]: "gpt-image-2",
   openai_direct: "gpt-image-2",
   openrouter_direct: "google/gemini-3.1-flash-image",
   gemini_direct: "gemini-3.1-flash-image",
@@ -163,9 +163,9 @@ function providerPayloadForId(
   providerId: string,
 ): Record<string, unknown> {
   const providersPayload = asRecord(document.providers);
-  if (providerId === HITECHCLOUD_PROVIDER_ID) {
+  if (providerId === HOLABOSS_PROVIDER_ID) {
     return asRecord(
-      providersPayload[HITECHCLOUD_PROVIDER_ID] ?? providersPayload.hitechcloud,
+      providersPayload[HOLABOSS_PROVIDER_ID] ?? providersPayload.holaboss,
     );
   }
   return asRecord(providersPayload[providerId]);
@@ -343,7 +343,7 @@ function imageGenerationProviderIsAvailable(
   if (!normalizedProviderId) {
     return false;
   }
-  if (normalizedProviderId === HITECHCLOUD_PROVIDER_ID) {
+  if (normalizedProviderId === HOLABOSS_PROVIDER_ID) {
     return Boolean(
       runtimeConfig.authToken.trim() ||
       runtimeConfig.modelProxyBaseUrl.trim() ||
@@ -457,7 +457,7 @@ export function resolveImageGenerationModelSelection(params: {
     }
   }
   if (!providerId && runtimeConfig.modelProxyBaseUrl.trim()) {
-    providerId = HITECHCLOUD_PROVIDER_ID;
+    providerId = HOLABOSS_PROVIDER_ID;
   }
 
   if (
@@ -559,16 +559,16 @@ export function createImageGenerationModelClient(
     return null;
   }
 
-  // The Hitechcloud model proxy meters per user — without the identity headers the
+  // The Holaboss model proxy meters per user — without the identity headers the
   // backend attributes no token usage (submit_usage no-ops on an empty user id),
   // so image generations consumed nothing. Attach them for the proxy provider only
   // (the *_direct branches use the user's own key). Mirrors runtimeConfigHeaders().
   const resolvedHeaders: Record<string, string> = {
     ...(resolved.modelClient.default_headers ?? {}),
   };
-  if (selection.providerId === HITECHCLOUD_PROVIDER_ID) {
+  if (selection.providerId === HOLABOSS_PROVIDER_ID) {
     // Fail closed: the proxy REQUIRES a user. The backend now rejects OpenRouter-
-    // bound calls with no X-Hitechcloud-User-Id (they'd be unattributed AND unmetered),
+    // bound calls with no X-Holaboss-User-Id (they'd be unattributed AND unmetered),
     // so a proxy image request without a resolved user is a guaranteed 400. Skip
     // image generation instead of firing a doomed request — matching the agent
     // model client's requireUser:true on the proxy path. (`null` → the caller
@@ -576,15 +576,15 @@ export function createImageGenerationModelClient(
     if (!runtimeConfig.userId) {
       return null;
     }
-    resolvedHeaders["X-Hitechcloud-User-Id"] = runtimeConfig.userId;
+    resolvedHeaders["X-Holaboss-User-Id"] = runtimeConfig.userId;
     // Attribute desktop image spend to the user (usage-log "Entity"). `desktop:` is the surface key
     // the backend/usage resolver understands; without it the Entity column is blank.
-    resolvedHeaders["X-Hitechcloud-Requester-Id"] = `desktop:${runtimeConfig.userId}`;
+    resolvedHeaders["X-Holaboss-Requester-Id"] = `desktop:${runtimeConfig.userId}`;
     if (runtimeConfig.orgId) {
-      resolvedHeaders["X-Hitechcloud-Org-Id"] = runtimeConfig.orgId;
+      resolvedHeaders["X-Holaboss-Org-Id"] = runtimeConfig.orgId;
     }
     if (runtimeConfig.sandboxId) {
-      resolvedHeaders["X-Hitechcloud-Sandbox-Id"] = runtimeConfig.sandboxId;
+      resolvedHeaders["X-Holaboss-Sandbox-Id"] = runtimeConfig.sandboxId;
     }
   }
   const mergedHeaders =
@@ -615,7 +615,7 @@ export function createImageGenerationModelClient(
     apiKey,
     // Use mergedHeaders (a superset of the resolved client's default_headers plus
     // the proxy identity headers added above) — matching the *_direct returns.
-    // The old `default_headers` form dropped the X-Hitechcloud-User-Id we attach here
+    // The old `default_headers` form dropped the X-Holaboss-User-Id we attach here
     // whenever the client resolved via the non-proxy fallback branch (no sandbox),
     // which the backend attribution guard now 400s.
     defaultHeaders: mergedHeaders,

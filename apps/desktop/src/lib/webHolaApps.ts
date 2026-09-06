@@ -4,7 +4,7 @@
 // `/gateway/wapp/catalog` → backend `/api/v1/apps/catalog`. (The bare `/api/v1/apps` list
 // is NOT gateway-reachable — the gateway requires a non-empty subpath — which is why a
 // direct fetch always came back empty.) The gateway targets the workflow-backend with the
-// user's Better Auth session and injects the `x-hitechcloud-user-id` the backend requires.
+// user's Better Auth session and injects the `x-holaboss-user-id` the backend requires.
 //
 // No client-side fallback / built-in apps: the marketplace shows exactly what the server
 // returns. When the list can't be fetched we return an empty catalogue and log why.
@@ -40,7 +40,7 @@ export interface WebHolaApp {
    * app glyph if absent or if the image fails to load. */
   iconUrl?: string;
   /** Absolute URL to open instead of the derived `<WEB_APP_BASE_URL>/apps/<id>`.
-   * Used by apps that aren't Hitechcloud-hosted. */
+   * Used by apps that aren't Holaboss-hosted. */
   url?: string;
   /** Per-user install state, when the catalogue endpoint reports it (server-managed
    * install). Absent on older backends; the stub source ignores it. */
@@ -91,7 +91,7 @@ export interface WebHolaApp {
   createdAt?: string;
   /** Unique users who currently have the app installed — drives "Popular". */
   installCount?: number;
-  /** Team-native: an org-owned Hitechcloud-native app (Need Review, HolaEmployee). These
+  /** Team-native: an org-owned Holaboss-native app (Need Review, HolaEmployee). These
    * surface in the ORG left column (org-mode only), NOT the app store — the store
    * filters them out. Served by the backend catalog from `HolaAppDefinition.teamNative`.
    * Absent/false ⇒ a personal / integration / mcp app that lives in the store. */
@@ -244,7 +244,7 @@ function normalizeHostedRequiredKey(value: unknown): McpRequiredKey | null {
   };
 }
 
-// Parse the catalog `hostedMcpInstall` block (jianguoyun): a Hitechcloud-hosted MCP
+// Parse the catalog `hostedMcpInstall` block (jianguoyun): a Holaboss-hosted MCP
 // that needs BYO credentials. Requires a non-empty `mcpUrl` and at least one
 // valid `requiredKeys` entry (no keys ⇒ it's a plain hosted app, not this path).
 // Malformed shapes collapse to undefined.
@@ -281,7 +281,7 @@ function normalizeHostedMcpInstall(
     : [];
   return {
     mcpUrl,
-    ...(value.hitechcloudHosted === false ? { hitechcloudHosted: false } : {}),
+    ...(value.holabossHosted === false ? { holabossHosted: false } : {}),
     requiredKeys,
     ...(tools.length > 0 ? { tools } : {}),
   };

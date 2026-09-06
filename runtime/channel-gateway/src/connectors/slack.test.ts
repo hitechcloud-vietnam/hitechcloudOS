@@ -9,8 +9,8 @@ test("markdownToSlack converts to mrkdwn (bold/italic/links/headings)", () => {
   assert.equal(markdownToSlack("*italic*"), "_italic_");
   assert.equal(markdownToSlack("__also bold__"), "*also bold*");
   assert.equal(
-    markdownToSlack("[Hitechcloud](https://hitechcloud.vn)"),
-    "<https://hitechcloud.vn|Hitechcloud>",
+    markdownToSlack("[Holaboss](https://holaboss.ai)"),
+    "<https://holaboss.ai|Holaboss>",
   );
   assert.equal(markdownToSlack("# Heading"), "*Heading*");
   assert.equal(markdownToSlack("~~gone~~"), "~gone~");

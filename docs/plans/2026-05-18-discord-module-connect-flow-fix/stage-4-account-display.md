@@ -118,7 +118,7 @@ architectural smell.
 
 ## Files changed
 
-Runtime (`hitechcloudOS/runtime/api-server/src/`):
+Runtime (`holaOS/runtime/api-server/src/`):
 
 - `integration-types.ts` — `WhoamiConfig` type, optional `whoami` on
   `ResolvedIntegrationRequirement`, `parseWhoamiConfig` parser.
@@ -127,7 +127,7 @@ Runtime (`hitechcloudOS/runtime/api-server/src/`):
 - `claimed-input-executor.ts` — `SubagentPendingIntegration` type +
   parser pass through whoami.
 
-Desktop (`hitechcloudOS/desktop/`):
+Desktop (`holaOS/desktop/`):
 
 - `src/types/electron.d.ts` — `PendingIntegrationWhoami` ambient type,
   `composioConnect` payload accepts `whoami?`.
@@ -159,7 +159,7 @@ Hono (`frontend/apps/server/src/api/composio.ts`):
 - `PROVIDER_WHOAMI` const, `ProviderWhoami` interface, and
   `upgradeTwitterAvatar` removed.
 
-Skill (`hitechcloudOS/runtime/harnesses/src/embedded-skills/app-builder/SKILL.md`):
+Skill (`holaOS/runtime/harnesses/src/embedded-skills/app-builder/SKILL.md`):
 
 - Integration Manifest Pattern section gains an explicit note that
   `provider` must be the Composio toolkit slug.

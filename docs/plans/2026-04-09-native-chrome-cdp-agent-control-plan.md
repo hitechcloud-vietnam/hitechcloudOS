@@ -270,7 +270,7 @@ Extend the current desktop browser e2e coverage to validate native Chrome behavi
 
 The default implementation direction should be:
 
-- managed Chrome launched by Hitechcloud
+- managed Chrome launched by Holaboss
 - one isolated Chrome profile per workspace
 - agent-only usage first
 - existing Browser pane unchanged in phase 1

@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { after, test } from "node:test";
 
-import { createRemoteApiClient } from "@hitechcloud/remote-api/client";
+import { createRemoteApiClient } from "@holaboss/remote-api/client";
 
 import { buildRuntimeApiServer } from "./app.js";
 

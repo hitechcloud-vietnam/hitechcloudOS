@@ -77,7 +77,7 @@ export async function testHarnessConnection(opts: {
   const startedAt = Date.now();
   // Run in a throwaway dir so the test never touches a real workspace.
   const ownsCwd = !opts.cwd;
-  const cwd = opts.cwd ?? mkdtempSync(join(tmpdir(), "hitechcloud-conn-test-"));
+  const cwd = opts.cwd ?? mkdtempSync(join(tmpdir(), "holaboss-conn-test-"));
   const cleanup = (): void => {
     if (ownsCwd) {
       try {

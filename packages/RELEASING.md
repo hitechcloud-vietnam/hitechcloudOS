@@ -1,14 +1,14 @@
-# Releasing Hitechcloud SDK Packages
+# Releasing Holaboss SDK Packages
 
-This document covers the release process for all `@hitechcloud/*` npm packages under `sdk/`.
+This document covers the release process for all `@holaboss/*` npm packages under `sdk/`.
 
 Currently released from this repo:
-- [`@hitechcloud/app-sdk`](./app-sdk) — generated TypeScript client, TanStack Query hooks, and Zod schemas for the Hitechcloud product API
-- [`@hitechcloud/ui`](./ui) — shared UI primitives used across Hitechcloud surfaces
+- [`@holaboss/app-sdk`](./app-sdk) — generated TypeScript client, TanStack Query hooks, and Zod schemas for the Holaboss product API
+- [`@holaboss/ui`](./ui) — shared UI primitives used across Holaboss surfaces
 
 ## Prerequisites
 
-- npm org `@hitechcloud` registered at [npmjs.com](https://www.npmjs.com)
+- npm org `@holaboss` registered at [npmjs.com](https://www.npmjs.com)
 - GitHub repository secret `NPM_TOKEN` configured (see [Setup](#setup) below)
 - GitHub environment `npm-publish` created with required reviewers (recommended)
 
@@ -19,9 +19,9 @@ Currently released from this repo:
 1. Log in to [npmjs.com](https://www.npmjs.com)
 2. Go to **Access Tokens** → **Generate New Token** → **Granular Access Token**
 3. Configure:
-   - **Token name**: `hitechcloud-oss-github-actions`
+   - **Token name**: `holaboss-oss-github-actions`
    - **Expiration**: 365 days (set a calendar reminder to rotate)
-   - **Packages and scopes**: Read and write, scoped to `@hitechcloud`
+   - **Packages and scopes**: Read and write, scoped to `@holaboss`
    - **Organizations**: No access (unless needed)
 4. Copy the token
 
@@ -69,14 +69,14 @@ git push origin main --tags
 We override the default tag format so the workflow can identify which package the tag belongs to. Each package's `.npmrc` carries its own prefix, e.g. `sdk/app-sdk/.npmrc`:
 
 ```
-tag-version-prefix = @hitechcloud/app-sdk@
+tag-version-prefix = @holaboss/app-sdk@
 ```
 
-This makes `npm version patch` produce a tag like `@hitechcloud/app-sdk@0.1.1` instead of `v0.1.1`.
+This makes `npm version patch` produce a tag like `@holaboss/app-sdk@0.1.1` instead of `v0.1.1`.
 
-The `publish-sdk` workflow triggers automatically on tags matching the patterns listed in `.github/workflows/publish-sdk.yml` (e.g. `@hitechcloud/app-sdk@*`, `@hitechcloud/ui@*`).
+The `publish-sdk` workflow triggers automatically on tags matching the patterns listed in `.github/workflows/publish-sdk.yml` (e.g. `@holaboss/app-sdk@*`, `@holaboss/ui@*`).
 
-**Tag format**: `@hitechcloud/<package>@<semver>` — e.g. `@hitechcloud/app-sdk@0.1.0`, `@hitechcloud/ui@0.2.0`
+**Tag format**: `@holaboss/<package>@<semver>` — e.g. `@holaboss/app-sdk@0.1.0`, `@holaboss/ui@0.2.0`
 
 ### Manual release
 
@@ -114,7 +114,7 @@ Tag push or manual trigger
 
 ## Adding a new SDK package
 
-When adding a new package (e.g. `@hitechcloud/mcp`):
+When adding a new package (e.g. `@holaboss/mcp`):
 
 1. Create the package under `sdk/mcp/` following the same structure as one of the existing packages (`sdk/app-sdk/` or `sdk/ui/`)
 2. Add the package name as a new option in `.github/workflows/publish-sdk.yml`:
@@ -131,7 +131,7 @@ When adding a new package (e.g. `@hitechcloud/mcp`):
    "sdk:mcp:build": "bun --cwd sdk/mcp run build",
    "sdk:mcp:test": "bun --cwd sdk/mcp test"
    ```
-5. Tag and release: `git tag @hitechcloud/mcp@0.1.0`
+5. Tag and release: `git tag @holaboss/mcp@0.1.0`
 
 ## Versioning policy
 
@@ -145,8 +145,8 @@ When adding a new package (e.g. `@hitechcloud/mcp`):
 ### `npm ERR! 403 Forbidden`
 
 - Verify `NPM_TOKEN` secret is set and not expired
-- Verify the token has write access to the `@hitechcloud` scope
-- Verify the `@hitechcloud` npm org exists and your account is an owner
+- Verify the token has write access to the `@holaboss` scope
+- Verify the `@holaboss` npm org exists and your account is an owner
 
 ### `npm ERR! 402 Payment Required`
 

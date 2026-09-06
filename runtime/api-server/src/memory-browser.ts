@@ -3,7 +3,7 @@ import path from "node:path";
 
 import {
   type RuntimeStateStore,
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 import {
   ensureWorkspaceInteractionSemanticTreesMigrated,

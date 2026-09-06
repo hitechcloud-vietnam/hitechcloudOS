@@ -37,7 +37,7 @@ export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
 //
 // Bundled transport adapters live under src/bridge-transports/:
 //   - bearer.ts            — self-host OAuth (bring your own access token)
-//   - composio-direct.ts   — Composio managed auth, no Hitechcloud backend in path
+//   - composio-direct.ts   — Composio managed auth, no Holaboss backend in path
 //
 // You can write your own: a TransportFn is just (req) => Promise<response>.
 // Put your auth headers / proxy / vault token resolution there. The SDK only
@@ -161,7 +161,7 @@ export interface ReversibleDef<TRow, States extends StateTuple> {
 /**
  * SDK boundary: ActionDef describes HOW to do something — its inputs, steps,
  * state transitions, and reversal path. WHEN to do it (now / in 5h / every
- * Monday) is NOT an SDK concern; that lives in the Hitechcloud automations
+ * Monday) is NOT an SDK concern; that lives in the Holaboss automations
  * subsystem. The SDK therefore intentionally has NO `schedulable` flag and NO
  * retry policy — re-invocation on failure is the caller's choice.
  *
@@ -367,7 +367,7 @@ export interface AppState {
 // through this interface. The SDK ships two implementations:
 //   - InMemoryStateBackend (the default) — testing + dev
 //   - SqliteStateBackend (in `runtime/state-backend-sqlite.ts`) — production
-//     deploy, persists to workspace.db + Hitechcloud runtime state-store
+//     deploy, persists to workspace.db + Holaboss runtime state-store
 //
 // createApp() accepts an optional `backend?: StateBackend` so production
 // runtime can inject SQLite without breaking unit tests' in-memory shape.

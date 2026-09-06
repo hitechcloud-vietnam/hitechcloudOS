@@ -8,7 +8,7 @@
 
 ## tl;dr
 
-After three rounds of fixes (publish @hitechcloud/ui@0.3.0 without layouts, publish @hitechcloud/app-builder-sdk@0.1.0 to npm, add a hard post-build gate that mandates a refactor pass against `interface-design`), the failure mode is no longer "skill never invoked" or "wrong package version". The gates fire correctly. The model invokes both skills at the right times. The model still ships dashboards that miss the most basic visual rules — wrong typography sizes, full-width stacked KPI cards, no row padding density.
+After three rounds of fixes (publish @holaboss/ui@0.3.0 without layouts, publish @holaboss/app-builder-sdk@0.1.0 to npm, add a hard post-build gate that mandates a refactor pass against `interface-design`), the failure mode is no longer "skill never invoked" or "wrong package version". The gates fire correctly. The model invokes both skills at the right times. The model still ships dashboards that miss the most basic visual rules — wrong typography sizes, full-width stacked KPI cards, no row padding density.
 
 **The root cause is model behavior, not gate configuration.** GPT-5.5 satisfies the gate ceremonially: invokes the skill, reads the rules, then does **zero edits to `src/client/`**. The post-build "refactor pass" is observed as one read of an unrelated file and two edits to backend (`app.runtime.yaml`, `server.ts`) — neither touches a UI file.
 
@@ -24,15 +24,15 @@ This document collects the raw evidence so future debugging can start from facts
 | Model (parent + child) | `gpt-5.5` (provider: `openai`) |
 | Parent session log | `2026-05-22T08-18-08-207Z_<parent-session-id>.jsonl` |
 | Child session log | `2026-05-22T08-18-57-267Z_<child-session-id>.jsonl` |
-| `@hitechcloud/ui` dep declared | `^0.3.0` |
-| `@hitechcloud/ui` installed in node_modules | `0.3.0` (latest npm) |
-| `@hitechcloud/app-builder-sdk` dep declared | `^0.1.0` |
-| `@hitechcloud/app-builder-sdk` installed | `0.1.0` (latest npm) |
+| `@holaboss/ui` dep declared | `^0.3.0` |
+| `@holaboss/ui` installed in node_modules | `0.3.0` (latest npm) |
+| `@holaboss/app-builder-sdk` dep declared | `^0.1.0` |
+| `@holaboss/app-builder-sdk` installed | `0.1.0` (latest npm) |
 
 Packaging is correct on every dimension that previous diagnoses flagged:
 - pre-1.0 caret semver lands on the correct minor (0.3.x, 0.1.x)
 - no `file:` paths in `package.json`
-- no leftover `DashboardShell` / `StatPill` / `DataTable` layouts in @hitechcloud/ui (they were removed in 0.3.0)
+- no leftover `DashboardShell` / `StatPill` / `DataTable` layouts in @holaboss/ui (they were removed in 0.3.0)
 
 ## What the gates required
 
@@ -78,7 +78,7 @@ Both gates fire in the right order:
 #66  workspace_apps_build
 #67  workspace_apps_restart_and_wait_ready
 #68  bash
-#69  hitechcloud_workspace_integrations_propose_connect
+#69  holaboss_workspace_integrations_propose_connect
 #70  [removed tool]
 #71  todowrite
 ```
@@ -96,7 +96,7 @@ Post-build calls broken down (calls #54 through #71):
 | `todowrite` | 1 |
 | `skill` | 1 (the interface-design call itself) |
 | `read` | 1 |
-| `hitechcloud_workspace_integrations_propose_connect` | 1 |
+| `holaboss_workspace_integrations_propose_connect` | 1 |
 
 The agent did invoke the skill, did re-build twice, and did declare the app ready. So the visible ceremony of the gate completed.
 
@@ -129,7 +129,7 @@ import {
   startMcpServer,
   type IntegrationStatusResult,
 - type RowRecord,
-} from "@hitechcloud/app-builder-sdk"
+} from "@holaboss/app-builder-sdk"
 
 // 2) Define local StoredRow type
 + interface StoredRow {
@@ -209,15 +209,15 @@ After the dashboard boots, headless-Chrome render it, compute a small handful of
 
 ### 3. Accept that GPT-5.5 cannot do this category of work without model-level changes
 
-The escalation pattern above suggests there is no prompt that will make this model do a real visual refactor. If `@hitechcloud/ui` primitives, npm packaging, SKILL.md content, capability-tool-description gates, and mandatory post-build skill chaining all leave the same dashboard on screen, then no SKILL.md update is going to be the difference. The leverage points left are mechanical lints (option 1), render-time checks (option 2), or a different model.
+The escalation pattern above suggests there is no prompt that will make this model do a real visual refactor. If `@holaboss/ui` primitives, npm packaging, SKILL.md content, capability-tool-description gates, and mandatory post-build skill chaining all leave the same dashboard on screen, then no SKILL.md update is going to be the difference. The leverage points left are mechanical lints (option 1), render-time checks (option 2), or a different model.
 
 ## Pointer to raw artifacts
 
-- Workspace dir: `~/.hitechcloud-desktop/sandbox-host/workspace/<workspace-id>/`
-- Parent session log: `<workspace-id>-…/. hitechcloud/pi-sessions/2026-05-22T08-18-08-207Z_<parent-session-id>-….jsonl`
-- Child session log (the build): `<workspace-id>-…/.hitechcloud/pi-sessions/2026-05-22T08-18-57-267Z_<child-session-id>-….jsonl`
+- Workspace dir: `~/.holaboss-desktop/sandbox-host/workspace/<workspace-id>/`
+- Parent session log: `<workspace-id>-…/. holaboss/pi-sessions/2026-05-22T08-18-08-207Z_<parent-session-id>-….jsonl`
+- Child session log (the build): `<workspace-id>-…/.holaboss/pi-sessions/2026-05-22T08-18-57-267Z_<child-session-id>-….jsonl`
 - App source: `<workspace-id>-…/apps/github_activity_dashboard/`
-- Installed @hitechcloud/ui: `<workspace-id>-…/apps/github_activity_dashboard/node_modules/@hitechcloud/ui/package.json` (version 0.3.0)
-- Installed @hitechcloud/app-builder-sdk: same path, version 0.1.0
+- Installed @holaboss/ui: `<workspace-id>-…/apps/github_activity_dashboard/node_modules/@holaboss/ui/package.json` (version 0.3.0)
+- Installed @holaboss/app-builder-sdk: same path, version 0.1.0
 
 All evidence above can be re-derived from the child session jsonl with `jq`. The two edits and four bash calls quoted are verbatim from `.message.content[].arguments` on the assistant turns at the indices given.

@@ -14,7 +14,7 @@
  * session -> project GROUPING and a few project rows need rebuilding. This script
  * rebuilds them from ground truth OUTSIDE the broken column:
  *   Source A (primary): the on-disk project folders
- *     <root>/workspace/<project_id>/.hitechcloud/pi-sessions/*.jsonl
+ *     <root>/workspace/<project_id>/.holaboss/pi-sessions/*.jsonl
  *     — a session created in a project stored its pi-session file under that dir.
  *   Source B (fallback): the stale host-state.db monolith, which still holds the
  *     session -> workspace_id (== project_id) mapping for older sessions.
@@ -25,7 +25,7 @@
  * DB is not hot.
  *
  * Usage:
- *   node scripts/recover-projects.mjs --root "/Users/<user>/Library/Application Support/hitechcloud-local/sandbox-host"
+ *   node scripts/recover-projects.mjs --root "/Users/<user>/Library/Application Support/holaboss-local/sandbox-host"
  *   node scripts/recover-projects.mjs --root "..." --apply
  * Optional overrides (auto-derived from --root if omitted):
  *   --data <data.db>  --host-state <host-state.db>  --workspace <workspace dir>
@@ -117,7 +117,7 @@ const setAssign = (sessionId, projectId, source) => {
 };
 
 // ---- Source A: each project dir's OWN backup runtime.db -------------------
-// A per-project/workspace dir keeps its sessions in .hitechcloud/state/runtime.db —
+// A per-project/workspace dir keeps its sessions in .holaboss/state/runtime.db —
 // the untouched backup the consolidation left behind. Its agent_sessions rows tell
 // us exactly which sessions belonged to that project (its dir name == project_id).
 // This is the authoritative on-disk mapping (the June projects live only here).
@@ -127,7 +127,7 @@ if (fs.existsSync(workspaceDir)) {
     if (!entry.isDirectory()) continue;
     if (entry.name === "root" || entry.name === "outputs") continue;
     const dir = path.join(workspaceDir, entry.name);
-    const backupDb = path.join(dir, ".hitechcloud", "state", "runtime.db");
+    const backupDb = path.join(dir, ".holaboss", "state", "runtime.db");
     if (!fs.existsSync(backupDb)) continue;
     projectDirs.set(entry.name, { dir, backupDb });
     let bdb;

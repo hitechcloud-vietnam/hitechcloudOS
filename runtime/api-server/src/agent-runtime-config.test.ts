@@ -14,11 +14,11 @@ import {
 const tempDirs: string[] = [];
 const envNames = [
   "HB_SANDBOX_ROOT",
-  "HITECHCLOUD_DEFAULT_MODEL",
-  "HITECHCLOUD_MODEL_PROXY_BASE_URL",
-  "HITECHCLOUD_RUNTIME_CONFIG_PATH",
-  "HITECHCLOUD_SANDBOX_AUTH_TOKEN",
-  "HITECHCLOUD_USER_ID",
+  "HOLABOSS_DEFAULT_MODEL",
+  "HOLABOSS_MODEL_PROXY_BASE_URL",
+  "HOLABOSS_RUNTIME_CONFIG_PATH",
+  "HOLABOSS_SANDBOX_AUTH_TOKEN",
+  "HOLABOSS_USER_ID",
   "OPENAI_API_KEY",
   "OPENAI_BASE_URL",
   "ANTHROPIC_API_KEY",
@@ -100,9 +100,9 @@ function promptChannelContents(
 }
 
 test("projectAgentRuntimeConfig returns ordered prompt layers and renders system prompt from runtime_config layers", () => {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL =
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL =
     "https://runtime.example/api/v1/model-proxy";
-  process.env.HITECHCLOUD_USER_ID = "user-1";
+  process.env.HOLABOSS_USER_ID = "user-1";
   try {
     const result = projectAgentRuntimeConfig({
       session_id: "session-1",
@@ -271,14 +271,14 @@ test("projectAgentRuntimeConfig returns ordered prompt layers and renders system
       /^[a-f0-9]{64}$/,
     );
   } finally {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   }
 });
 
 test("projectAgentRuntimeConfig strips workspace skills from main sessions", () => {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL =
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL =
     "https://runtime.example/api/v1/model-proxy";
-  process.env.HITECHCLOUD_USER_ID = "user-1";
+  process.env.HOLABOSS_USER_ID = "user-1";
   try {
     const result = projectAgentRuntimeConfig({
       session_id: "session-1",
@@ -326,14 +326,14 @@ test("projectAgentRuntimeConfig strips workspace skills from main sessions", () 
     );
     assert.equal(result.capability_manifest?.context.workspace_skills_available, false);
   } finally {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   }
 });
 
 test("projectAgentRuntimeConfig keeps workspace sessions free of todo continuity policy even when todo tools are enabled", () => {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL =
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL =
     "https://runtime.example/api/v1/model-proxy";
-  process.env.HITECHCLOUD_USER_ID = "user-1";
+  process.env.HOLABOSS_USER_ID = "user-1";
   try {
     const result = projectAgentRuntimeConfig({
       session_id: "session-1",
@@ -388,14 +388,14 @@ test("projectAgentRuntimeConfig keeps workspace sessions free of todo continuity
     );
     assert.deepEqual(result.prompt_cache_profile?.volatile_section_ids, []);
   } finally {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   }
 });
 
 test("projectAgentRuntimeConfig ignores workspace agent.model and falls back to the runtime default model", () => {
   const root = makeTempDir("hb-agent-runtime-config-default-model-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       default_model: "openai_direct/gpt-5.4",
       default_provider: "openai_direct",
@@ -430,7 +430,7 @@ test("projectAgentRuntimeConfig ignores workspace agent.model and falls back to 
     runtime_exec_sandbox_id: "sandbox-1",
     runtime_exec_run_id: "run-1",
     selected_model: null,
-    default_provider_id: "hitechcloud_model_proxy",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -452,9 +452,9 @@ test("projectAgentRuntimeConfig ignores workspace agent.model and falls back to 
 });
 
 test("projectAgentRuntimeConfig includes current user context as a context message", () => {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL =
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL =
     "https://runtime.example/api/v1/model-proxy";
-  process.env.HITECHCLOUD_USER_ID = "user-1";
+  process.env.HOLABOSS_USER_ID = "user-1";
   try {
     const result = projectAgentRuntimeConfig({
       session_id: "session-1",
@@ -531,14 +531,14 @@ test("projectAgentRuntimeConfig includes current user context as a context messa
       /The current operator timezone is `America\/Los_Angeles`\./,
     );
   } finally {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   }
 });
 
 test("projectAgentRuntimeConfig includes session attachment timeline as a context message", () => {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL =
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL =
     "https://runtime.example/api/v1/model-proxy";
-  process.env.HITECHCLOUD_USER_ID = "user-1";
+  process.env.HOLABOSS_USER_ID = "user-1";
   try {
     const result = projectAgentRuntimeConfig({
       session_id: "session-1",
@@ -566,7 +566,7 @@ test("projectAgentRuntimeConfig includes session attachment timeline as a contex
                 name: "report.html",
                 mime_type: "text/html",
                 size_bytes: 128,
-                workspace_path: ".hitechcloud/input-attachments/batch-1/report.html",
+                workspace_path: ".holaboss/input-attachments/batch-1/report.html",
               },
             ],
           },
@@ -581,7 +581,7 @@ test("projectAgentRuntimeConfig includes session attachment timeline as a contex
                 name: "report.html",
                 mime_type: "text/html",
                 size_bytes: 128,
-                workspace_path: ".hitechcloud/input-attachments/batch-2/report.html",
+                workspace_path: ".holaboss/input-attachments/batch-2/report.html",
               },
             ],
           },
@@ -620,21 +620,21 @@ test("projectAgentRuntimeConfig includes session attachment timeline as a contex
     );
     assert.match(
       result.context_messages?.join("\n\n") ?? "",
-      /report\.html \[file, text\/html\] at `\.hitechcloud\/input-attachments\/batch-1\/report\.html`/,
+      /report\.html \[file, text\/html\] at `\.holaboss\/input-attachments\/batch-1\/report\.html`/,
     );
     assert.match(
       result.context_messages?.join("\n\n") ?? "",
-      /report\.html \[file, text\/html\] at `\.hitechcloud\/input-attachments\/batch-2\/report\.html`/,
+      /report\.html \[file, text\/html\] at `\.holaboss\/input-attachments\/batch-2\/report\.html`/,
     );
   } finally {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   }
 });
 
 test("projectAgentRuntimeConfig strips direct MCP access from workspace sessions", () => {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL =
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL =
     "https://runtime.example/api/v1/model-proxy";
-  process.env.HITECHCLOUD_USER_ID = "user-1";
+  process.env.HOLABOSS_USER_ID = "user-1";
   try {
     const result = projectAgentRuntimeConfig({
       session_id: "session-1",
@@ -698,14 +698,14 @@ test("projectAgentRuntimeConfig strips direct MCP access from workspace sessions
       mcp_tools_available: false,
     });
   } finally {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   }
 });
 
 test("projectAgentRuntimeConfig includes operator surface context as a context message", () => {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL =
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL =
     "https://runtime.example/api/v1/model-proxy";
-  process.env.HITECHCLOUD_USER_ID = "user-1";
+  process.env.HOLABOSS_USER_ID = "user-1";
   try {
     const result = projectAgentRuntimeConfig({
       session_id: "session-1",
@@ -812,14 +812,14 @@ test("projectAgentRuntimeConfig includes operator surface context as a context m
       mcp_tools_available: false,
     });
   } finally {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   }
 });
 
 test("projectAgentRuntimeConfig includes pending user memory context as a context message", () => {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL =
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL =
     "https://runtime.example/api/v1/model-proxy";
-  process.env.HITECHCLOUD_USER_ID = "user-1";
+  process.env.HOLABOSS_USER_ID = "user-1";
   try {
     const result = projectAgentRuntimeConfig({
       session_id: "session-1",
@@ -893,14 +893,14 @@ test("projectAgentRuntimeConfig includes pending user memory context as a contex
       /deliver them individually/,
     );
   } finally {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   }
 });
 
 test("projectAgentRuntimeConfig omits workspace and recent-runtime layers when not provided", () => {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL =
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL =
     "https://runtime.example/api/v1/model-proxy";
-  process.env.HITECHCLOUD_USER_ID = "user-1";
+  process.env.HOLABOSS_USER_ID = "user-1";
   try {
     const result = projectAgentRuntimeConfig({
       session_id: "session-1",
@@ -953,14 +953,14 @@ test("projectAgentRuntimeConfig omits workspace and recent-runtime layers when n
       /The main session is a full-capability workspace assistant\./i,
     );
   } finally {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   }
 });
 
 test("projectAgentRuntimeConfig includes delegated executor capability context for main workspace sessions", () => {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL =
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL =
     "https://runtime.example/api/v1/model-proxy";
-  process.env.HITECHCLOUD_USER_ID = "user-1";
+  process.env.HOLABOSS_USER_ID = "user-1";
   try {
     const result = projectAgentRuntimeConfig({
       session_id: "session-1",
@@ -1037,14 +1037,14 @@ test("projectAgentRuntimeConfig includes delegated executor capability context f
     );
     assert.equal(result.context_messages?.length ?? 0, 0);
   } finally {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   }
 });
 
 test("projectAgentRuntimeConfig includes recalled durable memory in context messages", () => {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL =
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL =
     "https://runtime.example/api/v1/model-proxy";
-  process.env.HITECHCLOUD_USER_ID = "user-1";
+  process.env.HOLABOSS_USER_ID = "user-1";
   try {
     const result = projectAgentRuntimeConfig({
       session_id: "session-1",
@@ -1154,21 +1154,21 @@ test("projectAgentRuntimeConfig includes recalled durable memory in context mess
       /Coverage: confidence=`high`, vector=yes, lexical=no, neighbors=no\./,
     );
   } finally {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   }
 });
 
 test("projectAgentRuntimeConfig bypasses runtime proxy credentials for configured direct OpenAI providers", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
       default_provider: "openai_direct",
     },
     providers: {
-      hitechcloud_model_proxy: {
-        kind: "hitechcloud_proxy",
+      holaboss_model_proxy: {
+        kind: "holaboss_proxy",
         base_url: "https://proxy.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
@@ -1179,7 +1179,7 @@ test("projectAgentRuntimeConfig bypasses runtime proxy credentials for configure
       },
     },
     integrations: {
-      hitechcloud: {
+      holaboss: {
         enabled: true,
         auth_token: "hb-token",
         sandbox_id: "sandbox-from-binding",
@@ -1208,7 +1208,7 @@ test("projectAgentRuntimeConfig bypasses runtime proxy credentials for configure
     runtime_exec_sandbox_id: "sandbox-from-exec-context",
     runtime_exec_run_id: "run-1",
     selected_model: "openai_direct/gpt-5.4",
-    default_provider_id: "hitechcloud_model_proxy",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -1232,7 +1232,7 @@ test("projectAgentRuntimeConfig bypasses runtime proxy credentials for configure
 test("projectAgentRuntimeConfig resolves OpenAI Codex providers from runtime-config credentials", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
       default_provider: "openai_codex",
@@ -1271,7 +1271,7 @@ test("projectAgentRuntimeConfig resolves OpenAI Codex providers from runtime-con
     runtime_exec_sandbox_id: "sandbox-from-exec-context",
     runtime_exec_run_id: "run-1",
     selected_model: "openai_codex/gpt-5.4",
-    default_provider_id: "hitechcloud_model_proxy",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -1299,14 +1299,14 @@ test("projectAgentRuntimeConfig resolves OpenAI Codex providers from runtime-con
 test("projectAgentRuntimeConfig keeps direct Anthropic providers on the native endpoint", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
       default_provider: "anthropic_direct",
     },
     providers: {
-      hitechcloud_model_proxy: {
-        kind: "hitechcloud_proxy",
+      holaboss_model_proxy: {
+        kind: "holaboss_proxy",
         base_url: "https://proxy.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
@@ -1317,7 +1317,7 @@ test("projectAgentRuntimeConfig keeps direct Anthropic providers on the native e
       },
     },
     integrations: {
-      hitechcloud: {
+      holaboss: {
         enabled: true,
         auth_token: "hb-token",
         sandbox_id: "sandbox-from-binding",
@@ -1346,7 +1346,7 @@ test("projectAgentRuntimeConfig keeps direct Anthropic providers on the native e
     runtime_exec_sandbox_id: "sandbox-from-exec-context",
     runtime_exec_run_id: "run-1",
     selected_model: "anthropic_direct/claude-sonnet-4-6",
-    default_provider_id: "hitechcloud_model_proxy",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -1371,7 +1371,7 @@ test("projectAgentRuntimeConfig keeps direct Anthropic providers on the native e
 test("projectAgentRuntimeConfig normalizes legacy Anthropic direct model aliases from persisted configs", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
       default_provider: "anthropic_direct",
@@ -1405,7 +1405,7 @@ test("projectAgentRuntimeConfig normalizes legacy Anthropic direct model aliases
     runtime_exec_sandbox_id: "sandbox-from-exec-context",
     runtime_exec_run_id: "run-1",
     selected_model: "anthropic_direct/claude-sonnet-4-5",
-    default_provider_id: "hitechcloud_model_proxy",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -1428,14 +1428,14 @@ test("projectAgentRuntimeConfig normalizes legacy Anthropic direct model aliases
 test("projectAgentRuntimeConfig routes direct Gemini providers through the Google-compatible adapter", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
       default_provider: "gemini_direct",
     },
     providers: {
-      hitechcloud_model_proxy: {
-        kind: "hitechcloud_proxy",
+      holaboss_model_proxy: {
+        kind: "holaboss_proxy",
         base_url: "https://proxy.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
@@ -1446,7 +1446,7 @@ test("projectAgentRuntimeConfig routes direct Gemini providers through the Googl
       },
     },
     integrations: {
-      hitechcloud: {
+      holaboss: {
         enabled: true,
         auth_token: "hb-token",
         sandbox_id: "sandbox-from-binding",
@@ -1475,7 +1475,7 @@ test("projectAgentRuntimeConfig routes direct Gemini providers through the Googl
     runtime_exec_sandbox_id: "sandbox-from-exec-context",
     runtime_exec_run_id: "run-1",
     selected_model: "gemini_direct/gemini-2.5-flash",
-    default_provider_id: "hitechcloud_model_proxy",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -1503,7 +1503,7 @@ test("projectAgentRuntimeConfig routes direct Gemini providers through the Googl
 test("projectAgentRuntimeConfig normalizes legacy Gemini direct model aliases from persisted configs", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
       default_provider: "gemini_direct",
@@ -1537,7 +1537,7 @@ test("projectAgentRuntimeConfig normalizes legacy Gemini direct model aliases fr
     runtime_exec_sandbox_id: "sandbox-from-exec-context",
     runtime_exec_run_id: "run-1",
     selected_model: "gemini_direct/gemini-3.1-pro-preview",
-    default_provider_id: "hitechcloud_model_proxy",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -1563,7 +1563,7 @@ test("projectAgentRuntimeConfig normalizes legacy Gemini direct model aliases fr
 test("projectAgentRuntimeConfig normalizes Gemini host roots to the OpenAI-compatible endpoint", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
       default_provider: "gemini_direct",
@@ -1597,7 +1597,7 @@ test("projectAgentRuntimeConfig normalizes Gemini host roots to the OpenAI-compa
     runtime_exec_sandbox_id: "sandbox-from-exec-context",
     runtime_exec_run_id: "run-1",
     selected_model: "gemini_direct/gemini-2.5-pro",
-    default_provider_id: "hitechcloud_model_proxy",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -1619,16 +1619,16 @@ test("projectAgentRuntimeConfig normalizes Gemini host roots to the OpenAI-compa
   assert.equal(result.model_client.model_proxy_provider, "google_compatible");
 });
 
-test("resolveRuntimeModelClient routes managed Hitechcloud Gemini models to the dedicated Google proxy path", () => {
+test("resolveRuntimeModelClient routes managed Holaboss Gemini models to the dedicated Google proxy path", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
-      default_provider: "hitechcloud_model_proxy",
+      default_provider: "holaboss_model_proxy",
     },
     providers: {
-      hitechcloud_model_proxy: {
-        kind: "hitechcloud_proxy",
+      holaboss_model_proxy: {
+        kind: "holaboss_proxy",
         base_url: "https://proxy.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
@@ -1636,15 +1636,15 @@ test("resolveRuntimeModelClient routes managed Hitechcloud Gemini models to the 
   });
 
   const resolved = resolveRuntimeModelClient({
-    selectedModel: "hitechcloud_model_proxy/gemini-2.5-pro",
-    defaultProviderId: "hitechcloud_model_proxy",
+    selectedModel: "holaboss_model_proxy/gemini-2.5-pro",
+    defaultProviderId: "holaboss_model_proxy",
     sessionId: "session-1",
     workspaceId: "workspace-1",
     inputId: "input-1",
   });
 
   assert.equal(resolved.providerId, "google");
-  assert.equal(resolved.configuredProviderId, "hitechcloud_model_proxy");
+  assert.equal(resolved.configuredProviderId, "holaboss_model_proxy");
   assert.equal(resolved.modelId, "gemini-2.5-pro");
   assert.equal(resolved.modelProxyProvider, "google_compatible");
   assert.equal(resolved.modelClient.model_proxy_provider, "google_compatible");
@@ -1655,16 +1655,16 @@ test("resolveRuntimeModelClient routes managed Hitechcloud Gemini models to the 
   );
 });
 
-test("resolveRuntimeModelClient routes managed Hitechcloud Claude models to the dedicated Anthropic proxy path", () => {
+test("resolveRuntimeModelClient routes managed Holaboss Claude models to the dedicated Anthropic proxy path", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
-      default_provider: "hitechcloud_model_proxy",
+      default_provider: "holaboss_model_proxy",
     },
     providers: {
-      hitechcloud_model_proxy: {
-        kind: "hitechcloud_proxy",
+      holaboss_model_proxy: {
+        kind: "holaboss_proxy",
         base_url: "https://proxy.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
@@ -1672,15 +1672,15 @@ test("resolveRuntimeModelClient routes managed Hitechcloud Claude models to the 
   });
 
   const resolved = resolveRuntimeModelClient({
-    selectedModel: "hitechcloud_model_proxy/claude-sonnet-4-6",
-    defaultProviderId: "hitechcloud_model_proxy",
+    selectedModel: "holaboss_model_proxy/claude-sonnet-4-6",
+    defaultProviderId: "holaboss_model_proxy",
     sessionId: "session-1",
     workspaceId: "workspace-1",
     inputId: "input-1",
   });
 
   assert.equal(resolved.providerId, "anthropic");
-  assert.equal(resolved.configuredProviderId, "hitechcloud_model_proxy");
+  assert.equal(resolved.configuredProviderId, "holaboss_model_proxy");
   assert.equal(resolved.modelId, "claude-sonnet-4-6");
   assert.equal(resolved.modelProxyProvider, "anthropic_native");
   assert.equal(resolved.modelClient.model_proxy_provider, "anthropic_native");
@@ -1691,38 +1691,38 @@ test("resolveRuntimeModelClient routes managed Hitechcloud Claude models to the 
   );
 });
 
-test("resolveRuntimeModelClient accepts namespaced Hitechcloud OpenRouter model ids and routes them through the OpenAI-compatible proxy path", () => {
+test("resolveRuntimeModelClient accepts namespaced Holaboss OpenRouter model ids and routes them through the OpenAI-compatible proxy path", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
-      default_provider: "hitechcloud_model_proxy",
+      default_provider: "holaboss_model_proxy",
     },
     providers: {
-      hitechcloud_model_proxy: {
-        kind: "hitechcloud_proxy",
+      holaboss_model_proxy: {
+        kind: "holaboss_proxy",
         base_url: "https://proxy.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
     },
     models: {
-      "hitechcloud_model_proxy/xiaomi/mimo-v2-pro": {
-        provider_id: "hitechcloud_model_proxy",
+      "holaboss_model_proxy/xiaomi/mimo-v2-pro": {
+        provider_id: "holaboss_model_proxy",
         model_id: "xiaomi/mimo-v2-pro",
       },
     },
   });
 
   const resolved = resolveRuntimeModelClient({
-    selectedModel: "hitechcloud_model_proxy/xiaomi/mimo-v2-pro",
-    defaultProviderId: "hitechcloud_model_proxy",
+    selectedModel: "holaboss_model_proxy/xiaomi/mimo-v2-pro",
+    defaultProviderId: "holaboss_model_proxy",
     sessionId: "session-1",
     workspaceId: "workspace-1",
     inputId: "input-1",
   });
 
   assert.equal(resolved.providerId, "openai");
-  assert.equal(resolved.configuredProviderId, "hitechcloud_model_proxy");
+  assert.equal(resolved.configuredProviderId, "holaboss_model_proxy");
   assert.equal(resolved.modelId, "xiaomi/mimo-v2-pro");
   assert.equal(resolved.modelProxyProvider, "openai_compatible");
   assert.equal(resolved.modelClient.model_proxy_provider, "openai_compatible");
@@ -1733,29 +1733,29 @@ test("resolveRuntimeModelClient accepts namespaced Hitechcloud OpenRouter model 
   );
 });
 
-test("projectAgentRuntimeConfig preserves namespaced Hitechcloud OpenRouter model ids from persisted runtime config", () => {
+test("projectAgentRuntimeConfig preserves namespaced Holaboss OpenRouter model ids from persisted runtime config", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
-      default_provider: "hitechcloud_model_proxy",
+      default_provider: "holaboss_model_proxy",
     },
     providers: {
-      hitechcloud_model_proxy: {
-        kind: "hitechcloud_proxy",
+      holaboss_model_proxy: {
+        kind: "holaboss_proxy",
         base_url: "https://proxy.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
     },
     integrations: {
-      hitechcloud: {
+      holaboss: {
         user_id: "user-1",
       },
     },
     models: {
-      "hitechcloud_model_proxy/xiaomi/mimo-v2-pro": {
-        provider_id: "hitechcloud_model_proxy",
+      "holaboss_model_proxy/xiaomi/mimo-v2-pro": {
+        provider_id: "holaboss_model_proxy",
         model_id: "xiaomi/mimo-v2-pro",
       },
     },
@@ -1774,8 +1774,8 @@ test("projectAgentRuntimeConfig preserves namespaced Hitechcloud OpenRouter mode
     runtime_exec_model_proxy_api_key: "hb-runtime-token",
     runtime_exec_sandbox_id: "sandbox-from-exec-context",
     runtime_exec_run_id: "run-1",
-    selected_model: "hitechcloud_model_proxy/xiaomi/mimo-v2-pro",
-    default_provider_id: "hitechcloud_model_proxy",
+    selected_model: "holaboss_model_proxy/xiaomi/mimo-v2-pro",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -1800,40 +1800,40 @@ test("projectAgentRuntimeConfig preserves namespaced Hitechcloud OpenRouter mode
   );
   assert.deepEqual(result.model_client.default_headers, {
     "X-API-Key": "hb-runtime-token",
-    "X-Hitechcloud-User-Id": "user-1",
-    "X-Hitechcloud-Requester-Id": "desktop:user-1",
-    "X-Hitechcloud-Sandbox-Id": "sandbox-from-exec-context",
-    "X-Hitechcloud-Session-Id": "session-1",
-    "X-Hitechcloud-Workspace-Id": "workspace-1",
-    "X-Hitechcloud-Input-Id": "input-1",
-    "X-Hitechcloud-Agent-Role": "main-loop",
-    "X-Hitechcloud-Run-Id": "run-1",
+    "X-Holaboss-User-Id": "user-1",
+    "X-Holaboss-Requester-Id": "desktop:user-1",
+    "X-Holaboss-Sandbox-Id": "sandbox-from-exec-context",
+    "X-Holaboss-Session-Id": "session-1",
+    "X-Holaboss-Workspace-Id": "workspace-1",
+    "X-Holaboss-Input-Id": "input-1",
+    "X-Holaboss-Agent-Role": "main-loop",
+    "X-Holaboss-Run-Id": "run-1",
   });
 });
 
 test("projectAgentRuntimeConfig derives the turn's composite run_id when none is passed (so in-turn calls group)", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
-      default_provider: "hitechcloud_model_proxy",
+      default_provider: "holaboss_model_proxy",
     },
     providers: {
-      hitechcloud_model_proxy: {
-        kind: "hitechcloud_proxy",
+      holaboss_model_proxy: {
+        kind: "holaboss_proxy",
         base_url: "https://proxy.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
     },
     integrations: {
-      hitechcloud: {
+      holaboss: {
         user_id: "user-1",
       },
     },
     models: {
-      "hitechcloud_model_proxy/xiaomi/mimo-v2-pro": {
-        provider_id: "hitechcloud_model_proxy",
+      "holaboss_model_proxy/xiaomi/mimo-v2-pro": {
+        provider_id: "holaboss_model_proxy",
         model_id: "xiaomi/mimo-v2-pro",
       },
     },
@@ -1854,8 +1854,8 @@ test("projectAgentRuntimeConfig derives the turn's composite run_id when none is
     // No runtime_exec_run_id — mirrors the in-turn recall/embedding calls. The run_id must fall back
     // to the same composite the pi-brain uses (claimedInputRunId = workspace:session:input) so the
     // usage log folds these into the turn instead of splitting them into their own rows.
-    selected_model: "hitechcloud_model_proxy/xiaomi/mimo-v2-pro",
-    default_provider_id: "hitechcloud_model_proxy",
+    selected_model: "holaboss_model_proxy/xiaomi/mimo-v2-pro",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -1871,29 +1871,29 @@ test("projectAgentRuntimeConfig derives the turn's composite run_id when none is
   });
 
   assert.equal(
-    result.model_client.default_headers?.["X-Hitechcloud-Run-Id"],
+    result.model_client.default_headers?.["X-Holaboss-Run-Id"],
     "workspace-1:session-1:input-1",
   );
 });
 
-test("projectAgentRuntimeConfig requires a Hitechcloud user id for managed proxy runtime-exec requests", () => {
+test("projectAgentRuntimeConfig requires a Holaboss user id for managed proxy runtime-exec requests", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
-      default_provider: "hitechcloud_model_proxy",
+      default_provider: "holaboss_model_proxy",
     },
     providers: {
-      hitechcloud_model_proxy: {
-        kind: "hitechcloud_proxy",
+      holaboss_model_proxy: {
+        kind: "holaboss_proxy",
         base_url: "https://proxy.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
     },
     models: {
-      "hitechcloud_model_proxy/xiaomi/mimo-v2-pro": {
-        provider_id: "hitechcloud_model_proxy",
+      "holaboss_model_proxy/xiaomi/mimo-v2-pro": {
+        provider_id: "holaboss_model_proxy",
         model_id: "xiaomi/mimo-v2-pro",
       },
     },
@@ -1914,8 +1914,8 @@ test("projectAgentRuntimeConfig requires a Hitechcloud user id for managed proxy
         runtime_exec_model_proxy_api_key: "hb-runtime-token",
         runtime_exec_sandbox_id: "sandbox-from-exec-context",
         runtime_exec_run_id: "run-1",
-        selected_model: "hitechcloud_model_proxy/xiaomi/mimo-v2-pro",
-        default_provider_id: "hitechcloud_model_proxy",
+        selected_model: "holaboss_model_proxy/xiaomi/mimo-v2-pro",
+        default_provider_id: "holaboss_model_proxy",
         session_mode: "code",
         workspace_config_checksum: "checksum-1",
         workspace_skill_ids: [],
@@ -1929,21 +1929,21 @@ test("projectAgentRuntimeConfig requires a Hitechcloud user id for managed proxy
           prompt: "You are concise.",
         },
       }),
-    /HITECHCLOUD_USER_ID|runtime-config\.json:user_id is required/,
+    /HOLABOSS_USER_ID|runtime-config\.json:user_id is required/,
   );
 });
 
 test("resolveRuntimeModelReference infers bare Gemini models as Google-compatible without configured providers", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(
     root,
     {},
   );
 
   const resolved = resolveRuntimeModelReference(
     "gemini-2.5-pro",
-    "hitechcloud_model_proxy",
+    "holaboss_model_proxy",
   );
 
   assert.equal(resolved.providerId, "google");
@@ -1955,7 +1955,7 @@ test("resolveRuntimeModelReference infers bare Gemini models as Google-compatibl
 test("projectAgentRuntimeConfig keeps direct Ollama providers on the local OpenAI-compatible endpoint", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
       default_provider: "ollama_direct",
@@ -1989,7 +1989,7 @@ test("projectAgentRuntimeConfig keeps direct Ollama providers on the local OpenA
     runtime_exec_sandbox_id: "sandbox-from-exec-context",
     runtime_exec_run_id: "run-1",
     selected_model: "ollama_direct/qwen2.5:0.5b",
-    default_provider_id: "hitechcloud_model_proxy",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -2015,14 +2015,14 @@ test("projectAgentRuntimeConfig keeps direct Ollama providers on the local OpenA
 test("projectAgentRuntimeConfig keeps direct OpenRouter providers on the provider endpoint", () => {
   const root = makeTempDir("hb-agent-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument(root, {
     runtime: {
       sandbox_id: "sandbox-from-runtime",
       default_provider: "openrouter",
     },
     providers: {
-      hitechcloud_model_proxy: {
-        kind: "hitechcloud_proxy",
+      holaboss_model_proxy: {
+        kind: "holaboss_proxy",
         base_url: "https://proxy.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
@@ -2038,7 +2038,7 @@ test("projectAgentRuntimeConfig keeps direct OpenRouter providers on the provide
       },
     },
     integrations: {
-      hitechcloud: {
+      holaboss: {
         enabled: true,
         auth_token: "hb-token",
         sandbox_id: "sandbox-from-binding",
@@ -2067,7 +2067,7 @@ test("projectAgentRuntimeConfig keeps direct OpenRouter providers on the provide
     runtime_exec_sandbox_id: "sandbox-from-exec-context",
     runtime_exec_run_id: "run-1",
     selected_model: "openrouter/openai/gpt-5.4",
-    default_provider_id: "hitechcloud_model_proxy",
+    default_provider_id: "holaboss_model_proxy",
     session_mode: "code",
     workspace_config_checksum: "checksum-1",
     workspace_skill_ids: [],
@@ -2087,8 +2087,8 @@ test("projectAgentRuntimeConfig keeps direct OpenRouter providers on the provide
   assert.equal(result.model_client.base_url, "https://openrouter.ai/api/v1");
   assert.deepEqual(result.model_client.default_headers, {
     "X-Test": "1",
-    "HTTP-Referer": "https://hitechcloud.vn",
-    "X-OpenRouter-Title": "hitechcloudOS",
+    "HTTP-Referer": "https://holaboss.ai",
+    "X-OpenRouter-Title": "holaOS",
     "X-OpenRouter-Categories": "personal-agent,general-chat",
   });
 });

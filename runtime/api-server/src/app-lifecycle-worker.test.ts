@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 
-import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import { RuntimeStateStore } from "@holaboss/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import {
@@ -242,7 +242,7 @@ test("startComposeAppTarget patches ports, runs compose up, and waits healthy", 
   assert.match(patched, /13101:4100/);
 });
 
-test("startComposeAppTarget passes HITECHCLOUD_USER_ID to docker compose when requested", async () => {
+test("startComposeAppTarget passes HOLABOSS_USER_ID to docker compose when requested", async () => {
   const appDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-compose-app-env-"));
   fs.writeFileSync(
     path.join(appDir, "docker-compose.yml"),
@@ -292,21 +292,21 @@ test("startComposeAppTarget passes HITECHCLOUD_USER_ID to docker compose when re
       mcp: { transport: "http-sse", port: 4100, path: "/mcp" },
       mcpTools: [],
       healthCheck: { path: "/health", timeoutS: 1, intervalS: 0.01 },
-      envContract: ["HITECHCLOUD_USER_ID"],
+      envContract: ["HOLABOSS_USER_ID"],
       startCommand: "",
       baseDir: "apps/app-a",
       lifecycle: { setup: "", start: "", stop: "" }
     },
     httpPort: 18081,
     mcpPort: 13101,
-    hitechcloudUserId: "user-1",
+    holabossUserId: "user-1",
     spawnImpl: spawnStub,
     fetchImpl: fetchStub
   });
 
   assert.ok(seenEnvs.length >= 1);
   for (const env of seenEnvs) {
-    assert.equal(env.HITECHCLOUD_USER_ID, "user-1");
+    assert.equal(env.HOLABOSS_USER_ID, "user-1");
     assert.equal(env.PORT, "18081");
     assert.equal(env.MCP_PORT, "13101");
     assert.equal(env.NPM_CONFIG_CACHE, path.join(appDir, ".npm-cache"));
@@ -389,14 +389,14 @@ test("startShellLifecycleAppTarget runs lifecycle.start and waits healthy", asyn
       mcp: { transport: "http-sse", port: 4100, path: "/mcp" },
       mcpTools: [],
       healthCheck: { path: "/health", timeoutS: 1, intervalS: 0.01 },
-      envContract: ["HITECHCLOUD_USER_ID"],
+      envContract: ["HOLABOSS_USER_ID"],
       startCommand: "",
       baseDir: "apps/app-a",
       lifecycle: { setup: "", start: "npm run start", stop: "npm run stop" }
     },
     httpPort: 18081,
     mcpPort: 13101,
-    hitechcloudUserId: "user-1",
+    holabossUserId: "user-1",
     spawnImpl: spawnStub,
     fetchImpl: fetchStub
   });
@@ -408,7 +408,7 @@ test("startShellLifecycleAppTarget runs lifecycle.start and waits healthy", asyn
     ports: { http: 18081, mcp: 13101 }
   });
   assert.deepEqual(calls, [{ key: "npm run start", cwd: appDir }]);
-  assert.equal(seenEnv?.HITECHCLOUD_USER_ID, "user-1");
+  assert.equal(seenEnv?.HOLABOSS_USER_ID, "user-1");
 });
 
 test("runtime executor resolves store-backed integration env for bound shell apps", async () => {
@@ -435,7 +435,7 @@ test("runtime executor resolves store-backed integration env for bound shell app
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@hitechcloud.vn",
+    accountLabel: "owner@holaboss.ai",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -488,7 +488,7 @@ test("runtime executor resolves store-backed integration env for bound shell app
       mcp: { transport: "http-sse", port: 4100, path: "/mcp" },
       mcpTools: [],
       healthCheck: { path: "/health", timeoutS: 1, intervalS: 0.01 },
-      envContract: ["HITECHCLOUD_USER_ID", "WORKSPACE_GOOGLE_INTEGRATION_ID", "WORKSPACE_API_URL"],
+      envContract: ["HOLABOSS_USER_ID", "WORKSPACE_GOOGLE_INTEGRATION_ID", "WORKSPACE_API_URL"],
       integrations: [
         {
           key: "google",
@@ -497,7 +497,7 @@ test("runtime executor resolves store-backed integration env for bound shell app
           scopes: ["gmail.send"],
           required: true,
           credentialSource: "platform",
-          hitechcloudUserIdRequired: true
+          holabossUserIdRequired: true
         }
       ],
       startCommand: "",
@@ -506,18 +506,18 @@ test("runtime executor resolves store-backed integration env for bound shell app
     },
     httpPort: 18081,
     mcpPort: 13101,
-    hitechcloudUserId: "user-1",
+    holabossUserId: "user-1",
     spawnImpl: spawnStub,
     fetchImpl: fetchStub
   });
 
   const env = calls.find((entry) => entry.key === "npm run start")?.env;
-  assert.equal(env?.HITECHCLOUD_USER_ID, "user-1");
+  assert.equal(env?.HOLABOSS_USER_ID, "user-1");
   assert.equal(env?.PLATFORM_INTEGRATION_TOKEN, undefined);
   assert.equal(env?.WORKSPACE_GOOGLE_INTEGRATION_ID, "conn-google-1");
   assert.equal(env?.WORKSPACE_API_URL, "http://127.0.0.1:8080/api/v1");
-  assert.equal(env?.HITECHCLOUD_INTEGRATION_BROKER_URL, "http://127.0.0.1:8080/api/v1/integrations");
-  assert.match(env?.HITECHCLOUD_APP_GRANT ?? "", /^grant:root:app-a:/);
+  assert.equal(env?.HOLABOSS_INTEGRATION_BROKER_URL, "http://127.0.0.1:8080/api/v1/integrations");
+  assert.match(env?.HOLABOSS_APP_GRANT ?? "", /^grant:root:app-a:/);
 
   store.close();
 });
@@ -603,7 +603,7 @@ test("runtime executor uses explicit workspace id for integration env when app d
           scopes: [],
           required: true,
           credentialSource: "platform",
-          hitechcloudUserIdRequired: true,
+          holabossUserIdRequired: true,
         }
       ],
       startCommand: "",
@@ -619,8 +619,8 @@ test("runtime executor uses explicit workspace id for integration env when app d
   const env = calls.find((entry) => entry.key === "npm run start")?.env;
   assert.equal(env?.WORKSPACE_TWITTER_INTEGRATION_ID, "conn-twitter-1");
   assert.equal(env?.WORKSPACE_API_URL, "http://127.0.0.1:8080/api/v1");
-  assert.equal(env?.HITECHCLOUD_INTEGRATION_BROKER_URL, "http://127.0.0.1:8080/api/v1/integrations");
-  assert.match(env?.HITECHCLOUD_APP_GRANT ?? "", /^grant:workspace-1:x-engagement-tracker:/);
+  assert.equal(env?.HOLABOSS_INTEGRATION_BROKER_URL, "http://127.0.0.1:8080/api/v1/integrations");
+  assert.match(env?.HOLABOSS_APP_GRANT ?? "", /^grant:workspace-1:x-engagement-tracker:/);
 
   store.close();
 });

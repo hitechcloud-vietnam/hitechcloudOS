@@ -15,7 +15,7 @@ import type { HarnessSupportedModel } from "../../harnesses/src/types.js";
  * runtimeNodeBin (kept local to avoid importing that 2.7k-line module here).
  */
 function runtimeRootDir(): string {
-  const configured = (process.env.HITECHCLOUD_RUNTIME_ROOT ?? "").trim();
+  const configured = (process.env.HOLABOSS_RUNTIME_ROOT ?? "").trim();
   if (configured) {
     return path.resolve(configured);
   }
@@ -38,7 +38,7 @@ function harnessHostEntryPath(): { entryPath: string; argsPrefix: string[] } {
 }
 
 function runtimeNodeBin(): string {
-  return (process.env.HITECHCLOUD_RUNTIME_NODE_BIN ?? "").trim() || process.execPath;
+  return (process.env.HOLABOSS_RUNTIME_NODE_BIN ?? "").trim() || process.execPath;
 }
 
 function parseDiscoveredModels(stdout: string): HarnessSupportedModel[] {

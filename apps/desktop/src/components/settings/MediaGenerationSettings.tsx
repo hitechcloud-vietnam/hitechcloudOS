@@ -93,7 +93,7 @@ export function MediaGenerationSettings() {
   const handleModelChange = useCallback(
     async (kind: MediaGenerationKind, value: string) => {
       // Optimistic: reflect the pick immediately in the control.
-      const draft: MediaGenerationDraft = { providerId: "hitechcloud", model: value };
+      const draft: MediaGenerationDraft = { providerId: "holaboss", model: value };
       if (kind === "image") {
         setImageDraft(draft);
       } else {

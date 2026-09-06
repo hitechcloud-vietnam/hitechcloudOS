@@ -5,7 +5,7 @@ import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 import { afterEach, test as nodeTest } from "node:test";
 
-import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import { RuntimeStateStore } from "@holaboss/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import { RuntimeMainSessionEventWorker } from "./main-session-event-worker.js";
@@ -403,7 +403,7 @@ test("main-session event worker auto-heals session-reset follow-ups by rotating 
     sessionId: "session-main",
     payload: {
       text: "hello",
-      model: "hitechcloud_model_proxy/xiaomi/mimo-v2-pro",
+      model: "holaboss_model_proxy/xiaomi/mimo-v2-pro",
       thinking_value: "medium",
       context: {},
     },
@@ -490,7 +490,7 @@ test("main-session event worker auto-heals session-reset follow-ups by rotating 
   assert.equal(batchInput?.sessionId, recoverySessionId);
   assert.equal(
     batchInput?.payload.model,
-    "hitechcloud_model_proxy/xiaomi/mimo-v2-pro",
+    "holaboss_model_proxy/xiaomi/mimo-v2-pro",
   );
   assert.equal(batchInput?.payload.thinking_value, "medium");
   assert.equal(
@@ -542,7 +542,7 @@ test("main-session event worker recovers failed materialized events and retries 
     workspaceId: workspace.id,
     sessionId: "session-main",
     payload: {
-      text: "[Hitechcloud Main Session Event Batch v1]\nSummarize the queued event.",
+      text: "[Holaboss Main Session Event Batch v1]\nSummarize the queued event.",
       attachments: [],
       image_urls: [],
       context: {

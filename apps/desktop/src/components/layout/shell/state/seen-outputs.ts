@@ -7,7 +7,7 @@ import { atomWithStorage } from "jotai/utils";
 // record never cleared the badge on the deduped / other-surface record of the
 // same file. Value is the updated_at that was seen — a later edit bumps
 // updated_at past it and re-surfaces the badge.
-const SEEN_OUTPUTS_STORAGE_KEY = "hitechcloud.seenOutputs.v1";
+const SEEN_OUTPUTS_STORAGE_KEY = "holaboss.seenOutputs.v1";
 
 export const seenOutputsAtom = atomWithStorage<Record<string, string>>(
   SEEN_OUTPUTS_STORAGE_KEY,

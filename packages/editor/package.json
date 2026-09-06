@@ -1,8 +1,8 @@
 {
-  "name": "@hitechcloud/editor",
+  "name": "@holaboss/editor",
   "version": "0.0.1",
   "private": true,
-  "description": "Tiptap-based block editor for hitechcloudOS. v0 ships a Markdown editor for .md files; future versions add Notion-style blocks and embedded databases.",
+  "description": "Tiptap-based block editor for holaOS. v0 ships a Markdown editor for .md files; future versions add Notion-style blocks and embedded databases.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

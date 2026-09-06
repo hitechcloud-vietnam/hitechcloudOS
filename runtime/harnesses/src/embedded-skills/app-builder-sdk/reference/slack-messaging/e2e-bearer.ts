@@ -1,5 +1,5 @@
 // Self-host OAuth E2E — proves the SDK works with a transport you control,
-// no Composio / Hitechcloud backend involved. Single scenario, just enough to
+// no Composio / Holaboss backend involved. Single scenario, just enough to
 // validate the transport contract end-to-end.
 //
 // Required env:
@@ -62,7 +62,7 @@ await scenario("Self-host OAuth path: send_message succeeds with bearer transpor
   when("the agent invokes send_message")
   const result = await app._invokeAction({ actionName: "send_message", rowId: row.id, bridge })
 
-  then("the SDK doesn't care that no Composio / Hitechcloud backend is in the path — it just works")
+  then("the SDK doesn't care that no Composio / Holaboss backend is in the path — it just works")
   expect("ok" in result).toBe(true, "result kind")
   const externalId = "ok" in result ? result.externalId : undefined
   expect(externalId).toBeTruthy("Slack ts returned via bearer transport")

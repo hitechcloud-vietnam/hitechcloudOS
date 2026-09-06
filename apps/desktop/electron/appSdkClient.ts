@@ -2,10 +2,10 @@ import {
   createAppClient,
   type RequestConfig,
   type ResponseConfig,
-} from "@hitechcloud/app-sdk/core";
+} from "@holaboss/app-sdk/core";
 
 /**
- * Main-process client factory for @hitechcloud/app-sdk. Built once and reused for
+ * Main-process client factory for @holaboss/app-sdk. Built once and reused for
  * every call. The Cookie header is read fresh per request from the supplied
  * `getCookie` callback so rotated Better-Auth sessions work without a restart.
  * Mirrors the billingFetch pattern already used for the Better-Auth RPC.

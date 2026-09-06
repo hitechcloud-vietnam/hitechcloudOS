@@ -1,15 +1,15 @@
 ---
 title: Environment Variables
-description: All environment variables consumed by hitechcloudOS components across desktop, runtime, and workspace apps.
+description: All environment variables consumed by holaOS components across desktop, runtime, and workspace apps.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
 
-hitechcloudOS uses environment variables at several layers:
+holaOS uses environment variables at several layers:
 
 - desktop and standalone runtime startup
 - workspace app startup inside workspaces
-- integration broker access used by `@hitechcloud/app-builder-sdk` inside workspace apps
+- integration broker access used by `@holaboss/app-builder-sdk` inside workspace apps
 
 The tables below focus on the names that are actively exercised in the current repo and runtime contracts. Release-only signing and CI publishing variables are intentionally omitted.
 
@@ -17,20 +17,20 @@ The tables below focus on the names that are actively exercised in the current r
 
 | Variable | Purpose |
 | --- | --- |
-| `HITECHCLOUD_AUTH_BASE_URL` | Better Auth / Hono base URL consumed by the desktop and injected into the embedded runtime for authenticated runtime-side calls. |
-| `HITECHCLOUD_AUTH_SIGN_IN_URL` | Hosted sign-in page URL opened by the desktop auth flow. |
-| `HITECHCLOUD_BACKEND_BASE_URL` | Desktop/backend base URL used by local dev validation and remote bridge fallback. |
-| `HITECHCLOUD_DESKTOP_CONTROL_PLANE_BASE_URL` | Optional override for the desktop control-plane gateway base URL. |
-| `HITECHCLOUD_INTERNAL_DEV` | Enables local or non-production backend overrides in desktop development paths. |
-| `HITECHCLOUD_DESKTOP_USER_DATA_PATH` | Explicit Electron `userData` directory path. Also changes the derived embedded runtime port when `HITECHCLOUD_RUNTIME_API_PORT` is unset. |
-| `HITECHCLOUD_DESKTOP_USER_DATA_DIR` | Directory name used under Electron app-data when `HITECHCLOUD_DESKTOP_USER_DATA_PATH` is not set. |
-| `HITECHCLOUD_RUNTIME_API_PORT` | Explicit embedded desktop runtime port override. If unset, the desktop derives the port from the resolved `userData` path and rejects `5060`. |
-| `HITECHCLOUD_RUNTIME_ROOT` | Override for the packaged runtime bundle root used by the Electron main process. |
-| `HITECHCLOUD_RUNTIME_PLATFORM` | Override for the target platform used by runtime staging and packaging scripts. |
-| `HITECHCLOUD_OSS_ROOT` / `HITECHCLOUD_RUNTIME_REPO_ROOT` | Optional repo-root override used by `prepare-runtime:local` when the script runs from another checkout. |
-| `HITECHCLOUD_RUNTIME_DIR` | Explicit unpacked runtime-bundle source used by staging scripts. |
-| `HITECHCLOUD_RUNTIME_TARBALL` | Explicit runtime-bundle tarball source used by staging scripts. |
-| `HITECHCLOUD_RUNTIME_BUNDLE_URL` | Explicit runtime-bundle download URL used by staging scripts. |
+| `HOLABOSS_AUTH_BASE_URL` | Better Auth / Hono base URL consumed by the desktop and injected into the embedded runtime for authenticated runtime-side calls. |
+| `HOLABOSS_AUTH_SIGN_IN_URL` | Hosted sign-in page URL opened by the desktop auth flow. |
+| `HOLABOSS_BACKEND_BASE_URL` | Desktop/backend base URL used by local dev validation and remote bridge fallback. |
+| `HOLABOSS_DESKTOP_CONTROL_PLANE_BASE_URL` | Optional override for the desktop control-plane gateway base URL. |
+| `HOLABOSS_INTERNAL_DEV` | Enables local or non-production backend overrides in desktop development paths. |
+| `HOLABOSS_DESKTOP_USER_DATA_PATH` | Explicit Electron `userData` directory path. Also changes the derived embedded runtime port when `HOLABOSS_RUNTIME_API_PORT` is unset. |
+| `HOLABOSS_DESKTOP_USER_DATA_DIR` | Directory name used under Electron app-data when `HOLABOSS_DESKTOP_USER_DATA_PATH` is not set. |
+| `HOLABOSS_RUNTIME_API_PORT` | Explicit embedded desktop runtime port override. If unset, the desktop derives the port from the resolved `userData` path and rejects `5060`. |
+| `HOLABOSS_RUNTIME_ROOT` | Override for the packaged runtime bundle root used by the Electron main process. |
+| `HOLABOSS_RUNTIME_PLATFORM` | Override for the target platform used by runtime staging and packaging scripts. |
+| `HOLABOSS_OSS_ROOT` / `HOLABOSS_RUNTIME_REPO_ROOT` | Optional repo-root override used by `prepare-runtime:local` when the script runs from another checkout. |
+| `HOLABOSS_RUNTIME_DIR` | Explicit unpacked runtime-bundle source used by staging scripts. |
+| `HOLABOSS_RUNTIME_TARBALL` | Explicit runtime-bundle tarball source used by staging scripts. |
+| `HOLABOSS_RUNTIME_BUNDLE_URL` | Explicit runtime-bundle download URL used by staging scripts. |
 
 ## Runtime bootstrap and model routing
 
@@ -41,17 +41,17 @@ The tables below focus on the names that are actively exercised in the current r
 | `SANDBOX_AGENT_BIND_PORT` | Runtime API port. |
 | `SANDBOX_RUNTIME_API_PORT` | Preferred runtime HTTP port env for standalone runtime startup and runtime-side URL derivation. |
 | `SANDBOX_AGENT_HARNESS` | Harness selector, typically `pi`. |
-| `HITECHCLOUD_RUNTIME_WORKFLOW_BACKEND` | Workflow backend selector used by the runtime. |
-| `HITECHCLOUD_HOST_STATE_DB_PATH` | Preferred override for the sandbox-global host-state SQLite path. |
-| `HITECHCLOUD_CONTROL_PLANE_DB_PATH` | Optional override for the control-plane SQLite path. |
-| `HITECHCLOUD_RUNTIME_DB_PATH` | Legacy alias for `HITECHCLOUD_HOST_STATE_DB_PATH`. |
-| `HITECHCLOUD_RUNTIME_CONFIG_PATH` | Optional override for `runtime-config.json`. |
-| `HITECHCLOUD_DEFAULT_MODEL` | Default model id used when one is not selected explicitly. |
-| `SANDBOX_AGENT_DEFAULT_MODEL` | Fallback default model when `HITECHCLOUD_DEFAULT_MODEL` is not set. |
-| `HITECHCLOUD_MODEL_PROXY_BASE_URL` | Proxy base URL for model routing. |
-| `HITECHCLOUD_SANDBOX_AUTH_TOKEN` | Auth token used when talking to the proxy path. |
-| `HITECHCLOUD_AUTH_COOKIE` | Desktop-injected auth cookie used by runtime-side Hono and Composio routes. |
-| `HITECHCLOUD_AUTH_BEARER_TOKEN` | Desktop-injected bearer token used by runtime-side Composio internal calls. |
+| `HOLABOSS_RUNTIME_WORKFLOW_BACKEND` | Workflow backend selector used by the runtime. |
+| `HOLABOSS_HOST_STATE_DB_PATH` | Preferred override for the sandbox-global host-state SQLite path. |
+| `HOLABOSS_CONTROL_PLANE_DB_PATH` | Optional override for the control-plane SQLite path. |
+| `HOLABOSS_RUNTIME_DB_PATH` | Legacy alias for `HOLABOSS_HOST_STATE_DB_PATH`. |
+| `HOLABOSS_RUNTIME_CONFIG_PATH` | Optional override for `runtime-config.json`. |
+| `HOLABOSS_DEFAULT_MODEL` | Default model id used when one is not selected explicitly. |
+| `SANDBOX_AGENT_DEFAULT_MODEL` | Fallback default model when `HOLABOSS_DEFAULT_MODEL` is not set. |
+| `HOLABOSS_MODEL_PROXY_BASE_URL` | Proxy base URL for model routing. |
+| `HOLABOSS_SANDBOX_AUTH_TOKEN` | Auth token used when talking to the proxy path. |
+| `HOLABOSS_AUTH_COOKIE` | Desktop-injected auth cookie used by runtime-side Hono and Composio routes. |
+| `HOLABOSS_AUTH_BEARER_TOKEN` | Desktop-injected bearer token used by runtime-side Composio internal calls. |
 | `PROACTIVE_ENABLE_REMOTE_BRIDGE` | Enables the remote bridge path when set to `1`. |
 | `PROACTIVE_BRIDGE_BASE_URL` | Base URL for the proactive bridge. |
 
@@ -59,14 +59,14 @@ The tables below focus on the names that are actively exercised in the current r
 
 | Variable | Purpose |
 | --- | --- |
-| `HITECHCLOUD_APP_GRANT` | Grant token used by `createRuntimeBrokerTransport` in `@hitechcloud/app-builder-sdk` to authenticate proxied provider requests. |
-| `HITECHCLOUD_WORKSPACE_ID` | Current workspace id for output writes and workspace-scoped actions. |
-| `HITECHCLOUD_INTEGRATION_BROKER_URL` | Broker URL the SDK's runtime-broker transport posts to. |
+| `HOLABOSS_APP_GRANT` | Grant token used by `createRuntimeBrokerTransport` in `@holaboss/app-builder-sdk` to authenticate proxied provider requests. |
+| `HOLABOSS_WORKSPACE_ID` | Current workspace id for output writes and workspace-scoped actions. |
+| `HOLABOSS_INTEGRATION_BROKER_URL` | Broker URL the SDK's runtime-broker transport posts to. |
 | `WORKSPACE_API_URL` | Base URL for publishing workspace outputs. |
 | `WORKSPACE_<PROVIDER>_INTEGRATION_ID` | Runtime-injected connection id for a resolved integration binding, for example `WORKSPACE_GMAIL_INTEGRATION_ID`. |
 | `SANDBOX_RUNTIME_API_PORT` | Runtime API port used to derive integration URLs when the broker URL override is absent. |
 | `SANDBOX_AGENT_BIND_PORT` | Fallback port used when the runtime API port is not available. |
-| `HITECHCLOUD_USER_ID` | User id passed into workspace apps that need a hitechcloudOS identity. |
+| `HOLABOSS_USER_ID` | User id passed into workspace apps that need a holaOS identity. |
 
 ## Legacy compatibility
 
@@ -76,7 +76,7 @@ The tables below focus on the names that are actively exercised in the current r
 
 ## How the SDK resolves the broker URL
 
-`createRuntimeBrokerTransport` in `@hitechcloud/app-builder-sdk` reads `HITECHCLOUD_INTEGRATION_BROKER_URL` (or an explicit `brokerUrl` option) and `HITECHCLOUD_APP_GRANT` (or `grant`). Both are required for production broker use; the transport throws at construction time if either is missing, rather than silently degrading.
+`createRuntimeBrokerTransport` in `@holaboss/app-builder-sdk` reads `HOLABOSS_INTEGRATION_BROKER_URL` (or an explicit `brokerUrl` option) and `HOLABOSS_APP_GRANT` (or `grant`). Both are required for production broker use; the transport throws at construction time if either is missing, rather than silently degrading.
 
 ## Where to set them
 

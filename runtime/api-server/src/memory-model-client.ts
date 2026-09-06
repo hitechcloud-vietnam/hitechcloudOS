@@ -38,7 +38,7 @@ export interface MemoryModelEmbeddingQuery {
   agentRole?: string | null;
 }
 
-const AGENT_ROLE_HEADER_NAME = "X-Hitechcloud-Agent-Role";
+const AGENT_ROLE_HEADER_NAME = "X-Holaboss-Agent-Role";
 
 function withAgentRoleHeader(
   headers: Record<string, string>,

@@ -2,10 +2,10 @@ import {
   bindHarnessHostPlugin,
   type HarnessDefinition,
 } from "./types.js";
-// claude-code injects the same Hitechcloud runtime MCP servers as every other CLI
-// harness (`hitechcloud_runtime` + `hitechcloud_runtime_tools`, runtime entries
+// claude-code injects the same Holaboss runtime MCP servers as every other CLI
+// harness (`holaboss_runtime` + `holaboss_runtime_tools`, runtime entries
 // first). Claude lists servers in order and ties ambiguous tool names to the
-// earliest server, so runtime-first keeps the Hitechcloud surface winning on
+// earliest server, so runtime-first keeps the Holaboss surface winning on
 // collision — which is exactly the shared builder's ordering.
 import { buildHarnessMcpServers } from "./harness-mcp.js";
 

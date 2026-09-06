@@ -6,21 +6,21 @@
 
 ## Problem
 
-The current first-launch experience for the desktop app is a three-step modal wizard (name → folder → layout) followed by an empty workspace with two abstract action cards (`Build an app` / `Hire a teammate`). The wizard adds friction before any value is delivered, the post-wizard landing is too generic to communicate what hitechcloudOS uniquely does, and there is no model-provider transparency, no in-product tour, and no contextual integration prompts. New users have to discover everything by themselves with the sidebar full of empty sections staring back at them.
+The current first-launch experience for the desktop app is a three-step modal wizard (name → folder → layout) followed by an empty workspace with two abstract action cards (`Build an app` / `Hire a teammate`). The wizard adds friction before any value is delivered, the post-wizard landing is too generic to communicate what holaOS uniquely does, and there is no model-provider transparency, no in-product tour, and no contextual integration prompts. New users have to discover everything by themselves with the sidebar full of empty sections staring back at them.
 
 We are also out of step with how mainstream AI SaaS (ChatGPT, Claude.ai, Cursor, v0, Bolt, Lovable, Replit Agent, Perplexity) onboards: they all skip role/industry capture and put the user in front of a productive input on the first screen.
 
 ## Goals
 
 1. **One screen, one action** between login and the first chat message.
-2. **Make hitechcloudOS's differentiator visible in 60 seconds** — apps, teammates, skills, integrations should appear naturally as a side-effect of the user's first task, not as a checklist.
+2. **Make holaOS's differentiator visible in 60 seconds** — apps, teammates, skills, integrations should appear naturally as a side-effect of the user's first task, not as a checklist.
 3. **Model provider is transparent**, not hidden in Settings.
 4. **Integration prompts are contextual** (appear when needed) rather than upfront grids.
 5. **Power features get one-shot coachmarks** when the user is about to use them.
 
 ## Non-goals
 
-- Forced API-key setup (default Hitechcloud Proxy works out of the box).
+- Forced API-key setup (default Holaboss Proxy works out of the box).
 - Role / industry / "tell us about yourself" surveys.
 - Modal video tours, splash carousels, or auto-playing tutorials.
 - Folder-location / layout pickers on first launch (default values are fine, both are changeable later).
@@ -36,7 +36,7 @@ Sign in ──→  Welcome Screen (one screen)  ──→  Workspace + Chat
                   └─ "Skip & start blank" ────────┘
 ```
 
-The workspace is created **after** the user picks one of the four entry points, not before. Name is derived from the action ("Inbox summary", "Content creator workspace", etc.); folder uses the default Hitechcloud-managed path; layout defaults to `split`. All three are editable later.
+The workspace is created **after** the user picks one of the four entry points, not before. Name is derived from the action ("Inbox summary", "Content creator workspace", etc.); folder uses the default Holaboss-managed path; layout defaults to `split`. All three are editable later.
 
 ## Screen 1 — Welcome
 
@@ -46,7 +46,7 @@ The only onboarding screen. Replaces the current `FirstWorkspacePane` wizard.
 ╭──────────────────────────────────────────────────────────────╮
 │  ● ● ●                                                        │
 │                                                                │
-│                       hitechcloudOS                                   │
+│                       holaOS                                   │
 │                  your AI workspace                             │
 │                                                                │
 │       ╭──────────────────────────────────────────────╮       │
@@ -120,7 +120,7 @@ After the user sends their first message (via any of the four entry points), the
 **Three deliberate details**
 
 1. **Sidebar is faded out** until the first assistant reply finishes streaming. Empty `Apps` / `Skills` / `Cronjobs` sections staring at a new user is a cognitive tax; defer them until the user has seen value first.
-2. **The composer chrome always shows the current model** ("Claude Sonnet 4.6", "via Hitechcloud Proxy", etc.) — clickable to open Settings → Providers. Transparency = trust.
+2. **The composer chrome always shows the current model** ("Claude Sonnet 4.6", "via Holaboss Proxy", etc.) — clickable to open Settings → Providers. Transparency = trust.
 3. **Integration nudge cards appear contextually**, only when the message actually used a tool that needs a real integration (e.g., the agent invoked the Gmail tool but no Gmail account is bound). One nudge per missing integration per session.
 
 ## Coachmarks
@@ -154,7 +154,7 @@ One-shot, dismissible, surfaced when the user is about to need the feature.
 
 ## Templates (initial set)
 
-Three templates plus blank. Each template is concrete enough to demonstrate hitechcloudOS's apps + teammates layer in the first session.
+Three templates plus blank. Each template is concrete enough to demonstrate holaOS's apps + teammates layer in the first session.
 
 | Template | Pre-installed apps | Pre-hired teammate | Prefill message |
 |---|---|---|---|

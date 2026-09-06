@@ -8,8 +8,8 @@ import type {
   FireMessageResult,
   IncomingAttachment,
   PollOutputsResult,
-} from "@hitechcloud/runtime-channel-gateway";
-import type { RuntimeStateStore, WorkspaceRecord } from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-channel-gateway";
+import type { RuntimeStateStore, WorkspaceRecord } from "@holaboss/runtime-state-store";
 import { resolveCanonicalWorkspaceId } from "../canonical-workspace.js";
 
 const MAX_INLINE_IMAGE_BYTES = 8 * 1024 * 1024;
@@ -164,7 +164,7 @@ function materializeAttachments(
 
 /**
  * The state-store-backed implementation of the channel gateway's runtime port. This
- * is the only IM code that touches the store — it keeps `@hitechcloud/runtime-channel-gateway`
+ * is the only IM code that touches the store — it keeps `@holaboss/runtime-channel-gateway`
  * decoupled. `fireMessage` is the `fireCronjob` analog (create-or-reuse session +
  * enqueue), plus a `conversation_bindings` row for the channel→session mapping.
  */

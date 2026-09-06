@@ -9,7 +9,7 @@ import {
 type HolaAppVisual = { Icon: IconType; className: string };
 
 // Local glyph + tint for HolaApps that ship no real logo — without this they
-// fall back to the generic Hitechcloud favicon (a bare orange arc that reads as a
+// fall back to the generic Holaboss favicon (a bare orange arc that reads as a
 // spinner). Keyed by holaAppId; the glyph reflects the app's function and the
 // colour stays muted (one calm hue each, no brand orange/red).
 const HOLA_APP_VISUALS: Record<string, HolaAppVisual> = {

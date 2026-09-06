@@ -12,7 +12,7 @@ Use this page after the local dev loop is already running. It is the repo-specif
 | Desktop shell, renderer, preload, or Electron main process | `apps/desktop/src/**`, `apps/desktop/electron/**` | `npm run desktop:typecheck`; also run `npm run desktop:e2e` when browser panes, IPC, or runtime launch behavior changes |
 | Runtime HTTP APIs, workers, or workspace-app lifecycle | `runtime/api-server/src/**`, `runtime/state-store/src/**` | `npm run runtime:api-server:typecheck` and `npm run runtime:test` |
 | Harness host, adapter, or run projection | `runtime/harness-host/src/**`, `runtime/harnesses/src/**`, `runtime/api-server/src/ts-runner.ts`, `runtime/api-server/src/agent-runtime-config.ts` | `npm run runtime:harness-host:test`, `npm run runtime:api-server:test`, and `npm run runtime:test` |
-| SDK packages | `sdk/app-sdk/**`, `sdk/app-builder-sdk/**`, `sdk/ui/**` | Run the matching `build`, `typecheck`, and `test` scripts for the package you changed, for example `bun --filter=@hitechcloud/app-builder-sdk run typecheck` and `bun --filter=@hitechcloud/app-builder-sdk run test` |
+| SDK packages | `sdk/app-sdk/**`, `sdk/app-builder-sdk/**`, `sdk/ui/**` | Run the matching `build`, `typecheck`, and `test` scripts for the package you changed, for example `bun --filter=@holaboss/app-builder-sdk run typecheck` and `bun --filter=@holaboss/app-builder-sdk run test` |
 | Docs app and content | `website/docs/**` | `npm run docs:typecheck` and `npm run docs:build` |
 
 ## Cross-cutting rules

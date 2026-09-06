@@ -6,7 +6,7 @@
  * deps load, and resets the seam cache so the feature activates WITHOUT a restart.
  *
  * OSS + macOS-only (the engine is macOS today). The download SOURCE is deliberately
- * a config point: `HITECHCLOUD_FINGERPRINT_ENGINE_URL` (a direct .zip URL) — wire it to
+ * a config point: `HOLABOSS_FINGERPRINT_ENGINE_URL` (a direct .zip URL) — wire it to
  * a licensed/gated backend endpoint for real distribution. Install-from-file needs
  * no source at all.
  */
@@ -38,7 +38,7 @@ export interface InstalledEngineInfo {
 
 /** The plugin dir the seam loads from — keep in sync with the seam's resolver. */
 function engineDir(): string {
-  const override = process.env.HITECHCLOUD_FINGERPRINT_ENGINE_PATH?.trim();
+  const override = process.env.HOLABOSS_FINGERPRINT_ENGINE_PATH?.trim();
   return override || path.join(app.getPath("userData"), "fingerprint-ee");
 }
 
@@ -52,7 +52,7 @@ export function engineArch(): "macos-arm64" | "macos-x64" | null {
 
 /** A configured direct-download URL for the engine bundle, if any. */
 export function resolveEngineDownloadUrl(): string | null {
-  return process.env.HITECHCLOUD_FINGERPRINT_ENGINE_URL?.trim() || null;
+  return process.env.HOLABOSS_FINGERPRINT_ENGINE_URL?.trim() || null;
 }
 
 async function exists(p: string): Promise<boolean> {

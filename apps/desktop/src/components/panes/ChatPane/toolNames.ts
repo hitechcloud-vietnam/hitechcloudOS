@@ -28,7 +28,7 @@ export function bareRuntimeToolName(name: string): string {
  * the card silently never renders.
  *
  * Observed live: the agent proposed a Notion connection via
- * `call_tool -> hitechcloud_workspace_integrations_propose_connect`, the backend
+ * `call_tool -> holaboss_workspace_integrations_propose_connect`, the backend
  * returned the proposal, and no Connect card appeared. The turn text said one
  * had been put up, because from the model's side it had. Four card types share
  * this parser shape, so all four fail identically.

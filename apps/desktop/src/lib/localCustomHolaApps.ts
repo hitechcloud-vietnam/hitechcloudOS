@@ -29,7 +29,7 @@ export interface CustomHolaApp {
 	pending?: boolean;
 }
 
-const KEY = "hitechcloud.holaapps.custom.v1";
+const KEY = "holaboss.holaapps.custom.v1";
 
 function hasLocalStorage(): boolean {
 	return typeof localStorage !== "undefined";
@@ -69,7 +69,7 @@ function normalizeAttach(value: unknown): McpAttachInput | undefined {
 	return {
 		id,
 		mcpUrl,
-		hitechcloudHosted: value.hitechcloudHosted === true,
+		holabossHosted: value.holabossHosted === true,
 		headerKeys: normalizeStringMap(value.headerKeys),
 		queryKeys: normalizeStringMap(value.queryKeys),
 		envKeys: normalizeStringMap(value.envKeys),
@@ -305,7 +305,7 @@ export function parseCustomMcpConfig(
 			attach: {
 				id: ownerAppId,
 				mcpUrl: bare,
-				hitechcloudHosted: false,
+				holabossHosted: false,
 				headerKeys: {},
 				queryKeys: {},
 				envKeys: {},
@@ -349,7 +349,7 @@ export function parseCustomMcpConfig(
 		attach: {
 			id: ownerAppId,
 			mcpUrl: url,
-			hitechcloudHosted: false,
+			holabossHosted: false,
 			headerKeys,
 			queryKeys: {},
 			envKeys: {},

@@ -2,11 +2,11 @@
 
 Date: 2026-03-30
 Status: Draft
-Owner: Hitechcloud desktop/runtime
+Owner: Holaboss desktop/runtime
 
 ## Goal
 
-Define a unified integration architecture for Hitechcloud that supports:
+Define a unified integration architecture for Holaboss that supports:
 
 - OSS self-managed integrations
 - managed-hosted integrations
@@ -24,7 +24,7 @@ The current repo already contains useful pieces, but they are not connected end 
 - app modules declare `integration` and `env_contract` in `app.runtime.yaml`
 - modules such as Gmail and Sheets expect `PLATFORM_INTEGRATION_TOKEN` and related metadata
 - the runtime parses `env_contract`
-- the runtime can inject `HITECHCLOUD_USER_ID`
+- the runtime can inject `HOLABOSS_USER_ID`
 
 ### What is missing
 
@@ -77,7 +77,7 @@ This can live in desktop config or runtime metadata and be rendered by the `Disc
 
 ### 2. Connection Store
 
-A connection represents one external account connected by one Hitechcloud user.
+A connection represents one external account connected by one Holaboss user.
 
 Suggested shape:
 
@@ -159,10 +159,10 @@ The runtime parser should include this in `ResolvedApplicationRuntime`.
 
 Preferred injected values:
 
-- `HITECHCLOUD_APP_ID`
-- `HITECHCLOUD_WORKSPACE_ID`
-- `HITECHCLOUD_INTEGRATION_BROKER_URL`
-- `HITECHCLOUD_APP_GRANT`
+- `HOLABOSS_APP_ID`
+- `HOLABOSS_WORKSPACE_ID`
+- `HOLABOSS_INTEGRATION_BROKER_URL`
+- `HOLABOSS_APP_GRANT`
 
 Optional compatibility values during migration:
 
@@ -180,7 +180,7 @@ Example:
 
 ```http
 POST /api/v1/integrations/google/gmail/send
-Authorization: Bearer <HITECHCLOUD_APP_GRANT>
+Authorization: Bearer <HOLABOSS_APP_GRANT>
 ```
 
 This lets the broker keep provider tokens out of app processes.
@@ -298,7 +298,7 @@ Composio provides hosted OAuth lifecycle management as an alternative to self-ma
 When a connection uses `auth_mode: "composio"`:
 
 - `accountExternalId` stores the Composio `connected_account_id`
-- `secretRef` is `null` — Hitechcloud does not store raw provider tokens
+- `secretRef` is `null` — Holaboss does not store raw provider tokens
 - the broker resolves tokens at request time by calling Composio's API
 - token refresh is handled entirely by Composio
 
@@ -323,7 +323,7 @@ This keeps the app-facing contract unchanged — modules still call `POST /api/v
 
 ### Future: HB Bridge (`execute` / `proxy`)
 
-The long-term model replaces raw token delivery with a bridge layer where apps never receive provider tokens. See the Composio design doc for the `@hitechcloud/bridge` SDK and the `execute`/`proxy` primitives. This is a future phase, not part of the initial Composio integration.
+The long-term model replaces raw token delivery with a bridge layer where apps never receive provider tokens. See the Composio design doc for the `@holaboss/bridge` SDK and the `execute`/`proxy` primitives. This is a future phase, not part of the initial Composio integration.
 
 ### Feasibility verification
 

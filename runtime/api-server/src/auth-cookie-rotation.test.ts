@@ -9,7 +9,7 @@ import { ComposioService } from "./composio-service.js";
 /**
  * The runtime's session cookie has to survive rotation.
  *
- * It arrives once, in HITECHCLOUD_AUTH_COOKIE, from the spawn environment.
+ * It arrives once, in HOLABOSS_AUTH_COOKIE, from the spawn environment.
  * Better-auth reissues the cookie silently (the backend sends a fresh
  * Set-Cookie on get-session and most auth-touching endpoints), and the desktop
  * follows that — its authCookieHeader() deliberately stopped caching for this

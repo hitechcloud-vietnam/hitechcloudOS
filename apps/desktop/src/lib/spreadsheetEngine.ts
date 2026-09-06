@@ -6,7 +6,7 @@ export type SpreadsheetEngine = "univer" | "legacy";
 // canvas engine; "legacy" is the original HTML-table editor, kept for rollback
 // and side-by-side comparison.
 export const spreadsheetEngineAtom = atomWithStorage<SpreadsheetEngine>(
-  "hitechcloud.spreadsheet-engine",
+  "holaboss.spreadsheet-engine",
   "univer",
 );
 
@@ -16,7 +16,7 @@ export type DocumentEngine = "univer" | "legacy";
 // (docx→HTML→Univer); "legacy" is the @eigenpal OOXML editor, kept for
 // rollback and side-by-side comparison.
 export const documentEngineAtom = atomWithStorage<DocumentEngine>(
-  "hitechcloud.document-engine",
+  "holaboss.document-engine",
   "univer",
 );
 
@@ -27,6 +27,6 @@ export type PresentationEngine = "univer" | "legacy";
 // "univer" Univer Slides path is text-only today (no DrawingML) and kept
 // behind the flag for future work.
 export const presentationEngineAtom = atomWithStorage<PresentationEngine>(
-  "hitechcloud.presentation-engine",
+  "holaboss.presentation-engine",
   "legacy",
 );

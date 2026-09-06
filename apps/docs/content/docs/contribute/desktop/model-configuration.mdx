@@ -1,11 +1,11 @@
 ---
 title: Model Configuration
-description: How hitechcloudOS Desktop configures model providers and routing.
+description: How holaOS Desktop configures model providers and routing.
 ---
 
 ![Model Settings](/images/model-settings.png)
 
-hitechcloudOS ships with a default model setup. In most cases, you do not need to edit `runtime-config.json` by hand, because the desktop app already exposes the main configuration surfaces for provider connection, managed model catalogs, background tasks, recall embeddings, image generation, and web search.
+holaOS ships with a default model setup. In most cases, you do not need to edit `runtime-config.json` by hand, because the desktop app already exposes the main configuration surfaces for provider connection, managed model catalogs, background tasks, recall embeddings, image generation, and web search.
 
 This page is the configuration reference for operators and builders. For the Electron IPC path, runtime model-catalog refresh flow, queued `thinking_value` handoff, and other execution internals, continue into [Desktop Internals](/docs/contribute/desktop/internals) and [Runtime APIs](/docs/contribute/runtime/apis).
 
@@ -20,35 +20,35 @@ The OSS runtime supports the following provider kinds:
 
 | Provider kind | Best fit | Notes |
 | --- | --- | --- |
-| `hitechcloud_proxy` | hitechcloudOS-managed setups | Uses the hitechcloudOS runtime binding and managed model catalog instead of a local seed list. |
+| `holaboss_proxy` | holaOS-managed setups | Uses the holaOS runtime binding and managed model catalog instead of a local seed list. |
 | `openai_compatible` | OpenAI-style APIs | Best when you already have an OpenAI-style endpoint. Covers OpenAI, Ollama, MiniMax, and many self-hosted compatible APIs. |
 | `google_compatible` | Gemini via the Google OpenAI-compat path | Uses the Google compatibility surface instead of the generic OpenAI-compatible routing path. |
 | `anthropic_native` | Anthropic accounts and native workflows | Good when you want the provider's own integration path. |
 | `openrouter` | Model experimentation and broad access | Useful when you want to swap models without changing the rest of the setup. |
 
-Desktop currently exposes only hitechcloudOS Proxy in `Settings -> Model Providers`. The broader provider kinds below still describe lower-level runtime capabilities and legacy config shapes, but they are no longer first-class desktop provider choices.
+Desktop currently exposes only holaOS Proxy in `Settings -> Model Providers`. The broader provider kinds below still describe lower-level runtime capabilities and legacy config shapes, but they are no longer first-class desktop provider choices.
 
 ## In-app setup
 
-hitechcloudOS already provides model configuration in the desktop app:
+holaOS already provides model configuration in the desktop app:
 
 - open `Settings -> Model Providers`
-- connect hitechcloudOS Proxy
+- connect holaOS Proxy
 - use the `Background tasks` panel to choose one connected provider and model for recall selection, finalization, and other background LLM tasks
 - use the `Recall embeddings` panel to leave vector-assisted recall on `Automatic` or choose an explicit embedding-capable provider and model
 - use the `Image generation` panel to choose an image-capable provider and model for runtime image generation
 - use the `Defaults` panel to leave `Subagent model` on `Follow composer` or choose a fixed override for hidden delegated and scheduled subagent runs
-- use the `Web search` panel to choose Hitechcloud Search or Exa and provide a search API key when needed
+- use the `Web search` panel to choose Holaboss Search or Exa and provide a search API key when needed
 - saved changes update `runtime-config.json`, and the chat model picker uses the configured provider models
 
-hitechcloudOS-managed sessions can inject managed background, embedding, and image defaults through the runtime binding. The desktop UI now assumes hitechcloudOS Proxy is the only provider surface and derives its model suggestions from the managed catalog plus the shipped Hitechcloud fallback metadata.
+holaOS-managed sessions can inject managed background, embedding, and image defaults through the runtime binding. The desktop UI now assumes holaOS Proxy is the only provider surface and derives its model suggestions from the managed catalog plus the shipped Holaboss fallback metadata.
 
 ## Catalog-driven chat models
 
 The current desktop no longer treats chat models as only freeform strings.
 
-- The shipped fallback catalog in `apps/desktop/shared/model-catalog.ts` now describes hitechcloudOS Proxy models only.
-- Signed-in hitechcloudOS-managed sessions can also fetch a managed runtime model catalog from the control plane.
+- The shipped fallback catalog in `apps/desktop/shared/model-catalog.ts` now describes holaOS Proxy models only.
+- Signed-in holaOS-managed sessions can also fetch a managed runtime model catalog from the control plane.
 - The desktop merges that managed catalog with the locally persisted `runtime-config.json` and exposes the result as `providerModelGroups` in the runtime-config snapshot.
 - Managed defaults for background tasks, embeddings, and image generation are also carried with that snapshot as `defaultBackgroundModel`, `defaultEmbeddingModel`, and `defaultImageModel`.
 
@@ -77,11 +77,11 @@ The shipped fallback catalog currently exposes these reasoning controls:
 
 | Provider / model | Reasoning values |
 | --- | --- |
-| `hitechcloud_model_proxy/gpt-5.4` | `none`, `low`, `medium`, `high`, `xhigh` |
-| `hitechcloud_model_proxy/gpt-5.5` | `none`, `low`, `medium`, `high`, `xhigh` |
-| `hitechcloud_model_proxy/gpt-5.3-codex` | `low`, `medium`, `high`, `xhigh` |
+| `holaboss_model_proxy/gpt-5.4` | `none`, `low`, `medium`, `high`, `xhigh` |
+| `holaboss_model_proxy/gpt-5.5` | `none`, `low`, `medium`, `high`, `xhigh` |
+| `holaboss_model_proxy/gpt-5.3-codex` | `low`, `medium`, `high`, `xhigh` |
 
-The managed hitechcloudOS catalog can provide explicit reasoning metadata. If it does not, the desktop falls back to the shipped Hitechcloud proxy metadata for known GPT-5 family models.
+The managed holaOS catalog can provide explicit reasoning metadata. If it does not, the desktop falls back to the shipped Holaboss proxy metadata for known GPT-5 family models.
 
 ## Customization mode
 
@@ -115,7 +115,7 @@ By default, `runtime-config.json` lives at:
 
 You can override that path with:
 
-- `HITECHCLOUD_RUNTIME_CONFIG_PATH`
+- `HOLABOSS_RUNTIME_CONFIG_PATH`
 
 ## Important settings
 
@@ -151,7 +151,7 @@ You can override that path with:
   - configured default provider for unprefixed model ids
 - `runtime.default_model`
   - default model selection
-- `HITECHCLOUD_DEFAULT_MODEL`
+- `HOLABOSS_DEFAULT_MODEL`
   - environment override for the default model
 
 There is no `runtime.thinking_value` field. Reasoning effort is chosen per run in the chat composer and queued with the session input.
@@ -160,19 +160,19 @@ There is no `runtime.thinking_value` field. Reasoning effort is chosen per run i
 
 The current built-in background task defaults are:
 
-- `hitechcloud_model_proxy`: `gpt-5.4`
+- `holaboss_model_proxy`: `gpt-5.4`
 
 ## Recall embedding defaults
 
 When `Recall embeddings` is left on `Automatic`, runtime chooses the first configured provider that has a built-in embedding default. If you configure it explicitly, the current built-in embedding defaults are:
 
-- `hitechcloud_model_proxy`: `text-embedding-3-small`
+- `holaboss_model_proxy`: `text-embedding-3-small`
 
 ## Image generation provider defaults
 
 The desktop currently exposes image generation only for the providers that can resolve an image-capable model in the shipped UI:
 
-- `hitechcloud_model_proxy`: managed catalog / runtime-binding defaults when available
+- `holaboss_model_proxy`: managed catalog / runtime-binding defaults when available
 
 There are no additional desktop-configurable provider surfaces for image generation.
 
@@ -182,10 +182,10 @@ The native `web_search` tool reads a top-level `web_search` block from `runtime-
 
 The desktop currently exposes:
 
-- `hitechcloud_search`
+- `holaboss_search`
   - default endpoint: the runtime binding's control-plane base URL plus `/api/v1/search/web`
-  - production fallback endpoint: `https://api.hitechcloud.vn/api/v1/search/web`
-  - API key is optional when the runtime has a signed-in Hitechcloud binding
+  - production fallback endpoint: `https://api.holaboss.ai/api/v1/search/web`
+  - API key is optional when the runtime has a signed-in Holaboss binding
 - `exa`
   - default endpoint: `https://mcp.exa.ai/mcp`
   - API key is optional for the hosted MCP path, but can be provided for your own Exa quota
@@ -223,11 +223,11 @@ The runtime also treats unprefixed `claude...` model ids as Anthropic models. If
     }
   },
   "web_search": {
-    "provider": "hitechcloud_search",
+    "provider": "holaboss_search",
     "providers": {
-      "hitechcloud_search": {
-        "kind": "hitechcloud_search",
-        "base_url": "https://api.hitechcloud.vn/api/v1/search/web"
+      "holaboss_search": {
+        "kind": "holaboss_search",
+        "base_url": "https://api.holaboss.ai/api/v1/search/web"
       },
       "exa": {
         "kind": "exa_hosted_mcp",
@@ -294,7 +294,7 @@ The runtime also treats unprefixed `claude...` model ids as Anthropic models. If
 
 Provider `kind` values supported by the runtime resolver:
 
-- `hitechcloud_proxy`
+- `holaboss_proxy`
 - `openai_compatible`
 - `google_compatible`
 - `anthropic_native`
@@ -342,9 +342,9 @@ curl http://localhost:11434/v1/chat/completions \
 ## Environment overrides
 
 ```bash
-export HITECHCLOUD_MODEL_PROXY_BASE_URL="https://your-proxy.example/api/v1/model-proxy"
-export HITECHCLOUD_SANDBOX_AUTH_TOKEN="your-proxy-token"
-export HITECHCLOUD_DEFAULT_MODEL="anthropic/claude-sonnet-4-6"
+export HOLABOSS_MODEL_PROXY_BASE_URL="https://your-proxy.example/api/v1/model-proxy"
+export HOLABOSS_SANDBOX_AUTH_TOKEN="your-proxy-token"
+export HOLABOSS_DEFAULT_MODEL="anthropic/claude-sonnet-4-6"
 ```
 
 These environment variables override the file-based values above. `sandbox_id` is still the current field name in `runtime-config.json`.

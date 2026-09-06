@@ -13,12 +13,12 @@ import {
   RUNTIME_DB_MIGRATIONS,
 } from "./migrations/index.js";
 
-const HOST_STATE_DB_PATH_ENV = "HITECHCLOUD_HOST_STATE_DB_PATH";
-const LEGACY_RUNTIME_DB_PATH_ENV = "HITECHCLOUD_RUNTIME_DB_PATH";
-const CONTROL_PLANE_DB_PATH_ENV = "HITECHCLOUD_CONTROL_PLANE_DB_PATH";
+const HOST_STATE_DB_PATH_ENV = "HOLABOSS_HOST_STATE_DB_PATH";
+const LEGACY_RUNTIME_DB_PATH_ENV = "HOLABOSS_RUNTIME_DB_PATH";
+const CONTROL_PLANE_DB_PATH_ENV = "HOLABOSS_CONTROL_PLANE_DB_PATH";
 const HOST_STATE_DB_FILENAME = "host-state.db";
 const LEGACY_RUNTIME_DB_FILENAME = "runtime.db";
-const WORKSPACE_RUNTIME_DIRNAME = ".hitechcloud";
+const WORKSPACE_RUNTIME_DIRNAME = ".holaboss";
 const WORKSPACE_STATE_DIRNAME = "state";
 const WORKSPACE_RUNTIME_DB_FILENAME = "runtime.db";
 const WORKSPACE_IDENTITY_FILENAME = "workspace_id";
@@ -10388,7 +10388,7 @@ export class RuntimeStateStore {
 
   /**
    * Wipe this workspace's durable memory: every semantic + interaction row and
-   * the on-disk mirror under `.hitechcloud/memory`.
+   * the on-disk mirror under `.holaboss/memory`.
    *
    * Both halves matter. Deleting only the rows leaves the markdown mirror behind
    * as orphans (a manual purge that skipped it left ~69k stray files), and

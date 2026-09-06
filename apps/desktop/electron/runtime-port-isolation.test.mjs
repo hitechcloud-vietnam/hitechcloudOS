@@ -22,7 +22,7 @@ test("desktop runtime port is derived from the resolved userData path with an ex
   );
   assert.match(
     source,
-    /function resolveRuntimeApiPort\(\): number \{[\s\S]*process\.env\.HITECHCLOUD_RUNTIME_API_PORT\?\.trim\(\) \|\| ""[\s\S]*return runtimeApiPortForUserDataPath\(app\.getPath\("userData"\)\);[\s\S]*\}/,
+    /function resolveRuntimeApiPort\(\): number \{[\s\S]*process\.env\.HOLABOSS_RUNTIME_API_PORT\?\.trim\(\) \|\| ""[\s\S]*return runtimeApiPortForUserDataPath\(app\.getPath\("userData"\)\);[\s\S]*\}/,
   );
   assert.match(
     source,

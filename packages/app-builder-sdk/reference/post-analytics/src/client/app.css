@@ -1,6 +1,6 @@
 /* App-local Tailwind compile entry.
  *
- * `@hitechcloud/ui/styles.css` only bakes in utilities used INSIDE the library.
+ * `@holaboss/ui/styles.css` only bakes in utilities used INSIDE the library.
  * Every Tailwind class your `src/client/` writes needs an app-side compile
  * pass to land in the bundle.
  *

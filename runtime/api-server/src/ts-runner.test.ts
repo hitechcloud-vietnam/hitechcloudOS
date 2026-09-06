@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import { RuntimeStateStore } from "@holaboss/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import { buildAgentCapabilityManifest } from "./agent-capability-registry.js";
@@ -36,13 +36,13 @@ import {
 } from "./workspace-bundle-paths.js";
 
 const ORIGINAL_SANDBOX_ROOT = process.env.HB_SANDBOX_ROOT;
-const ORIGINAL_EMBEDDED_SKILLS_DIR = process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
+const ORIGINAL_EMBEDDED_SKILLS_DIR = process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
 const ORIGINAL_SANDBOX_RUNTIME_API_URL = process.env.SANDBOX_RUNTIME_API_URL;
 const ORIGINAL_SANDBOX_RUNTIME_API_HOST = process.env.SANDBOX_RUNTIME_API_HOST;
 const ORIGINAL_SANDBOX_RUNTIME_API_PORT = process.env.SANDBOX_RUNTIME_API_PORT;
-const ORIGINAL_MODEL_PROXY_BASE_URL = process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
-const ORIGINAL_RUNTIME_CONFIG_PATH = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
-const ORIGINAL_SANDBOX_AUTH_TOKEN = process.env.HITECHCLOUD_SANDBOX_AUTH_TOKEN;
+const ORIGINAL_MODEL_PROXY_BASE_URL = process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
+const ORIGINAL_RUNTIME_CONFIG_PATH = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+const ORIGINAL_SANDBOX_AUTH_TOKEN = process.env.HOLABOSS_SANDBOX_AUTH_TOKEN;
 const ORIGINAL_FETCH = globalThis.fetch;
 
 afterEach(() => {
@@ -53,9 +53,9 @@ afterEach(() => {
   }
 
   if (ORIGINAL_EMBEDDED_SKILLS_DIR === undefined) {
-    delete process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
+    delete process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
   } else {
-    process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = ORIGINAL_EMBEDDED_SKILLS_DIR;
+    process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = ORIGINAL_EMBEDDED_SKILLS_DIR;
   }
 
   if (ORIGINAL_SANDBOX_RUNTIME_API_URL === undefined) {
@@ -77,21 +77,21 @@ afterEach(() => {
   }
 
   if (ORIGINAL_MODEL_PROXY_BASE_URL === undefined) {
-    delete process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL;
+    delete process.env.HOLABOSS_MODEL_PROXY_BASE_URL;
   } else {
-    process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL = ORIGINAL_MODEL_PROXY_BASE_URL;
+    process.env.HOLABOSS_MODEL_PROXY_BASE_URL = ORIGINAL_MODEL_PROXY_BASE_URL;
   }
 
   if (ORIGINAL_RUNTIME_CONFIG_PATH === undefined) {
-    delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+    delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
   } else {
-    process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = ORIGINAL_RUNTIME_CONFIG_PATH;
+    process.env.HOLABOSS_RUNTIME_CONFIG_PATH = ORIGINAL_RUNTIME_CONFIG_PATH;
   }
 
   if (ORIGINAL_SANDBOX_AUTH_TOKEN === undefined) {
-    delete process.env.HITECHCLOUD_SANDBOX_AUTH_TOKEN;
+    delete process.env.HOLABOSS_SANDBOX_AUTH_TOKEN;
   } else {
-    process.env.HITECHCLOUD_SANDBOX_AUTH_TOKEN = ORIGINAL_SANDBOX_AUTH_TOKEN;
+    process.env.HOLABOSS_SANDBOX_AUTH_TOKEN = ORIGINAL_SANDBOX_AUTH_TOKEN;
   }
 
   globalThis.fetch = ORIGINAL_FETCH;
@@ -188,8 +188,8 @@ function installMockRecallModelResponses(
   responses: Array<Record<string, unknown>>,
   requests?: Array<Record<string, unknown>>,
 ): void {
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL = "http://127.0.0.1:4999";
-  process.env.HITECHCLOUD_SANDBOX_AUTH_TOKEN = "test-token";
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL = "http://127.0.0.1:4999";
+  process.env.HOLABOSS_SANDBOX_AUTH_TOKEN = "test-token";
   let callIndex = 0;
   globalThis.fetch = (async (_input, init) => {
     if (requests && typeof init?.body === "string") {
@@ -349,7 +349,7 @@ function testDeps(
 test("decodeTsRunnerRequest decodes a valid runner request", () => {
   const request = decodeTsRunnerRequest(
     encodeRequest({
-      hitechcloud_user_id: "user-1",
+      holaboss_user_id: "user-1",
       workspace_id: "workspace-1",
       session_id: "session-1",
       input_id: "input-1",
@@ -361,7 +361,7 @@ test("decodeTsRunnerRequest decodes a valid runner request", () => {
   );
 
   assert.deepEqual(request, {
-    hitechcloud_user_id: "user-1",
+    holaboss_user_id: "user-1",
     workspace_id: "workspace-1",
     agent_cwd: null,
     session_id: "session-1",
@@ -413,9 +413,9 @@ test("resolveTsRunnerBootstrapState ignores workspace persisted harness session 
   );
   process.env.HB_SANDBOX_ROOT = sandboxRoot;
   const workspaceDir = path.join(sandboxRoot, "workspace", "workspace-1");
-  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud"), { recursive: true });
+  fs.mkdirSync(path.join(workspaceDir, ".holaboss"), { recursive: true });
   fs.writeFileSync(
-    path.join(workspaceDir, ".hitechcloud", "harness-session-state.json"),
+    path.join(workspaceDir, ".holaboss", "harness-session-state.json"),
     JSON.stringify({
       version: 1,
       harness: "pi",
@@ -469,9 +469,9 @@ test("resolveTsRunnerBootstrapState uses the registered custom workspace path wi
   } finally {
     store.close();
   }
-  fs.mkdirSync(path.join(customWorkspaceDir, ".hitechcloud"), { recursive: true });
+  fs.mkdirSync(path.join(customWorkspaceDir, ".holaboss"), { recursive: true });
   fs.writeFileSync(
-    path.join(customWorkspaceDir, ".hitechcloud", "harness-session-state.json"),
+    path.join(customWorkspaceDir, ".holaboss", "harness-session-state.json"),
     JSON.stringify({
       version: 1,
       harness: "pi",
@@ -556,9 +556,9 @@ test("resolveTsRunnerBootstrapState loads workspace persisted harness session on
   );
   process.env.HB_SANDBOX_ROOT = sandboxRoot;
   const workspaceDir = path.join(sandboxRoot, "workspace", "workspace-1");
-  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud"), { recursive: true });
+  fs.mkdirSync(path.join(workspaceDir, ".holaboss"), { recursive: true });
   fs.writeFileSync(
-    path.join(workspaceDir, ".hitechcloud", "harness-session-state.json"),
+    path.join(workspaceDir, ".holaboss", "harness-session-state.json"),
     JSON.stringify({
       version: 1,
       harness: "pi",
@@ -622,7 +622,7 @@ test("relayTsRunnerEvent persists harness_session_id from terminal events", asyn
   assert.deepEqual(
     JSON.parse(
       fs.readFileSync(
-        path.join(workspaceDir, ".hitechcloud", "state", "harness-session-state.json"),
+        path.join(workspaceDir, ".holaboss", "state", "harness-session-state.json"),
         "utf8",
       ),
     ),
@@ -816,7 +816,7 @@ test("runTsRunnerCli relays harness-host events after run_claimed", async () => 
           sandboxRoot,
           "workspace",
           "workspace-1",
-          ".hitechcloud",
+          ".holaboss",
           "state",
           "harness-session-state.json",
         ),
@@ -1022,7 +1022,7 @@ test("runTsRunnerCli persists pi harness session ids when runtime context select
           sandboxRoot,
           "workspace",
           "workspace-1",
-          ".hitechcloud",
+          ".holaboss",
           "state",
           "harness-session-state.json",
         ),
@@ -1471,8 +1471,8 @@ test("runTsRunnerCli gives main workspace sessions full execution-surface toolin
               toolIds: [
                 "write_report",
                 "workspace_integrations_list_catalog",
-                "hitechcloud_workspace_integrations_propose_connect",
-                "hitechcloud_workspace_integrations_set_default_account",
+                "holaboss_workspace_integrations_propose_connect",
+                "holaboss_workspace_integrations_set_default_account",
               ],
             }),
           },
@@ -1530,8 +1530,8 @@ test("runTsRunnerCli gives main workspace sessions full execution-surface toolin
     [
       "write_report",
       "workspace_integrations_list_catalog",
-      "hitechcloud_workspace_integrations_propose_connect",
-      "hitechcloud_workspace_integrations_set_default_account",
+      "holaboss_workspace_integrations_propose_connect",
+      "holaboss_workspace_integrations_set_default_account",
     ],
   );
   assert.deepEqual(
@@ -1555,8 +1555,8 @@ test("runTsRunnerCli gives main workspace sessions full execution-surface toolin
       "browser_get_state",
       "write_report",
       "workspace_integrations_list_catalog",
-      "hitechcloud_workspace_integrations_propose_connect",
-      "hitechcloud_workspace_integrations_set_default_account",
+      "holaboss_workspace_integrations_propose_connect",
+      "holaboss_workspace_integrations_set_default_account",
     ],
   );
   assert.equal(
@@ -1582,8 +1582,8 @@ test("runTsRunnerCli gives main workspace sessions full execution-surface toolin
     [
       "write_report",
       "workspace_integrations_list_catalog",
-      "hitechcloud_workspace_integrations_propose_connect",
-      "hitechcloud_workspace_integrations_set_default_account",
+      "holaboss_workspace_integrations_propose_connect",
+      "holaboss_workspace_integrations_set_default_account",
     ],
   );
   assert.deepEqual(
@@ -1609,8 +1609,8 @@ test("runTsRunnerCli gives main workspace sessions full execution-surface toolin
       "browser_get_state",
       "write_report",
       "workspace_integrations_list_catalog",
-      "hitechcloud_workspace_integrations_propose_connect",
-      "hitechcloud_workspace_integrations_set_default_account",
+      "holaboss_workspace_integrations_propose_connect",
+      "holaboss_workspace_integrations_set_default_account",
     ],
   );
 });
@@ -1794,8 +1794,8 @@ test("runTsRunnerCli exposes workspace-instructions updates to subagent sessions
             stageRuntimeTools: () => ({
               changed: false,
               toolIds: [
-                "hitechcloud_update_workspace_instructions",
-                "hitechcloud_delegate_task",
+                "holaboss_update_workspace_instructions",
+                "holaboss_delegate_task",
               ],
             }),
           },
@@ -1841,11 +1841,11 @@ test("runTsRunnerCli exposes workspace-instructions updates to subagent sessions
   assert.ok(capturedProjectRequest);
   assert.deepEqual(
     (capturedProjectRequest as { runtime_tool_ids: string[] }).runtime_tool_ids,
-    ["hitechcloud_update_workspace_instructions", "hitechcloud_delegate_task"],
+    ["holaboss_update_workspace_instructions", "holaboss_delegate_task"],
   );
   assert.deepEqual(
     (capturedProjectRequest as { extra_tools: string[] }).extra_tools,
-    ["web_search", "hitechcloud_update_workspace_instructions", "hitechcloud_delegate_task"],
+    ["web_search", "holaboss_update_workspace_instructions", "holaboss_delegate_task"],
   );
 });
 
@@ -2185,7 +2185,7 @@ test("runTsRunnerCli projects prior attachment turns into session attachment con
           name: "report.html",
           mime_type: "text/html",
           size_bytes: 128,
-          workspace_path: ".hitechcloud/input-attachments/batch-1/report.html",
+          workspace_path: ".holaboss/input-attachments/batch-1/report.html",
         },
       ],
     },
@@ -2205,7 +2205,7 @@ test("runTsRunnerCli projects prior attachment turns into session attachment con
           name: "report.html",
           mime_type: "text/html",
           size_bytes: 128,
-          workspace_path: ".hitechcloud/input-attachments/batch-2/report.html",
+          workspace_path: ".holaboss/input-attachments/batch-2/report.html",
         },
       ],
     },
@@ -2225,7 +2225,7 @@ test("runTsRunnerCli projects prior attachment turns into session attachment con
           name: "current.html",
           mime_type: "text/html",
           size_bytes: 64,
-          workspace_path: ".hitechcloud/input-attachments/current.html",
+          workspace_path: ".holaboss/input-attachments/current.html",
         },
       ],
     },
@@ -2297,7 +2297,7 @@ test("runTsRunnerCli projects prior attachment turns into session attachment con
             name: "report.html",
             mime_type: "text/html",
             size_bytes: 128,
-            workspace_path: ".hitechcloud/input-attachments/batch-1/report.html",
+            workspace_path: ".holaboss/input-attachments/batch-1/report.html",
           },
         ],
       },
@@ -2312,7 +2312,7 @@ test("runTsRunnerCli projects prior attachment turns into session attachment con
             name: "report.html",
             mime_type: "text/html",
             size_bytes: 128,
-            workspace_path: ".hitechcloud/input-attachments/batch-2/report.html",
+            workspace_path: ".holaboss/input-attachments/batch-2/report.html",
           },
         ],
       },
@@ -2589,7 +2589,7 @@ test("runTsRunnerCli derives recalled durable memory from interaction trees", as
       {
         runtime: {
           background_tasks: {
-            provider: "hitechcloud_model_proxy",
+            provider: "holaboss_model_proxy",
             model: "gpt-5.4-mini",
           },
         },
@@ -2797,7 +2797,7 @@ test("runTsRunnerCli uses the default recall embedding model even when backgroun
     )}\n`,
     "utf8",
   );
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
   const store = new RuntimeStateStore({
     workspaceRoot,
     sandboxRoot,
@@ -2832,8 +2832,8 @@ test("runTsRunnerCli uses the default recall embedding model even when backgroun
   });
   store.close();
   const recallRequests: Array<Record<string, unknown>> = [];
-  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL = "http://127.0.0.1:4999";
-  process.env.HITECHCLOUD_SANDBOX_AUTH_TOKEN = "test-token";
+  process.env.HOLABOSS_MODEL_PROXY_BASE_URL = "http://127.0.0.1:4999";
+  process.env.HOLABOSS_SANDBOX_AUTH_TOKEN = "test-token";
   globalThis.fetch = (async (_input, init) => {
     if (typeof init?.body === "string") {
       recallRequests.push(JSON.parse(init.body) as Record<string, unknown>);
@@ -3001,7 +3001,7 @@ test("runTsRunnerCli does not load legacy session history exports into main-sess
   const workspaceDir = path.join(sandboxRoot, "workspace", "workspace-1");
   const legacyDir = path.join(
     workspaceDir,
-    ".hitechcloud",
+    ".holaboss",
     "state",
     "legacy-session-histories",
   );
@@ -3206,7 +3206,7 @@ test("runTsRunnerCli loads operator surface context from the desktop browser cap
     )}\n`,
     "utf8",
   );
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
 
   let capturedProjectRequest: Record<string, unknown> | null = null;
   const requests: Array<{
@@ -3231,7 +3231,7 @@ test("runTsRunnerCli loads operator surface context from the desktop browser cap
         typeof init.headers === "object" &&
         !Array.isArray(init.headers)
           ? ((init.headers as Record<string, string>)[
-              "x-hitechcloud-desktop-token"
+              "x-holaboss-desktop-token"
             ] ?? null)
           : null,
       workspaceId:
@@ -3239,7 +3239,7 @@ test("runTsRunnerCli loads operator surface context from the desktop browser cap
         typeof init.headers === "object" &&
         !Array.isArray(init.headers)
           ? ((init.headers as Record<string, string>)[
-              "x-hitechcloud-workspace-id"
+              "x-holaboss-workspace-id"
             ] ?? null)
           : null,
     });
@@ -3623,7 +3623,7 @@ test("runTsRunnerCli recalls workspace interaction memory even with many newer c
       {
         runtime: {
           background_tasks: {
-            provider: "hitechcloud_model_proxy",
+            provider: "holaboss_model_proxy",
             model: "gpt-5.4-mini",
           },
         },
@@ -4521,14 +4521,14 @@ test("runTsRunnerCli exposes embedded default skills to main-session pi harness 
     path.join(os.tmpdir(), "hb-ts-runner-embedded-skill-root-"),
   );
   process.env.HB_SANDBOX_ROOT = sandboxRoot;
-  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedSkillsRoot;
+  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedSkillsRoot;
   const workspaceDir = path.join(sandboxRoot, "workspace", "workspace-1");
   fs.mkdirSync(workspaceDir, { recursive: true });
-  const embeddedSkillDir = path.join(embeddedSkillsRoot, "hitechcloud-runtime");
+  const embeddedSkillDir = path.join(embeddedSkillsRoot, "holaboss-runtime");
   fs.mkdirSync(embeddedSkillDir, { recursive: true });
   fs.writeFileSync(
     path.join(embeddedSkillDir, "SKILL.md"),
-    "---\nname: hitechcloud-runtime\ndescription: Runtime skill\n---\n# Hitechcloud Runtime\n",
+    "---\nname: holaboss-runtime\ndescription: Runtime skill\n---\n# Holaboss Runtime\n",
     "utf8",
   );
 
@@ -4568,7 +4568,7 @@ test("runTsRunnerCli exposes embedded default skills to main-session pi harness 
             },
             tools: { read: true, skill: true },
             workspace_tool_ids: [],
-            workspace_skill_ids: ["hitechcloud-runtime"],
+            workspace_skill_ids: ["holaboss-runtime"],
             output_schema_member_id: null,
             output_format: null,
             workspace_config_checksum: "checksum-1",
@@ -4605,7 +4605,7 @@ test("runTsRunnerCli exposes embedded default skills to main-session pi harness 
   assert.deepEqual(
     (capturedProjectRequest as { workspace_skill_ids: string[] })
       .workspace_skill_ids,
-    ["hitechcloud-runtime"],
+    ["holaboss-runtime"],
   );
   assert.ok(capturedHarnessRequest);
   assert.deepEqual(
@@ -4614,7 +4614,7 @@ test("runTsRunnerCli exposes embedded default skills to main-session pi harness 
         workspace_skill_dirs: string[];
       }
     ).workspace_skill_dirs,
-    [fs.realpathSync(path.join(embeddedSkillsRoot, "hitechcloud-runtime"))],
+    [fs.realpathSync(path.join(embeddedSkillsRoot, "holaboss-runtime"))],
   );
 });
 
@@ -4626,24 +4626,24 @@ test("runTsRunnerCli keeps embedded skills authoritative when a workspace skill 
     path.join(os.tmpdir(), "hb-ts-runner-embedded-skill-shadow-root-"),
   );
   process.env.HB_SANDBOX_ROOT = sandboxRoot;
-  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedSkillsRoot;
+  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedSkillsRoot;
   const workspaceDir = path.join(sandboxRoot, "workspace", "workspace-1");
   const workspaceSkillDir = path.join(
     workspaceDir,
     "skills",
-    "hitechcloud-runtime",
+    "holaboss-runtime",
   );
   fs.mkdirSync(workspaceSkillDir, { recursive: true });
   fs.writeFileSync(
     path.join(workspaceSkillDir, "SKILL.md"),
-    "---\nname: hitechcloud-runtime\ndescription: Workspace override\n---\n# Workspace Override\n",
+    "---\nname: holaboss-runtime\ndescription: Workspace override\n---\n# Workspace Override\n",
     "utf8",
   );
-  const embeddedSkillDir = path.join(embeddedSkillsRoot, "hitechcloud-runtime");
+  const embeddedSkillDir = path.join(embeddedSkillsRoot, "holaboss-runtime");
   fs.mkdirSync(embeddedSkillDir, { recursive: true });
   fs.writeFileSync(
     path.join(embeddedSkillDir, "SKILL.md"),
-    "---\nname: hitechcloud-runtime\ndescription: Embedded runtime skill\n---\n# Hitechcloud Runtime\n",
+    "---\nname: holaboss-runtime\ndescription: Embedded runtime skill\n---\n# Holaboss Runtime\n",
     "utf8",
   );
 
@@ -4684,7 +4684,7 @@ test("runTsRunnerCli keeps embedded skills authoritative when a workspace skill 
             },
             tools: { read: true, skill: true },
             workspace_tool_ids: [],
-            workspace_skill_ids: ["hitechcloud-runtime"],
+            workspace_skill_ids: ["holaboss-runtime"],
             output_schema_member_id: null,
             output_format: null,
             workspace_config_checksum: "checksum-1",
@@ -4721,7 +4721,7 @@ test("runTsRunnerCli keeps embedded skills authoritative when a workspace skill 
   assert.deepEqual(
     (capturedProjectRequest as { workspace_skill_ids: string[] })
       .workspace_skill_ids,
-    ["hitechcloud-runtime"],
+    ["holaboss-runtime"],
   );
   assert.ok(capturedHarnessRequest);
   assert.deepEqual(
@@ -4850,7 +4850,7 @@ test("runTsRunnerCli does not load App Builder specialist embedded skills for co
     path.join(os.tmpdir(), "hb-ts-runner-app-builder-embedded-"),
   );
   process.env.HB_SANDBOX_ROOT = sandboxRoot;
-  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedSkillsRoot;
+  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedSkillsRoot;
   for (const skillId of ["app-builder-sdk", "build-dashboard", "skill-creator"]) {
     const skillDir = path.join(embeddedSkillsRoot, skillId);
     fs.mkdirSync(skillDir, { recursive: true });
@@ -5546,7 +5546,7 @@ test("runTsRunnerCli appends bootstrapped app MCP servers into the harness-host 
                 app_id: "app-a",
                 mcp: { transport: "http-sse", port: 3099, path: "/mcp" },
                 health_check: { path: "/health", timeout_s: 60, interval_s: 5 },
-                env_contract: ["HITECHCLOUD_USER_ID"],
+                env_contract: ["HOLABOSS_USER_ID"],
                 start_command: "npm run start",
                 base_dir: "apps/app-a",
                 lifecycle: { setup: "", start: "", stop: "" },
@@ -5602,12 +5602,12 @@ test("runTsRunnerCli appends bootstrapped app MCP servers into the harness-host 
   );
 });
 
-test("resolvedApplicationMcpHeaders includes Hitechcloud turn context for app MCP calls", () => {
+test("resolvedApplicationMcpHeaders includes Holaboss turn context for app MCP calls", () => {
   assert.deepEqual(resolvedApplicationMcpHeaders(baseRequest()), {
     "X-Workspace-Id": "workspace-1",
-    "X-Hitechcloud-Workspace-Id": "workspace-1",
-    "X-Hitechcloud-Session-Id": "session-1",
-    "X-Hitechcloud-Input-Id": "input-1",
+    "X-Holaboss-Workspace-Id": "workspace-1",
+    "X-Holaboss-Session-Id": "session-1",
+    "X-Holaboss-Input-Id": "input-1",
   });
 });
 

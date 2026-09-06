@@ -8,8 +8,8 @@ import type {
   TerminalSessionOwner,
   TerminalSessionRecord,
   TerminalSessionStatus,
-} from "@hitechcloud/runtime-state-store";
-import { utcNowIso } from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
+import { utcNowIso } from "@holaboss/runtime-state-store";
 import * as pty from "node-pty";
 
 import { buildRunnerEnv } from "./runner-worker.js";
@@ -269,7 +269,7 @@ export class TerminalSessionManager implements TerminalSessionManagerLike {
     const rows = normalizedPositiveInteger(params.rows, DEFAULT_ROWS, 5, 200);
     const invocation = shellCommandInvocation(params.command);
     const env = sanitizedEnv(buildRunnerEnv());
-    env.HITECHCLOUD_WORKSPACE_ID = params.workspaceId;
+    env.HOLABOSS_WORKSPACE_ID = params.workspaceId;
     env.TERM = env.TERM || "xterm-256color";
 
     const record = this.options.store.createTerminalSession({

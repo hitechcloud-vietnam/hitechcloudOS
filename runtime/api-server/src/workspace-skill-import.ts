@@ -13,7 +13,7 @@ import * as tar from "tar";
  * folder-aware sibling of `materializeSkill`, which only lands a single body.
  *
  * Foreign SKILL.md files (Anthropic / Claude Code format) are accepted as-is;
- * `allowed-tools` is mapped to `hitechcloud_granted_tools` and the frontmatter
+ * `allowed-tools` is mapped to `holaboss_granted_tools` and the frontmatter
  * `name` is aligned to the installed skill id. Unknown fields are preserved.
  */
 
@@ -183,7 +183,7 @@ function parseSkillMarkdown(raw: string): ParsedSkill {
 /**
  * Normalize a foreign SKILL.md so the runtime loader accepts it: the
  * frontmatter `name` is forced to the installed `id`, and `allowed-tools` is
- * folded into `hitechcloud_granted_tools`. When nothing needs changing the raw
+ * folded into `holaboss_granted_tools`. When nothing needs changing the raw
  * body is kept verbatim to preserve fidelity.
  */
 export function mapSkillFrontmatter(raw: string, id: string): MappedSkill {
@@ -191,7 +191,7 @@ export function mapSkillFrontmatter(raw: string, id: string): MappedSkill {
   if (!description) {
     throw new SkillImportError(422, "SKILL.md frontmatter must include a non-empty 'description'");
   }
-  const grantedTools = toStringArray(frontmatter.hitechcloud_granted_tools ?? frontmatter["allowed-tools"]);
+  const grantedTools = toStringArray(frontmatter.holaboss_granted_tools ?? frontmatter["allowed-tools"]);
 
   const needsRewrite = name !== id || "allowed-tools" in frontmatter;
   if (!needsRewrite) {
@@ -200,8 +200,8 @@ export function mapSkillFrontmatter(raw: string, id: string): MappedSkill {
 
   const next: Record<string, unknown> = { ...frontmatter, name: id };
   if ("allowed-tools" in next) {
-    if (next.hitechcloud_granted_tools === undefined && grantedTools.length > 0) {
-      next.hitechcloud_granted_tools = grantedTools;
+    if (next.holaboss_granted_tools === undefined && grantedTools.length > 0) {
+      next.holaboss_granted_tools = grantedTools;
     }
     delete next["allowed-tools"];
   }

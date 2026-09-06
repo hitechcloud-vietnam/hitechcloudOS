@@ -2,7 +2,7 @@
 
 **日期:** 2026-07-12
 **状态:** 设计已定,待实现
-**范围:** hitechcloudOS desktop + runtime。只合并 integration ↔ HolaApp,**不**扩到 capability。
+**范围:** holaOS desktop + runtime。只合并 integration ↔ HolaApp,**不**扩到 capability。
 
 ## 背景:两套世界,底层同一条链
 
@@ -13,7 +13,7 @@
 | 目录 | `runtime/api-server/src/integration-store-catalog.ts` | `apps/desktop/src/lib/holaAppMarketplace.ts` + `/api/v1/apps` |
 | UI | `IntegrationsPane` + `AddIntegrationDialog` | `HolaAppMarketplacePane` + `HolaAppCard` |
 | 连接 | Composio OAuth → `integration_connections` | 绑定**同一张** `integration_connections`(按 provider slug) |
-| 工具 | `hitechcloud_composio` 单 MCP registry + 24 工具均衡预载 | 自己进程 + 自己 MCP server + resources/actions/syncs |
+| 工具 | `holaboss_composio` 单 MCP registry + 24 工具均衡预载 | 自己进程 + 自己 MCP server + resources/actions/syncs |
 | 进程/状态 | 无 | 有(bun 进程 + SQLite + 可选 dashboard) |
 
 关键结论:**integration 本质上已经是一个「connection-only HolaApp」**。marketplace 的 `AppCatalogEntry`(`holaAppMarketplace.ts:36`)已经是超集——它有 `integrations?`、`surface:{type:"none"}`、`mcpTools?`。所以**合并方向是把 integration 折叠进 HolaApp,不是反过来**。
@@ -56,7 +56,7 @@ kind: "connection" | "module" | "hosted"
 **设计原则:headless-first,surface-optional。** 既然选了「everything is App」,就要主动防止「App ⇒ 有前端」漏进代码和 UX。默认 App 无头,webview 是例外。
 
 信息流两种,不是一种:
-- **webview App:** 两条道 —— `@hitechcloud/app-host` RPC(webview ↔ shell)+ MCP 工具(agent ↔ app)。
+- **webview App:** 两条道 —— `@holaboss/app-host` RPC(webview ↔ shell)+ MCP 工具(agent ↔ app)。
 - **无头 App(纯 integration):** 只走 MCP 工具调用本身。入参进、结果出,上下文来自 agent run。**不需要 UI 通道**,「UI 层传信息」这个问题对它不存在。
 
 **无头 App 点开看什么:** shell 渲染的通用「App 详情面」,内容全部来自 runtime metadata(连接状态 `getIntegrationStatus`/readiness 码、账号+binding+默认账号、可用工具清单、最近工具调用活动/日志)——**shell 拼的,不是 app-host RPC 传的**。webview App 用自己的 surface **覆盖**这个默认详情。现有 `IntegrationsPane` manage 模式就是这个详情面的雏形,泛化即可。
@@ -83,13 +83,13 @@ kind: "connection" | "module" | "hosted"
 - `AddIntegrationDialog`(browse)与 `HolaAppMarketplacePane` 合并成一个「Apps」浏览面。卡片统一,connection 卡显示 **Connect**,module 卡显示 **Install/Open**。
 - 新增 shell 侧通用 `AppDetailPane`,`surface:none` 时渲染它(泛化现有 `IntegrationsPane` manage 模式)。
 - `AppCatalogEntry.surface` 作为**交互面**判别式(`none` 是默认、常见态,不是降级态)。
-- `@hitechcloud/app-host` RPC **只在** `surface:hosted/local` 时接线;无头 App 不碰它。
+- `@holaboss/app-host` RPC **只在** `surface:hosted/local` 时接线;无头 App 不碰它。
 - `IntegrationsPane` manage 模式保留并重构成「App 的账号管理」——多账号 / binding / workspace 默认账号仍是一等公民,沉在 App 之下的连接层。
 - chat 里 `IntegrationProposalCard` / `WorkspaceIntegrationsRail` 指向统一概念,文案 integration → App。
 
 ## 红线(实现时盯死)
 
-1. **Tier 0 绝不物化进程**——继续用共享 `hitechcloud_composio` 单 MCP server 透传。
+1. **Tier 0 绝不物化进程**——继续用共享 `holaboss_composio` 单 MCP server 透传。
 2. **连接层(账号 / binding / 默认账号)独立于 App 实例保留**,不被「一个 App 一个实例」吃掉。
 3. **bot-token 的 auth-mode 多态不丢。**
 4. **connection → module 升级无损**:同 provider slug、同连接表,授权不重来。

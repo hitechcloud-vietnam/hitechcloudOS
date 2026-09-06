@@ -104,7 +104,7 @@ export async function listWorkspaceFiles(
     }
 
     for (const entry of response.entries) {
-      // Skip dotfiles/dotfolders (.git, .hitechcloud, etc.).
+      // Skip dotfiles/dotfolders (.git, .holaboss, etc.).
       if (entry.name.startsWith(".")) continue;
       if (entry.isDirectory && skipDirs.has(entry.name)) continue;
 

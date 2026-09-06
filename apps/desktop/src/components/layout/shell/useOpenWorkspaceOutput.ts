@@ -87,7 +87,7 @@ export function useOpenWorkspaceOutput() {
     ) => {
       if (!url.trim()) return;
       // Generic (non-HolaApp) links open in the Default Browser Profile's own
-      // window — a Hitechcloud-managed Chrome — NEVER the OS default browser.
+      // window — a Holaboss-managed Chrome — NEVER the OS default browser.
       // (HolaApp outputs go to the app-surface; see openOutput.)
       await window.electronAPI.profiles
         .launch("bprofile_default", url)

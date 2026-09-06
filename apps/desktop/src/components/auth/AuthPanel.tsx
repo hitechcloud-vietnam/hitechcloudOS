@@ -31,7 +31,7 @@ import {
 } from "@/components/settings";
 
 const AUTH_BROWSER_SIGN_IN_MESSAGE =
-  "Sign-in opened in the browser. Complete the flow on the hitechcloudOS sign-in page.";
+  "Sign-in opened in the browser. Complete the flow on the holaOS sign-in page.";
 
 // How long to wait for the runtime binding to land before we stop showing an
 // open-ended spinner and surface an explicit, recoverable "connection failed"
@@ -350,11 +350,11 @@ export function AuthPanel() {
   const isSignedIn = Boolean(sessionUserId(session));
 
   // Auto-pick a sensible default chat model the first time a signed-in
-  // user lands on this panel. Hitechcloud-managed gpt-5.4 is the house
+  // user lands on this panel. Holaboss-managed gpt-5.4 is the house
   // recommendation — it's available the moment the runtime binding
   // resolves, no API key setup required. If the catalog doesn't have
   // gpt-5.4 (renamed, deprecated, region-gated), fall back to the first
-  // chat-capable model the hitechcloud proxy exposes. We never overwrite an
+  // chat-capable model the holaboss proxy exposes. We never overwrite an
   // existing defaultModel — that's the user's choice.
   useEffect(() => {
     if (!window.electronAPI) return;
@@ -362,12 +362,12 @@ export function AuthPanel() {
     if (!runtimeConfig) return;
     if ((runtimeConfig.defaultModel ?? "").trim()) return;
 
-    const hitechcloudGroup = runtimeConfig.providerModelGroups.find(
-      (group) => group.providerId === "hitechcloud_model_proxy",
+    const holabossGroup = runtimeConfig.providerModelGroups.find(
+      (group) => group.providerId === "holaboss_model_proxy",
     );
-    if (!hitechcloudGroup) return;
+    if (!holabossGroup) return;
 
-    const chatModels = hitechcloudGroup.models.filter((model) =>
+    const chatModels = holabossGroup.models.filter((model) =>
       runtimeCatalogModelSupportsCapability(model, "chat"),
     );
     const preferred =

@@ -10,7 +10,7 @@ import {
   type RuntimeStateStore,
   type SemanticMemoryCategory,
   utcNowIso,
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 import { createBackgroundTaskMemoryModelClient } from "./background-task-model.js";
 import {

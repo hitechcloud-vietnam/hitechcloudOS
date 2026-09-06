@@ -13,7 +13,7 @@ The source of truth is:
 
 ## What This Package Owns
 
-`@hitechcloud/runtime-state-store` owns the runtime's durable SQLite surfaces.
+`@holaboss/runtime-state-store` owns the runtime's durable SQLite surfaces.
 
 It does not replace the workspace filesystem or the markdown memory tree. It stores the runtime-owned metadata around them:
 
@@ -28,23 +28,23 @@ If the runtime needs durable state that is not just a file in the workspace, it 
 
 `hostStateDbPath()` resolves the sandbox-global host-state path this way:
 
-- `HITECHCLOUD_HOST_STATE_DB_PATH` if set
-- else `HITECHCLOUD_RUNTIME_DB_PATH` as a legacy alias
+- `HOLABOSS_HOST_STATE_DB_PATH` if set
+- else `HOLABOSS_RUNTIME_DB_PATH` as a legacy alias
 - else `<sandboxRoot>/state/host-state.db`
 
 `controlPlaneDbPath()` defaults to:
 
-- `HITECHCLOUD_CONTROL_PLANE_DB_PATH` if set
+- `HOLABOSS_CONTROL_PLANE_DB_PATH` if set
 - else `<sandboxRoot>/state/control-plane.db`
 
 Workspace execution state lives at:
 
-- `<workspaceRoot>/<workspace-id>/.hitechcloud/state/runtime.db`
+- `<workspaceRoot>/<workspace-id>/.holaboss/state/runtime.db`
 
 The store also resolves workspace paths from:
 
 - the workspace registry row
-- the workspace identity file under `.hitechcloud/state/workspace_id`
+- the workspace identity file under `.holaboss/state/workspace_id`
 - fallback discovery under the runtime workspace root
 
 That means the runtime uses both the database and filesystem markers to keep workspace discovery stable.
@@ -129,9 +129,9 @@ The package also loads `sqlite-vec` when available so memory recall can use vect
 
 Important distinction:
 
-- workspace-scoped interaction memory lives on disk under each workspace's `.hitechcloud/memory/interaction/`
-- workspace-scoped semantic interaction trees live under `.hitechcloud/memory/semantic/interaction/trees/`
-- workspace runtime continuity memory lives separately under `.hitechcloud/memory/runtime/`
+- workspace-scoped interaction memory lives on disk under each workspace's `.holaboss/memory/interaction/`
+- workspace-scoped semantic interaction trees live under `.holaboss/memory/semantic/interaction/trees/`
+- workspace runtime continuity memory lives separately under `.holaboss/memory/runtime/`
 - profile-global integration memory lives under `memory/integration/trees/`
 - profile-global semantic integration trees live under `memory/semantic/integration/trees/`
 - workspace-scoped memory metadata lives in the corresponding workspace runtime DB
@@ -207,12 +207,12 @@ The runtime currently uses:
 
 - `state/host-state.db` for sandbox-global host/bootstrap state
 - `state/control-plane.db` for registry, profiles, and integrations
-- `<workspace-id>/.hitechcloud/state/runtime.db` for workspace execution truth and workspace-scoped runtime metadata
+- `<workspace-id>/.holaboss/state/runtime.db` for workspace execution truth and workspace-scoped runtime metadata
 - workspace files for authored config and app/template state
-- `.hitechcloud/memory/interaction/` plus `.hitechcloud/memory/semantic/interaction/trees/` under each workspace for durable interaction memory and its derived semantic trees
-- `.hitechcloud/memory/runtime/` under each workspace for runtime continuity memory that helps runs resume coherently
+- `.holaboss/memory/interaction/` plus `.holaboss/memory/semantic/interaction/trees/` under each workspace for durable interaction memory and its derived semantic trees
+- `.holaboss/memory/runtime/` under each workspace for runtime continuity memory that helps runs resume coherently
 - global `memory/integration/trees/` plus `memory/semantic/integration/trees/` for profile-global integration memory and its derived semantic trees
-- `.hitechcloud/state/` under each workspace for workspace-local runtime state such as the identity marker and harness session mapping
+- `.holaboss/state/` under each workspace for workspace-local runtime state such as the identity marker and harness session mapping
 
 That split is deliberate. The database tracks runtime truth around the workspace; it does not become the workspace.
 
@@ -234,7 +234,7 @@ If you add a new durable record family, you need to think about both schema crea
 
 ## CLI and Test Seams
 
-The package exposes a CLI entrypoint, `hitechcloud-state-store`, backed by `runtime/state-store/src/cli.ts`.
+The package exposes a CLI entrypoint, `holaboss-state-store`, backed by `runtime/state-store/src/cli.ts`.
 
 That CLI mirrors many store operations, including:
 
@@ -255,7 +255,7 @@ The CLI expects `cli <operation> --request-base64 <base64-json>`. A representati
 
 ```bash
 REQ='{"options":{"dbPath":"/tmp/host-state.db","workspaceRoot":"/tmp/workspace"},"claimed_by":"worker-1","limit":2,"lease_seconds":60,"distinct_sessions":true}'
-hitechcloud-state-store claim-inputs --request-base64 "$(printf '%s' "$REQ" | base64 | tr -d '\n')"
+holaboss-state-store claim-inputs --request-base64 "$(printf '%s' "$REQ" | base64 | tr -d '\n')"
 ```
 
 ## Practical Rules

@@ -92,7 +92,7 @@ export interface AppCatalogEntry {
 	commandMcpInstall?: CommandMcpInstall;
 	/** Hosted-MCP install (jianguoyun) — see HostedMcpInstall. Present ⇒ install
 	 * gates for the app's BYO credentials (requiredKeys), then attaches its
-	 * Hitechcloud-hosted MCP (session bearer + those creds) grouped under the app. */
+	 * Holaboss-hosted MCP (session bearer + those creds) grouped under the app. */
 	hostedMcpInstall?: HostedMcpInstall;
 	/** Rich detail-page content (overview / features / screenshots), served on the
 	 * catalog entry so the app detail view is backend-managed. Absent fields fall
@@ -169,7 +169,7 @@ export interface CommandMcpInstall {
 	env?: Record<string, string>;
 }
 
-/** Hosted-MCP install for a HolaApp whose tools come from a Hitechcloud-HOSTED MCP
+/** Hosted-MCP install for a HolaApp whose tools come from a Holaboss-HOSTED MCP
  * server (`/mcp/<id>/…`, so it needs the session bearer) that ALSO requires BYO
  * per-user credentials (e.g. jianguoyun's Nutstore account + token). Distinct
  * from a plain hosted app (no creds), `apiKeyInstall` (external server + one key,
@@ -178,7 +178,7 @@ export interface CommandMcpInstall {
  * app-owned (owner_app_id) so it groups under the app. */
 export interface HostedMcpInstall {
 	mcpUrl: string;
-	hitechcloudHosted?: boolean;
+	holabossHosted?: boolean;
 	requiredKeys: McpRequiredKey[];
 	tools?: McpTool[];
 }
@@ -291,7 +291,7 @@ export function createStubMarketplaceSource(deps: {
 	};
 }
 
-const STORAGE_KEY = "hitechcloud.holaapps.installed.v1";
+const STORAGE_KEY = "holaboss.holaapps.installed.v1";
 
 const localStorageStore: InstalledStore = {
 	read() {
@@ -322,7 +322,7 @@ const localStorageStore: InstalledStore = {
 	},
 };
 
-// A few Hitechcloud-hosted apps have been promoted OUT of the generic `/apps/<id>`
+// A few Holaboss-hosted apps have been promoted OUT of the generic `/apps/<id>`
 // app-store shell to their own first-class web route. Map their surface path here
 // so the desktop opens the canonical URL directly instead of leaning on the
 // frontend's back-compat redirect. (HolaEmployee → /employees; the old
@@ -590,7 +590,7 @@ async function buildConnectionCards(
 		}));
 }
 
-/** True when an app's tools come from a Hitechcloud-HOSTED `/mcp/<id>` server (so
+/** True when an app's tools come from a Holaboss-HOSTED `/mcp/<id>` server (so
  * main should attach it). External-URL apps (Notion), API-key apps (OmniSocials,
  * Publora) and command/stdio apps (drawio) have no hosted MCP — main would just
  * skip them (or attaches them by a dedicated path), so we keep them out of the
@@ -664,7 +664,7 @@ async function backendBaseUrl(): Promise<string | null> {
  * install response's `provisioning.mcp[].tools` is threaded through to MAIN, that discovery
  * can be retired.)
  *
- * Swap `marketplace` below to this once hitechcloud-backend's
+ * Swap `marketplace` below to this once holaboss-backend's
  * /gateway/wapp/{install,uninstall,installed} + the catalogue `installed` flag are deployed
  * (branch feat/holaapp-server-managed-install). See the marketplace API contract.
  */
@@ -689,7 +689,7 @@ export function createServerMarketplaceSource(): MarketplaceSource {
 				...webHolaAppToCatalogEntry(app),
 				installed: app.installed ?? false,
 			}));
-			// Sync only apps that use a Hitechcloud-hosted `/mcp/<id>` server to main —
+			// Sync only apps that use a Holaboss-hosted `/mcp/<id>` server to main —
 			// external / API-key apps (Notion, OmniSocials, Publora) have none, and
 			// main skips them anyway; keep them out of the per-turn re-attach.
 			void window.electronAPI.holaApps?.sync(

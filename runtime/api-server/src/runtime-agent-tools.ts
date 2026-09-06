@@ -28,7 +28,7 @@ import {
   type TerminalSessionRecord,
   type TerminalSessionStatus,
   type WorkspaceRecord,
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 import { listConnectionsMerged } from "./integration-connections-merged.js";
 
@@ -447,7 +447,7 @@ const SUBAGENT_CANCEL_SETTLE_TIMEOUT_MS = 8_000;
 const SUBAGENT_CANCEL_SETTLE_POLL_INTERVAL_MS = 50;
 const WORKSPACE_APP_BUILD_TIMEOUT_MS = 180_000;
 const WORKSPACE_APP_PROBE_TIMEOUT_MS = 5_000;
-const DEFAULT_LOCAL_APP_ACTION_API_PATH = "/__hitechcloud/actions/run";
+const DEFAULT_LOCAL_APP_ACTION_API_PATH = "/__holaboss/actions/run";
 const WORKSPACE_APP_ENDPOINT_PROBE_CHECKS = [
   "ui",
   "mcp_health",
@@ -514,7 +514,7 @@ export interface RuntimeAgentToolsCreateCronjobParams {
     to?: unknown;
   };
   metadata?: Record<string, unknown> | null;
-  hitechcloudUserId?: string | null;
+  holabossUserId?: string | null;
   projectId?: string | null;
 }
 
@@ -908,7 +908,7 @@ function scaffoldWorkspaceAppManifest(params: { appId: string; name: string }): 
         path: "/mcp/sse",
         tools: [],
       },
-      env_contract: ["HITECHCLOUD_WORKSPACE_ID"],
+      env_contract: ["HOLABOSS_WORKSPACE_ID"],
     },
     { sortKeys: false, noRefs: true, lineWidth: 0 },
   );
@@ -1053,7 +1053,7 @@ uiApp.get("/", (_req, res) => {
   </head>
   <body>
     <main>
-      <span class="eyebrow">hitechcloudOS app scaffold</span>
+      <span class="eyebrow">holaOS app scaffold</span>
       <h1>\${appName}</h1>
       <p>This runtime-managed starter is registered with the current workspace. Replace this placeholder with the first useful UI for the user request.</p>
       <section class="card">
@@ -1330,9 +1330,9 @@ export const ALLOWED_DELIVERY_CHANNELS = new Set(["system_notification", "sessio
 const DEFAULT_DOWNLOAD_TIMEOUT_MS = 120_000;
 const MAX_DOWNLOAD_BYTES = 50 * 1024 * 1024;
 const WORKSPACE_INSTRUCTIONS_FILE_PATH = "AGENTS.md";
-const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_START = "<!-- hitechcloud-managed-workspace-instructions:start -->";
-const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_END = "<!-- hitechcloud-managed-workspace-instructions:end -->";
-const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_HEADING = "## Hitechcloud Managed Workspace Instructions";
+const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_START = "<!-- holaboss-managed-workspace-instructions:start -->";
+const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_END = "<!-- holaboss-managed-workspace-instructions:end -->";
+const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_HEADING = "## Holaboss Managed Workspace Instructions";
 
 function runtimeToolBaseDefinition(id: string) {
   const definition = RUNTIME_AGENT_TOOL_BASE_DEFINITIONS.find((tool) => tool.id === id);
@@ -1767,7 +1767,7 @@ async function probeMcpEndpoint(url: string, timeoutMs = 5000): Promise<McpEndpo
         params: {
           protocolVersion: "2025-06-18",
           capabilities: {},
-          clientInfo: { name: "hitechcloud-mcp-probe", version: "1" },
+          clientInfo: { name: "holaboss-mcp-probe", version: "1" },
         },
       }),
       signal: controller.signal,
@@ -2885,7 +2885,7 @@ async function reportOutputFilePath(params: {
 
 function metadataWithCronjobDefaults(params: {
   metadata: Record<string, unknown> | null | undefined;
-  hitechcloudUserId: string | null | undefined;
+  holabossUserId: string | null | undefined;
   selectedModel?: string | null | undefined;
   sourceSessionId?: string | null | undefined;
   fallbackTimezone?: string | null | undefined;
@@ -2893,9 +2893,9 @@ function metadataWithCronjobDefaults(params: {
 ): JsonObject {
   const nextMetadata: JsonObject = { ...((params.metadata ?? {}) as JsonObject) };
   delete nextMetadata.model;
-  const userId = normalizedString(params.hitechcloudUserId);
-  if (userId && typeof nextMetadata.hitechcloud_user_id !== "string") {
-    nextMetadata.hitechcloud_user_id = userId;
+  const userId = normalizedString(params.holabossUserId);
+  if (userId && typeof nextMetadata.holaboss_user_id !== "string") {
+    nextMetadata.holaboss_user_id = userId;
   }
   const sourceSessionId = normalizedString(params.sourceSessionId);
   if (sourceSessionId && typeof nextMetadata.source_session_id !== "string") {
@@ -4168,7 +4168,7 @@ export class RuntimeAgentToolsService {
         };
       }),
       requirement:
-        "Use the exact canonical provider_id from this catalog in app.runtime.yaml integrations and createIntegrationClient(...). E.g. use 'twitter' for X. When a provider has multiple `connected_accounts` and no `workspace_default_connection_id`, ask the user which account namespace this workspace should default to, then call `hitechcloud_workspace_integrations_set_default_account` to persist the choice.",
+        "Use the exact canonical provider_id from this catalog in app.runtime.yaml integrations and createIntegrationClient(...). E.g. use 'twitter' for X. When a provider has multiple `connected_accounts` and no `workspace_default_connection_id`, ask the user which account namespace this workspace should default to, then call `holaboss_workspace_integrations_set_default_account` to persist the choice.",
     };
   }
 
@@ -4330,7 +4330,7 @@ export class RuntimeAgentToolsService {
     const effectiveEnabled = params.enabled !== false;
     const metadata = metadataWithCronjobDefaults({
       metadata: params.metadata,
-      hitechcloudUserId: params.hitechcloudUserId,
+      holabossUserId: params.holabossUserId,
       selectedModel: params.selectedModel,
       sourceSessionId: params.sessionId,
       fallbackTimezone: effectiveTimezone,
@@ -4417,7 +4417,7 @@ export class RuntimeAgentToolsService {
           ) as JsonObject)
         : metadataWithCronjobDefaults({
             metadata: params.metadata,
-            hitechcloudUserId: null,
+            holabossUserId: null,
             fallbackTimezone: effectiveTimezone,
           });
     const requestedProjectId =
@@ -6035,10 +6035,10 @@ export class RuntimeAgentToolsService {
   async openMacosSettings(params: { pane?: string | null }): Promise<JsonObject> {
     const requestedPane = normalizedString(params.pane ?? "") || "privacy";
 
-    // Prefer the desktop bridge: the Electron main process can REGISTER Hitechcloud
+    // Prefer the desktop bridge: the Electron main process can REGISTER Holaboss
     // with macOS (desktopCapturer / askForMediaAccess / accessibility prompt) so
     // it shows up in the relevant Settings list — opening a pane alone can't do
-    // that (that's why screencapture's failure never adds Hitechcloud). Falls back
+    // that (that's why screencapture's failure never adds Holaboss). Falls back
     // to opening the pane via the host `open` when the bridge is unavailable.
     const bridge = this.resolveDesktopPermissionBridge();
     if (bridge) {
@@ -6047,7 +6047,7 @@ export class RuntimeAgentToolsService {
           method: "POST",
           headers: {
             "content-type": "application/json",
-            "x-hitechcloud-desktop-token": bridge.authToken,
+            "x-holaboss-desktop-token": bridge.authToken,
           },
           body: JSON.stringify({ kind: requestedPane }),
         });
@@ -6057,9 +6057,9 @@ export class RuntimeAgentToolsService {
             ...result,
             via: "desktop",
             message:
-              `Requested the macOS '${requestedPane.replace(/_/g, " ")}' permission for Hitechcloud — ` +
+              `Requested the macOS '${requestedPane.replace(/_/g, " ")}' permission for Holaboss — ` +
               "registered it where the OS supports a prompt and opened the relevant Settings pane. " +
-              "Ask the user to enable Hitechcloud there if it isn't already, then retry the original operation.",
+              "Ask the user to enable Holaboss there if it isn't already, then retry the original operation.",
           };
         }
       } catch {
@@ -6115,7 +6115,7 @@ export class RuntimeAgentToolsService {
       url: settingsUrl,
       message:
         `Opened macOS System Settings → Privacy & Security (${requestedPane.replace(/_/g, " ")}). ` +
-        "Ask the user to enable Hitechcloud there (toggle it on, re-launch if prompted), then retry the original operation.",
+        "Ask the user to enable Holaboss there (toggle it on, re-launch if prompted), then retry the original operation.",
     };
   }
 
@@ -8536,7 +8536,7 @@ export class RuntimeAgentToolsService {
     // is in the dep graph but no library primitives actually compose
     // the UI. Source-of-truth + rationale live in workspace-app-ui-lint.ts.
     //
-    //   1. Minimum named imports from @hitechcloud/ui — catches the
+    //   1. Minimum named imports from @holaboss/ui — catches the
     //      "import styles.css only, hand-roll every component" pattern.
     //   2. CSS import allowlist — catches the parallel-stylesheet
     //      pattern where the agent ships its own custom CSS file with

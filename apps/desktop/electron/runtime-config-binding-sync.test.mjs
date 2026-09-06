@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const mainSourcePath = path.join(__dirname, "main.ts");
 
-test("desktop runtime config prefers the bound Hitechcloud sandbox id when auth is present", async () => {
+test("desktop runtime config prefers the bound Holaboss sandbox id when auth is present", async () => {
   const source = await readFile(mainSourcePath, "utf8");
   const readRuntimeConfigSection =
     source.match(
@@ -16,7 +16,7 @@ test("desktop runtime config prefers the bound Hitechcloud sandbox id when auth 
 
   assert.match(
     readRuntimeConfigSection,
-    /const bindingSandboxId = runtimeFirstNonEmptyString\([\s\S]*hitechcloudIntegration\.sandbox_id[\s\S]*legacyPayload\.sandbox_id[\s\S]*\);/,
+    /const bindingSandboxId = runtimeFirstNonEmptyString\([\s\S]*holabossIntegration\.sandbox_id[\s\S]*legacyPayload\.sandbox_id[\s\S]*\);/,
   );
   assert.match(
     readRuntimeConfigSection,
@@ -28,7 +28,7 @@ test("desktop runtime config prefers the bound Hitechcloud sandbox id when auth 
   );
 });
 
-test("desktop runtime config writes Hitechcloud binding fields back into canonical runtime sections", async () => {
+test("desktop runtime config writes Holaboss binding fields back into canonical runtime sections", async () => {
   const source = await readFile(mainSourcePath, "utf8");
   const writeRuntimeConfigSection =
     source.match(
@@ -41,27 +41,27 @@ test("desktop runtime config writes Hitechcloud binding fields back into canonic
   );
   assert.match(
     writeRuntimeConfigSection,
-    /const hitechcloudIntegration = runtimeConfigObject\([\s\S]*integrationsPayload\.hitechcloud[\s\S]*\);/,
+    /const holabossIntegration = runtimeConfigObject\([\s\S]*integrationsPayload\.holaboss[\s\S]*\);/,
   );
   assert.match(
     writeRuntimeConfigSection,
-    /const hitechcloudProvider = runtimeConfigObject\([\s\S]*providersPayload\[RUNTIME_HITECHCLOUD_PROVIDER_ID\][\s\S]*\);/,
+    /const holabossProvider = runtimeConfigObject\([\s\S]*providersPayload\[RUNTIME_HOLABOSS_PROVIDER_ID\][\s\S]*\);/,
   );
   assert.match(
     writeRuntimeConfigSection,
-    /assignOrDelete\(hitechcloudIntegration, "auth_token", next\.auth_token\);/,
+    /assignOrDelete\(holabossIntegration, "auth_token", next\.auth_token\);/,
   );
   assert.match(
     writeRuntimeConfigSection,
-    /assignOrDelete\(hitechcloudIntegration, "sandbox_id", next\.sandbox_id\);/,
+    /assignOrDelete\(holabossIntegration, "sandbox_id", next\.sandbox_id\);/,
   );
   assert.match(
     writeRuntimeConfigSection,
-    /assignOrDelete\(hitechcloudProvider, "api_key", next\.auth_token\);/,
+    /assignOrDelete\(holabossProvider, "api_key", next\.auth_token\);/,
   );
   assert.match(
     writeRuntimeConfigSection,
-    /assignOrDelete\(hitechcloudProvider, "base_url", next\.model_proxy_base_url\);/,
+    /assignOrDelete\(holabossProvider, "base_url", next\.model_proxy_base_url\);/,
   );
   assert.match(
     writeRuntimeConfigSection,
@@ -93,11 +93,11 @@ test("desktop runtime config writes Hitechcloud binding fields back into canonic
   );
   assert.match(
     writeRuntimeConfigSection,
-    /const managedDefaultBackgroundModel = normalizeRuntimeHitechcloudCatalogDefaultModelId\(\s*update\.defaultBackgroundModel,\s*\);/,
+    /const managedDefaultBackgroundModel = normalizeRuntimeHolabossCatalogDefaultModelId\(\s*update\.defaultBackgroundModel,\s*\);/,
   );
   assert.match(
     writeRuntimeConfigSection,
-    /const managedDefaultEmbeddingModel = normalizeRuntimeHitechcloudCatalogDefaultModelId\(\s*update\.defaultEmbeddingModel,\s*\);/,
+    /const managedDefaultEmbeddingModel = normalizeRuntimeHolabossCatalogDefaultModelId\(\s*update\.defaultEmbeddingModel,\s*\);/,
   );
   assert.match(
     writeRuntimeConfigSection,
@@ -109,19 +109,19 @@ test("desktop runtime config writes Hitechcloud binding fields back into canonic
   );
   assert.match(
     writeRuntimeConfigSection,
-    /const managedDefaultImageModel = normalizeRuntimeHitechcloudCatalogDefaultModelId\(\s*update\.defaultImageModel,\s*\);/,
+    /const managedDefaultImageModel = normalizeRuntimeHolabossCatalogDefaultModelId\(\s*update\.defaultImageModel,\s*\);/,
   );
   assert.match(
     writeRuntimeConfigSection,
-    /runtimePayload\.background_tasks = \{\s*provider: RUNTIME_HITECHCLOUD_PROVIDER_ID,\s*model: managedDefaultBackgroundModel,\s*\};/,
+    /runtimePayload\.background_tasks = \{\s*provider: RUNTIME_HOLABOSS_PROVIDER_ID,\s*model: managedDefaultBackgroundModel,\s*\};/,
   );
   assert.match(
     writeRuntimeConfigSection,
-    /runtimePayload\.recall_embeddings = \{\s*provider: RUNTIME_HITECHCLOUD_PROVIDER_ID,\s*model: managedDefaultEmbeddingModel,\s*\};/,
+    /runtimePayload\.recall_embeddings = \{\s*provider: RUNTIME_HOLABOSS_PROVIDER_ID,\s*model: managedDefaultEmbeddingModel,\s*\};/,
   );
   assert.match(
     writeRuntimeConfigSection,
-    /runtimePayload\.image_generation = \{\s*provider: RUNTIME_HITECHCLOUD_PROVIDER_ID,\s*model: managedDefaultImageModel,\s*\};/,
+    /runtimePayload\.image_generation = \{\s*provider: RUNTIME_HOLABOSS_PROVIDER_ID,\s*model: managedDefaultImageModel,\s*\};/,
   );
   assert.match(
     writeRuntimeConfigSection,
@@ -137,11 +137,11 @@ test("desktop runtime config writes Hitechcloud binding fields back into canonic
   );
 });
 
-test("desktop runtime treats missing managed Hitechcloud default sections as stale and backfills them", async () => {
+test("desktop runtime treats missing managed Holaboss default sections as stale and backfills them", async () => {
   const source = await readFile(mainSourcePath, "utf8");
   const refreshCheckSection =
     source.match(
-      /function runtimeBindingNeedsManagedHitechcloudDefaultsRefresh\([\s\S]*?\n}\n\nfunction configuredProviderIdForRuntimeModelToken/,
+      /function runtimeBindingNeedsManagedHolabossDefaultsRefresh\([\s\S]*?\n}\n\nfunction configuredProviderIdForRuntimeModelToken/,
     )?.[0] ?? "";
 
   assert.match(

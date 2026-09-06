@@ -28,7 +28,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import { RuntimeStateStore } from "@holaboss/runtime-state-store";
 
 import { resolveCanonicalWorkspaceId } from "../runtime/api-server/src/canonical-workspace.js";
 import { resolveProductRuntimeConfig } from "../runtime/api-server/src/runtime-config.js";
@@ -218,22 +218,22 @@ function parseEnvFile(file: string): Record<string, string> {
 /**
  * Derive the checkout's root sandbox-host the same way the desktop computes its
  * userData dir (electron/main.ts `configureStableUserDataPath`):
- *   userData = HITECHCLOUD_DESKTOP_USER_DATA_PATH ?? <appData>/<HITECHCLOUD_DESKTOP_USER_DATA_DIR
- *              or "hitechcloud-local-dev">   (`/` → `_`)
+ *   userData = HOLABOSS_DESKTOP_USER_DATA_PATH ?? <appData>/<HOLABOSS_DESKTOP_USER_DATA_DIR
+ *              or "holaboss-local-dev">   (`/` → `_`)
  *   root     = <userData>/sandbox-host
  * Reads apps/desktop/.env so plain `hola -p "…"` just works for this checkout.
  */
 function autoDetectRoot(): { root: string; source: string } | null {
   const env = parseEnvFile(path.join(REPO_ROOT, "apps", "desktop", ".env"));
   const explicitPath =
-    (process.env.HITECHCLOUD_DESKTOP_USER_DATA_PATH ?? env.HITECHCLOUD_DESKTOP_USER_DATA_PATH ?? "").trim();
+    (process.env.HOLABOSS_DESKTOP_USER_DATA_PATH ?? env.HOLABOSS_DESKTOP_USER_DATA_PATH ?? "").trim();
   let userData: string;
   if (explicitPath) {
     userData = path.resolve(explicitPath);
   } else {
     const dir = (
-      (process.env.HITECHCLOUD_DESKTOP_USER_DATA_DIR ?? env.HITECHCLOUD_DESKTOP_USER_DATA_DIR ?? "").trim() ||
-      "hitechcloud-local-dev"
+      (process.env.HOLABOSS_DESKTOP_USER_DATA_DIR ?? env.HOLABOSS_DESKTOP_USER_DATA_DIR ?? "").trim() ||
+      "holaboss-local-dev"
     ).replace(/[\\/]+/g, "_");
     userData = path.join(appDataBase(), dir);
   }
@@ -280,10 +280,10 @@ function resolveRoot(a: Args): string {
 function applyRootEnv(root: string, runtimeApiUrl: string | null): void {
   const state = path.join(root, "state");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HITECHCLOUD_HOST_STATE_DB_PATH = path.join(state, "host-state.db");
-  process.env.HITECHCLOUD_RUNTIME_DB_PATH = path.join(state, "host-state.db");
-  process.env.HITECHCLOUD_CONTROL_PLANE_DB_PATH = path.join(state, "control-plane.db");
-  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = path.join(state, "runtime-config.json");
+  process.env.HOLABOSS_HOST_STATE_DB_PATH = path.join(state, "host-state.db");
+  process.env.HOLABOSS_RUNTIME_DB_PATH = path.join(state, "host-state.db");
+  process.env.HOLABOSS_CONTROL_PLANE_DB_PATH = path.join(state, "control-plane.db");
+  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = path.join(state, "runtime-config.json");
   process.env.SANDBOX_AGENT_HARNESS = "pi";
   if (runtimeApiUrl) {
     process.env.SANDBOX_RUNTIME_API_URL = runtimeApiUrl;
@@ -442,8 +442,8 @@ async function main(): Promise<void> {
   const port = a.port ?? Number(standaloneRuntimeApiPortForSandboxRoot(root));
 
   // Apply the root env BEFORE launching the runtime child so it inherits
-  // HB_SANDBOX_ROOT + the DB paths; otherwise it defaults to /hitechcloud and
-  // dies with "mkdir: /hitechcloud: Read-only file system".
+  // HB_SANDBOX_ROOT + the DB paths; otherwise it defaults to /holaboss and
+  // dies with "mkdir: /holaboss: Read-only file system".
   applyRootEnv(root, null);
 
   let runtime: { url: string; stop: () => void } = { url: "", stop: () => {} };

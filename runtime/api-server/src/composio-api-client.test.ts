@@ -240,13 +240,13 @@ test("createComposioApiClientFromEnv returns null when env is missing pieces", (
   assert.equal(createComposioApiClientFromEnv({} as NodeJS.ProcessEnv), null);
   assert.equal(
     createComposioApiClientFromEnv({
-      HITECHCLOUD_AUTH_BASE_URL: "https://hono.example",
+      HOLABOSS_AUTH_BASE_URL: "https://hono.example",
     } as NodeJS.ProcessEnv),
     null,
   );
   assert.equal(
     createComposioApiClientFromEnv({
-      HITECHCLOUD_AUTH_BEARER_TOKEN: "ba_x",
+      HOLABOSS_AUTH_BEARER_TOKEN: "ba_x",
     } as NodeJS.ProcessEnv),
     null,
   );
@@ -254,8 +254,8 @@ test("createComposioApiClientFromEnv returns null when env is missing pieces", (
 
 test("createComposioApiClientFromEnv returns a configured client when both env vars are set", () => {
   const client = createComposioApiClientFromEnv({
-    HITECHCLOUD_AUTH_BASE_URL: "https://hono.example",
-    HITECHCLOUD_AUTH_BEARER_TOKEN: "ba_x",
+    HOLABOSS_AUTH_BASE_URL: "https://hono.example",
+    HOLABOSS_AUTH_BEARER_TOKEN: "ba_x",
   } as NodeJS.ProcessEnv);
   assert.ok(client);
   assert.equal(client?.honoBaseUrl, "https://hono.example");

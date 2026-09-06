@@ -21,11 +21,11 @@ import {
   piMcpToolCachePath,
 } from "./pi-mcp-tool-cache-path.js";
 
-test("piMcpToolCachePath lands under <workspace>/.hitechcloud/state", () => {
+test("piMcpToolCachePath lands under <workspace>/.holaboss/state", () => {
   const dir = mkdtempSync(path.join(tmpdir(), "hb-mcp-cache-path-"));
   assert.equal(
     piMcpToolCachePath(dir),
-    path.join(dir, ".hitechcloud", "state", PI_MCP_TOOL_CACHE_FILE),
+    path.join(dir, ".holaboss", "state", PI_MCP_TOOL_CACHE_FILE),
   );
 });
 

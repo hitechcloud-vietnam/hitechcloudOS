@@ -9,7 +9,7 @@ import {
 } from "../../harnesses/src/workspace-skills.js";
 
 /**
- * Leading `/skill-name` lines in a Hitechcloud instruction are a wire convention
+ * Leading `/skill-name` lines in a Holaboss instruction are a wire convention
  * the desktop composer emits when a workspace skill is quoted. `pi` expands them
  * in-process (see resolveQuotedSkillSections in pi.ts). The CLI harnesses,
  * however, pass `request.instruction` verbatim to their CLI — so `claude` reads

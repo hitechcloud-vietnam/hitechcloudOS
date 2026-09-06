@@ -24,7 +24,7 @@ export type PreparedMcpServerPayload = {
     url?: string | null;
     timeout: number;
   };
-  _hitechcloud_force_refresh?: boolean;
+  _holaboss_force_refresh?: boolean;
 };
 
 export type RunningWorkspaceMcpSidecar = {
@@ -62,8 +62,8 @@ function readWorkspaceReference(workspaceDir: string, relativePath: string): str
 // Fresh default workspace contract, matching the legacy auto-provision seed
 // (app.ts). Used when a workspace dir has no workspace.yaml yet.
 const DEFAULT_WORKSPACE_YAML =
-  "agents:\n  id: hitechcloud\n  model: gpt-5.4\n\nmcp_registry:\n  servers: {}\n";
-const DEFAULT_WORKSPACE_AGENTS_MD = "# Hitechcloud\n\nDefault workspace.\n";
+  "agents:\n  id: holaboss\n  model: gpt-5.4\n\nmcp_registry:\n  servers: {}\n";
+const DEFAULT_WORKSPACE_AGENTS_MD = "# Holaboss\n\nDefault workspace.\n";
 
 /**
  * Read workspace.yaml, seeding a minimal default contract first if the workspace
@@ -329,7 +329,7 @@ export function effectiveMcpServerPayloads(params: {
       headers: {},
       timeout: params.sidecar.timeout_ms,
     },
-    _hitechcloud_force_refresh: !params.sidecar.reused,
+    _holaboss_force_refresh: !params.sidecar.reused,
   };
   const existingIndex = payloads.findIndex((payload) => payload.name === params.sidecar!.physical_server_id);
   if (existingIndex >= 0) {
@@ -352,7 +352,7 @@ export function mergePreparedMcpServerPayloads(
   // override-only entries (no base match), which still get `false`.
   const normalizedOverrides = overridePayloads.map((payload) => ({
     ...payload,
-    _hitechcloud_force_refresh: Boolean(payload._hitechcloud_force_refresh),
+    _holaboss_force_refresh: Boolean(payload._holaboss_force_refresh),
   }));
   const { values } = foldKeyed<PreparedMcpServerPayload>(
     [
@@ -363,9 +363,9 @@ export function mergePreparedMcpServerPayloads(
       mode: "last-wins",
       merge: (incumbent, challenger) => ({
         ...challenger,
-        _hitechcloud_force_refresh: Boolean(
-          challenger._hitechcloud_force_refresh ||
-            incumbent._hitechcloud_force_refresh ||
+        _holaboss_force_refresh: Boolean(
+          challenger._holaboss_force_refresh ||
+            incumbent._holaboss_force_refresh ||
             JSON.stringify(incumbent.config) !== JSON.stringify(challenger.config)
         ),
       }),

@@ -26,7 +26,7 @@ This is a directional architecture note, not a frozen implementation plan. It is
 | Topic | Choice |
 |---|---|
 | Native vs custom blocks | **One universal block model** |
-| What hitechcloudOS ships | **Bundled first-party block packages + templates** |
+| What holaOS ships | **Bundled first-party block packages + templates** |
 | Main user-facing insertion surface | **Templates**, not raw block definitions |
 | What remains platform-owned | **Pages, resources, bindings, runtime, permissions, versioning** |
 | Extension mechanism | **Packages with typed definitions and templates** |
@@ -55,7 +55,7 @@ The better model is:
 - first-party blocks are just **first-party packages**
 - user and agent blocks use the **same contract**
 
-That lets hitechcloudOS dogfood its own extension model from day one.
+That lets holaOS dogfood its own extension model from day one.
 
 ---
 
@@ -193,7 +193,7 @@ type PackageTrust = "bundled" | "verified" | "local"
 
 interface BlockPackage {
   package_id: string
-  publisher: "hitechcloud" | "marketplace" | "workspace"
+  publisher: "holaboss" | "marketplace" | "workspace"
   version: string
   trust: PackageTrust
   definitions: BlockDefinition[]
@@ -320,7 +320,7 @@ There is one package system with three trust classes.
 
 ### 6.1 Bundled packages
 
-Shipped with hitechcloudOS.
+Shipped with holaOS.
 
 Examples:
 
@@ -412,7 +412,7 @@ Initial execution modes:
 - `iframe`
 - `worker`
 
-`iframe` is the expected default for UI-heavy blocks. This aligns with the existing direction of app-surface isolation work. See [2026-04-01-app-surface-iframe-migration.md](/Users/you/Desktop/hitechcloud/hitechcloudOS-oss-feat-dashboard-design/docs/plans/2026-04-01-app-surface-iframe-migration.md).
+`iframe` is the expected default for UI-heavy blocks. This aligns with the existing direction of app-surface isolation work. See [2026-04-01-app-surface-iframe-migration.md](/Users/you/Desktop/holaboss/holaOS-oss-feat-dashboard-design/docs/plans/2026-04-01-app-surface-iframe-migration.md).
 
 ### 8.2 Runtime responsibilities
 

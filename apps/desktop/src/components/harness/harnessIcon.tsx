@@ -73,12 +73,12 @@ export function harnessHasFavicon(id: string): boolean {
   return brand === "anthropic" || brand === "openai";
 }
 
-function providerMark(id: string): "anthropic" | "openai" | "hitechcloud" | null {
+function providerMark(id: string): "anthropic" | "openai" | "holaboss" | null {
   if (HARNESS_LOGO[id] || HARNESS_MONO_MARK[id] || HARNESS_MONOGRAM[id]) {
     return null;
   }
   const brand = harnessBrand(id);
-  return brand === "anthropic" || brand === "openai" || brand === "hitechcloud"
+  return brand === "anthropic" || brand === "openai" || brand === "holaboss"
     ? brand
     : null;
 }

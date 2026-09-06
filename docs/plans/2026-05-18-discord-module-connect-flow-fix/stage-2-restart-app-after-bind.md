@@ -10,7 +10,7 @@
 
 The runtime bridge transport
 (`experiments/app-builder-sdk/src/bridge-transports/runtime-broker.ts` and
-the equivalent in `@hitechcloud/bridge`) reads `HITECHCLOUD_APP_GRANT` from
+the equivalent in `@holaboss/bridge`) reads `HOLABOSS_APP_GRANT` from
 `process.env` once at module import. The grant carries `(workspace, app)`
 identity, which the integration-broker uses on every provider call to look
 up the bound connection.
@@ -26,7 +26,7 @@ The desktop already calls `composioFinalize` (writes the connection) and
 `upsertIntegrationBinding` (writes the workspace-app binding) in
 `IntegrationConnectCard.handleConnect` / `handleBind`. What was missing
 was a process-level restart of the app so `integration-runtime.ts` can
-re-inject `HITECHCLOUD_APP_GRANT` at the next boot.
+re-inject `HOLABOSS_APP_GRANT` at the next boot.
 
 The runtime already exposes the right endpoint
 (`POST /api/v1/capabilities/runtime-tools/workspace-apps/:appId/restart` —
@@ -83,7 +83,7 @@ error if anything broker-side is still wrong.
 
 1. Rebuild desktop:
    ```bash
-   cd hitechcloudOS
+   cd holaOS
    npm run desktop:install
    npm run desktop:dev
    ```

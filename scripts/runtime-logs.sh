@@ -8,21 +8,21 @@
 #   scripts/runtime-logs.sh                      # follow everything
 #   scripts/runtime-logs.sh composio             # only lines matching /composio/i
 #   scripts/runtime-logs.sh 'execute.failure|cfRay'
-#   HITECHCLOUD_RUNTIME_LOG=/path/to/runtime.log scripts/runtime-logs.sh
+#   HOLABOSS_RUNTIME_LOG=/path/to/runtime.log scripts/runtime-logs.sh
 #
 set -euo pipefail
 
-log="${HITECHCLOUD_RUNTIME_LOG:-}"
+log="${HOLABOSS_RUNTIME_LOG:-}"
 if [[ -z "$log" ]]; then
   # Newest runtime.log under the Electron userData dirs — handles the escaped
-  # per-profile dir name (e.g. _Users_you_.hitechcloud-desktop) without hardcoding.
+  # per-profile dir name (e.g. _Users_you_.holaboss-desktop) without hardcoding.
   log="$(find "$HOME/Library/Application Support" -maxdepth 2 -name runtime.log -type f 2>/dev/null \
     | while read -r f; do printf '%s\t%s\n' "$(stat -f '%m' "$f" 2>/dev/null || echo 0)" "$f"; done \
     | sort -rn | head -1 | cut -f2-)"
 fi
 
 if [[ -z "$log" || ! -f "$log" ]]; then
-  echo "runtime.log not found (is the desktop running?). Override with HITECHCLOUD_RUNTIME_LOG=/path/to/runtime.log" >&2
+  echo "runtime.log not found (is the desktop running?). Override with HOLABOSS_RUNTIME_LOG=/path/to/runtime.log" >&2
   exit 1
 fi
 

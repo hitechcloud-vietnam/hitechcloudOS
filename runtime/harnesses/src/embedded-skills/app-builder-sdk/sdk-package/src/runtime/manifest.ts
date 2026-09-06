@@ -1,6 +1,6 @@
 // Generates an app.runtime.yaml document from an SDK app's declaration.
 //
-// The Hitechcloud runtime reads app.runtime.yaml for lifecycle (setup/start/stop),
+// The Holaboss runtime reads app.runtime.yaml for lifecycle (setup/start/stop),
 // healthchecks, MCP descriptor (port + tool list), env contract, and
 // integrations. With this helper, an SDK app doesn't hand-write boilerplate
 // — the manifest is derived from what the app already declared.
@@ -33,10 +33,10 @@ export function buildAppRuntimeManifest(app: AppHandleInternal, opts: ManifestOp
     stop: opts.lifecycle?.stop ?? `kill $(lsof -t -i :\${MCP_PORT:-${mcpPort}} 2>/dev/null) 2>/dev/null || true`,
   }
   const baseEnv = [
-    "HITECHCLOUD_WORKSPACE_ID",
+    "HOLABOSS_WORKSPACE_ID",
     "WORKSPACE_DB_PATH",
-    "HITECHCLOUD_INTEGRATION_BROKER_URL",
-    "HITECHCLOUD_APP_GRANT",
+    "HOLABOSS_INTEGRATION_BROKER_URL",
+    "HOLABOSS_APP_GRANT",
     "MCP_PORT",
   ]
   const env = [...new Set([...baseEnv, ...(opts.extraEnv ?? [])])]

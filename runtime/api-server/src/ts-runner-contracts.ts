@@ -27,7 +27,7 @@ export type TsRunnerEventType =
   | "run_failed";
 
 export interface TsRunnerRequest {
-  hitechcloud_user_id?: string;
+  holaboss_user_id?: string;
   workspace_id: string;
   /**
    * The freshly resolved cwd for the AGENT's run (where pwd reports from,
@@ -219,7 +219,7 @@ export function validateTsRunnerRequest(payload: unknown): TsRunnerRequest {
   }
 
   return {
-    hitechcloud_user_id: optionalNonEmptyString(payload.hitechcloud_user_id, "hitechcloud_user_id"),
+    holaboss_user_id: optionalNonEmptyString(payload.holaboss_user_id, "holaboss_user_id"),
     workspace_id: requiredString(payload.workspace_id, "workspace_id"),
     agent_cwd:
       payload.agent_cwd === undefined || payload.agent_cwd === null

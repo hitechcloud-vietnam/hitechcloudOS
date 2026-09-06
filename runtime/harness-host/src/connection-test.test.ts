@@ -42,7 +42,7 @@ test("test-connection reports a clean failure when the agent binary can't launch
   // which CLIs happen to be installed — deterministic across machines/CI.
   const result = await runTestConnection(
     ["--harness", "codex", "--timeout-ms", "8000"],
-    { HITECHCLOUD_CODEX_PATH: "/nonexistent/hitechcloud-codex-xyz" },
+    { HOLABOSS_CODEX_PATH: "/nonexistent/holaboss-codex-xyz" },
   );
   assert.equal(result.ok, false);
   assert.equal(typeof result.detail, "string");

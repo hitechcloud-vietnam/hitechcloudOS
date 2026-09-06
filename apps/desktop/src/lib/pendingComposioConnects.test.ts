@@ -54,7 +54,7 @@ test("remove drops the matching entry only", () => {
 
 test("tolerates corrupt storage", () => {
   store.clear();
-  store.set("hitechcloud.pending-composio-connects", "not json{");
+  store.set("holaboss.pending-composio-connects", "not json{");
   assert.deepEqual(listPendingComposioConnects(), []);
 });
 

@@ -1,24 +1,24 @@
-# @hitechcloud/app-host
+# @holaboss/app-host
 
 The **HolaApp desktop host bridge**. Lets a HolaApp web page (running inside the
-hitechcloudOS desktop client) request native desktop operations — the first one being
+holaOS desktop client) request native desktop operations — the first one being
 "open a chat session pre-filled with this context."
 
-> Distinct from `@hitechcloud/app-sdk` (the generated product REST client) and
-> `@hitechcloud/app-builder-sdk` (for authoring app *modules*). This package is the
+> Distinct from `@holaboss/app-sdk` (the generated product REST client) and
+> `@holaboss/app-builder-sdk` (for authoring app *modules*). This package is the
 > *host RPC* a hosted web page uses to drive the desktop UI.
 
 Two entry points:
 
-- **`@hitechcloud/app-host`** — the web client. Safe to import anywhere; degrades
+- **`@holaboss/app-host`** — the web client. Safe to import anywhere; degrades
   to a no-op when not inside the desktop.
-- **`@hitechcloud/app-host/protocol`** — the shared contract (constants + types).
+- **`@holaboss/app-host/protocol`** — the shared contract (constants + types).
   The desktop preload + main import this so the two sides can't drift.
 
 ## Usage (web)
 
 ```ts
-import { host } from "@hitechcloud/app-host";
+import { host } from "@holaboss/app-host";
 
 async function discuss(record) {
   if (!host.isAvailable()) {

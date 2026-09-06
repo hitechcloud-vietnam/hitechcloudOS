@@ -37,7 +37,7 @@ export function MissingWorkspacePane({
       return;
     }
     const confirmed = window.confirm(
-      `Remove "${workspaceName}" from hitechcloudOS?\n\nYour files on disk will not be touched. Only this workspace record is removed.`,
+      `Remove "${workspaceName}" from holaOS?\n\nYour files on disk will not be touched. Only this workspace record is removed.`,
     );
     if (!confirmed) {
       return;
@@ -82,7 +82,7 @@ export function MissingWorkspacePane({
       }
       description={
         <>
-          hitechcloudOS can't find the folder for{" "}
+          holaOS can't find the folder for{" "}
           <span className="font-medium text-foreground">{workspaceName}</span>.
           It may have been moved, deleted, or live on a drive that isn't
           mounted right now.

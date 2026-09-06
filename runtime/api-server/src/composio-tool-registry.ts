@@ -3,9 +3,9 @@ import path from "node:path";
 
 import yaml from "js-yaml";
 
-export const COMPOSIO_REGISTRY_SERVER_ID = "hitechcloud_composio";
+export const COMPOSIO_REGISTRY_SERVER_ID = "holaboss_composio";
 
-const LEGACY_COMPOSIO_SERVER_IDS = ["hitechcloud-composio"];
+const LEGACY_COMPOSIO_SERVER_IDS = ["holaboss-composio"];
 
 export interface ComposioMcpToolEntry {
   name: string;

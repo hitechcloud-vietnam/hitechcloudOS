@@ -54,11 +54,11 @@ underlying `connectIntegrationProvider` poll is the long-running call.
 
 ## Files changed
 
-- `hitechcloudOS/desktop/src/lib/useIntegrationBinding.ts` — `cancel` action,
+- `holaOS/desktop/src/lib/useIntegrationBinding.ts` — `cancel` action,
   AbortController plumbing, unmount-safe.
-- `hitechcloudOS/desktop/src/components/panes/ChatPane/AssistantTurn/IntegrationConnectCard.tsx` —
+- `holaOS/desktop/src/components/panes/ChatPane/AssistantTurn/IntegrationConnectCard.tsx` —
   no_connection button swap.
-- `hitechcloudOS/desktop/src/components/panes/AppSurfacePane.tsx` — header
+- `holaOS/desktop/src/components/panes/AppSurfacePane.tsx` — header
   Connect button swap.
 
 ## Verification

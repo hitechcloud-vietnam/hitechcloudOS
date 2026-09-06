@@ -283,7 +283,7 @@ export function useIntegrationBinding({
     });
   }, [selectedWorkspaceId, trimmedProvider, trimmedAppId, refresh]);
 
-  // The running app captured HITECHCLOUD_APP_GRANT at boot in its bridge
+  // The running app captured HOLABOSS_APP_GRANT at boot in its bridge
   // transport. Any bind change is invisible until the app process cycles —
   // unconditional restart is cheaper than diffing.
   const rebootAppAfterBindChange = useCallback(async () => {

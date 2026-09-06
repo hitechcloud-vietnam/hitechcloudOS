@@ -64,13 +64,13 @@ test("python runtime helper builds pinned standalone asset names and download UR
 test("python runtime helper defaults to stripped then unstripped archives", () => {
   assert.deepEqual(resolvePythonVariants({}), ["install_only_stripped", "install_only"]);
   assert.deepEqual(
-    resolvePythonVariants({ HITECHCLOUD_RUNTIME_PYTHON_VARIANT: "install_only" }),
+    resolvePythonVariants({ HOLABOSS_RUNTIME_PYTHON_VARIANT: "install_only" }),
     ["install_only"],
   );
 });
 
 test("python runtime staging dereferences absolute symlinks from the source install", async () => {
-  const tempRoot = mkdtempSync(path.join(os.tmpdir(), "hitechcloud-python-stage-test-"));
+  const tempRoot = mkdtempSync(path.join(os.tmpdir(), "holaboss-python-stage-test-"));
   const sourceRoot = path.join(tempRoot, "source-python");
   const sourceBin = path.join(sourceRoot, "bin");
   const outputRoot = path.join(tempRoot, "output");
@@ -86,9 +86,9 @@ test("python runtime staging dereferences absolute symlinks from the source inst
   symlinkSync(versionedPython, path.join(sourceBin, "python"));
   symlinkSync(versionedPython, path.join(sourceBin, "python3"));
 
-  const previousPythonDir = process.env.HITECHCLOUD_RUNTIME_PYTHON_DIR;
+  const previousPythonDir = process.env.HOLABOSS_RUNTIME_PYTHON_DIR;
   try {
-    process.env.HITECHCLOUD_RUNTIME_PYTHON_DIR = sourceRoot;
+    process.env.HOLABOSS_RUNTIME_PYTHON_DIR = sourceRoot;
     const result = await stagePythonRuntime(outputRoot, "macos");
     const stagedPython = path.join(result.pythonRuntimeRoot, "python", "bin", "python");
     const stagedPython3 = path.join(result.pythonRuntimeRoot, "python", "bin", "python3");
@@ -105,9 +105,9 @@ test("python runtime staging dereferences absolute symlinks from the source inst
     );
   } finally {
     if (previousPythonDir === undefined) {
-      delete process.env.HITECHCLOUD_RUNTIME_PYTHON_DIR;
+      delete process.env.HOLABOSS_RUNTIME_PYTHON_DIR;
     } else {
-      process.env.HITECHCLOUD_RUNTIME_PYTHON_DIR = previousPythonDir;
+      process.env.HOLABOSS_RUNTIME_PYTHON_DIR = previousPythonDir;
     }
     try {
       unlinkSync(path.join(sourceBin, "python"));

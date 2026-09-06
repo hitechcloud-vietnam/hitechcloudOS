@@ -28,7 +28,7 @@
 // (non-app) Composio tool calls" — composio-mcp manager + the agent
 // runtime tools both consult it.
 
-import type { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import type { RuntimeStateStore } from "@holaboss/runtime-state-store";
 
 import { listConnectionsMerged } from "./integration-connections-merged.js";
 

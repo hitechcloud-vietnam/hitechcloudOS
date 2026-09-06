@@ -1,19 +1,19 @@
-# @hitechcloud/app-builder-sdk — Hitechcloud app module SDK (experimental)
+# @holaboss/app-builder-sdk — Holaboss app module SDK (experimental)
 
-> Distinct from `@hitechcloud/app-sdk` (the generated product API client) and
-> `@hitechcloud/bridge` (the legacy app SDK that pre-dates this redesign).
-> This package is what new Hitechcloud app modules are built against. The
+> Distinct from `@holaboss/app-sdk` (the generated product API client) and
+> `@holaboss/bridge` (the legacy app SDK that pre-dates this redesign).
+> This package is what new Holaboss app modules are built against. The
 > existing `app-builder` skill in `runtime/harnesses/src/embedded-skills/`
 > will be updated to know about this SDK once it reaches production runtime
 > integration.
 
-A TypeScript prototype rebuilding the Hitechcloud app SDK around **5 orthogonal
+A TypeScript prototype rebuilding the Holaboss app SDK around **5 orthogonal
 primitives**. The goal: let agents author apps of any shape (publishing,
 messaging, workflow, event-with-time, sync-mirror) with zero `as any`, strong
 compile-time guardrails, and no scheduling/retry concerns leaking into app code.
 
 **This is not production code.** It is a spike with passing end-to-end tests
-to validate the API surface before integrating into the real Hitechcloud runtime.
+to validate the API surface before integrating into the real Holaboss runtime.
 
 ## What's the SDK, what isn't
 
@@ -45,7 +45,7 @@ reference/<shape>-<provider>/  ← SDK REFERENCE APPS (NOT production code).
 test/<area>.test.ts        ← UNIT + INTEGRATION TESTS
 ```
 
-**Three places code about Hitechcloud apps can live**:
+**Three places code about Holaboss apps can live**:
 
 | Location | Role | Status |
 |---|---|---|
@@ -54,8 +54,8 @@ test/<area>.test.ts        ← UNIT + INTEGRATION TESTS
 
 Reference apps are **not** production apps. If a reference and a production app share a name (e.g. two apps that share a name), they cover different ground — different tool names, different coverage. See each `app.ts`'s top-of-file banner for what it demonstrates.
 
-> Note on Hitechcloud "skills": this SDK does NOT define a per-app SKILL.md
-> convention — the real Hitechcloud skill system lives at
+> Note on Holaboss "skills": this SDK does NOT define a per-app SKILL.md
+> convention — the real Holaboss skill system lives at
 > `runtime/harnesses/src/embedded-skills/<skill-id>/SKILL.md` (system-wide,
 > with frontmatter) and `<workspace>/skills/<skill-id>/SKILL.md`
 > (workspace-local, created via the `skill-creator` skill). Provider quirks
@@ -109,14 +109,14 @@ Bundled options under `src/bridge-transports/`:
 |---|---|---|
 | `createBearerTokenTransport` | **Self-host OAuth** — you manage tokens (Auth0 / Clerk / your own auth server / manual). | `accessToken: string \| (() => Promise<string>)` |
 | `createComposioDirectTransport` | Composio managed auth, no broker hop. Good for single-tenant deploys, local dev, E2E. | `COMPOSIO_API_KEY` + `connectedAccountId` |
-| `createRuntimeBrokerTransport` | **Production** — running inside Hitechcloud runtime sandbox. Same `/broker/proxy` + grant model as `@hitechcloud/bridge`. | `provider` + env `HITECHCLOUD_INTEGRATION_BROKER_URL` + `HITECHCLOUD_APP_GRANT` (auto-resolved) |
+| `createRuntimeBrokerTransport` | **Production** — running inside Holaboss runtime sandbox. Same `/broker/proxy` + grant model as `@holaboss/bridge`. | `provider` + env `HOLABOSS_INTEGRATION_BROKER_URL` + `HOLABOSS_APP_GRANT` (auto-resolved) |
 | Roll your own | Custom auth (Vault, mTLS, internal gateway). | Implement ~20 lines of `fetch` returning `{ status, body, headers }`. |
 
-Bundled transports never call Hitechcloud backend / Hono. Production runtime
+Bundled transports never call Holaboss backend / Hono. Production runtime
 integrations are wired by the runtime team via the broker-proxy pattern; that's
 separate from this SDK.
 
-## Real E2E (single command, no Hitechcloud backend required)
+## Real E2E (single command, no Holaboss backend required)
 
 ```bash
 cd sdk/app-builder-sdk
@@ -163,7 +163,7 @@ pattern via `row.external_id` short-circuit.
 
 3. **`app.start()` is a 1-line check.** Real implementation (start MCP SSE
    server, register with runtime, etc.) lands when this SDK is wired into the
-   actual Hitechcloud runtime.
+   actual Holaboss runtime.
 
 4. **Reverse tool naming convention.** Defaults to
    `<app>_cancel_<action>_<resource>`, or `<toolName>_reverse` when `toolName`
@@ -195,7 +195,7 @@ workspace, not in this repo.
 ## Next steps (if this lands)
 
 1. Wire `BridgeClient` to the real `/broker/proxy`.
-2. Replace in-memory state with SQLite (via `@hitechcloud/runtime-state-store`).
+2. Replace in-memory state with SQLite (via `@holaboss/runtime-state-store`).
 3. Replace derived tool list with real MCP SSE server registration.
 4. Migrate one wrapper-shape module (e.g. `bannerbear`) as the first
    dog-fooding test (current: ~600 lines → target: ~80 lines).

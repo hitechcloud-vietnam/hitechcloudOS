@@ -303,7 +303,7 @@ function parseCliArgs(argv: string[]): {
   baseUrl?: string;
 } {
   let toolkitSlug = "gmail";
-  let userId = `hitechcloud-smoke-${Date.now()}`;
+  let userId = `holaboss-smoke-${Date.now()}`;
   let callbackUrl: string | undefined;
   let apiBaseUrl: string | undefined;
 

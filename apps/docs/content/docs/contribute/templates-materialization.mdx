@@ -39,15 +39,15 @@ For local templates, the returned template metadata is currently:
 - `effective_ref: "local"`
 - `source: "template_folder"`
 
-When `HITECHCLOUD_INTERNAL_DEV=1`, local template enrichment can also pull in local app dependencies. Treat that as an internal development path, not the normal template contract.
+When `HOLABOSS_INTERNAL_DEV=1`, local template enrichment can also pull in local app dependencies. Treat that as an internal development path, not the normal template contract.
 
 ## Marketplace Templates
 
-`materializeMarketplaceTemplate()` delegates to `sdkMaterializeMarketplaceTemplate()` from `@hitechcloud/app-sdk`.
+`materializeMarketplaceTemplate()` delegates to `sdkMaterializeMarketplaceTemplate()` from `@holaboss/app-sdk`.
 
 Inputs that matter:
 
-- `hitechcloud_user_id`
+- `holaboss_user_id`
 - `template_name`
 - optional `template_ref`
 - optional `template_commit`
@@ -91,7 +91,7 @@ This route accepts an explicit file list. For each file, the runtime:
 
 If `replace_existing` is `true`, the runtime clears the workspace first but preserves:
 
-- `.hitechcloud`
+- `.holaboss`
 - `workspace.json`
 
 ### `apply-template-from-url`
@@ -121,7 +121,7 @@ This is the practical portability contract for workspaces today. If your templat
 - marketplace templates should be pinned with `template_ref` or `template_commit`
 - treat `ONBOARD.md` as operational state, not decorative copy
 - keep template outputs clean enough that export still represents a portable workspace
-- do not rely on preserved `.hitechcloud` state when validating a fresh template
+- do not rely on preserved `.holaboss` state when validating a fresh template
 
 ## Validation
 

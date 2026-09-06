@@ -7,7 +7,7 @@
  */
 
 const REGISTRATION_BASE_URL = "https://oapi.dingtalk.com";
-const REGISTRATION_SOURCE = "hitechcloudos";
+const REGISTRATION_SOURCE = "holaos";
 
 export interface DingtalkRegistrationOptions {
   /** Override the registration base URL (tests / self-hosted). */

@@ -2,7 +2,7 @@
 
 Owner: Alice
 Status: In progress
-Worktree: `/Users/you/hitechcloud-vietnam/hitechcloud/hitechcloudOS-ux-polish` on branch `feat/chat-integration-ux-polish`, forked from `feat/integration-store-unified@275e8d45` (clean HEAD, before in-progress merge)
+Worktree: `/Users/you/holaboss-ai/holaboss/holaOS-ux-polish` on branch `feat/chat-integration-ux-polish`, forked from `feat/integration-store-unified@275e8d45` (clean HEAD, before in-progress merge)
 
 ## Context
 
@@ -247,7 +247,7 @@ I (Claude) will land scaffolding code and stub visual choices that conform to th
 
 ### W4.4 — Buffer + QA + demo (0.5 day)
 - End-to-end walkthrough video.
-- Update `backend/docs/work_log.md` and `docs/work-log.md` (hitechcloudOS-local) with the week's changes.
+- Update `backend/docs/work_log.md` and `docs/work-log.md` (holaOS-local) with the week's changes.
 
 ---
 

@@ -11,7 +11,7 @@ A freshly installed skill is usable **immediately, in this same run**: `skill({ 
 
 ## Import an open-source skill from GitHub (preferred)
 
-Open-source skills (e.g. `github.com/anthropics/skills`) are just `SKILL.md` folders in the same format used here, so they can be imported whole. Use the runtime endpoint — it fetches the entire folder (`SKILL.md` plus bundled `scripts/`, `references/`, `assets/`), maps foreign frontmatter (`allowed-tools` → `hitechcloud_granted_tools`, aligns `name` to the installed id), and writes it under `skills/<id>/`:
+Open-source skills (e.g. `github.com/anthropics/skills`) are just `SKILL.md` folders in the same format used here, so they can be imported whole. Use the runtime endpoint — it fetches the entire folder (`SKILL.md` plus bundled `scripts/`, `references/`, `assets/`), maps foreign frontmatter (`allowed-tools` → `holaboss_granted_tools`, aligns `name` to the installed id), and writes it under `skills/<id>/`:
 
 - Preview (no write): `POST /api/v1/workspaces/{workspaceId}/skills/import-github/preview` with `{ "url": "<github folder or SKILL.md URL>" }` — returns the parsed name, description, granted tools, and file list so you can confirm before installing.
 - Install: `POST /api/v1/workspaces/{workspaceId}/skills/import-github` with the same body.

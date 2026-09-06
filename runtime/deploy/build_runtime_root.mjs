@@ -27,7 +27,7 @@ function isNodeScriptPath(targetPath) {
 }
 
 function resolveWindowsNpmCliPath() {
-  const explicitCliPath = process.env.HITECHCLOUD_RUNTIME_BUILD_NPM_CLI?.trim();
+  const explicitCliPath = process.env.HOLABOSS_RUNTIME_BUILD_NPM_CLI?.trim();
   if (explicitCliPath && existsSync(explicitCliPath)) {
     return explicitCliPath;
   }
@@ -154,14 +154,14 @@ function materializeAbsoluteSymlink(linkPath) {
 export { materializeAbsoluteSymlinks };
 
 // Sibling-staged workspace packages — when the source declares
-// `"@hitechcloud/runtime-state-store": "workspace:*"` and we stage
+// `"@holaboss/runtime-state-store": "workspace:*"` and we stage
 // state-store as a sibling dir in the output root, rewrite the dep
 // to file:../state-store so `bun install` in the staged dir resolves
 // it without needing the outer workspace.
 const WORKSPACE_SIBLING_REWRITES = {
-  "@hitechcloud/runtime-state-store": "file:../state-store",
-  "@hitechcloud/remote-api": "file:../remote-api",
-  "@hitechcloud/runtime-channel-gateway": "file:../channel-gateway",
+  "@holaboss/runtime-state-store": "file:../state-store",
+  "@holaboss/remote-api": "file:../remote-api",
+  "@holaboss/runtime-channel-gateway": "file:../channel-gateway",
 };
 
 // Postinstall lifecycle scripts only run for packages listed here
@@ -311,9 +311,9 @@ export function buildRuntimeRoot(outputRootArg = path.join(repoRoot, "out", "run
   const runtimeVersion = resolveRuntimeVersion();
   const metadata = {
     runtime_version: runtimeVersion,
-    runtime_schema_version: process.env.HITECHCLOUD_RUNTIME_SCHEMA_VERSION?.trim() || "1",
+    runtime_schema_version: process.env.HOLABOSS_RUNTIME_SCHEMA_VERSION?.trim() || "1",
     git_sha: resolveGitSha(),
-    build_id: process.env.HITECHCLOUD_RUNTIME_BUILD_ID?.trim() || "local",
+    build_id: process.env.HOLABOSS_RUNTIME_BUILD_ID?.trim() || "local",
     built_at_utc: new Date().toISOString(),
     source_path: "runtime"
   };

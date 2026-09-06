@@ -6,7 +6,7 @@ import {
   type SessionInputRecord,
   type SessionRuntimeStateRecord,
   utcNowIso,
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 import { processClaimedInput } from "./claimed-input-executor.js";
 import type { MemoryServiceLike } from "./memory.js";

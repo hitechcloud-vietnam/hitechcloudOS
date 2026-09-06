@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { RuntimeStateStore, utcNowIso } from "@hitechcloud/runtime-state-store";
+import { RuntimeStateStore, utcNowIso } from "@holaboss/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import { RuntimeAgentToolsService } from "./runtime-agent-tools.js";

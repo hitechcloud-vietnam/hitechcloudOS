@@ -32,7 +32,7 @@ async function runCli(argv: string[], dbPath: string): Promise<CliResult> {
 }
 
 function tmpDb(name: string): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), `hitechcloud-cli-${name}-`));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), `holaboss-cli-${name}-`));
   return path.join(dir, "runtime.db");
 }
 
@@ -139,7 +139,7 @@ test("help prints usage and exits 0", async () => {
   const dbPath = tmpDb("help");
   const result = await runCli(["help"], dbPath);
   assert.equal(result.exitCode, 0);
-  assert.match(result.stdout, /hitechcloud-runtime/);
+  assert.match(result.stdout, /holaboss-runtime/);
   assert.match(result.stdout, /Commands:/);
 });
 
@@ -404,7 +404,7 @@ test("health on a real DB returns ok=true", async () => {
 test("health on a non-existent DB returns ok=false and exits non-zero", async () => {
   const fakePath = path.join(
     os.tmpdir(),
-    `hitechcloud-cli-${Date.now()}-missing.db`,
+    `holaboss-cli-${Date.now()}-missing.db`,
   );
   // Use a custom openDb that simulates failure (real `new Database(path, {readonly:true})`
   // on a missing file throws — the CLI catches and surfaces as ok=false).

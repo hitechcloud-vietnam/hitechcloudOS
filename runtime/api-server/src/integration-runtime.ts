@@ -4,7 +4,7 @@ import {
   type IntegrationBindingRecord,
   type IntegrationConnectionRecord,
   type RuntimeStateStore
-} from "@hitechcloud/runtime-state-store";
+} from "@holaboss/runtime-state-store";
 
 import { resolveConnectionMerged } from "./integration-connections-merged.js";
 
@@ -132,10 +132,10 @@ export async function resolveIntegrationRuntime(params: {
     };
   }
 
-  env.HITECHCLOUD_INTEGRATION_BROKER_URL = brokerUrl;
+  env.HOLABOSS_INTEGRATION_BROKER_URL = brokerUrl;
   env.WORKSPACE_API_URL = workspaceApiUrl;
-  env.HITECHCLOUD_WORKSPACE_ID = workspaceId;
-  env.HITECHCLOUD_APP_GRANT = createSignedGrant(workspaceId, params.appId);
+  env.HOLABOSS_WORKSPACE_ID = workspaceId;
+  env.HOLABOSS_APP_GRANT = createSignedGrant(workspaceId, params.appId);
 
   for (const requirement of requirements) {
     const binding = resolveBindingForRequirement({
@@ -165,7 +165,7 @@ export async function resolveIntegrationRuntime(params: {
     workspaceId,
     appId: params.appId,
     brokerUrl,
-    appGrant: env.HITECHCLOUD_APP_GRANT ?? null,
+    appGrant: env.HOLABOSS_APP_GRANT ?? null,
     env,
     bindings,
     connections

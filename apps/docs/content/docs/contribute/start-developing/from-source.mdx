@@ -1,9 +1,9 @@
 ---
 title: Install from Source
-description: Bootstrap hitechcloudOS Desktop from the hitechcloudOS OSS repo — one-line installer or the manual six-step flow.
+description: Bootstrap holaOS Desktop from the holaOS OSS repo — one-line installer or the manual six-step flow.
 ---
 
-This page is for contributors who want to run hitechcloudOS Desktop from the `hitechcloudOS` source tree, typically because they plan to change runtime, harness, or desktop code. If you just want to use the product, download the signed installer from **[/desktop](/desktop)** instead.
+This page is for contributors who want to run holaOS Desktop from the `holaOS` source tree, typically because they plan to change runtime, harness, or desktop code. If you just want to use the product, download the signed installer from **[/desktop](/desktop)** instead.
 
 Use the one-line repository installer on a fresh machine, or follow the manual path if you want to control each setup step.
 
@@ -13,14 +13,14 @@ For a mostly automatic bootstrap on macOS, Linux, or WSL, install Bun first, the
 
 ```bash
 curl -fsSL https://bun.sh/install | bash
-curl -fsSL https://raw.githubusercontent.com/hitechcloud-vietnam/hitechcloudOS/main/scripts/install.sh | bash -s -- --launch
+curl -fsSL https://raw.githubusercontent.com/holaboss-ai/holaOS/main/scripts/install.sh | bash -s -- --launch
 ```
 
 That installer:
 
 - installs missing `git` and Node.js `24` / `npm` when needed
 - assumes `bun` is already on `PATH`
-- clones the repository into `~/hitechcloud-vietnam` by default
+- clones the repository into `~/holaboss-ai` by default
 - creates `apps/desktop/.env` from `apps/desktop/.env.example` if needed
 - runs `bun install`
 - runs `npm run desktop:prepare-runtime:local`
@@ -53,7 +53,7 @@ bun --version
 If you are using Codex, Claude Code, Cursor, Windsurf, or another coding agent, you can hand it the setup instructions in one sentence:
 
 ```text
-Clone the hitechcloudOS repo from https://github.com/hitechcloud-vietnam/hitechcloudOS.git if needed, or use the current checkout if it is already open, then follow the source-install runbook in this repo with Bun available on PATH. If the environment cannot open Electron, stop after verification and tell me the next manual step.
+Clone the holaOS repo from https://github.com/holaboss-ai/holaOS.git if needed, or use the current checkout if it is already open, then follow the source-install runbook in this repo with Bun available on PATH. If the environment cannot open Electron, stop after verification and tell me the next manual step.
 ```
 
 That handoff keeps the installation flow self-contained while leaving the detailed bootstrap steps in the repo-local `INSTALL.md` runbook.
@@ -63,8 +63,8 @@ That handoff keeps the installation flow self-contained while leaving the detail
 **Step 1: Clone the repository**
 
 ```bash
-git clone https://github.com/hitechcloud-vietnam/hitechcloudOS.git
-cd hitechcloudOS
+git clone https://github.com/holaboss-ai/holaOS.git
+cd holaOS
 ```
 
 **Step 2: Install the repo dependencies**
@@ -79,7 +79,7 @@ bun install
 cp apps/desktop/.env.example apps/desktop/.env
 ```
 
-The minimum value that makes `npm run desktop:dev` pass its preflight is a remote base URL such as `HITECHCLOUD_BACKEND_BASE_URL` or `HITECHCLOUD_PROACTIVE_URL`. The checked-in `apps/desktop/.env.example` already includes `HITECHCLOUD_BACKEND_BASE_URL`, so copying that file is enough for the default local path.
+The minimum value that makes `npm run desktop:dev` pass its preflight is a remote base URL such as `HOLABOSS_BACKEND_BASE_URL` or `HOLABOSS_PROACTIVE_URL`. The checked-in `apps/desktop/.env.example` already includes `HOLABOSS_BACKEND_BASE_URL`, so copying that file is enough for the default local path.
 
 **Step 4: Prepare the local runtime bundle**
 

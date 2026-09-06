@@ -82,7 +82,7 @@ export async function convertHeicBufferToJpeg(params: {
   targetPath: string;
 }): Promise<void> {
   assertHeicConversionSupport();
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "hitechcloud-heic-"));
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "holaboss-heic-"));
   const sourcePath = path.join(
     tempDir,
     replaceAttachmentExtension(params.sourceName, ".heic"),

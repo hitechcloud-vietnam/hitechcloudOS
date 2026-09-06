@@ -136,7 +136,7 @@ function defaultExecutionModel(): string {
       requireBaseUrl: false,
     }).defaultModel;
   } catch {
-    const fallback = process.env.HITECHCLOUD_DEFAULT_MODEL?.trim();
+    const fallback = process.env.HOLABOSS_DEFAULT_MODEL?.trim();
     return fallback || DEFAULT_EXECUTION_MODEL;
   }
 }
@@ -177,11 +177,11 @@ export interface RuntimeModelReferenceResolution {
 const MODEL_PROXY_PROVIDER_OPENAI_COMPATIBLE = "openai_compatible";
 const MODEL_PROXY_PROVIDER_GOOGLE_COMPATIBLE = "google_compatible";
 const MODEL_PROXY_PROVIDER_ANTHROPIC_NATIVE = "anthropic_native";
-const PROVIDER_KIND_HITECHCLOUD_PROXY = "hitechcloud_proxy";
+const PROVIDER_KIND_HOLABOSS_PROXY = "holaboss_proxy";
 const PROVIDER_KIND_OPENAI_COMPATIBLE = "openai_compatible";
 const PROVIDER_KIND_ANTHROPIC_NATIVE = "anthropic_native";
 const PROVIDER_KIND_OPENROUTER = "openrouter";
-const HITECHCLOUD_PROXY_PROVIDER_ID = "hitechcloud_model_proxy";
+const HOLABOSS_PROXY_PROVIDER_ID = "holaboss_model_proxy";
 const DEFAULT_RUNTIME_STRUCTURED_RETRY_COUNT = 2;
 const DIRECT_OPENAI_FALLBACK_FLAG =
   "SANDBOX_MODEL_PROXY_ENABLE_DIRECT_OPENAI_FALLBACK";
@@ -193,8 +193,8 @@ const DIRECT_OPENROUTER_API_KEY_ENV = "OPENROUTER_API_KEY";
 const DIRECT_OPENROUTER_BASE_URL_ENV = "OPENROUTER_BASE_URL";
 const DEFAULT_DIRECT_OPENAI_BASE_URL = "https://api.openai.com/v1";
 const DEFAULT_DIRECT_OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
-const OPENROUTER_ATTRIBUTION_REFERER = "https://hitechcloud.vn";
-const OPENROUTER_ATTRIBUTION_TITLE = "hitechcloudOS";
+const OPENROUTER_ATTRIBUTION_REFERER = "https://holaboss.ai";
+const OPENROUTER_ATTRIBUTION_TITLE = "holaOS";
 const OPENROUTER_ATTRIBUTION_CATEGORIES = "personal-agent,general-chat";
 const OPENROUTER_ATTRIBUTION_HEADER_NAMES = new Set([
   "http-referer",
@@ -399,16 +399,16 @@ function normalizeProviderKind(
   const normalizedKind = rawKind.trim().toLowerCase();
   const lowerBaseUrl = baseUrl.toLowerCase();
   if (
-    normalizedKind === PROVIDER_KIND_HITECHCLOUD_PROXY ||
-    normalizedKind === HITECHCLOUD_PROXY_PROVIDER_ID ||
-    normalizedProviderId === HITECHCLOUD_PROXY_PROVIDER_ID ||
-    normalizedProviderId === "hitechcloud" ||
-    normalizedProviderId.includes("hitechcloud")
+    normalizedKind === PROVIDER_KIND_HOLABOSS_PROXY ||
+    normalizedKind === HOLABOSS_PROXY_PROVIDER_ID ||
+    normalizedProviderId === HOLABOSS_PROXY_PROVIDER_ID ||
+    normalizedProviderId === "holaboss" ||
+    normalizedProviderId.includes("holaboss")
   ) {
-    return PROVIDER_KIND_HITECHCLOUD_PROXY;
+    return PROVIDER_KIND_HOLABOSS_PROXY;
   }
   if (!normalizedKind && lowerBaseUrl.includes("model-proxy")) {
-    return PROVIDER_KIND_HITECHCLOUD_PROXY;
+    return PROVIDER_KIND_HOLABOSS_PROXY;
   }
   if (
     normalizedKind === PROVIDER_KIND_OPENROUTER ||
@@ -469,7 +469,7 @@ function modelProxyProviderForProviderKind(
   if (normalizedKind === PROVIDER_KIND_ANTHROPIC_NATIVE) {
     return MODEL_PROXY_PROVIDER_ANTHROPIC_NATIVE;
   }
-  if (normalizedKind === PROVIDER_KIND_HITECHCLOUD_PROXY) {
+  if (normalizedKind === PROVIDER_KIND_HOLABOSS_PROXY) {
     return inferModelProxyProviderFromToken(modelToken);
   }
   return MODEL_PROXY_PROVIDER_OPENAI_COMPATIBLE;
@@ -607,7 +607,7 @@ function configuredRuntimeModelCatalog(
   const runtimePayload = asRecord(document.runtime);
   const modelsPayload = asRecord(document.models);
   const integrationsPayload = asRecord(document.integrations);
-  const hitechcloudIntegration = asRecord(integrationsPayload.hitechcloud);
+  const holabossIntegration = asRecord(integrationsPayload.holaboss);
   const providers = new Map<string, ConfiguredRuntimeProvider>();
 
   for (const [providerId, rawProvider] of Object.entries(providersPayload)) {
@@ -658,14 +658,14 @@ function configuredRuntimeModelCatalog(
 
   const legacyAuthToken = firstNonEmptyString(
     config.authToken,
-    hitechcloudIntegration.auth_token as string | undefined,
+    holabossIntegration.auth_token as string | undefined,
   );
   const legacyBaseUrl = config.modelProxyBaseUrl.trim();
   const legacyProviderId = firstNonEmptyString(
     config.defaultProvider,
     (runtimePayload.default_provider as string | undefined) ?? "",
     defaultProviderHint,
-    HITECHCLOUD_PROXY_PROVIDER_ID,
+    HOLABOSS_PROXY_PROVIDER_ID,
   );
   if (legacyBaseUrl || legacyAuthToken) {
     const current = providers.get(legacyProviderId);
@@ -756,7 +756,7 @@ function runtimeProviderIdForConfiguredProvider(
   provider: ConfiguredRuntimeProvider,
   modelProxyProvider: string,
 ): string {
-  if (provider.kind === PROVIDER_KIND_HITECHCLOUD_PROXY) {
+  if (provider.kind === PROVIDER_KIND_HOLABOSS_PROXY) {
     return legacyRuntimeProviderId(modelProxyProvider);
   }
   return provider.id;
@@ -781,7 +781,7 @@ function defaultConfiguredProvider(
   const candidateIds = [
     catalog.defaultProvider,
     defaultProviderHint,
-    HITECHCLOUD_PROXY_PROVIDER_ID,
+    HOLABOSS_PROXY_PROVIDER_ID,
   ]
     .map((token) => token.trim())
     .filter(Boolean);
@@ -890,25 +890,25 @@ function resolveRuntimeModelTarget(
     }
 
     if (
-      normalizedProviderToken === HITECHCLOUD_PROXY_PROVIDER_ID ||
-      normalizedProviderToken === "hitechcloud" ||
-      normalizedProviderToken.includes("hitechcloud")
+      normalizedProviderToken === HOLABOSS_PROXY_PROVIDER_ID ||
+      normalizedProviderToken === "holaboss" ||
+      normalizedProviderToken.includes("holaboss")
     ) {
       const modelProxyProvider = inferModelProxyProviderFromToken(modelId);
-      const hitechcloudProvider = firstConfiguredProviderByKind(
+      const holabossProvider = firstConfiguredProviderByKind(
         catalog,
-        PROVIDER_KIND_HITECHCLOUD_PROXY,
+        PROVIDER_KIND_HOLABOSS_PROXY,
       );
-      if (hitechcloudProvider) {
+      if (holabossProvider) {
         return {
           providerId: runtimeProviderIdForConfiguredProvider(
-            hitechcloudProvider,
+            holabossProvider,
             modelProxyProvider,
           ),
           modelId,
           modelToken: token,
           modelProxyProvider,
-          configuredProvider: hitechcloudProvider,
+          configuredProvider: holabossProvider,
         };
       }
       return {
@@ -1359,7 +1359,7 @@ function resolveModelClientConfig(
   const configuredProvider = target.configuredProvider;
   if (
     configuredProvider &&
-    configuredProvider.kind !== PROVIDER_KIND_HITECHCLOUD_PROXY
+    configuredProvider.kind !== PROVIDER_KIND_HOLABOSS_PROXY
   ) {
     const credentials = configuredProviderFallbackCredentials(
       configuredProvider,
@@ -1404,43 +1404,43 @@ function resolveModelClientConfig(
       ? `${workspaceId}:${sessionId}:${inputId}`
       : "");
   if (proxyApiKey && sandboxId) {
-    const hitechcloudRuntimeConfig = resolveProductRuntimeConfig({
+    const holabossRuntimeConfig = resolveProductRuntimeConfig({
       requireAuth: false,
       requireUser: true,
       requireBaseUrl: false,
       includeDefaultBaseUrl: false,
     });
-    const hitechcloudUserId = hitechcloudRuntimeConfig.userId;
+    const holabossUserId = holabossRuntimeConfig.userId;
     // Org-owned sessions: bill the SESSION's org (stamped at creation, threaded
     // via runtime_exec_org_id) so a run attributes to the org the session belongs
     // to — not whatever org is active now. Fall back to the live runtime-config
     // org only for legacy/unattributed sessions (null session org).
     const billingOrgId =
-      request.runtime_exec_org_id?.trim() || hitechcloudRuntimeConfig.orgId;
+      request.runtime_exec_org_id?.trim() || holabossRuntimeConfig.orgId;
     // BYO key lookup org — the session/team billing org when set, else the live
     // byoOrgId (personal keeps billingOrgId null but still owns keys under its
     // personal-org id). Forwarded only to resolve the org's stored provider key.
-    const byoOrgId = billingOrgId || hitechcloudRuntimeConfig.byoOrgId;
+    const byoOrgId = billingOrgId || holabossRuntimeConfig.byoOrgId;
     const headers: Record<string, string> = {
       "X-API-Key": proxyApiKey,
-      "X-Hitechcloud-User-Id": hitechcloudUserId,
+      "X-Holaboss-User-Id": holabossUserId,
       // Attribute desktop spend to the user (the usage-log "Entity" column). Desktop pi-brain runs
       // aren't HolaEmployees, so there's no Agent-Id — but the requester IS the desktop user. The
       // `desktop:` prefix is the surface key the backend/usage resolver already understands
       // (personCandidateUserId + the "Desktop" surface label). Without this, Entity shows blank.
-      ...(hitechcloudUserId
-        ? { "X-Hitechcloud-Requester-Id": `desktop:${hitechcloudUserId}` }
+      ...(holabossUserId
+        ? { "X-Holaboss-Requester-Id": `desktop:${holabossUserId}` }
         : {}),
-      ...(billingOrgId ? { "X-Hitechcloud-Org-Id": billingOrgId } : {}),
-      ...(byoOrgId ? { "X-Hitechcloud-Byo-Org-Id": byoOrgId } : {}),
-      "X-Hitechcloud-Sandbox-Id": sandboxId,
-      "X-Hitechcloud-Session-Id": request.session_id,
-      "X-Hitechcloud-Workspace-Id": request.workspace_id,
-      "X-Hitechcloud-Input-Id": request.input_id,
-      "X-Hitechcloud-Agent-Role": agentRoleHeaderValue(request.session_kind),
+      ...(billingOrgId ? { "X-Holaboss-Org-Id": billingOrgId } : {}),
+      ...(byoOrgId ? { "X-Holaboss-Byo-Org-Id": byoOrgId } : {}),
+      "X-Holaboss-Sandbox-Id": sandboxId,
+      "X-Holaboss-Session-Id": request.session_id,
+      "X-Holaboss-Workspace-Id": request.workspace_id,
+      "X-Holaboss-Input-Id": request.input_id,
+      "X-Holaboss-Agent-Role": agentRoleHeaderValue(request.session_kind),
     };
     if (runId) {
-      headers["X-Hitechcloud-Run-Id"] = runId;
+      headers["X-Holaboss-Run-Id"] = runId;
     }
     return {
       model_proxy_provider: normalizedProvider,
@@ -1459,7 +1459,7 @@ function resolveModelClientConfig(
     );
     if (credentials.apiKey && credentials.baseRoot) {
       const baseUrl =
-        configuredProvider.kind === PROVIDER_KIND_HITECHCLOUD_PROXY
+        configuredProvider.kind === PROVIDER_KIND_HOLABOSS_PROXY
           ? configuredProviderProxyRoute(
               {
                 ...configuredProvider,
@@ -1598,7 +1598,7 @@ function normalizeModelProxyProvider(provider: string): string {
 
 function runtimeStructuredRetryCount(): number {
   const raw = (
-    process.env.HITECHCLOUD_STRUCTURED_OUTPUT_RETRY_COUNT ??
+    process.env.HOLABOSS_STRUCTURED_OUTPUT_RETRY_COUNT ??
     String(DEFAULT_RUNTIME_STRUCTURED_RETRY_COUNT)
   ).trim();
   const value = Number.parseInt(raw, 10);

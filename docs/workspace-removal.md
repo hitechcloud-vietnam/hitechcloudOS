@@ -47,7 +47,7 @@ $HB_SANDBOX_ROOT/state/
 │                    #   data.db was, but now the only one.
 └── host-state.db    # host/runtime state
 
-~/Hitechcloud/Projects/<project-name>/   # files ONLY, no DB — the agent's working
+~/Holaboss/Projects/<project-name>/   # files ONLY, no DB — the agent's working
 └── <user files>                      #   files for sessions bound to this project
 ```
 
@@ -58,14 +58,14 @@ Deliberate simplification vs today's per-workspace sharding:
   (memory/cron/…) and the `projects` registry. **Projects do NOT get their own
   DB** (today each *workspace* had its own `data.db`; that sharding is removed).
 - **A project is just a registry row `{id, name, path}` + a folder of files**,
-  default `~/Hitechcloud/Projects/<name>/`. The folder stores *only* files; the
+  default `~/Holaboss/Projects/<name>/`. The folder stores *only* files; the
   session data lives in the root `data.db`, linked by `project_id`.
 - **General (root) sessions** keep their files at the runtime-root working dir
   and their data in the same root `data.db` (`project_id` null).
 
 So the new physical work is: **centralize all session data into the one root
 `data.db`**, and reduce project folders to plain file directories under
-`~/Hitechcloud/Projects/`. The per-workspace `data.db` sharding goes away entirely.
+`~/Holaboss/Projects/`. The per-workspace `data.db` sharding goes away entirely.
 
 ## 2. Scope
 
@@ -108,7 +108,7 @@ So the schema change is overwhelmingly **"delete a column,"** with `project_id`
 
 - **Every workspace → a project, uniformly — including the Piece-1 canonical
   one.** Create a project row (`id` = old `workspace_id`, `path` =
-  `~/Hitechcloud/Projects/<name>/`), **fold its sessions into the root `data.db`**
+  `~/Holaboss/Projects/<name>/`), **fold its sessions into the root `data.db`**
   tagged with that `project_id`, and move its files into the project folder.
   Every install does an N→1 consolidation of all workspace `data.db`s into the
   single root `data.db`.
@@ -144,14 +144,14 @@ and re-accumulate from there. No open decisions remain.
   in place; they dissolve when `workspaceId` leaves the API (Piece 3).
 - **Piece 3 — Remote API contract.** Drop `workspaceId` from `workspaceScoped`
   (`packages/remote-api/src/contract/shared.ts:11`) and remove the
-  `x-hitechcloud-workspace-id` header. Session procedures key by `session_id`;
+  `x-holaboss-workspace-id` header. Session procedures key by `session_id`;
   add an optional `project_id` filter to list-sessions; projects get light CRUD.
   Delete the Piece-1 pins (`canonical-workspace.ts` usage). Remove the now-truly-
   dead desktop selection-provider internals here.
 - **Piece 4 — Un-thread the runtime.** Stop threading `workspaceId` through
   context / session-routing / queue / **channel-gateway** (inbound IM lands in a
   runtime-root general session by default; a channel may optionally bind to a
-  project). Flatten the filesystem (`workspaceDir*`, `.hitechcloud/state/<ws>` →
+  project). Flatten the filesystem (`workspaceDir*`, `.holaboss/state/<ws>` →
   runtime root + per-project folders).
 - **Piece 5 — Schema + migration.** Drop `workspace_id` from all tables, add
   nullable `project_id` to `agent_sessions`, rename `workspace_projects` →
@@ -160,8 +160,8 @@ and re-accumulate from there. No open decisions remain.
 
 ## 6. Verification
 
-- Desktop: `turbo run typecheck --filter=hitechcloud-local` (deps build first).
-- API server: `turbo run typecheck --filter=@hitechcloud/runtime-api-server`, plus
+- Desktop: `turbo run typecheck --filter=holaboss-local` (deps build first).
+- API server: `turbo run typecheck --filter=@holaboss/runtime-api-server`, plus
   `node --import tsx --test --test-force-exit` over `src/**/*.test.ts`
   (enumerate via `find`; the bun glob doesn't expand `**`).
 - Note: the brittle `*.test.mjs` source-snapshot tests are NOT in the

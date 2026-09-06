@@ -10,7 +10,7 @@
 import {
   installImportedMarketplaceSkill,
   listWorkspaceMarketplaceSkills,
-} from "@hitechcloud/app-sdk";
+} from "@holaboss/app-sdk";
 import { getMarketplaceAppSdkClient } from "@/lib/app-sdk-client";
 
 export interface OrgSkill {

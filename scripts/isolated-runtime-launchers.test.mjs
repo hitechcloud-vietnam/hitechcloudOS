@@ -17,7 +17,7 @@ test("sanitizeInstanceName normalizes whitespace and punctuation", () => {
 });
 
 test("resolveDesktopUserDataPath and resolveStandaloneSandboxRoot stay under the provided home root", () => {
-  const homeRoot = "/tmp/hitechcloudos";
+  const homeRoot = "/tmp/holaos";
 
   assert.equal(
     resolveDesktopUserDataPath("Feature Dev", homeRoot),
@@ -30,20 +30,20 @@ test("resolveDesktopUserDataPath and resolveStandaloneSandboxRoot stay under the
 });
 
 test("desktop runtime port derivation is stable per user-data path", () => {
-  const userDataPath = "/tmp/hitechcloudos/desktop/feature-dev";
+  const userDataPath = "/tmp/holaos/desktop/feature-dev";
 
   assert.equal(
     desktopRuntimeApiPortForUserDataPath(userDataPath),
     desktopRuntimeApiPortForUserDataPath(userDataPath),
   );
   assert.notEqual(
-    desktopRuntimeApiPortForUserDataPath("/tmp/hitechcloudos/desktop/feature-dev"),
-    desktopRuntimeApiPortForUserDataPath("/tmp/hitechcloudos/desktop/bugfix-a"),
+    desktopRuntimeApiPortForUserDataPath("/tmp/holaos/desktop/feature-dev"),
+    desktopRuntimeApiPortForUserDataPath("/tmp/holaos/desktop/bugfix-a"),
   );
 });
 
 test("standalone runtime port derivation is stable per sandbox root", () => {
-  const sandboxRoot = "/tmp/hitechcloudos/evals/memory-evals";
+  const sandboxRoot = "/tmp/holaos/evals/memory-evals";
   const port = standaloneRuntimeApiPortForSandboxRoot(sandboxRoot);
 
   assert.equal(port, standaloneRuntimeApiPortForSandboxRoot(sandboxRoot));

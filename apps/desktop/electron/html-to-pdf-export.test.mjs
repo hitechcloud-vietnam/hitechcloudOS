@@ -46,7 +46,7 @@ test("desktop html-to-pdf export renders HTML in a hidden BrowserWindow and prin
   assert.match(mainSource, /function prepareHtmlForPdfExport\(/);
   assert.match(mainSource, /async function waitForHtmlPdfRender\(contents: WebContents\): Promise<void> \{/);
   assert.match(mainSource, /new BrowserWindow\(\{\s*show: false,[\s\S]*backgroundColor: "#ffffff",/);
-  assert.match(mainSource, /await fs\.mkdtemp\(\s*path\.join\(app\.getPath\("temp"\), "hitechcloud-html-pdf-"\),\s*\)/);
+  assert.match(mainSource, /await fs\.mkdtemp\(\s*path\.join\(app\.getPath\("temp"\), "holaboss-html-pdf-"\),\s*\)/);
   assert.match(mainSource, /await renderWindow\.loadFile\(tempHtmlPath\);/);
   assert.match(mainSource, /await waitForHtmlPdfRender\(renderWindow\.webContents\);/);
   assert.match(

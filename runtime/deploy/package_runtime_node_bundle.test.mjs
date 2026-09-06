@@ -27,16 +27,16 @@ for (const targetPath of [macosPackagerPath, linuxPackagerPath]) {
       /(?:npm install --prefix "\$\{BUILD_NODE_RUNTIME_DIR\}" "node@\$\{NODE_VERSION\}" "npm@\$\{NPM_VERSION\}"|bun add "node@\$\{NODE_VERSION\}" "npm@\$\{NPM_VERSION\}")/,
     );
     assert.match(source, /DEFAULT_RUNTIME_NODE_VERSION="24\.14\.1"/);
-    assert.match(source, /NODE_VERSION="\$\{HITECHCLOUD_RUNTIME_NODE_VERSION:-\$\{DEFAULT_RUNTIME_NODE_VERSION\}\}"/);
+    assert.match(source, /NODE_VERSION="\$\{HOLABOSS_RUNTIME_NODE_VERSION:-\$\{DEFAULT_RUNTIME_NODE_VERSION\}\}"/);
     assert.match(source, /BUILD_NODE_RUNTIME_DIR="\$\{STAGING_ROOT\}\/build-node-runtime"/);
     assert.match(source, /build_runtime_root\.mjs/);
     assert.match(source, /cp -R "\$\{BUILD_NODE_RUNTIME_DIR\}" "\$\{NODE_RUNTIME_DIR\}"/);
     assert.match(source, new RegExp(`node "\\$\\{SCRIPT_DIR\\}/stage_python_runtime\\.mjs" "\\$\\{OUTPUT_ROOT\\}" "${targetPlatform}"`));
-    assert.match(source, /TOOLCHAIN_ROOT="\$\{HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT:-\$\{BUNDLE_ROOT\}\}"/);
+    assert.match(source, /TOOLCHAIN_ROOT="\$\{HOLABOSS_RUNTIME_TOOLCHAIN_ROOT:-\$\{BUNDLE_ROOT\}\}"/);
     assert.match(source, /BUNDLED_NODE_BIN="\$\{TOOLCHAIN_ROOT\}\/node-runtime\/node_modules\/node\/bin\/node"/);
-    assert.match(source, /export HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT="\$\{TOOLCHAIN_ROOT\}"/);
+    assert.match(source, /export HOLABOSS_RUNTIME_TOOLCHAIN_ROOT="\$\{TOOLCHAIN_ROOT\}"/);
     assert.match(source, /export PATH="\$\{TOOLCHAIN_ROOT\}\/python-runtime\/bin:\$\{TOOLCHAIN_ROOT\}\/python-runtime\/python\/bin:\$\{TOOLCHAIN_ROOT\}\/node-runtime\/node_modules\/node\/bin:\$\{TOOLCHAIN_ROOT\}\/node-runtime\/node_modules\/\.bin:\$\{PATH\}"/);
-    assert.match(source, /export HITECHCLOUD_RUNTIME_NODE_BIN="\$\{BUNDLED_NODE_BIN\}"/);
+    assert.match(source, /export HOLABOSS_RUNTIME_NODE_BIN="\$\{BUNDLED_NODE_BIN\}"/);
     assert.match(source, /"toolchain_id":/);
     assert.match(source, /"bundled_npm_bin":/);
     assert.match(source, /"bundled_npm_version":/);
@@ -44,7 +44,7 @@ for (const targetPath of [macosPackagerPath, linuxPackagerPath]) {
     assert.match(source, /"bundled_python_version":/);
     assert.match(source, /"bundled_python_target":/);
     assert.equal(/npm install --global --prefix "\$\{NODE_RUNTIME_DIR\}"/.test(source), false);
-    assert.equal(/HITECHCLOUD_INSTALL_[A-Z_]+/.test(source), false);
+    assert.equal(/HOLABOSS_INSTALL_[A-Z_]+/.test(source), false);
 
     if (targetPlatform === "linux") {
       assert.match(source, /run_build_runtime_root\(\) \{/);
@@ -65,7 +65,7 @@ test("package_windows_runtime.mjs writes launchers that use the bundled node run
   assert.match(source, /function isNodeScriptPath/);
   assert.match(source, /if \(envExecPath && existsSync\(envExecPath\) && isNodeScriptPath\(envExecPath\)\)/);
   assert.match(source, /const buildNodeRuntimeDir = path\.join\(stagingRoot, "build-node-runtime"\);/);
-  assert.match(source, /HITECHCLOUD_RUNTIME_BUILD_NPM_CLI: buildNpmCli/);
+  assert.match(source, /HOLABOSS_RUNTIME_BUILD_NPM_CLI: buildNpmCli/);
   assert.match(source, /runNpm\(\["install", "--prefix", buildNodeRuntimeDir, `node@\$\{nodeVersion\}`, `npm@\$\{npmVersion\}`\]/);
   assert.match(source, /cpSync\(buildNodeRuntimeDir, nodeRuntimeDir, \{ recursive: true, dereference: true \}\)/);
   assert.match(source, /stageWindowsNodeCommandLaunchers\(outputRoot\);\s*prunePackagedTree\(nodeRuntimeDir, "windows"\)/);
@@ -78,7 +78,7 @@ test("package_windows_runtime.mjs writes launchers that use the bundled node run
   assert.match(source, /toolchain_id: toolchainId/);
   assert.match(launcherSource, /startWindowsRuntime/);
   assert.match(launcherSource, /process\.exit/);
-  assert.match(cmdLauncherSource, /HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT/);
+  assert.match(cmdLauncherSource, /HOLABOSS_RUNTIME_TOOLCHAIN_ROOT/);
   assert.match(cmdLauncherSource, /node-runtime\\bin\\node\.exe/);
   assert.match(cmdLauncherSource, /sandbox-runtime\.mjs/);
 });
@@ -110,7 +110,7 @@ test("package_macos_runtime cache key includes shared contract inputs", async ()
 });
 
 test("startWindowsRuntime prefers the packaged node-runtime bin layout on Windows bundles", async () => {
-  const tempRoot = await mkdtemp(path.join(os.tmpdir(), "hitechcloud-runtime-bootstrap-"));
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), "holaboss-runtime-bootstrap-"));
   const originalCwd = process.cwd();
   const originalEnv = { ...process.env };
 
@@ -131,10 +131,10 @@ test("startWindowsRuntime prefers the packaged node-runtime bin layout on Window
         'import { writeFileSync } from "node:fs";',
         "",
         "writeFileSync(",
-        "  process.env.HITECHCLOUD_TEST_OUTPUT,",
+        "  process.env.HOLABOSS_TEST_OUTPUT,",
         "  JSON.stringify({",
         "    execPath: process.execPath,",
-        "    runtimeNodeBin: process.env.HITECHCLOUD_RUNTIME_NODE_BIN",
+        "    runtimeNodeBin: process.env.HOLABOSS_RUNTIME_NODE_BIN",
         "  }),",
         '  "utf8"',
         ");"
@@ -142,13 +142,13 @@ test("startWindowsRuntime prefers the packaged node-runtime bin layout on Window
       "utf8"
     );
 
-    delete process.env.HITECHCLOUD_RUNTIME_NODE_BIN;
-    delete process.env.HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT;
-    delete process.env.HITECHCLOUD_RUNTIME_APP_ROOT;
+    delete process.env.HOLABOSS_RUNTIME_NODE_BIN;
+    delete process.env.HOLABOSS_RUNTIME_TOOLCHAIN_ROOT;
+    delete process.env.HOLABOSS_RUNTIME_APP_ROOT;
     delete process.env.HB_SANDBOX_ROOT;
     delete process.env.MEMORY_ROOT_DIR;
     delete process.env.STATE_ROOT_DIR;
-    process.env.HITECHCLOUD_TEST_OUTPUT = outputPath;
+    process.env.HOLABOSS_TEST_OUTPUT = outputPath;
     process.env.HB_SANDBOX_ROOT = sandboxRoot;
 
     const exitCode = await startWindowsRuntime([], { bundleRoot });

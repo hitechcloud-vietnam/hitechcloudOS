@@ -5,7 +5,7 @@
 
 ## Context
 
-Hitechcloud desktop is single-user / single-machine / single-root. "Org" here is the
+Holaboss desktop is single-user / single-machine / single-root. "Org" here is the
 **active tenancy + billing context** the user acts as (Personal vs a team org).
 Switching the active org re-scopes backend calls and bills that org.
 

@@ -41,7 +41,7 @@ import { SettingsSection } from "./SettingsSection";
 
 // BYOK — bring-your-own-key. An org supplies its own provider credentials; the
 // agent then routes direct to that provider on the org's account (billed by the
-// provider, not the Hitechcloud plan) and its models appear in the picker. Two
+// provider, not the Holaboss plan) and its models appear in the picker. Two
 // built-ins (OpenAI, Anthropic, native hosts) plus any number of CUSTOM providers
 // (OpenAI- or Anthropic-compatible endpoints with a user-supplied host). Providers
 // are org-scoped on the backend, so they're shared with the web Settings → BYOK
@@ -661,7 +661,7 @@ export function BYOKSettingsPanel() {
 
   return (
     <SettingsSection
-      description="Bring your own provider keys — models run on your account, not your hitechcloudOS plan. Add a custom OpenAI- or Anthropic-compatible endpoint."
+      description="Bring your own provider keys — models run on your account, not your holaOS plan. Add a custom OpenAI- or Anthropic-compatible endpoint."
       title="Model Providers"
     >
       <div className="mb-3 flex items-center gap-2">

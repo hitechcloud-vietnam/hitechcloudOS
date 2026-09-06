@@ -40,7 +40,7 @@ async function discoverSlackConnection(): Promise<string> {
   if (!r.ok) {
     const text = await r.text().catch(() => "")
     throw new Error(`Composio list-accounts failed (${r.status}): ${text.slice(0, 300)}
-  - if "user_id required" → set COMPOSIO_USER_ID=<your hitechcloud user id>`)
+  - if "user_id required" → set COMPOSIO_USER_ID=<your holaboss user id>`)
   }
   const data = (await r.json()) as {
     items?: Array<{ id?: string; status?: string; toolkit?: { slug?: string } }>

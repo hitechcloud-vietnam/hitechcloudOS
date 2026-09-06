@@ -8,8 +8,8 @@
 
 ### 1. Agent 写 doc 时文件落到了 workspace 外面
 - **现象**:让 agent 写 doc,文件被写到沙箱/工作目录之外,实际 workspace 文件夹是空的。属于核心链路问题(agent 产出文件)。
-- **修改方法**:排查 runtime/harness 的 file-write 工具,确保写入路径**以 workspace 根目录解析**,而不是进程 cwd。Agent 的所有产出文件必须落在 `/hitechcloud/workspace/<workspace_id>/` 内。重点看 harness 的工作目录设置 + write_file 工具的路径拼接。
-- **涉及**:`hitechcloudOS/runtime/`(harness-host / api-server 的文件写入),可能联动后端沙箱 cwd。
+- **修改方法**:排查 runtime/harness 的 file-write 工具,确保写入路径**以 workspace 根目录解析**,而不是进程 cwd。Agent 的所有产出文件必须落在 `/holaboss/workspace/<workspace_id>/` 内。重点看 harness 的工作目录设置 + write_file 工具的路径拼接。
+- **涉及**:`holaOS/runtime/`(harness-host / api-server 的文件写入),可能联动后端沙箱 cwd。
 - **备注**:〔需 runtime 侧排查后再定确切改法〕
 
 ### 2. (= #1)

@@ -1,4 +1,4 @@
-import { Button, StatusDot } from "@hitechcloud/ui"
+import { Button, StatusDot } from "@holaboss/ui"
 import { Download } from "lucide-react"
 import type { ReactNode } from "react"
 

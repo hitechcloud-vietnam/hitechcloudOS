@@ -2,7 +2,7 @@
 // only connected M of them; should agent's next input be dispatched?".
 //
 // Existing flow: when the agent emits one or more
-// hitechcloud_workspace_integrations_propose_connect tool calls in a turn,
+// holaboss_workspace_integrations_propose_connect tool calls in a turn,
 // the chat UI renders a Connect card per proposal. The next user message
 // (or any followup input) used to claim and dispatch immediately even if
 // some Connect cards were still red — the agent would then run with a
@@ -18,11 +18,11 @@
 //     -connect routes to the user-level toolkit pool (no per-app
 //     binding), so a single active connection per slug is enough.
 
-import type { OutputEventRecord, RuntimeStateStore } from "@hitechcloud/runtime-state-store";
+import type { OutputEventRecord, RuntimeStateStore } from "@holaboss/runtime-state-store";
 
 import { listConnectionsMerged } from "./integration-connections-merged.js";
 
-const PROPOSE_CONNECT_TOOL_ID = "hitechcloud_workspace_integrations_propose_connect";
+const PROPOSE_CONNECT_TOOL_ID = "holaboss_workspace_integrations_propose_connect";
 
 // Marker event the user's "Skip" action appends to stop the gate blocking a
 // session on integrations they've chosen not to connect. Any slug named here is

@@ -160,7 +160,7 @@ test("effectiveMcpServerPayloads replaces logical workspace server with sidecar 
         headers: {},
         timeout: 7000,
       },
-      _hitechcloud_force_refresh: true,
+      _holaboss_force_refresh: true,
     },
   ]);
 });
@@ -231,7 +231,7 @@ test("mcpServerPayloads skips a server whose required env var is unset (no whole
         type: "remote",
         command: [],
         url: "https://example.com/mcp",
-        headers: [["Authorization", "{env:HITECHCLOUD_DEFINITELY_UNSET_VAR_XYZ}"]],
+        headers: [["Authorization", "{env:HOLABOSS_DEFINITELY_UNSET_VAR_XYZ}"]],
         environment: [],
         timeout_ms: 15000,
       },
@@ -263,7 +263,7 @@ test("mcpServersUnavailableForMissingEnv reports the env-skipped server with rea
         type: "remote",
         command: [],
         url: "https://mcp.example/sse",
-        headers: [["Authorization", "{env:HITECHCLOUD_DEFINITELY_UNSET_VAR_XYZ}"]],
+        headers: [["Authorization", "{env:HOLABOSS_DEFINITELY_UNSET_VAR_XYZ}"]],
         environment: [],
         timeout_ms: 15000,
       },
@@ -288,7 +288,7 @@ test("mcpServersUnavailableForMissingEnv reports the env-skipped server with rea
   const unavailable = mcpServersUnavailableForMissingEnv(compiledPlan);
   assert.equal(unavailable.length, 1);
   assert.equal(unavailable[0].serverId, "x-poster__x");
-  assert.match(unavailable[0].reason, /HITECHCLOUD_DEFINITELY_UNSET_VAR_XYZ/);
+  assert.match(unavailable[0].reason, /HOLABOSS_DEFINITELY_UNSET_VAR_XYZ/);
   // every tool the skipped server would have contributed is reported as missing
   assert.deepEqual(unavailable[0].missingToolIds, ["x-poster__x.publish", "x-poster__x.list"]);
 });
@@ -369,7 +369,7 @@ test("mergePreparedMcpServerPayloads prefers later bootstrapped servers with the
         headers: { "X-Workspace-Id": "workspace-1" },
         timeout: 60000
       },
-      _hitechcloud_force_refresh: true
+      _holaboss_force_refresh: true
     },
     {
       name: "linkedin",

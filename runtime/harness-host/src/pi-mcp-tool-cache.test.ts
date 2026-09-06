@@ -53,7 +53,7 @@ test("piMcpServersForceRefresh detects the force-refresh flag", () => {
   assert.equal(
     piMcpServersForceRefresh([
       { name: "gofunds", config: {} },
-      { name: "app", config: {}, _hitechcloud_force_refresh: true },
+      { name: "app", config: {}, _holaboss_force_refresh: true },
     ]),
     true,
   );

@@ -5,7 +5,7 @@ const UMAMI_WEBSITE_ID = "fcd99465-5997-4653-a519-bc9911c9609b";
 // Umami uses `hostname` to bucket events; pin to a stable virtual host so
 // desktop traffic shows up under one origin in the dashboard regardless of
 // whether the renderer is on file:// (packaged) or localhost (dev).
-const HOSTNAME = "desktop.hitechcloud.vn";
+const HOSTNAME = "desktop.holaos.ai";
 
 type EventData = Record<
   string,

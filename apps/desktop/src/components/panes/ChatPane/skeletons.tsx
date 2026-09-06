@@ -158,7 +158,7 @@ function IntegrationErrorBannerBody({
   );
   const { status, connect, cancel, reset } = useIntegrationConnect({
     onDone: async (connectionId) => {
-      // OAuth alone isn't enough: workspace apps capture HITECHCLOUD_APP_GRANT
+      // OAuth alone isn't enough: workspace apps capture HOLABOSS_APP_GRANT
       // at boot pointing at the OLD (now-expired) connection. The agent's
       // direct Composio path is restarted automatically via
       // onConnectionActive, but per-app bindings are NOT — apps that were

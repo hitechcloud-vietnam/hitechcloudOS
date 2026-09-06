@@ -12,11 +12,11 @@ test("macOS development builds use a mock Chromium keychain to avoid Safe Storag
 
   assert.match(
     mainSource,
-    /function initialDesktopAppName\(\): string \{[\s\S]*return "hitechcloudOS Dev";[\s\S]*return "hitechcloudOS";[\s\S]*\}\s*\n\s*electronApp\.setName\(initialDesktopAppName\(\)\);/,
+    /function initialDesktopAppName\(\): string \{[\s\S]*return "holaOS Dev";[\s\S]*return "holaOS";[\s\S]*\}\s*\n\s*electronApp\.setName\(initialDesktopAppName\(\)\);/,
   );
   assert.match(
     mainSource,
-    /function shouldUseMacMockKeychain\(\): boolean \{[\s\S]*process\.platform !== "darwin"[\s\S]*HITECHCLOUD_MAC_USE_MOCK_KEYCHAIN[\s\S]*!app\.isPackaged \|\| process\.env\.HITECHCLOUD_INTERNAL_DEV\?\.trim\(\) === "1"[\s\S]*\}/,
+    /function shouldUseMacMockKeychain\(\): boolean \{[\s\S]*process\.platform !== "darwin"[\s\S]*HOLABOSS_MAC_USE_MOCK_KEYCHAIN[\s\S]*!app\.isPackaged \|\| process\.env\.HOLABOSS_INTERNAL_DEV\?\.trim\(\) === "1"[\s\S]*\}/,
   );
   assert.match(
     mainSource,

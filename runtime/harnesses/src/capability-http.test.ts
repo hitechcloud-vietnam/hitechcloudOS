@@ -6,7 +6,7 @@ import { createHarnessRuntimeToolDefinition } from "./runtime-capability-tools.j
 import { executeRuntimeToolCapability } from "./runtime-tool-capability-client.js";
 import { resetToolReplayBudgetLedger } from "./tool-replay-budget-ledger.js";
 
-// TODO(pre-existing): this test was already failing when the @hitechcloud/runtime-harnesses
+// TODO(pre-existing): this test was already failing when the @holaboss/runtime-harnesses
 // package first got a `test` script wired up (it had none, so its tests never ran in CI
 // and this one drifted undetected). It expects a "replay budget exhausted" clipped payload
 // — `clippedPayload.note` — but the client now returns `undefined` there. Quarantined to

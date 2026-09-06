@@ -93,7 +93,7 @@ worth chasing before Phase 1.
 > this is why Phase 2 is shelved rather than merely deferred.
 >
 > Confirmed empirically: a real cache file exists on a dev root
-> (`…/workspace/root/.hitechcloud/state/composio-inline-tool-cache.json`, 64 tools,
+> (`…/workspace/root/.holaboss/state/composio-inline-tool-cache.json`, 64 tools,
 > 113 KB, written the day the feature shipped), and the unit suite
 > (`composio-inline-cache.test.ts`, 7 tests) covers round-trip, TTL boundary,
 > cross-workspace isolation, corruption and the kill switch.
@@ -239,7 +239,7 @@ ts-runner's already-running V8 avoids a whole second process boot (fork + V8 ini
 
 ### Blocker 0 — packaging. Resolve this before writing any of the below.
 
-`@hitechcloud/runtime-api-server` **does not depend on `@hitechcloud/runtime-harness-host`**,
+`@holaboss/runtime-api-server` **does not depend on `@holaboss/runtime-harness-host`**,
 and `runPi` lives in `runtime/harness-host/src/pi.ts`. ts-runner today reaches
 sibling code only via relative imports into `runtime/harnesses/src/*`, a package
 whose deps api-server carries.
@@ -247,7 +247,7 @@ whose deps api-server carries.
 harness-host's `package.json` adds `mcporter`, `@anthropic-ai/claude-agent-sdk`,
 `@earendil-works/pi-ai`, `web-tree-sitter`, `tree-sitter-wasms`, `@napi-rs/canvas`
 and `openai` — **none** in api-server's dependencies, and tsup's `noExternal` lists
-only `@hitechcloud/runtime-channel-gateway`. So a naive import emits bare specifiers
+only `@holaboss/runtime-channel-gateway`. So a naive import emits bare specifiers
 into `dist/ts-runner.mjs` that will not resolve at runtime.
 
 Worse for the plan's central premise: harness-host has
@@ -260,7 +260,7 @@ harness-host's install.
 1. **Invert it** — put the in-process entry point in harness-host (which already
    has the deps and the patches) and have api-server call it across a package
    boundary it declares. Keeps one pi install, one patch set.
-2. Add `@hitechcloud/runtime-harness-host` as an api-server dependency **and** make
+2. Add `@holaboss/runtime-harness-host` as an api-server dependency **and** make
    the pi patches a build artifact rather than a `node_modules` mutation.
 3. Bundle harness-host into ts-runner via `noExternal` — largest bundle, and
    `@napi-rs/canvas` / `web-tree-sitter` are native/wasm, so this likely fails.
@@ -417,9 +417,9 @@ boot *and* `createSession`, doing only `sendUserMessage`.
 ### The fingerprint, corrected
 
 **The draft's `config_fingerprint` could never hit.** It hashed `mcp_servers`,
-but `buildHitechcloudRuntimeToolsMcpServerEntry` (`runtime/harnesses/src/harness-mcp.ts:47`)
-bakes the **per-turn `x-hitechcloud-input-id`** into the server headers at
-request-build time (`:67`, alongside `x-hitechcloud-session-id` at `:63`), and
+but `buildHolabossRuntimeToolsMcpServerEntry` (`runtime/harnesses/src/harness-mcp.ts:47`)
+bakes the **per-turn `x-holaboss-input-id`** into the server headers at
+request-build time (`:67`, alongside `x-holaboss-session-id` at `:63`), and
 `buildHarnessMcpServers` (`:28`) returns that as element 0. `input_id` is fresh
 every turn, so `hash(mcp_servers)` differs on turn 2 → the 4-part reuse gate
 fails → `terminatePid` + cold start. Phase 2 as drafted ships a **100% miss rate
@@ -431,7 +431,7 @@ into per-session structures — so both are fixed by one change:
 
 - **Split per-turn identity out of the session surface.** The fingerprint must
   hash the *shape* of the MCP/tool surface (server ids, urls, transports, tool
-  refs) with `x-hitechcloud-input-id` — and any other per-turn header — **excluded**.
+  refs) with `x-holaboss-input-id` — and any other per-turn header — **excluded**.
 - **Reuse what exists.** `turnRequestSnapshotFingerprint` (`ts-runner.ts:366`) over
   `turnRequestSnapshotPayload` (`:425`) already hashes `system_prompt`, `tools`,
   `workspace_skill_ids`, prompt layers, `workspace_config_checksum` (`:456`) and
@@ -621,7 +621,7 @@ gets built:
    freshness bug (a newly connected integration is currently invisible for up to
    two minutes).
 4. **Phase 2's fingerprint could never match**, because it hashed `mcp_servers`,
-   which embeds the per-turn `x-hitechcloud-input-id` — so as drafted it was a net
+   which embeds the per-turn `x-holaboss-input-id` — so as drafted it was a net
    loss. Corrected (and kept, since the same root cause is a live bug in blocker
    1). Its registry also cannot live in ts-runner, a per-turn process.
 
@@ -644,7 +644,7 @@ lines, and `pi.ts` was ambiguous between two files.
 
 ## Live re-measurement — 5 real desktop turns, 2026-08-19
 
-`runtime.log` from a dev session (`hitechcloud-local-dev-onboard-4`), read straight
+`runtime.log` from a dev session (`holaboss-local-dev-onboard-4`), read straight
 off the `[ttft]` lines. Small n, so read the median loosely; the *shape* is what
 matters and it is unambiguous.
 
@@ -696,7 +696,7 @@ the flag is set.
 **Blocker 0 resolved via option 1 (invert it).** `runPiInProcess` lives in
 `runtime/harness-host/src/in-process.ts` and is re-exported from that package's
 entry, so pi resolves from harness-host's own `node_modules` — the install its
-`postinstall` patches. api-server declares `@hitechcloud/runtime-harness-host` and
+`postinstall` patches. api-server declares `@holaboss/runtime-harness-host` and
 calls across the boundary. One pi install, one patch set, as the option intended.
 
 Two things that fell out of doing it this way:
@@ -725,7 +725,7 @@ instant a terminal event lands, and post-terminal compaction now runs *here*
 rather than in a surviving grandchild. With no turn in flight the signal behaves
 exactly as before.
 
-**Packaging risk is contained.** If `@hitechcloud/runtime-harness-host` fails to
+**Packaging risk is contained.** If `@holaboss/runtime-harness-host` fails to
 resolve in a packaged build, the dynamic import throws and the path falls back to
 `defaultRunHarnessHost` with a warning — a rollout problem degrades to today's
 behaviour instead of burning the user's turn.

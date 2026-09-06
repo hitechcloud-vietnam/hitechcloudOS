@@ -1,15 +1,15 @@
-import "@hitechcloud/ui/styles.css"
+import "@holaboss/ui/styles.css"
 import "../app.css"
 
 import type { ReactNode } from "react"
 
 export function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" data-theme="hitechcloudos-light">
+    <html lang="en" data-theme="holaos-light">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>Slack messages — hitechcloudOS</title>
+        <title>Slack messages — holaOS</title>
       </head>
       <body className="antialiased">{children}</body>
     </html>

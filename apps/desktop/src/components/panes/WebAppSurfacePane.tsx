@@ -1,7 +1,7 @@
 // Hosts a web HolaApp (need-review et al.) as its own center-column pane. The
 // page is a remote web app served from `<WEB_APP_BASE_URL>/apps/<holaAppId>`,
 // rendered in a native Electron BrowserView managed by the main process — NOT
-// an iframe — so the host bridge (window.__hitechcloudHost) is available to it.
+// an iframe — so the host bridge (window.__holabossHost) is available to it.
 //
 // This pane is the renderer half: a thin header (title + close) plus a viewport
 // the native surface is positioned over (mirroring BrowserPane). The native

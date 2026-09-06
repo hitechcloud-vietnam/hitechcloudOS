@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import {
@@ -61,7 +61,7 @@ test("exchangeToken returns provider token for a valid grant and active binding"
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -154,7 +154,7 @@ test("exchangeToken throws connection_inactive when connection is expired", asyn
     connectionId: "conn-google-expired",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "expired@holaboss.ai",
+    accountLabel: "expired@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "expired",
@@ -202,7 +202,7 @@ test("exchangeToken throws token_unavailable when connection has no secret_ref",
     connectionId: "conn-google-no-secret",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "nosecret@holaboss.ai",
+    accountLabel: "nosecret@hitechcloud.vn",
     authMode: "manual_token",
     grantedScopes: ["gmail.send"],
     status: "active"
@@ -249,7 +249,7 @@ test("exchangeToken prefers app-specific binding over workspace default", async 
     connectionId: "conn-google-default",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "default@holaboss.ai",
+    accountLabel: "default@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -259,7 +259,7 @@ test("exchangeToken prefers app-specific binding over workspace default", async 
     connectionId: "conn-google-app",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "app@holaboss.ai",
+    accountLabel: "app@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -312,7 +312,7 @@ test("POST /api/v1/integrations/broker/token returns provider token via HTTP", a
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -392,7 +392,7 @@ test("exchangeToken rejects composio connections (must use /broker/proxy)", asyn
     connectionId: "conn-composio-gmail",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "composio@holaboss.ai",
+    accountLabel: "composio@hitechcloud.vn",
     authMode: "composio",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -442,7 +442,7 @@ test("exchangeToken throws for composio connection even without accountExternalI
     connectionId: "conn-composio-no-ext",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "composio-noext@holaboss.ai",
+    accountLabel: "composio-noext@hitechcloud.vn",
     authMode: "composio",
     grantedScopes: ["gmail.send"],
     status: "active",

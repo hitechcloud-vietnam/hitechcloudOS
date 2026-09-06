@@ -14,7 +14,7 @@
 // full tool surface — NOT a job for this reference dir.
 //
 // Per-provider Slack quirks (kept as inline comments at the call sites
-// they apply to; no separate SKILL.md — that conflicts with Holaboss's
+// they apply to; no separate SKILL.md — that conflicts with Hitechcloud's
 // real skill system at runtime/harnesses/src/embedded-skills/):
 //   - Slack returns errors as HTTP 200 + { ok:false, error:"..." }, not
 //     4xx/5xx. Every action checks body.ok via `slackUnwrap` below.

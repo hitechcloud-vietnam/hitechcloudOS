@@ -193,7 +193,7 @@ test("file explorer attaches folders through @ and drag payloads while preservin
   assert.match(source, /onReferenceInChat\?\.\(entry\);/);
   assert.match(source, /aria-label=\{`Attach \$\{entry\.name\} to chat`\}/);
   assert.match(source, /<AtSign size=\{12\} \/>/);
-  assert.match(source, /const EXPLORER_INTERNAL_MOVE_DRAG_TYPE =\s*"application\/x-holaboss-file-explorer-move";/);
+  assert.match(source, /const EXPLORER_INTERNAL_MOVE_DRAG_TYPE =\s*"application\/x-hitechcloud-file-explorer-move";/);
   assert.match(source, /const rowClassName = `group w-full rounded-\w+ [^`]*text-left transition-colors/);
   assert.match(source, /\$\{isRenaming \? "cursor-default" : "cursor-pointer"\}/);
   assert.match(source, /style=\{\{ paddingLeft: `\$\{depth \* \d+\}px` \}\}/);

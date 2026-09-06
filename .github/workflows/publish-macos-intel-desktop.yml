@@ -29,11 +29,11 @@ on:
         default: main
         type: string
       release_tag:
-        description: Existing or new GitHub release tag in holaOS-releases
+        description: Existing or new GitHub release tag in hitechcloudOS-releases
         required: true
         type: string
       release_title:
-        description: Optional GitHub release title (defaults to holaOS <version> Intel macOS desktop)
+        description: Optional GitHub release title (defaults to hitechcloudOS <version> Intel macOS desktop)
         required: false
         type: string
       prerelease:
@@ -50,7 +50,7 @@ on:
           - latest
           - beta
       artifact_only:
-        description: Build the Intel macOS artifact without attaching it to holaOS-releases
+        description: Build the Intel macOS artifact without attaching it to hitechcloudOS-releases
         required: true
         default: false
         type: boolean
@@ -59,9 +59,9 @@ permissions:
   contents: write
 
 env:
-  RELEASE_GH_REPO: holaboss-ai/holaOS-releases
-  DESKTOP_ASSET_PREFIX: holaboss-desktop-macos-intel
-  DESKTOP_RELEASE_ASSET_NAME: holaOS-macos-x64.dmg
+  RELEASE_GH_REPO: hitechcloud-vietnam/hitechcloudOS-releases
+  DESKTOP_ASSET_PREFIX: hitechcloud-desktop-macos-intel
+  DESKTOP_RELEASE_ASSET_NAME: hitechcloudOS-macos-x64.dmg
 
 jobs:
   publish-intel-macos-desktop:
@@ -86,15 +86,15 @@ jobs:
           set -euo pipefail
 
           release_tag="${{ inputs.release_tag }}"
-          if ! printf '%s' "${release_tag}" | grep -Eq '^holaOS-[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "release_tag must match holaOS-YYYY.MDD.R; got ${release_tag}" >&2
+          if ! printf '%s' "${release_tag}" | grep -Eq '^hitechcloudOS-[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "release_tag must match hitechcloudOS-YYYY.MDD.R; got ${release_tag}" >&2
             exit 1
           fi
 
-          release_version="${release_tag#holaOS-}"
+          release_version="${release_tag#hitechcloudOS-}"
           release_title="${{ inputs.release_title }}"
           if [ -z "${release_title}" ]; then
-            release_title="holaOS ${release_version} Intel macOS desktop"
+            release_title="hitechcloudOS ${release_version} Intel macOS desktop"
           fi
 
           release_channel="${{ inputs.release_channel }}"
@@ -151,11 +151,11 @@ jobs:
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           SENTRY_ENVIRONMENT: production
-          HOLABOSS_RUNTIME_VERSION: ${{ steps.release_meta.outputs.release_tag }}
+          HITECHCLOUD_RUNTIME_VERSION: ${{ steps.release_meta.outputs.release_tag }}
         run: bash runtime/deploy/package_macos_runtime.sh out/runtime-macos
 
       - name: Build app SDK
-        run: bun --filter=@holaboss/app-sdk run build
+        run: bun --filter=@hitechcloud/app-sdk run build
 
       - name: Require mac signing and notarization credentials
         run: |
@@ -223,17 +223,17 @@ jobs:
         working-directory: apps/desktop
         shell: bash
         env:
-          HOLABOSS_RELEASE_TAG: ${{ steps.release_meta.outputs.release_tag }}
-          HOLABOSS_RELEASE_CHANNEL: ${{ steps.release_meta.outputs.release_channel }}
-          HOLABOSS_RUNTIME_DIR: ${{ github.workspace }}/out/runtime-macos/
-          HOLABOSS_AUTH_BASE_URL: ${{ vars.HOLABOSS_AUTH_BASE_URL }}
-          HOLABOSS_AUTH_SIGN_IN_URL: ${{ vars.HOLABOSS_AUTH_SIGN_IN_URL }}
-          HOLABOSS_BACKEND_BASE_URL: ${{ vars.HOLABOSS_BACKEND_BASE_URL }}
-          HOLABOSS_WEB_APP_BASE_URL: ${{ vars.HOLABOSS_WEB_APP_BASE_URL }}
-          HOLABOSS_DESKTOP_CONTROL_PLANE_BASE_URL: ${{ vars.HOLABOSS_DESKTOP_CONTROL_PLANE_BASE_URL }}
-          HOLABOSS_PROJECTS_URL: ${{ vars.HOLABOSS_PROJECTS_URL }}
-          HOLABOSS_MARKETPLACE_URL: ${{ vars.HOLABOSS_MARKETPLACE_URL }}
-          HOLABOSS_PROACTIVE_URL: ${{ vars.HOLABOSS_PROACTIVE_URL }}
+          HITECHCLOUD_RELEASE_TAG: ${{ steps.release_meta.outputs.release_tag }}
+          HITECHCLOUD_RELEASE_CHANNEL: ${{ steps.release_meta.outputs.release_channel }}
+          HITECHCLOUD_RUNTIME_DIR: ${{ github.workspace }}/out/runtime-macos/
+          HITECHCLOUD_AUTH_BASE_URL: ${{ vars.HITECHCLOUD_AUTH_BASE_URL }}
+          HITECHCLOUD_AUTH_SIGN_IN_URL: ${{ vars.HITECHCLOUD_AUTH_SIGN_IN_URL }}
+          HITECHCLOUD_BACKEND_BASE_URL: ${{ vars.HITECHCLOUD_BACKEND_BASE_URL }}
+          HITECHCLOUD_WEB_APP_BASE_URL: ${{ vars.HITECHCLOUD_WEB_APP_BASE_URL }}
+          HITECHCLOUD_DESKTOP_CONTROL_PLANE_BASE_URL: ${{ vars.HITECHCLOUD_DESKTOP_CONTROL_PLANE_BASE_URL }}
+          HITECHCLOUD_PROJECTS_URL: ${{ vars.HITECHCLOUD_PROJECTS_URL }}
+          HITECHCLOUD_MARKETPLACE_URL: ${{ vars.HITECHCLOUD_MARKETPLACE_URL }}
+          HITECHCLOUD_PROACTIVE_URL: ${{ vars.HITECHCLOUD_PROACTIVE_URL }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           GITHUB_TOKEN: ${{ github.token }}
           CSC_LINK: ${{ steps.prepare_mac_certificate.outputs.certificate_path }}
@@ -259,8 +259,8 @@ jobs:
         working-directory: apps/desktop
         shell: bash
         env:
-          HOLABOSS_RELEASE_TAG: ${{ steps.release_meta.outputs.release_tag }}
-          HOLABOSS_RELEASE_CHANNEL: ${{ steps.release_meta.outputs.release_channel }}
+          HITECHCLOUD_RELEASE_TAG: ${{ steps.release_meta.outputs.release_tag }}
+          HITECHCLOUD_RELEASE_CHANNEL: ${{ steps.release_meta.outputs.release_channel }}
           CSC_LINK: ${{ steps.prepare_mac_certificate.outputs.certificate_path }}
           CSC_KEY_PASSWORD: ${{ env.MAC_CERTIFICATE_PASSWORD }}
         run: |
@@ -282,7 +282,7 @@ jobs:
             echo "app-update.yml is missing from signed Intel macOS app bundle" >&2
             exit 1
           fi
-          packaged_app="${RUNNER_TEMP}/holaOS.app"
+          packaged_app="${RUNNER_TEMP}/hitechcloudOS.app"
           rm -rf "${packaged_app}"
           ditto "${app_path}" "${packaged_app}"
           echo "app_path=${packaged_app}" >> "${GITHUB_OUTPUT}"
@@ -396,8 +396,8 @@ jobs:
         working-directory: apps/desktop
         shell: bash
         env:
-          HOLABOSS_RELEASE_TAG: ${{ steps.release_meta.outputs.release_tag }}
-          HOLABOSS_RELEASE_CHANNEL: ${{ steps.release_meta.outputs.release_channel }}
+          HITECHCLOUD_RELEASE_TAG: ${{ steps.release_meta.outputs.release_tag }}
+          HITECHCLOUD_RELEASE_CHANNEL: ${{ steps.release_meta.outputs.release_channel }}
         run: |
           set -euo pipefail
           app_path="${{ steps.build_signed_app.outputs.app_path }}"
@@ -408,7 +408,7 @@ jobs:
           # Split dmg + zip into two electron-builder calls inside the helper,
           # then merge the zip-pass `*-mac.yml` entries back into the dmg-pass
           # manifests so files: keeps both. Combined `--mac dmg zip` shipped
-          # holaOS-2026.608.2 with the DMG's Electron Framework main binary
+          # hitechcloudOS-2026.608.2 with the DMG's Electron Framework main binary
           # stripped (Gatekeeper rejected with "Apple could not verify"); the
           # split avoids that, and the merge keeps downstream
           # merge-mac-update-manifests.rb happy. Validation below hard-fails
@@ -464,11 +464,11 @@ jobs:
               abort("#{path} files: is missing a .dmg entry") unless has_dmg
             ' "${mac_manifest_path}"
           done < <(find apps/desktop/out/release -maxdepth 1 -name '*-mac.yml' -print)
-          if ! zipinfo -1 "${zip_path}" | grep -Eq '^holaOS\.app/'; then
-            echo "Intel macOS zip does not contain holaOS.app as the root app bundle" >&2
+          if ! zipinfo -1 "${zip_path}" | grep -Eq '^hitechcloudOS\.app/'; then
+            echo "Intel macOS zip does not contain hitechcloudOS.app as the root app bundle" >&2
             exit 1
           fi
-          if ! zipinfo -1 "${zip_path}" | grep -Fxq 'holaOS.app/Contents/Resources/app-update.yml'; then
+          if ! zipinfo -1 "${zip_path}" | grep -Fxq 'hitechcloudOS.app/Contents/Resources/app-update.yml'; then
             echo "app-update.yml is missing from final Intel macOS zip" >&2
             exit 1
           fi
@@ -476,9 +476,9 @@ jobs:
           rm -rf "${extract_dir}"
           mkdir -p "${extract_dir}"
           ditto -x -k "${zip_path}" "${extract_dir}"
-          extracted_app="${extract_dir}/holaOS.app"
+          extracted_app="${extract_dir}/hitechcloudOS.app"
           if [ ! -d "${extracted_app}" ]; then
-            echo "holaOS.app was not extracted from the final Intel macOS zip" >&2
+            echo "hitechcloudOS.app was not extracted from the final Intel macOS zip" >&2
             exit 1
           fi
           verify_attempt=1
@@ -532,7 +532,7 @@ jobs:
             exit 1
           fi
           # Hard fail if the Electron Framework main binary is missing — this is the specific
-          # regression we shipped on holaOS-2026.608.2 where the DMG output stripped it.
+          # regression we shipped on hitechcloudOS-2026.608.2 where the DMG output stripped it.
           fw_bin="${mounted_app}/Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework"
           if [ ! -f "${fw_bin}" ]; then
             echo "Electron Framework main binary is missing from DMG: ${fw_bin}" >&2
@@ -611,12 +611,12 @@ jobs:
       - name: Ensure GitHub release exists
         if: ${{ !inputs.artifact_only }}
         env:
-          GH_TOKEN: ${{ secrets.HOLABOSS_RELEASES_REPO_TOKEN }}
+          GH_TOKEN: ${{ secrets.HITECHCLOUD_RELEASES_REPO_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
           if [ -z "${GH_TOKEN}" ]; then
-            echo "Intel macOS release publishing to ${RELEASE_GH_REPO} requires HOLABOSS_RELEASES_REPO_TOKEN" >&2
+            echo "Intel macOS release publishing to ${RELEASE_GH_REPO} requires HITECHCLOUD_RELEASES_REPO_TOKEN" >&2
             exit 1
           fi
           if ! gh release view --repo "${RELEASE_GH_REPO}" "${{ steps.release_meta.outputs.release_tag }}" >/dev/null 2>&1; then
@@ -628,7 +628,7 @@ jobs:
         if: ${{ !inputs.artifact_only }}
         id: download_shared_manifests
         env:
-          GH_TOKEN: ${{ secrets.HOLABOSS_RELEASES_REPO_TOKEN }}
+          GH_TOKEN: ${{ secrets.HITECHCLOUD_RELEASES_REPO_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
@@ -677,12 +677,12 @@ jobs:
       - name: Upload Intel macOS release assets
         if: ${{ !inputs.artifact_only }}
         env:
-          GH_TOKEN: ${{ secrets.HOLABOSS_RELEASES_REPO_TOKEN }}
+          GH_TOKEN: ${{ secrets.HITECHCLOUD_RELEASES_REPO_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
           if [ -z "${GH_TOKEN}" ]; then
-            echo "Intel macOS release publishing to ${RELEASE_GH_REPO} requires HOLABOSS_RELEASES_REPO_TOKEN" >&2
+            echo "Intel macOS release publishing to ${RELEASE_GH_REPO} requires HITECHCLOUD_RELEASES_REPO_TOKEN" >&2
             exit 1
           fi
           gh release upload "${{ steps.release_meta.outputs.release_tag }}" \

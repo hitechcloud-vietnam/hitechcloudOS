@@ -15,8 +15,8 @@ export default defineConfig({
   resolve: {
     preserveSymlinks: false,
     alias: {
-      "@holaboss/ui/styles.css": `${nm("@holaboss/ui")}/dist/styles.css`,
-      "@holaboss/ui": nm("@holaboss/ui"),
+      "@hitechcloud/ui/styles.css": `${nm("@hitechcloud/ui")}/dist/styles.css`,
+      "@hitechcloud/ui": nm("@hitechcloud/ui"),
       "lucide-react": nm("lucide-react"),
       react: nm("react"),
       "react-dom": nm("react-dom"),
@@ -24,7 +24,7 @@ export default defineConfig({
     dedupe: ["react", "react-dom"],
   },
   optimizeDeps: {
-    include: ["@holaboss/ui", "lucide-react", "react", "react-dom", "react-dom/client"],
+    include: ["@hitechcloud/ui", "lucide-react", "react", "react-dom", "react-dom/client"],
   },
   root: here,
 })

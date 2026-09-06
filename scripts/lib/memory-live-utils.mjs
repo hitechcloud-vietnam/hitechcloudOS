@@ -26,8 +26,8 @@ const EVAL_SESSION_TABLES = [
 ];
 
 const DEFAULT_PROFILE_ROOT_CANDIDATES = [
-  path.join(os.homedir(), "Library/Application Support/holaboss-local-dev/sandbox-host/workspace"),
-  path.join(os.homedir(), "Library/Application Support/holaboss-local-o1/sandbox-host/workspace"),
+  path.join(os.homedir(), "Library/Application Support/hitechcloud-local-dev/sandbox-host/workspace"),
+  path.join(os.homedir(), "Library/Application Support/hitechcloud-local-o1/sandbox-host/workspace"),
 ];
 
 function optionValue(argv, flag) {
@@ -43,7 +43,7 @@ function hasFlag(argv, flag) {
 }
 
 export function parseCommonArgs(argv) {
-  const workspaceId = optionValue(argv, "--workspace-id") ?? process.env.HOLABOSS_WORKSPACE_ID ?? null;
+  const workspaceId = optionValue(argv, "--workspace-id") ?? process.env.HITECHCLOUD_WORKSPACE_ID ?? null;
   if (!workspaceId) {
     throw new Error("--workspace-id is required");
   }
@@ -69,7 +69,7 @@ export function resolveWorkspaceDir(params) {
   if (params.explicitWorkspaceDir) {
     return path.resolve(params.explicitWorkspaceDir);
   }
-  const explicitProfileRoot = process.env.HOLABOSS_PROFILE_ROOT?.trim();
+  const explicitProfileRoot = process.env.HITECHCLOUD_PROFILE_ROOT?.trim();
   const candidateRoots = explicitProfileRoot
     ? [explicitProfileRoot]
     : DEFAULT_PROFILE_ROOT_CANDIDATES;
@@ -83,7 +83,7 @@ export function resolveWorkspaceDir(params) {
 }
 
 export function runtimeDbPath(workspaceDir) {
-  return path.join(workspaceDir, ".holaboss", "state", "runtime.db");
+  return path.join(workspaceDir, ".hitechcloud", "state", "runtime.db");
 }
 
 export function controlPlaneDbPath(workspaceDir) {
@@ -91,23 +91,23 @@ export function controlPlaneDbPath(workspaceDir) {
 }
 
 export function interactionMemoryDir(workspaceDir) {
-  return path.join(workspaceDir, ".holaboss", "memory", "interaction");
+  return path.join(workspaceDir, ".hitechcloud", "memory", "interaction");
 }
 
 export function integrationMemoryDir(workspaceDir) {
-  return path.join(workspaceDir, ".holaboss", "memory", "integration");
+  return path.join(workspaceDir, ".hitechcloud", "memory", "integration");
 }
 
 export function semanticMemoryDir(workspaceDir) {
-  return path.join(workspaceDir, ".holaboss", "memory", "semantic");
+  return path.join(workspaceDir, ".hitechcloud", "memory", "semantic");
 }
 
 export function runtimeContinuityDir(workspaceDir) {
-  return path.join(workspaceDir, ".holaboss", "memory", "runtime");
+  return path.join(workspaceDir, ".hitechcloud", "memory", "runtime");
 }
 
 export function evolveMemoryDir(workspaceDir) {
-  return path.join(workspaceDir, ".holaboss", "memory", "evolve");
+  return path.join(workspaceDir, ".hitechcloud", "memory", "evolve");
 }
 
 export function agentsMdPath(workspaceDir) {
@@ -115,11 +115,11 @@ export function agentsMdPath(workspaceDir) {
 }
 
 export function piSessionsDir(workspaceDir) {
-  return path.join(workspaceDir, ".holaboss", "pi-sessions");
+  return path.join(workspaceDir, ".hitechcloud", "pi-sessions");
 }
 
 export function legacySessionHistoriesDir(workspaceDir) {
-  return path.join(workspaceDir, ".holaboss", "state", "legacy-session-histories");
+  return path.join(workspaceDir, ".hitechcloud", "state", "legacy-session-histories");
 }
 
 export function readTextIfExists(filePath) {

@@ -2,56 +2,56 @@
 
 Date: 2026-03-31
 Status: Draft
-Owner: Holaboss desktop/runtime
+Owner: Hitechcloud desktop/runtime
 
 ## Goal
 
-Define the long-term integration architecture for Holaboss apps when OAuth and connected-account lifecycle are backed by Composio.
+Define the long-term integration architecture for Hitechcloud apps when OAuth and connected-account lifecycle are backed by Composio.
 
-This design is optimized for the future state where Holaboss apps may be developed by third-party developers, not only by the core team.
+This design is optimized for the future state where Hitechcloud apps may be developed by third-party developers, not only by the core team.
 
 The design must satisfy four requirements:
 
 - developers can build provider-based apps without implementing OAuth
 - apps do not receive long-lived provider credentials by default
-- workspace and app binding remain a Holaboss concern
+- workspace and app binding remain a Hitechcloud concern
 - the app-facing contract stays stable even if the auth backend changes later
 
 ## Decision Summary
 
-Holaboss should adopt the following model:
+Hitechcloud should adopt the following model:
 
 - Composio is the source of truth for OAuth, refresh, and connected-account lifecycle
-- Holaboss is the source of truth for workspace/app binding, readiness, policy, and app runtime delivery
+- Hitechcloud is the source of truth for workspace/app binding, readiness, policy, and app runtime delivery
 - apps do not call Composio directly
 - apps do not receive long-lived provider access tokens or refresh tokens
-- apps call a Holaboss-owned runtime bridge API through a small app SDK
+- apps call a Hitechcloud-owned runtime bridge API through a small app SDK
 - the bridge exposes two primary primitives:
   - `execute` for high-level provider actions
   - `proxy` for provider-native HTTP access without exposing credentials
 
-This means the app-facing contract is a Holaboss platform contract, not a Composio contract.
+This means the app-facing contract is a Hitechcloud platform contract, not a Composio contract.
 
 ## Naming
 
-The app-facing SDK should not be named `holaboss-sdk`.
+The app-facing SDK should not be named `hitechcloud-sdk`.
 
 Recommended name:
 
 - product term: `HB Bridge`
-- package name: `@holaboss/bridge`
+- package name: `@hitechcloud/bridge`
 
 Why this name:
 
 - it is shorter and easier to type
 - it does not couple the SDK name to Composio
-- it describes the actual role of the package: the bridge between an app and Holaboss runtime capabilities
+- it describes the actual role of the package: the bridge between an app and Hitechcloud runtime capabilities
 - it leaves room for future non-integration capabilities under the same package
 
 Example imports:
 
 ```ts
-import { createIntegrationClient } from "@holaboss/bridge";
+import { createIntegrationClient } from "@hitechcloud/bridge";
 ```
 
 ## Why This Is The Right Shape
@@ -73,11 +73,11 @@ This is a poor default for a marketplace-oriented platform.
 If apps call Composio directly:
 
 - the Composio API key must be exposed or re-proxied anyway
-- workspace/app binding logic leaks outside Holaboss
+- workspace/app binding logic leaks outside Hitechcloud
 - error handling becomes vendor-specific
 - moving away from Composio later becomes much harder
 
-Composio should be an implementation detail behind Holaboss runtime.
+Composio should be an implementation detail behind Hitechcloud runtime.
 
 ### Why `proxy` is required in addition to `execute`
 
@@ -96,9 +96,9 @@ The architecture has five layers.
 
 ### 1. Connect Layer
 
-User clicks `Connect` in Holaboss.
+User clicks `Connect` in Hitechcloud.
 
-Holaboss runtime:
+Hitechcloud runtime:
 
 - maps `provider_id` to a Composio auth config
 - creates a Composio connected-account link
@@ -106,7 +106,7 @@ Holaboss runtime:
 - receives completion via callback or follow-up polling
 - stores the resulting connected account in the local runtime state
 
-Holaboss continues to own:
+Hitechcloud continues to own:
 
 - connection records
 - binding records
@@ -115,7 +115,7 @@ Holaboss continues to own:
 
 ### 2. Connection Layer
 
-Holaboss stores one local `integration_connection` record per connected account.
+Hitechcloud stores one local `integration_connection` record per connected account.
 
 For Composio-backed connections:
 
@@ -124,7 +124,7 @@ For Composio-backed connections:
 - `account_external_id = <connected_account_id>`
 - `secret_ref = null`
 
-The critical point is that Holaboss stores a reference to the remote credential, not the credential itself.
+The critical point is that Hitechcloud stores a reference to the remote credential, not the credential itself.
 
 ### 3. Binding Layer
 
@@ -136,17 +136,17 @@ They answer:
 - which app overrides the workspace default
 - which account should be selected when multiple accounts exist
 
-This must remain a Holaboss concern because it is application runtime policy, not OAuth policy.
+This must remain a Hitechcloud concern because it is application runtime policy, not OAuth policy.
 
 ### 4. Runtime Bridge Layer
 
 Apps receive only:
 
-- `HOLABOSS_INTEGRATION_BROKER_URL`
-- `HOLABOSS_APP_GRANT`
+- `HITECHCLOUD_INTEGRATION_BROKER_URL`
+- `HITECHCLOUD_APP_GRANT`
 - optional non-secret metadata such as selected connection id
 
-Apps then call the Holaboss bridge.
+Apps then call the Hitechcloud bridge.
 
 The bridge:
 
@@ -159,7 +159,7 @@ The bridge:
 
 ### 5. App SDK Layer
 
-Apps import a small developer-facing SDK from `@holaboss/bridge`.
+Apps import a small developer-facing SDK from `@hitechcloud/bridge`.
 
 The SDK should hide runtime transport details and expose a clean API.
 
@@ -188,7 +188,7 @@ declare function createIntegrationClient(provider: string): IntegrationClient;
 Example for a Gmail-based app:
 
 ```ts
-import { createIntegrationClient } from "@holaboss/bridge";
+import { createIntegrationClient } from "@hitechcloud/bridge";
 
 const gmail = createIntegrationClient("google");
 
@@ -205,7 +205,7 @@ Example for a typed helper:
 
 ```ts
 await gmail.execute("gmail.send_email", {
-  to: "owner@holaboss.ai",
+  to: "owner@hitechcloud.vn",
   subject: "Hello",
   body: "Hi"
 });
@@ -229,7 +229,7 @@ Request body:
   "provider": "google",
   "operation": "gmail.send_email",
   "input": {
-    "to": "owner@holaboss.ai",
+    "to": "owner@hitechcloud.vn",
     "subject": "Hello",
     "body": "Hi"
   }
@@ -418,10 +418,10 @@ Developers should be able to test app logic without connecting a live Google acc
 
 Even if Composio is the chosen backend now, the app-facing contract must not mention Composio.
 
-The bridge should depend on an internal provider-auth driver interface so that Holaboss can later support:
+The bridge should depend on an internal provider-auth driver interface so that Hitechcloud can later support:
 
 - Composio-backed auth for some providers
-- native Holaboss-managed auth for others
+- native Hitechcloud-managed auth for others
 - manual tokens for special cases
 
 The app contract should remain unchanged across those backend choices.
@@ -510,7 +510,7 @@ These questions still need explicit product and engineering decisions:
 
 Adopt `HB Bridge` as the app-facing runtime contract and keep Composio strictly behind the bridge.
 
-This gives Holaboss the right long-term platform properties:
+This gives Hitechcloud the right long-term platform properties:
 
 - safe by default
 - flexible enough for real apps

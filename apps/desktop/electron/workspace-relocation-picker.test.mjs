@@ -12,6 +12,6 @@ test("workspace relocation picker accepts both current and legacy identity marke
 
   assert.match(
     source,
-    /for \(const identityFilePath of \[\s*path\.join\(rootPath, "\.holaboss", "state", "workspace_id"\),\s*path\.join\(rootPath, "\.holaboss", "workspace_id"\),/s,
+    /for \(const identityFilePath of \[\s*path\.join\(rootPath, "\.hitechcloud", "state", "workspace_id"\),\s*path\.join\(rootPath, "\.hitechcloud", "workspace_id"\),/s,
   );
 });

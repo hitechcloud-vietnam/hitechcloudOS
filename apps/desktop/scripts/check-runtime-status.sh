@@ -4,8 +4,8 @@
 
 set -e
 
-DEFAULT_USER_DATA_DIR="${HOLABOSS_DESKTOP_USER_DATA_DIR:-holaboss-local-dev}"
-DATA_DIR="${HOLABOSS_DESKTOP_USER_DATA_PATH:-}"
+DEFAULT_USER_DATA_DIR="${HITECHCLOUD_DESKTOP_USER_DATA_DIR:-hitechcloud-local-dev}"
+DATA_DIR="${HITECHCLOUD_DESKTOP_USER_DATA_PATH:-}"
 if [ -z "$DATA_DIR" ]; then
   case "$(uname -s)" in
     Darwin)
@@ -26,7 +26,7 @@ SANDBOX_ROOT="$DATA_DIR/sandbox-host"
 RUNTIME_DB="$SANDBOX_ROOT/state/host-state.db"
 RUNTIME_CONFIG="$SANDBOX_ROOT/state/runtime-config.json"
 RUNTIME_LOG="$DATA_DIR/runtime.log"
-RUNTIME_PORT="${HOLABOSS_RUNTIME_API_PORT:-}"
+RUNTIME_PORT="${HITECHCLOUD_RUNTIME_API_PORT:-}"
 if [ -z "$RUNTIME_PORT" ]; then
   RUNTIME_PORT="$(
     DATA_DIR="$DATA_DIR" python3 - <<'PY'
@@ -73,7 +73,7 @@ if [ -f "$RUNTIME_CONFIG" ]; then
 import json
 with open('$RUNTIME_CONFIG') as f:
     d = json.load(f)
-h = d.get('holaboss', {})
+h = d.get('hitechcloud', {})
 print(f'  model_proxy_base_url: {h.get(\"model_proxy_base_url\", \"NOT SET\")}')
 print(f'  default_model:        {h.get(\"default_model\", \"NOT SET\")}')
 print(f'  user_id:              {h.get(\"user_id\", \"NOT SET\")}')
@@ -95,7 +95,7 @@ if [ -f "$RUNTIME_CONFIG" ]; then
 import json, subprocess
 with open('$RUNTIME_CONFIG') as f:
     d = json.load(f)
-h = d.get('holaboss', {})
+h = d.get('hitechcloud', {})
 base = h.get('model_proxy_base_url', '')
 token = h.get('auth_token', '')
 sid = h.get('sandbox_id', '')
@@ -107,8 +107,8 @@ url = f'{base}/openai/v1/chat/completions'
 r = subprocess.run([
     'curl', '-s', '-m', '10', url,
     '-H', f'X-API-Key: {token}',
-    '-H', f'X-Holaboss-Sandbox-Id: {sid}',
-    '-H', f'X-Holaboss-User-Id: {uid}',
+    '-H', f'X-Hitechcloud-Sandbox-Id: {sid}',
+    '-H', f'X-Hitechcloud-User-Id: {uid}',
     '-H', 'Content-Type: application/json',
     '-d', json.dumps({'model':'gpt-4o-mini','messages':[{'role':'user','content':'hi'}],'max_completion_tokens':5})
 ], capture_output=True, text=True)

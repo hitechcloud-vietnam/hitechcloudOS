@@ -8,7 +8,7 @@ import type {
   MemoryEntryType,
   MemoryVerificationPolicy,
   RuntimeStateStore,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 import yaml from "js-yaml";
 import { resolveMemoryFilePath } from "./workspace-bundle-paths.js";
 

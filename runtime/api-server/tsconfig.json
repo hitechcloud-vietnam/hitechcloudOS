@@ -5,8 +5,8 @@
     "moduleResolution": "Node16",
     "baseUrl": ".",
     "paths": {
-      "@holaboss/runtime-state-store": ["../state-store/src/index.ts"],
-      "@holaboss/runtime-channel-gateway": ["../channel-gateway/src/index.ts"]
+      "@hitechcloud/runtime-state-store": ["../state-store/src/index.ts"],
+      "@hitechcloud/runtime-channel-gateway": ["../channel-gateway/src/index.ts"]
     },
     "strict": true,
     "esModuleInterop": true,

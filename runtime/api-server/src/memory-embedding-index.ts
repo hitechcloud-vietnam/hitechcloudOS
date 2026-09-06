@@ -4,7 +4,7 @@ import type {
   MemoryEntryRecord,
   MemoryEmbeddingScopeBucket,
   RuntimeStateStore,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 import type { MemoryModelClientConfig } from "./memory-model-client.js";
 import { queryMemoryModelEmbedding } from "./memory-model-client.js";

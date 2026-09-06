@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import "@holaboss/editor/styles.css";
+import "@hitechcloud/editor/styles.css";
 import { recordLaunch } from "./lib/analytics/device-id";
 import { trackUmamiEvent } from "./lib/analytics/umami";
 

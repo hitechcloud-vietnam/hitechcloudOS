@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import type { OutputEventRecord, RuntimeStateStore, TurnResultRecord } from "@holaboss/runtime-state-store";
+import type { OutputEventRecord, RuntimeStateStore, TurnResultRecord } from "@hitechcloud/runtime-state-store";
 
 import {
   attachmentEvidenceFromTurnInput,
@@ -38,8 +38,8 @@ test("integrationToolEvidenceFromTurnArtifacts summarizes completed integration 
         sequence: 1,
         payload: {
           phase: "completed",
-          tool_name: "holaboss_composio.gmail_fetch_emails",
-          tool_id: "holaboss_composio.gmail_fetch_emails",
+          tool_name: "hitechcloud_composio.gmail_fetch_emails",
+          tool_id: "hitechcloud_composio.gmail_fetch_emails",
           error: false,
           result: {
             content: [
@@ -51,7 +51,7 @@ test("integrationToolEvidenceFromTurnArtifacts summarizes completed integration 
             details: {
               raw: {
                 _meta: {
-                  holaboss_integration_account: {
+                  hitechcloud_integration_account: {
                     provider_id: "gmail",
                     connected_account_id: "ca_gmail_primary",
                     account_namespace: "ops@example.com",
@@ -97,21 +97,21 @@ test("integrationToolEvidenceFromTurnArtifacts summarizes completed integration 
   assert.equal(entries[0]?.providerId, "gmail");
   assert.equal(entries[0]?.accountNamespace, "ops@example.com");
   assert.equal(entries[0]?.connectionId, "conn_gmail_primary");
-  assert.equal(entries[0]?.toolName, "holaboss_composio.gmail_fetch_emails");
+  assert.equal(entries[0]?.toolName, "hitechcloud_composio.gmail_fetch_emails");
   assert.equal(entries[0]?.callId, null);
   assert.equal(lines.length, 1);
   assert.match(
     lines[0] ?? "",
-    /\[gmail ops@example\.com\] holaboss_composio\.gmail_fetch_emails => Acme pricing review moved to Friday/,
+    /\[gmail ops@example\.com\] hitechcloud_composio\.gmail_fetch_emails => Acme pricing review moved to Friday/,
   );
 });
 
 test("attachmentEvidenceFromTurnInput summarizes attachment metadata and text previews", () => {
   const workspaceRoot = makeTempDir("hb-turn-artifacts-attachments-");
   const workspaceDir = path.join(workspaceRoot, "workspace-1");
-  fs.mkdirSync(path.join(workspaceDir, ".holaboss", "input-attachments", "batch-1"), { recursive: true });
+  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud", "input-attachments", "batch-1"), { recursive: true });
   fs.writeFileSync(
-    path.join(workspaceDir, ".holaboss", "input-attachments", "batch-1", "report.html"),
+    path.join(workspaceDir, ".hitechcloud", "input-attachments", "batch-1", "report.html"),
     "<html><body><h1>AWS budget alert</h1><p>Account 423623864703 exceeded the zero-spend threshold.</p></body></html>",
     "utf8",
   );
@@ -126,7 +126,7 @@ test("attachmentEvidenceFromTurnInput summarizes attachment metadata and text pr
             name: "report.html",
             mime_type: "text/html",
             size_bytes: 128,
-            workspace_path: ".holaboss/input-attachments/batch-1/report.html",
+            workspace_path: ".hitechcloud/input-attachments/batch-1/report.html",
           },
         ],
       },

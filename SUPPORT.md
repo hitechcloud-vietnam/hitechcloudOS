@@ -9,11 +9,11 @@ Good issue reports include:
 - exact command run
 - host platform
 - relevant logs or stack traces
-- whether the flow was local-only or connected to Holaboss services
+- whether the flow was local-only or connected to Hitechcloud services
 
-## Hosted Holaboss support
+## Hosted Hitechcloud support
 
-This repository is the OSS codebase. Hosted Holaboss account, billing, and service-operations support are separate from OSS code support.
+This repository is the OSS codebase. Hosted Hitechcloud account, billing, and service-operations support are separate from OSS code support.
 
 ## What works without login
 
@@ -21,8 +21,8 @@ This repository is the OSS codebase. Hosted Holaboss account, billing, and servi
 - local runtime packaging
 - local workspace/runtime flows
 
-## What may require Holaboss backend access
+## What may require Hitechcloud backend access
 
 - sign-in flows
 - hosted auth-backed product features
-- any backend-connected Holaboss services
+- any backend-connected Hitechcloud services

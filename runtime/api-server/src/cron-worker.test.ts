@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import { buildRuntimeApiServer } from "./app.js";
@@ -19,7 +19,7 @@ import {
 const tempDirs: string[] = [];
 const ORIGINAL_ENV = {
   HB_SANDBOX_ROOT: process.env.HB_SANDBOX_ROOT,
-  HOLABOSS_RUNTIME_CONFIG_PATH: process.env.HOLABOSS_RUNTIME_CONFIG_PATH,
+  HITECHCLOUD_RUNTIME_CONFIG_PATH: process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH,
 };
 
 afterEach(() => {
@@ -31,10 +31,10 @@ afterEach(() => {
   } else {
     process.env.HB_SANDBOX_ROOT = ORIGINAL_ENV.HB_SANDBOX_ROOT;
   }
-  if (ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH === undefined) {
-    delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+  if (ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH === undefined) {
+    delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   } else {
-    process.env.HOLABOSS_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH;
+    process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   }
 });
 

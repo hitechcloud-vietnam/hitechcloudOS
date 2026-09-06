@@ -1,4 +1,4 @@
-import { StatusDot } from "@holaboss/ui"
+import { StatusDot } from "@hitechcloud/ui"
 
 type Props = {
   state: "ready" | "needs_connect" | "needs_reauth" | "checking"

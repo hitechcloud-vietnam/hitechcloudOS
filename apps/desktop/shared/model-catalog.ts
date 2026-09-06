@@ -39,7 +39,7 @@ const OPENAI_GPT53_CODEX_THINKING_VALUES = [
 ] as const;
 
 export const PROVIDER_MODEL_CATALOG: ProviderModelCatalog = {
-  holaboss_model_proxy: {
+  hitechcloud_model_proxy: {
     source: "backend",
     models: [
       {
@@ -75,8 +75,8 @@ function normalizeProviderId(providerId: string): string {
   if (!normalized) {
     return "";
   }
-  if (normalized === "holaboss") {
-    return "holaboss_model_proxy";
+  if (normalized === "hitechcloud") {
+    return "hitechcloud_model_proxy";
   }
   return normalized;
 }
@@ -95,7 +95,7 @@ function cloneMetadata(entry: ModelCatalogEntry): ModelCatalogMetadata {
   };
 }
 
-function mappedHolabossProxyModelId(modelId: string): string | null {
+function mappedHitechcloudProxyModelId(modelId: string): string | null {
   const normalizedModelId = normalizeModelId(modelId);
   if (!normalizedModelId) {
     return null;
@@ -105,8 +105,8 @@ function mappedHolabossProxyModelId(modelId: string): string | null {
     const normalizedPrefix = prefix.trim().toLowerCase();
     if (
       normalizedPrefix === "openai" ||
-      normalizedPrefix === "holaboss" ||
-      normalizedPrefix === "holaboss_model_proxy"
+      normalizedPrefix === "hitechcloud" ||
+      normalizedPrefix === "hitechcloud_model_proxy"
     ) {
       return rest.trim();
     }
@@ -146,16 +146,16 @@ export function catalogMetadataForProviderModel(
     return cloneMetadata(exact);
   }
 
-  if (normalizeProviderId(providerId) !== "holaboss_model_proxy") {
+  if (normalizeProviderId(providerId) !== "hitechcloud_model_proxy") {
     return null;
   }
 
-  const fallbackModelId = mappedHolabossProxyModelId(modelId);
+  const fallbackModelId = mappedHitechcloudProxyModelId(modelId);
   if (!fallbackModelId) {
     return null;
   }
   const fallback = catalogEntryForProviderModel(
-    "holaboss_model_proxy",
+    "hitechcloud_model_proxy",
     fallbackModelId,
   );
   return fallback ? cloneMetadata(fallback) : null;

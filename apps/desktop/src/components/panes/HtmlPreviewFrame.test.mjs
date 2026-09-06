@@ -10,7 +10,7 @@ const sourcePath = path.join(__dirname, "HtmlPreviewFrame.tsx");
 test("html preview frame injects a click bridge into sandboxed srcDoc content", async () => {
   const source = await readFile(sourcePath, "utf8");
 
-  assert.match(source, /export const HTML_PREVIEW_LINK_MESSAGE_TYPE =\s*"holaboss:html-preview-link";/);
+  assert.match(source, /export const HTML_PREVIEW_LINK_MESSAGE_TYPE =\s*"hitechcloud:html-preview-link";/);
   assert.match(source, /const CONTENT_SECURITY_POLICY_META_PATTERN =/);
   assert.match(source, /const HTML_PREVIEW_CSP = \[/);
   assert.match(source, /const HTML_PREVIEW_BRIDGE = \[/);

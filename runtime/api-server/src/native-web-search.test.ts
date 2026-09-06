@@ -105,17 +105,17 @@ test("searchPublicWeb sends configured Exa API keys through hosted MCP query par
   assert.equal(url.searchParams.get("tools"), "web_search_exa");
 });
 
-test("searchPublicWeb fails closed for the Holaboss provider when no user is resolved", async (t) => {
-  // No runtime config → no user id. The Holaboss proxy path must refuse rather
+test("searchPublicWeb fails closed for the Hitechcloud provider when no user is resolved", async (t) => {
+  // No runtime config → no user id. The Hitechcloud proxy path must refuse rather
   // than fire an unattributed request (the backend now rejects OpenRouter-bound
-  // calls with no X-Holaboss-User-Id). Exa/BYO search (searchExa) is unaffected.
-  const previousConfigPath = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
-  delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+  // calls with no X-Hitechcloud-User-Id). Exa/BYO search (searchExa) is unaffected.
+  const previousConfigPath = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+  delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   t.after(() => {
     if (previousConfigPath === undefined) {
-      delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+      delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
     } else {
-      process.env.HOLABOSS_RUNTIME_CONFIG_PATH = previousConfigPath;
+      process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = previousConfigPath;
     }
   });
 
@@ -125,9 +125,9 @@ test("searchPublicWeb fails closed for the Holaboss provider when no user is res
       searchPublicWeb({
         query: "latest alpha 2026",
         numResults: 2,
-        providerId: "holaboss_search",
-        providerKind: "holaboss_search",
-        baseUrl: "https://api.holaboss.test/api/v1/search/web",
+        providerId: "hitechcloud_search",
+        providerKind: "hitechcloud_search",
+        baseUrl: "https://api.hitechcloud.test/api/v1/search/web",
         apiKey: "hb-search-key",
         fetchImpl: async () => {
           fetchCalled = true;
@@ -137,42 +137,42 @@ test("searchPublicWeb fails closed for the Holaboss provider when no user is res
           });
         },
       }),
-    /requires a signed-in Holaboss account/,
+    /requires a signed-in Hitechcloud account/,
   );
   // Must not have fired the request before failing closed.
   assert.equal(fetchCalled, false);
 });
 
 test("searchPublicWeb reads provider settings from runtime config", async (t) => {
-  const previousConfigPath = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
-  const tempDir = await mkdtemp(path.join(os.tmpdir(), "holaboss-search-"));
+  const previousConfigPath = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "hitechcloud-search-"));
   t.after(async () => {
     if (previousConfigPath === undefined) {
-      delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+      delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
     } else {
-      process.env.HOLABOSS_RUNTIME_CONFIG_PATH = previousConfigPath;
+      process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = previousConfigPath;
     }
     await rm(tempDir, { force: true, recursive: true });
   });
 
   const configPath = path.join(tempDir, "runtime-config.json");
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
   await writeFile(
     configPath,
     JSON.stringify({
-      control_plane_base_url: "https://api.holaboss.test",
+      control_plane_base_url: "https://api.hitechcloud.test",
       integrations: {
-        holaboss: {
+        hitechcloud: {
           auth_token: "runtime-search-key",
           user_id: "user-1",
           sandbox_id: "desktop:sandbox-1",
         },
       },
       web_search: {
-        provider: "holaboss_search",
+        provider: "hitechcloud_search",
         providers: {
-          holaboss_search: {
-            kind: "holaboss_search",
+          hitechcloud_search: {
+            kind: "hitechcloud_search",
           },
         },
       },
@@ -194,49 +194,49 @@ test("searchPublicWeb reads provider settings from runtime config", async (t) =>
     },
   });
 
-  assert.equal(result.providerId, "holaboss_search");
+  assert.equal(result.providerId, "hitechcloud_search");
   assert.equal(result.text, "runtime result");
-  assert.equal(requests[0]?.url, "https://api.holaboss.test/api/v1/search/web");
+  assert.equal(requests[0]?.url, "https://api.hitechcloud.test/api/v1/search/web");
   assert.deepEqual(requests[0]?.init?.headers, {
     accept: "application/json",
     "content-type": "application/json",
     authorization: "Bearer runtime-search-key",
     "x-api-key": "runtime-search-key",
-    "X-Holaboss-User-Id": "user-1",
-    "X-Holaboss-Sandbox-Id": "desktop:sandbox-1",
+    "X-Hitechcloud-User-Id": "user-1",
+    "X-Hitechcloud-Sandbox-Id": "desktop:sandbox-1",
   });
 });
 
-test("searchPublicWeb derives local Holaboss search URL from model proxy config", async (t) => {
-  const previousConfigPath = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
-  const tempDir = await mkdtemp(path.join(os.tmpdir(), "holaboss-search-"));
+test("searchPublicWeb derives local Hitechcloud search URL from model proxy config", async (t) => {
+  const previousConfigPath = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "hitechcloud-search-"));
   t.after(async () => {
     if (previousConfigPath === undefined) {
-      delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+      delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
     } else {
-      process.env.HOLABOSS_RUNTIME_CONFIG_PATH = previousConfigPath;
+      process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = previousConfigPath;
     }
     await rm(tempDir, { force: true, recursive: true });
   });
 
   const configPath = path.join(tempDir, "runtime-config.json");
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
   await writeFile(
     configPath,
     JSON.stringify({
       model_proxy_base_url: "http://127.0.0.1:3060/api/v1/model-proxy",
       integrations: {
-        holaboss: {
+        hitechcloud: {
           auth_token: "runtime-search-key",
           user_id: "user-1",
           sandbox_id: "desktop:sandbox-1",
         },
       },
       web_search: {
-        provider: "holaboss_search",
+        provider: "hitechcloud_search",
         providers: {
-          holaboss_search: {
-            kind: "holaboss_search",
+          hitechcloud_search: {
+            kind: "hitechcloud_search",
           },
         },
       },
@@ -258,7 +258,7 @@ test("searchPublicWeb derives local Holaboss search URL from model proxy config"
     },
   });
 
-  assert.equal(result.providerId, "holaboss_search");
+  assert.equal(result.providerId, "hitechcloud_search");
   assert.equal(result.text, "runtime result");
   assert.equal(requests[0]?.url, "http://127.0.0.1:3060/api/v1/search/web");
   assert.deepEqual(requests[0]?.init?.headers, {
@@ -266,34 +266,34 @@ test("searchPublicWeb derives local Holaboss search URL from model proxy config"
     "content-type": "application/json",
     authorization: "Bearer runtime-search-key",
     "x-api-key": "runtime-search-key",
-    "X-Holaboss-User-Id": "user-1",
-    "X-Holaboss-Sandbox-Id": "desktop:sandbox-1",
+    "X-Hitechcloud-User-Id": "user-1",
+    "X-Hitechcloud-Sandbox-Id": "desktop:sandbox-1",
   });
 });
 
-test("searchPublicWeb falls back to Exa when stale Holaboss search config has no managed binding", async (t) => {
-  const previousConfigPath = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
-  const tempDir = await mkdtemp(path.join(os.tmpdir(), "holaboss-search-"));
+test("searchPublicWeb falls back to Exa when stale Hitechcloud search config has no managed binding", async (t) => {
+  const previousConfigPath = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "hitechcloud-search-"));
   t.after(async () => {
     if (previousConfigPath === undefined) {
-      delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+      delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
     } else {
-      process.env.HOLABOSS_RUNTIME_CONFIG_PATH = previousConfigPath;
+      process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = previousConfigPath;
     }
     await rm(tempDir, { force: true, recursive: true });
   });
 
   const configPath = path.join(tempDir, "runtime-config.json");
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
   await writeFile(
     configPath,
     JSON.stringify({
       control_plane_base_url: "https://api.imerchstaging.com/gateway/sandbox",
       web_search: {
-        provider: "holaboss_search",
+        provider: "hitechcloud_search",
         providers: {
-          holaboss_search: {
-            kind: "holaboss_search",
+          hitechcloud_search: {
+            kind: "hitechcloud_search",
           },
           exa: {
             kind: "exa_hosted_mcp",
@@ -326,37 +326,37 @@ test("searchPublicWeb falls back to Exa when stale Holaboss search config has no
   assert.equal(requests[0]?.url, "https://mcp.exa.ai/mcp");
 });
 
-test("searchPublicWeb preserves sandbox gateway prefixes when deriving Holaboss search URL from model proxy config", async (t) => {
-  const previousConfigPath = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
-  const tempDir = await mkdtemp(path.join(os.tmpdir(), "holaboss-search-"));
+test("searchPublicWeb preserves sandbox gateway prefixes when deriving Hitechcloud search URL from model proxy config", async (t) => {
+  const previousConfigPath = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "hitechcloud-search-"));
   t.after(async () => {
     if (previousConfigPath === undefined) {
-      delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+      delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
     } else {
-      process.env.HOLABOSS_RUNTIME_CONFIG_PATH = previousConfigPath;
+      process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = previousConfigPath;
     }
     await rm(tempDir, { force: true, recursive: true });
   });
 
   const configPath = path.join(tempDir, "runtime-config.json");
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
   await writeFile(
     configPath,
     JSON.stringify({
       model_proxy_base_url:
         "https://api.imerchstaging.com/gateway/sandbox/api/v1/model-proxy",
       integrations: {
-        holaboss: {
+        hitechcloud: {
           auth_token: "runtime-search-key",
           user_id: "user-1",
           sandbox_id: "desktop:sandbox-1",
         },
       },
       web_search: {
-        provider: "holaboss_search",
+        provider: "hitechcloud_search",
         providers: {
-          holaboss_search: {
-            kind: "holaboss_search",
+          hitechcloud_search: {
+            kind: "hitechcloud_search",
           },
         },
       },
@@ -378,7 +378,7 @@ test("searchPublicWeb preserves sandbox gateway prefixes when deriving Holaboss 
     },
   });
 
-  assert.equal(result.providerId, "holaboss_search");
+  assert.equal(result.providerId, "hitechcloud_search");
   assert.equal(result.text, "gateway result");
   assert.equal(
     requests[0]?.url,
@@ -386,26 +386,26 @@ test("searchPublicWeb preserves sandbox gateway prefixes when deriving Holaboss 
   );
 });
 
-test("searchPublicWeb maps local control plane URL to Holaboss search service", async (t) => {
-  const previousConfigPath = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
-  const tempDir = await mkdtemp(path.join(os.tmpdir(), "holaboss-search-"));
+test("searchPublicWeb maps local control plane URL to Hitechcloud search service", async (t) => {
+  const previousConfigPath = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "hitechcloud-search-"));
   t.after(async () => {
     if (previousConfigPath === undefined) {
-      delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+      delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
     } else {
-      process.env.HOLABOSS_RUNTIME_CONFIG_PATH = previousConfigPath;
+      process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = previousConfigPath;
     }
     await rm(tempDir, { force: true, recursive: true });
   });
 
   const configPath = path.join(tempDir, "runtime-config.json");
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
   await writeFile(
     configPath,
     JSON.stringify({
       control_plane_base_url: "http://127.0.0.1:3060",
       integrations: {
-        holaboss: {
+        hitechcloud: {
           auth_token: "runtime-search-key",
           user_id: "user-1",
           sandbox_id: "desktop:sandbox-1",
@@ -432,26 +432,26 @@ test("searchPublicWeb maps local control plane URL to Holaboss search service", 
   assert.equal(requests[0]?.url, "http://127.0.0.1:3060/api/v1/search/web");
 });
 
-test("searchPublicWeb explicit Holaboss provider inherits runtime binding", async (t) => {
-  const previousConfigPath = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
-  const tempDir = await mkdtemp(path.join(os.tmpdir(), "holaboss-search-"));
+test("searchPublicWeb explicit Hitechcloud provider inherits runtime binding", async (t) => {
+  const previousConfigPath = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "hitechcloud-search-"));
   t.after(async () => {
     if (previousConfigPath === undefined) {
-      delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+      delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
     } else {
-      process.env.HOLABOSS_RUNTIME_CONFIG_PATH = previousConfigPath;
+      process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = previousConfigPath;
     }
     await rm(tempDir, { force: true, recursive: true });
   });
 
   const configPath = path.join(tempDir, "runtime-config.json");
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
   await writeFile(
     configPath,
     JSON.stringify({
       model_proxy_base_url: "http://127.0.0.1:3060/api/v1/model-proxy",
       integrations: {
-        holaboss: {
+        hitechcloud: {
           auth_token: "runtime-search-key",
           user_id: "user-1",
           sandbox_id: "desktop:sandbox-1",
@@ -466,7 +466,7 @@ test("searchPublicWeb explicit Holaboss provider inherits runtime binding", asyn
   }> = [];
   await searchPublicWeb({
     query: "runtime configured search",
-    providerKind: "holaboss_search",
+    providerKind: "hitechcloud_search",
     fetchImpl: async (input, init) => {
       requests.push({ url: String(input), init });
       return new Response(JSON.stringify({ text: "runtime result" }), {
@@ -482,31 +482,31 @@ test("searchPublicWeb explicit Holaboss provider inherits runtime binding", asyn
     "content-type": "application/json",
     authorization: "Bearer runtime-search-key",
     "x-api-key": "runtime-search-key",
-    "X-Holaboss-User-Id": "user-1",
-    "X-Holaboss-Sandbox-Id": "desktop:sandbox-1",
+    "X-Hitechcloud-User-Id": "user-1",
+    "X-Hitechcloud-Sandbox-Id": "desktop:sandbox-1",
   });
 });
 
-test("searchPublicWeb preserves sandbox gateway prefixes when deriving Holaboss search URL from control plane config", async (t) => {
-  const previousConfigPath = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
-  const tempDir = await mkdtemp(path.join(os.tmpdir(), "holaboss-search-"));
+test("searchPublicWeb preserves sandbox gateway prefixes when deriving Hitechcloud search URL from control plane config", async (t) => {
+  const previousConfigPath = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "hitechcloud-search-"));
   t.after(async () => {
     if (previousConfigPath === undefined) {
-      delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+      delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
     } else {
-      process.env.HOLABOSS_RUNTIME_CONFIG_PATH = previousConfigPath;
+      process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = previousConfigPath;
     }
     await rm(tempDir, { force: true, recursive: true });
   });
 
   const configPath = path.join(tempDir, "runtime-config.json");
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
   await writeFile(
     configPath,
     JSON.stringify({
       control_plane_base_url: "https://api.imerchstaging.com/gateway/sandbox",
       integrations: {
-        holaboss: {
+        hitechcloud: {
           auth_token: "runtime-search-key",
           user_id: "user-1",
           sandbox_id: "desktop:sandbox-1",
@@ -533,7 +533,7 @@ test("searchPublicWeb preserves sandbox gateway prefixes when deriving Holaboss 
     },
   });
 
-  assert.equal(result.providerId, "holaboss_search");
+  assert.equal(result.providerId, "hitechcloud_search");
   assert.equal(result.text, "gateway control plane result");
   assert.equal(
     requests[0]?.url,

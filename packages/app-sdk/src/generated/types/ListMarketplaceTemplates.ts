@@ -110,7 +110,7 @@ export type ListMarketplaceTemplates200 = {
         verified?: boolean;
         display_name?: (string | null | null);
         /**
-         * @default "Holaboss"
+         * @default "Hitechcloud"
          * @type string | undefined
         */
         author_name?: string;

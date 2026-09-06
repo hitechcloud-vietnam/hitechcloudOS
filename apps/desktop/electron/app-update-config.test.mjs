@@ -19,8 +19,8 @@ const writeAppUpdateConfigPath = path.join(
 );
 
 test("write-app-update-config writes the packaged github updater metadata", async () => {
-  const tempRoot = await mkdtemp(path.join(os.tmpdir(), "holaboss-app-update-"));
-  const appBundlePath = path.join(tempRoot, "holaOS.app");
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), "hitechcloud-app-update-"));
+  const appBundlePath = path.join(tempRoot, "hitechcloudOS.app");
   const resourcesPath = path.join(appBundlePath, "Contents", "Resources");
   await mkdir(resourcesPath, { recursive: true });
 
@@ -36,9 +36,9 @@ test("write-app-update-config writes the packaged github updater metadata", asyn
     const updaterConfig = YAML.parse(writtenConfig);
 
     assert.equal(updaterConfig.provider, "github");
-    assert.equal(updaterConfig.owner, "holaboss-ai");
-    assert.equal(updaterConfig.repo, "holaOS-releases");
-    assert.equal(updaterConfig.updaterCacheDirName, "holaboss-local-updater");
+    assert.equal(updaterConfig.owner, "hitechcloud-vietnam");
+    assert.equal(updaterConfig.repo, "hitechcloudOS-releases");
+    assert.equal(updaterConfig.updaterCacheDirName, "hitechcloud-local-updater");
     assert.equal(updaterConfig.channel, undefined);
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
@@ -46,8 +46,8 @@ test("write-app-update-config writes the packaged github updater metadata", asyn
 });
 
 test("write-app-update-config includes the beta channel when requested", async () => {
-  const tempRoot = await mkdtemp(path.join(os.tmpdir(), "holaboss-app-update-beta-"));
-  const appBundlePath = path.join(tempRoot, "holaOS.app");
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), "hitechcloud-app-update-beta-"));
+  const appBundlePath = path.join(tempRoot, "hitechcloudOS.app");
   const resourcesPath = path.join(appBundlePath, "Contents", "Resources");
   await mkdir(resourcesPath, { recursive: true });
 
@@ -56,7 +56,7 @@ test("write-app-update-config includes the beta channel when requested", async (
       cwd: desktopRoot,
       env: {
         ...process.env,
-        HOLABOSS_RELEASE_CHANNEL: "beta",
+        HITECHCLOUD_RELEASE_CHANNEL: "beta",
       },
     });
 
@@ -67,10 +67,10 @@ test("write-app-update-config includes the beta channel when requested", async (
     const updaterConfig = YAML.parse(writtenConfig);
 
     assert.equal(updaterConfig.provider, "github");
-    assert.equal(updaterConfig.owner, "holaboss-ai");
-    assert.equal(updaterConfig.repo, "holaOS-releases");
+    assert.equal(updaterConfig.owner, "hitechcloud-vietnam");
+    assert.equal(updaterConfig.repo, "hitechcloudOS-releases");
     assert.equal(updaterConfig.channel, "beta");
-    assert.equal(updaterConfig.updaterCacheDirName, "holaboss-local-updater");
+    assert.equal(updaterConfig.updaterCacheDirName, "hitechcloud-local-updater");
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }

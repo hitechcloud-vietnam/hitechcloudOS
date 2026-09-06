@@ -61,7 +61,7 @@
 
 /**
  * Codes our quota gate emits (model_proxy/quota.py). Emitted only by that gate,
- * which the BYO path never reaches — so one of these is proof that the Holaboss
+ * which the BYO path never reaches — so one of these is proof that the Hitechcloud
  * wallet, not the user's own provider, blocked the run.
  */
 const WALLET_BLOCK_MESSAGES = {

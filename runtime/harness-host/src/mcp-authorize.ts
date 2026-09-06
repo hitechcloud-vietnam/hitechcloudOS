@@ -62,7 +62,7 @@ export async function authorizeMcpServerOAuth(
     params.timeoutMs && params.timeoutMs > 0 ? params.timeoutMs : DEFAULT_AUTHORIZE_TIMEOUT_MS;
   const definition: ServerDefinition = {
     name: serverId,
-    description: `Holaboss MCP server ${serverId}`,
+    description: `Hitechcloud MCP server ${serverId}`,
     command: {
       kind: "http",
       url: parsedUrl,
@@ -109,7 +109,7 @@ export async function authorizeMcpServerOAuth(
     runtime = await createRuntime({
       servers: [definition],
       rootDir: params.workspaceDir,
-      clientInfo: { name: "holaboss-desktop-authorize", version: "1" },
+      clientInfo: { name: "hitechcloud-desktop-authorize", version: "1" },
       oauthTimeoutMs,
     });
     // autoAuthorize:true launches the interactive browser consent flow, persists

@@ -50,9 +50,9 @@ test("Pi desktop browser tools execute through the runtime capability API", asyn
     requests.push({
       method: String(init?.method ?? "GET"),
       url,
-      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-workspace-id"] ?? ""),
-      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-session-id"] ?? ""),
-      browserSpace: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-browser-space"] ?? ""),
+      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-workspace-id"] ?? ""),
+      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-session-id"] ?? ""),
+      browserSpace: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-browser-space"] ?? ""),
       body,
     });
     if (url.endsWith("/api/v1/capabilities/browser/tools/browser_get_state")) {
@@ -316,8 +316,8 @@ test("Pi desktop browser tools fall back to node http when no fetch implementati
         requests.push({
           method: request.method ?? "GET",
           url,
-          workspaceId: String(request.headers["x-holaboss-workspace-id"] ?? ""),
-          sessionId: String(request.headers["x-holaboss-session-id"] ?? ""),
+          workspaceId: String(request.headers["x-hitechcloud-workspace-id"] ?? ""),
+          sessionId: String(request.headers["x-hitechcloud-session-id"] ?? ""),
           body,
         });
         response.writeHead(200, { "content-type": "application/json; charset=utf-8" });
@@ -383,8 +383,8 @@ test("Pi desktop browser context-click tool forwards media targeting parameters"
     requests.push({
       method: String(init?.method ?? "GET"),
       url,
-      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-workspace-id"] ?? ""),
-      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-holaboss-session-id"] ?? ""),
+      workspaceId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-workspace-id"] ?? ""),
+      sessionId: String((init?.headers as Record<string, string> | undefined)?.["x-hitechcloud-session-id"] ?? ""),
       body,
     });
     if (url.endsWith("/api/v1/capabilities/browser/tools/browser_context_click")) {
@@ -459,7 +459,7 @@ test("browser_navigate offers an optional browser_profile, resolves it by name, 
       url,
       profileHeader: String(
         (init?.headers as Record<string, string> | undefined)?.[
-          "x-holaboss-browser-profile-id"
+          "x-hitechcloud-browser-profile-id"
         ] ?? "",
       ),
       body: init?.body ? String(init.body) : "",

@@ -86,8 +86,8 @@ Work:
 
 ## Validation
 
-- `bun --filter=@holaboss/runtime-state-store run typecheck`
-- `bun --filter=@holaboss/runtime-api-server run typecheck`
+- `bun --filter=@hitechcloud/runtime-state-store run typecheck`
+- `bun --filter=@hitechcloud/runtime-api-server run typecheck`
 - `cd runtime/state-store && ./node_modules/.bin/tsx --test --test-force-exit src/store.test.ts`
 - `cd runtime/api-server && ./node_modules/.bin/tsx --test --test-force-exit src/agent-runtime-config.test.ts src/claimed-input-executor.test.ts src/ts-runner.test.ts src/app.test.ts`
 

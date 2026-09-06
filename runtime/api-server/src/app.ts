@@ -38,7 +38,7 @@ import {
   utcNowIso,
   type WorkspaceProjectRecord,
   type WorkspaceRecord
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 import { recordDurableMemoryFromInput } from "./turn-memory-writeback.js";
 import {
   mountRemoteApi,
@@ -54,8 +54,8 @@ import {
   type WorkspaceCapability as RemoteWorkspaceCapability,
   type RemoteApiLogger,
   type RemoteApiContext,
-} from "@holaboss/remote-api/server";
-import { mountRemoteApiMcp } from "@holaboss/remote-api/mcp";
+} from "@hitechcloud/remote-api/server";
+import { mountRemoteApiMcp } from "@hitechcloud/remote-api/mcp";
 import { mountRuntimeToolsMcp } from "./runtime-tools-mcp.js";
 import { resolveProductRuntimeConfig } from "./runtime-config.js";
 
@@ -88,7 +88,7 @@ import {
   validateSlackTokens,
   validateTelegramToken,
   validateWecomCredentials,
-} from "@holaboss/runtime-channel-gateway";
+} from "@hitechcloud/runtime-channel-gateway";
 import { createChannelRuntimePort } from "./channels/runtime-port.js";
 import {
   createDingtalkConnection,
@@ -445,13 +445,13 @@ function optionalString(value: unknown): string | undefined {
   return typeof value === "string" ? value : undefined;
 }
 
-// When the runtime is bound to a specific user via HOLABOSS_USER_ID
+// When the runtime is bound to a specific user via HITECHCLOUD_USER_ID
 // (managed/sandbox mode), reject mismatching owner_user_id values from
 // request bodies so a caller can't write integrations under another user's
 // identity. In OSS local mode (env unset) accept whatever the caller
 // provides for backwards compatibility with single-user installs.
 function resolveOwnerUserId(provided: unknown): { ok: true; userId: string } | { ok: false; error: string } {
-  const expected = (process.env.HOLABOSS_USER_ID ?? "").trim() || null;
+  const expected = (process.env.HITECHCLOUD_USER_ID ?? "").trim() || null;
   const trimmed = typeof provided === "string" ? provided.trim() : "";
   if (expected) {
     if (!trimmed || trimmed === "local") {
@@ -629,7 +629,7 @@ function capabilityWorkspaceId(params: {
   body?: Record<string, unknown> | null;
 }): string {
   return (
-    headerString(params.headers, "x-holaboss-workspace-id") ||
+    headerString(params.headers, "x-hitechcloud-workspace-id") ||
     optionalString(params.query?.workspace_id) ||
     optionalString(params.body?.workspace_id) ||
     ""
@@ -654,7 +654,7 @@ function optionalCapabilityActorId(params: {
   body?: Record<string, unknown> | null;
 }): string | undefined {
   return (
-    headerString(params.headers, "x-holaboss-actor") ||
+    headerString(params.headers, "x-hitechcloud-actor") ||
     optionalString(params.query?.actor) ||
     optionalString(params.body?.actor) ||
     undefined
@@ -685,7 +685,7 @@ function capabilitySessionId(params: {
   body?: Record<string, unknown> | null;
 }): string {
   return (
-    headerString(params.headers, "x-holaboss-session-id") ||
+    headerString(params.headers, "x-hitechcloud-session-id") ||
     optionalString(params.query?.session_id) ||
     optionalString(params.body?.session_id) ||
     ""
@@ -698,7 +698,7 @@ function capabilityBrowserSpace(params: {
   body?: Record<string, unknown> | null;
 }): "agent" | null {
   const value =
-    headerString(params.headers, "x-holaboss-browser-space") ||
+    headerString(params.headers, "x-hitechcloud-browser-space") ||
     optionalString(params.query?.browser_space) ||
     optionalString(params.body?.browser_space) ||
     "";
@@ -711,7 +711,7 @@ function capabilityBrowserProfileId(params: {
   body?: Record<string, unknown> | null;
 }): string {
   return (
-    headerString(params.headers, "x-holaboss-browser-profile-id") ||
+    headerString(params.headers, "x-hitechcloud-browser-profile-id") ||
     optionalString(params.query?.browser_profile_id) ||
     optionalString(params.body?.browser_profile_id) ||
     ""
@@ -724,7 +724,7 @@ function capabilitySelectedModel(params: {
   body?: Record<string, unknown> | null;
 }): string {
   return (
-    headerString(params.headers, "x-holaboss-selected-model") ||
+    headerString(params.headers, "x-hitechcloud-selected-model") ||
     optionalString(params.query?.selected_model) ||
     optionalString(params.body?.selected_model) ||
     ""
@@ -737,7 +737,7 @@ function capabilityInputId(params: {
   body?: Record<string, unknown> | null;
 }): string {
   return (
-    headerString(params.headers, "x-holaboss-input-id") ||
+    headerString(params.headers, "x-hitechcloud-input-id") ||
     optionalString(params.query?.input_id) ||
     optionalString(params.body?.input_id) ||
     ""
@@ -2198,7 +2198,7 @@ function reconcileFileBackedOutputs(
 }
 
 function isPreservedWorkspaceEntryForReplaceExisting(entryName: string): boolean {
-  return entryName === ".holaboss" || entryName === "workspace.json";
+  return entryName === ".hitechcloud" || entryName === "workspace.json";
 }
 
 function workspaceReplaceExistingWouldDeleteEntries(workspaceDir: string): boolean {
@@ -2380,13 +2380,13 @@ export function isAllowedArchivePath(p: string): boolean {
   const abs = path.resolve(p);
   const candidates: string[] = [];
   candidates.push(path.resolve(os.tmpdir()));
-  const envOverride = process.env.HOLABOSS_APP_ARCHIVE_DIR;
+  const envOverride = process.env.HITECHCLOUD_APP_ARCHIVE_DIR;
   if (envOverride && envOverride.trim().length > 0) {
     candidates.push(path.resolve(envOverride.trim()));
   }
   const home = process.env.HOME || process.env.USERPROFILE;
   if (home && home.trim().length > 0) {
-    candidates.push(path.resolve(home.trim(), ".holaboss", "downloads"));
+    candidates.push(path.resolve(home.trim(), ".hitechcloud", "downloads"));
   }
   for (const root of candidates) {
     if (abs === root || abs.startsWith(root + path.sep)) {
@@ -2409,7 +2409,7 @@ export function isAllowedArchiveUrl(url: string): boolean {
   }
 
   const defaultPrefixes: string[] = [];
-  const envOverride = process.env.HOLABOSS_APP_ARCHIVE_URL_ALLOWLIST;
+  const envOverride = process.env.HITECHCLOUD_APP_ARCHIVE_URL_ALLOWLIST;
   const extraPrefixes = envOverride
     ? envOverride.split(",").map((p) => p.trim()).filter((p) => p.length > 0)
     : [];
@@ -2443,7 +2443,7 @@ export function isAllowedArchiveUrl(url: string): boolean {
 }
 
 async function downloadArchiveToTemp(url: string, appId: string): Promise<string> {
-  const dir = path.join(os.tmpdir(), "holaboss-app-archives");
+  const dir = path.join(os.tmpdir(), "hitechcloud-app-archives");
   fs.mkdirSync(dir, { recursive: true });
   const filePath = path.join(dir, `${appId}-${Date.now()}.tar.gz`);
 
@@ -2644,9 +2644,9 @@ async function runAppSetup(params: {
   };
 }): Promise<void> {
   const appDir = path.join(params.workspaceDir, "apps", params.appId);
-  // Per-app log dir: <appDir>/.holaboss/logs. Survives across runtime
+  // Per-app log dir: <appDir>/.hitechcloud/logs. Survives across runtime
   // restarts; timestamped + "latest" mirror for easy tail by UI/CLI.
-  const logDir = path.join(appDir, ".holaboss", "logs");
+  const logDir = path.join(appDir, ".hitechcloud", "logs");
   const runTimestamp = new Date().toISOString().replace(/[:.]/g, "-");
   const logPath = path.join(logDir, `setup-${runTimestamp}.log`);
   const latestLogPath = path.join(logDir, "setup.latest.log");
@@ -3045,7 +3045,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
   app.addHook("onRequest", async (request) => {
     const canonicalWorkspaceId = resolveCanonicalWorkspaceId(store, warnAmbiguousWorkspaces);
     if (canonicalWorkspaceId) {
-      request.headers["x-holaboss-workspace-id"] = canonicalWorkspaceId;
+      request.headers["x-hitechcloud-workspace-id"] = canonicalWorkspaceId;
     }
   });
 
@@ -3665,7 +3665,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
         },
         // Shares the folder-aware path with the GitHub import, so an uploaded
         // skill gets the same frontmatter mapping (allowed-tools →
-        // holaboss_granted_tools) and the same traversal/size guards.
+        // hitechcloud_granted_tools) and the same traversal/size guards.
         importUpload: async (input) => {
           const ws = resolveCanonicalWs();
           const result = await importSkillFromUpload({
@@ -3692,9 +3692,9 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
     logger: remoteApiLogger,
   });
   mountRemoteApiMcp(app, { context: buildRemoteApiBaseContext });
-  // Exposes the Holaboss runtime-tool surface (web_search, image/video gen,
+  // Exposes the Hitechcloud runtime-tool surface (web_search, image/video gen,
   // reports, memory, cronjobs, …) to CLI harnesses over MCP; context flows via
-  // the x-holaboss-* headers the harness injects. See runtime-tools-mcp.ts.
+  // the x-hitechcloud-* headers the harness injects. See runtime-tools-mcp.ts.
   mountRuntimeToolsMcp(app);
 
   const backgroundTasks = new Set<Promise<void>>();
@@ -3792,8 +3792,8 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
     },
   });
   // workspaceIntegrationsService initialized after composioService below.
-  const honoBaseUrl = process.env.HOLABOSS_AUTH_BASE_URL ?? "";
-  const authCookie = process.env.HOLABOSS_AUTH_COOKIE ?? "";
+  const honoBaseUrl = process.env.HITECHCLOUD_AUTH_BASE_URL ?? "";
+  const authCookie = process.env.HITECHCLOUD_AUTH_COOKIE ?? "";
   const composioService = honoBaseUrl && authCookie
     ? new ComposioService({ honoBaseUrl, authCookie })
     : null;
@@ -5110,7 +5110,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
   });
 
   app.get("/api/v1/capabilities/browser", async (request, reply) => {
-    const workspaceId = headerString(request.headers as Record<string, unknown>, "x-holaboss-workspace-id");
+    const workspaceId = headerString(request.headers as Record<string, unknown>, "x-hitechcloud-workspace-id");
     const sessionId = capabilitySessionId({
       headers: request.headers as Record<string, unknown>,
       query: isRecord(request.query) ? request.query : null,
@@ -5184,7 +5184,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
     }
     const params = request.params as { toolId: string };
     const toolId = requiredString(params.toolId, "toolId");
-    const workspaceId = headerString(request.headers as Record<string, unknown>, "x-holaboss-workspace-id");
+    const workspaceId = headerString(request.headers as Record<string, unknown>, "x-hitechcloud-workspace-id");
     const sessionId = capabilitySessionId({
       headers: request.headers as Record<string, unknown>,
       body: request.body,
@@ -5220,7 +5220,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
             workspaceId,
             sessionId,
             inputId:
-              headerString(request.headers as Record<string, unknown>, "x-holaboss-input-id") ||
+              headerString(request.headers as Record<string, unknown>, "x-hitechcloud-input-id") ||
               nullableString(request.body.input_id),
           })
         : null;
@@ -6192,7 +6192,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
 
   // The desktop pushes a rotated session cookie here.
   //
-  // HOLABOSS_AUTH_COOKIE is read once, from the spawn environment, so the
+  // HITECHCLOUD_AUTH_COOKIE is read once, from the spawn environment, so the
   // runtime held whatever the session was when it started. Better-auth rotates
   // that cookie silently (the backend reissues it on get-session and most
   // auth-touching endpoints), and the desktop follows the rotation — its
@@ -8414,7 +8414,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
           400,
           error instanceof Error
             ? error.message
-            : "holaboss_workspace_integrations_propose_connect failed",
+            : "hitechcloud_workspace_integrations_propose_connect failed",
         );
       }
     },
@@ -8449,7 +8449,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
           400,
           error instanceof Error
             ? error.message
-            : "holaboss_workspace_integrations_set_default_account failed",
+            : "hitechcloud_workspace_integrations_set_default_account failed",
         );
       }
     },
@@ -9241,7 +9241,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
       if (!rawProjectPath) {
         return sendError(reply, 400, "project_path is required");
       }
-      // Renderer-side defaults can land here as `~/Holaboss/Projects/<Name>`
+      // Renderer-side defaults can land here as `~/Hitechcloud/Projects/<Name>`
       // because the Electron renderer doesn't always expose process.env.HOME.
       // Expand the tilde here so we always persist a real absolute path; the
       // shell does not expand it when the runtime later passes the path as
@@ -9343,12 +9343,12 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
     },
   );
 
-  app.post("/api/v1/sandbox/users/:holabossUserId/workspaces/:workspaceId/exec", async (request, reply) => {
+  app.post("/api/v1/sandbox/users/:hitechcloudUserId/workspaces/:workspaceId/exec", async (request, reply) => {
     if (!isRecord(request.body)) {
       return sendError(reply, 400, "request body must be an object");
     }
-    const params = request.params as { holabossUserId: string; workspaceId: string };
-    void params.holabossUserId;
+    const params = request.params as { hitechcloudUserId: string; workspaceId: string };
+    void params.hitechcloudUserId;
     const workspace = store.getWorkspace(params.workspaceId);
     if (!workspace) {
       return sendError(reply, 404, "workspace not found");
@@ -9371,7 +9371,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
   });
 
   // Workspaces activated in the current runtime boot. First activation
-  // per workspace per boot reads the .holaboss/state/workspace_id identity file
+  // per workspace per boot reads the .hitechcloud/state/workspace_id identity file
   // to confirm the folder on disk really belongs to this workspace. We
   // don't re-check on every write — users are free to edit AGENTS.md,
   // skills, workspace.yaml, apps, etc.
@@ -9518,7 +9518,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
       return sendError(reply, 400, error instanceof Error ? error.message : "url is not allowed");
     }
 
-    const zipPath = path.join(os.tmpdir(), `holaboss-template-${params.workspaceId}-${Date.now()}.zip`);
+    const zipPath = path.join(os.tmpdir(), `hitechcloud-template-${params.workspaceId}-${Date.now()}.zip`);
     try {
       // Follow redirects manually and re-validate each hop (SSRF), and only
       // forward the caller api_key while we remain on the requested origin — a
@@ -9774,7 +9774,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
       return sendError(reply, statusCode, error instanceof Error ? error.message : "invalid app metadata");
     }
     try {
-      const holabossUserId = optionalString(request.body.holaboss_user_id);
+      const hitechcloudUserId = optionalString(request.body.hitechcloud_user_id);
       const build = store.getAppBuild({ workspaceId, appId });
       const needsSetup =
         !appBuildHasCompletedSetup(build?.status) &&
@@ -9792,7 +9792,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
             appDir: resolvedApp.appDir,
             httpPort: resolvedApp.ports.http,
             mcpPort: resolvedApp.ports.mcp,
-            holabossUserId,
+            hitechcloudUserId,
             resolvedApp: resolvedApp.resolvedApp,
             skipSetup: false
           })
@@ -9832,7 +9832,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
         appDir: resolvedApp.appDir,
         httpPort: resolvedApp.ports.http,
         mcpPort: resolvedApp.ports.mcp,
-        holabossUserId,
+        hitechcloudUserId,
         workspaceId,
         resolvedApp: resolvedApp.resolvedApp,
         skipSetup: appBuildHasCompletedSetup(build?.status)
@@ -9922,7 +9922,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
     }
     const workspaceDir = store.workspaceDir(workspaceId);
     const appDir = path.join(workspaceDir, "apps", appId);
-    const logDir = path.join(appDir, ".holaboss", "logs");
+    const logDir = path.join(appDir, ".hitechcloud", "logs");
     const latest = path.join(logDir, "setup.latest.log");
     if (!fs.existsSync(latest)) {
       return sendError(reply, 404, "no setup log found for this app");
@@ -12889,7 +12889,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
 
   // Diagnostic route — exercises the full runtime → Hono → Composio
   // path through ComposioApiClient using the env-injected
-  // HOLABOSS_AUTH_BEARER_TOKEN. Called by the IntegrationsPane debug
+  // HITECHCLOUD_AUTH_BEARER_TOKEN. Called by the IntegrationsPane debug
   // button so we can confirm desktop-side env injection + runtime SDK
   // + Hono /internal/* + bearer plugin all line up end-to-end.
   app.post("/api/v1/debug/composio-runtime-test", async (request, reply) => {
@@ -12917,7 +12917,7 @@ export function buildRuntimeApiServer(options: BuildRuntimeApiServerOptions = {}
         ok: false,
         stage: "client_init",
         error:
-          "HOLABOSS_AUTH_BEARER_TOKEN and/or HOLABOSS_AUTH_BASE_URL not set — desktop hasn't injected the session token yet (sign in first, then restart the runtime).",
+          "HITECHCLOUD_AUTH_BEARER_TOKEN and/or HITECHCLOUD_AUTH_BASE_URL not set — desktop hasn't injected the session token yet (sign in first, then restart the runtime).",
       });
     }
 

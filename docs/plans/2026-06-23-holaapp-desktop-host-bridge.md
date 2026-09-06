@@ -14,7 +14,7 @@
 >   runtime; opened today as **browser-pane tabs**. The app-surface `BrowserView`
 >   (`getOrCreateAppSurfaceView`) is currently unwired/parked.
 > - **Web HolaApps** (need-review, …) — served **remotely** by the web frontend
->   at `<WEB_APP_BASE_URL>/apps/<holaAppId>` (`www.holaos.ai` / staging
+>   at `<WEB_APP_BASE_URL>/apps/<holaAppId>` (`www.hitechcloud.vn` / staging
 >   `www.imerchstaging.com`), backend via `/gateway/wapp/...`. Not localhost.
 >
 > **Decision (confirmed with the user):** web HolaApps get their **own dedicated
@@ -27,7 +27,7 @@
 > that surface — unchanged in shape, just driven for web apps.
 >
 > **As built (this branch `feat/app-host-bridge`):**
-> - `@holaboss/app-host` package (web client + `/protocol`) — committed.
+> - `@hitechcloud/app-host` package (web client + `/protocol`) — committed.
 > - Desktop main: `WEB_APP_BASE_URL` config, `navigateWebHolaAppSurface` +
 >   `appSurface:navigateWebApp`/`destroyWebApp` IPC, the committed host bridge
 >   (`appSurfacePreload` + `appSurface:host:*` + `hostChatStart`).
@@ -35,9 +35,9 @@
 >   bounds mirror), a "HolaApps" sidebar section listing `GET /api/v1/apps`, and
 >   `useHostOpenChat` (opens the session + prefills the composer, side-by-side).
 > - Backend: `GET /api/v1/apps` launcher list (workflow-backend registry).
-> - **Pending:** publish `@holaboss/app-host` to npm, then wire need-review's
+> - **Pending:** publish `@hitechcloud/app-host` to npm, then wire need-review's
 >   Discuss → `host.chat.start` (frontend consumes it as a published dep, like
->   `@holaboss/app-sdk@0.1.1`). The richer `app-context` attachment pill is
+>   `@hitechcloud/app-sdk@0.1.1`). The richer `app-context` attachment pill is
 >   deferred (prompt-only for v1).
 >
 > The sections below are the original design; read them through this correction.
@@ -45,7 +45,7 @@
 ## Summary
 
 A **general, versioned bridge** that lets any HolaApp web page (hosted in the
-desktop "holaOS" client) request native desktop operations. It is **not** a
+desktop "hitechcloudOS" client) request native desktop operations. It is **not** a
 need-review feature — need-review's **Discuss** button is consumer #1.
 
 First operation: `chat.start` — open/create a desktop chat session, optionally
@@ -58,10 +58,10 @@ app-surface BrowserView, and (b) a generic `app-context` composer attachment.
 
 ## Non-goals / what this is NOT
 
-- Not `@holaboss/app-builder-sdk` (that authors app *modules*, server side; its
+- Not `@hitechcloud/app-builder-sdk` (that authors app *modules*, server side; its
   `bridge.ts` is a provider transport, unrelated).
-- Not `@holaboss/runtime-client` (renderer↔runtime REST).
-- Not a URL protocol (`holaboss://`) or an MCP/agent-inbox handoff — both were
+- Not `@hitechcloud/runtime-client` (renderer↔runtime REST).
+- Not a URL protocol (`hitechcloud://`) or an MCP/agent-inbox handoff — both were
   considered and rejected in favor of an in-app preload IPC bridge.
 - Not coupled to the backend Projects layer (`Workflow → Project → Run`). The
   desktop session's existing `project_id` (`null = General`) is a separate
@@ -88,10 +88,10 @@ app-surface BrowserView, and (b) a generic `app-context` composer attachment.
  HolaApp web page (BrowserView)            Desktop main            Shell renderer
  ─────────────────────────────            ────────────            ──────────────
  import { host } from                      ipcMain.handle           ipcRenderer.on
-   "@holaboss/app-sdk/host"                ("appSurface:host:        ("host:openChat")
+   "@hitechcloud/app-sdk/host"                ("appSurface:host:        ("host:openChat")
         │                                    invoke")                    │
    host.chat.start({prompt,context})  ─▶  resolve surface (appId,    setSelectedSessionId
-        │  window.__holabossHost.invoke     workspaceId) from         + chatComposerPrefillAtom
+        │  window.__hitechcloudHost.invoke     workspaceId) from         + chatComposerPrefillAtom
         │  (preload, contextBridge)         appSurfaceViews           + app-context attachment atom
         ▼                                       │
    ipcRenderer.invoke                      createWorkspaceMainSession
@@ -100,7 +100,7 @@ app-surface BrowserView, and (b) a generic `app-context` composer attachment.
 
 Four layers:
 
-1. **Web SDK** (`@holaboss/app-sdk/host`) — typed wrapper over `window.__holabossHost`.
+1. **Web SDK** (`@hitechcloud/app-sdk/host`) — typed wrapper over `window.__hitechcloudHost`.
 2. **App-surface preload** (NEW) — `contextBridge` exposes the bridge into the
    hosted page; the app-surface `BrowserView` currently has no preload.
 3. **Main process** — one generic IPC handler dispatching ops; resolves the
@@ -108,12 +108,12 @@ Four layers:
 4. **Shell renderer** — a listener hook that opens the session and prefills the
    composer (text + app-context pill) via existing atoms.
 
-## The contract (`window.__holabossHost`)
+## The contract (`window.__hitechcloudHost`)
 
 Injected by the app-surface preload; present only inside the desktop.
 
 ```ts
-interface HolabossHost {
+interface HitechcloudHost {
   readonly version: number;                 // bridge protocol version (1)
   capabilities(): Promise<string[]>;        // e.g. ["chat.start"]
   invoke<T = unknown>(op: string, payload: unknown): Promise<HostResult<T>>;
@@ -126,24 +126,24 @@ type HostResult<T> =
 Note: the page does **not** pass its own `appId`/`workspaceId`; main derives
 them from the BrowserView that sent the message.
 
-## SDK — `@holaboss/app-host` (dedicated package)
+## SDK — `@hitechcloud/app-host` (dedicated package)
 
-A new, dependency-free `@holaboss/*` package — deliberately **separate from**
-`@holaboss/app-sdk` (the Kubb-generated product REST client). "REST client" and
+A new, dependency-free `@hitechcloud/*` package — deliberately **separate from**
+`@hitechcloud/app-sdk` (the Kubb-generated product REST client). "REST client" and
 "desktop host RPC" are different concerns; a dedicated package is the single
 source of truth for the host protocol. Two entry points:
 
-- **`@holaboss/app-host`** — the web-facing client a HolaApp page imports
+- **`@hitechcloud/app-host`** — the web-facing client a HolaApp page imports
   (`host.isAvailable()` / `host.capabilities()` / `host.chat.start(...)`).
   Safe to import anywhere; degrades to a no-op outside the desktop.
-- **`@holaboss/app-host/protocol`** — the shared contract: global name, bridge
-  version, op/channel constants, and the `HolabossHost` / `HostResult` /
+- **`@hitechcloud/app-host/protocol`** — the shared contract: global name, bridge
+  version, op/channel constants, and the `HitechcloudHost` / `HostResult` /
   `AppContext` / payload types. The desktop **preload + main import this same
   module** (`workspace:*` dep) so the two sides can never drift.
 
 ```ts
 export const host = {
-  isAvailable(): boolean,                       // window.__holabossHost?.version >= 1
+  isAvailable(): boolean,                       // window.__hitechcloudHost?.version >= 1
   capabilities(): Promise<string[]>,            // [] when unavailable
   chat: {
     start(input: ChatStartInput): Promise<ChatStartResult>,  // throws HostUnavailableError when absent
@@ -196,7 +196,7 @@ interface AppContext {
 
 ## Desktop wiring (files)
 
-- **`apps/desktop/electron/appSurfacePreload.ts`** (NEW): `contextBridge.exposeInMainWorld("__holabossHost", { version, capabilities, invoke })` — global name, version, op/channel names imported from `@holaboss/app-host/protocol`.
+- **`apps/desktop/electron/appSurfacePreload.ts`** (NEW): `contextBridge.exposeInMainWorld("__hitechcloudHost", { version, capabilities, invoke })` — global name, version, op/channel names imported from `@hitechcloud/app-host/protocol`.
 - **`electron/main.ts` `getOrCreateAppSurfaceView(appId)`**: add `webPreferences.preload = <appSurfacePreload>` (keep `contextIsolation: true`); record `sender.id → { appId, workspaceId }` for resolution.
 - **`electron/main.ts`** (NEW handlers): `appSurface:host:capabilities`, `appSurface:host:invoke` → dispatch table → `hostChatStart` (reuses `createWorkspaceMainSession`).
 - **`apps/desktop/src/.../useHostOpenChat.ts`** (NEW): listens on `host:openChat`, drives `selectedSessionId` + `chatComposerPrefillAtom` + the app-context attachment atom. Mounted once in the shell (near `ChatPanel`).
@@ -215,10 +215,10 @@ interface AppContext {
 
 ## need-review as consumer #1
 
-In `holaboss-frontend` `need-review-inbox.tsx`, the **Discuss** handler becomes:
+In `hitechcloud-frontend` `need-review-inbox.tsx`, the **Discuss** handler becomes:
 
 ```ts
-import { host } from "@holaboss/app-host";
+import { host } from "@hitechcloud/app-host";
 
 function discuss(record) {
   if (!host.isAvailable()) { /* keep today's toast */ return; }
@@ -240,23 +240,23 @@ function discuss(record) {
 
 ## Build phases
 
-1. **Package + contract + client** — scaffold `@holaboss/app-host`: `/protocol` (shared contract/constants) + the web client (`window.__holabossHost` wrapper, no-op fallback). Publish a prerelease; desktop adds it as a `workspace:*` dep for the protocol types.
+1. **Package + contract + client** — scaffold `@hitechcloud/app-host`: `/protocol` (shared contract/constants) + the web client (`window.__hitechcloudHost` wrapper, no-op fallback). Publish a prerelease; desktop adds it as a `workspace:*` dep for the protocol types.
 2. **Desktop bridge** — app-surface preload + `appSurface:host:*` IPC + main dispatch + `hostChatStart`.
 3. **Renderer + attachment** — `useHostOpenChat` + the `app-context` attachment kind (pill + send-serialization).
-4. **Consumer** — wire need-review Discuss; bump the frontend's `@holaboss/app-sdk` dep.
+4. **Consumer** — wire need-review Discuss; bump the frontend's `@hitechcloud/app-sdk` dep.
 
 Phases 2–3 are desktop-only and testable with a stub web page before the SDK
 publishes; the frontend wiring (4) lands last.
 
 ## Open decisions
 
-- **Package home — RESOLVED:** a dedicated package **`@holaboss/app-host`** (best
+- **Package home — RESOLVED:** a dedicated package **`@hitechcloud/app-host`** (best
   fit over convenience — keeps the host RPC separate from the generated REST
   client, single source of truth for the protocol both sides import). Cost: a
-  new published package + a new `holaboss-frontend` dependency.
+  new published package + a new `hitechcloud-frontend` dependency.
 - **app-context → agent wire format:** inline text block vs. structured content
   part; how prominently the snapshot vs. the MCP-expand hint is presented.
 - **RPC vs. fire-and-forget:** `invoke` returns a promise (chosen) so the page
   gets the `sessionId`/errors back.
 - **Multi-window:** which window/shell receives `host:openChat` if several are open.
-- **Naming:** `__holabossHost` global + `host.*` SDK namespace.
+- **Naming:** `__hitechcloudHost` global + `host.*` SDK namespace.

@@ -4,7 +4,7 @@
  * directly or only has a runtime model token like "openai/gpt-5.4".
  *
  * Brand SVGs live in src/assets/providers/ and use `currentColor` so
- * they pick up the surrounding text color. Holaboss has its own raster
+ * they pick up the surrounding text color. Hitechcloud has its own raster
  * logo. Anything we don't recognise renders nothing — the caller can
  * decide on a fallback.
  */
@@ -22,7 +22,7 @@ import mistralLogoMarkup from "@/assets/providers/mistral.svg?raw";
 import ollamaLogoMarkup from "@/assets/providers/ollama.svg?raw";
 import openaiLogoMarkup from "@/assets/providers/openai.svg?raw";
 import qwenLogoMarkup from "@/assets/providers/qwen.svg?raw";
-import { holabossLogoUrl } from "@/lib/assetPaths";
+import { hitechcloudLogoUrl } from "@/lib/assetPaths";
 
 /**
  * Coarse brand bucket for model-family icons. Only the model family matters
@@ -42,13 +42,13 @@ export type ProviderBrand =
   | "llama"
   | "mistral"
   | "grok"
-  | "holaboss"
+  | "hitechcloud"
   | "unknown";
 
 /**
  * Match against the *model ID* portion (after the first `/`). This is
- * the primary signal — a token like `holaboss_model_proxy/gpt-5.4` is
- * served by Holaboss but the model is OpenAI's, and the user cares
+ * the primary signal — a token like `hitechcloud_model_proxy/gpt-5.4` is
+ * served by Hitechcloud but the model is OpenAI's, and the user cares
  * about the latter.
  */
 const MODEL_ID_TO_BRAND: Array<[RegExp, ProviderBrand]> = [
@@ -70,8 +70,8 @@ const MODEL_ID_TO_BRAND: Array<[RegExp, ProviderBrand]> = [
 /**
  * Fallback: if the model ID doesn't tell us the family (e.g. a custom
  * fine-tune or a provider we haven't taught patterns to yet), fall back
- * to the token's provider prefix. The Holaboss prefix is intentionally
- * NOT here — Holaboss only relays models from other vendors, so its
+ * to the token's provider prefix. The Hitechcloud prefix is intentionally
+ * NOT here — Hitechcloud only relays models from other vendors, so its
  * brand mark is never the right answer for a chat model.
  */
 const PROVIDER_PREFIX_TO_BRAND: Array<[RegExp, ProviderBrand]> = [
@@ -86,8 +86,8 @@ const PROVIDER_PREFIX_TO_BRAND: Array<[RegExp, ProviderBrand]> = [
  *
  * Order of precedence:
  *   1. Model ID family (gpt-* → openai, claude-* → anthropic, …) — this
- *      is what the user actually cares about; Holaboss-proxied tokens
- *      like `holaboss_model_proxy/gpt-5.4` resolve to OpenAI here.
+ *      is what the user actually cares about; Hitechcloud-proxied tokens
+ *      like `hitechcloud_model_proxy/gpt-5.4` resolve to OpenAI here.
  *   2. Provider prefix — only used when the model ID is opaque (custom
  *      fine-tune, unknown family) and we still want some signal.
  *   3. "unknown" — caller renders a placeholder or no icon.
@@ -99,7 +99,7 @@ export function brandFromModelToken(token: string | null | undefined): ProviderB
 
   // Strip the provider prefix, then match every remaining path segment —
   // proxied tokens carry a vendor segment between provider and model id
-  // (holaboss_model_proxy/z-ai/glm-5.2), and the family can show up in
+  // (hitechcloud_model_proxy/z-ai/glm-5.2), and the family can show up in
   // either one.
   const slashIdx = trimmed.indexOf("/");
   const modelPath = slashIdx >= 0 ? trimmed.slice(slashIdx + 1) : trimmed;
@@ -141,10 +141,10 @@ export function ProviderBrandIcon({
   const sizeClass = className ?? "size-4";
   const resolved = brand ?? brandFromModelToken(modelToken);
 
-  if (resolved === "holaboss") {
+  if (resolved === "hitechcloud") {
     return (
       <img
-        src={holabossLogoUrl}
+        src={hitechcloudLogoUrl}
         alt=""
         className={`${sizeClass} object-contain`}
         aria-hidden="true"

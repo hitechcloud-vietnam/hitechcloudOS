@@ -39,7 +39,7 @@ export function OnboardingUserButton() {
           <DropdownMenuItem
             onClick={() =>
               void window.electronAPI.ui.openExternalUrl(
-                "https://www.holaos.ai",
+                "https://www.hitechcloud.vn",
               )
             }
           >
@@ -49,7 +49,7 @@ export function OnboardingUserButton() {
           <DropdownMenuItem
             onClick={() =>
               void window.electronAPI.ui.openExternalUrl(
-                "https://github.com/holaboss-ai/holaOS",
+                "https://github.com/hitechcloud-vietnam/hitechcloudOS",
               )
             }
           >

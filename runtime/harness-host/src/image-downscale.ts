@@ -55,7 +55,7 @@ export async function downscaleInlineImage(
   const triggerBytes =
     options.triggerBytes ??
     envPositiveNumber(
-      "HOLABOSS_IMAGE_DOWNSCALE_TRIGGER_BYTES",
+      "HITECHCLOUD_IMAGE_DOWNSCALE_TRIGGER_BYTES",
       DEFAULT_DOWNSCALE_TRIGGER_BYTES,
     );
   if (typeof base64 !== "string" || base64.length <= triggerBytes) {
@@ -73,7 +73,7 @@ export async function downscaleInlineImage(
     const maxDimension =
       options.maxDimension ??
       envPositiveNumber(
-        "HOLABOSS_IMAGE_DOWNSCALE_MAX_DIM",
+        "HITECHCLOUD_IMAGE_DOWNSCALE_MAX_DIM",
         DEFAULT_MAX_IMAGE_DIMENSION,
       );
     const scale = Math.min(1, maxDimension / Math.max(width, height));
@@ -85,7 +85,7 @@ export async function downscaleInlineImage(
     const encoded = canvas.toBuffer(
       "image/jpeg",
       options.quality ??
-        envPositiveNumber("HOLABOSS_IMAGE_DOWNSCALE_QUALITY", DEFAULT_JPEG_QUALITY),
+        envPositiveNumber("HITECHCLOUD_IMAGE_DOWNSCALE_QUALITY", DEFAULT_JPEG_QUALITY),
     );
     const encodedBase64 = encoded.toString("base64");
     // Keep the original if the re-encode did not actually save bytes (e.g. an

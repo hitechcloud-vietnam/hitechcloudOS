@@ -161,7 +161,7 @@ describe("MCP server — boot + tool registration + routing", () => {
     // Bridge returns 401 → BridgeError code "not_connected"
     scriptedResponses.push({
       status: 401,
-      body: { error: "holaboss_session_invalid", message: "Holaboss session is invalid or expired." },
+      body: { error: "hitechcloud_session_invalid", message: "Hitechcloud session is invalid or expired." },
     })
     const session = await openSseSession(baseUrl)
     const result = await mcpCallTool(baseUrl, session.sessionId, "slack_connection_status", {})
@@ -169,7 +169,7 @@ describe("MCP server — boot + tool registration + routing", () => {
     const body = JSON.parse(result.content[0]!.text!)
     expect(body.connected).toBe(false)
     expect(body.reason).toBe("not_connected")
-    expect(String(body.message)).toMatch(/Holaboss session/i)
+    expect(String(body.message)).toMatch(/Hitechcloud session/i)
     expect(body.upstream_status).toBe(401)
     await session.close()
   })

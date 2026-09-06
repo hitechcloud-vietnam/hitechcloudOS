@@ -185,7 +185,7 @@ export function HolaAppMarketplacePane({
       }
       return;
     }
-    // Hosted-MCP apps (jianguoyun): a Holaboss-hosted MCP that ALSO needs BYO
+    // Hosted-MCP apps (jianguoyun): a Hitechcloud-hosted MCP that ALSO needs BYO
     // credentials. Gate for the required keys (shared McpInstallDialog), then
     // attach the hosted MCP tagged app-owned so it groups under the app.
     if (!entry.installed && entry.hostedMcpInstall) {

@@ -1,6 +1,6 @@
 ---
 title: Workspaces
-description: Workspaces are the unit of organization in holaOS — focused AI environments with their own agent, workspace memory, apps, and files.
+description: Workspaces are the unit of organization in hitechcloudOS — focused AI environments with their own agent, workspace memory, apps, and files.
 ---
 
 <p className="eyebrow">Core concept</p>
@@ -11,9 +11,9 @@ A workspace is a focused AI environment scoped to a single use case. It has its 
 
 **Blank workspace** — Start with an empty environment and configure everything yourself. You choose which Apps to install, author your own `AGENTS.md` standing instructions, and add Skills as you go. Best suited for people who know exactly what they want to build or are experimenting with a new workflow.
 
-**From a marketplace Template** — The recommended starting point for most users when the desktop is signed into a runtime-bound holaOS session. A marketplace template arrives pre-configured with a curated set of Apps, Skills, and standing instructions. If the template includes onboarding, the first run can gather your preferences and stage durable workspace guidance so you skip the blank-page problem and get a running environment in minutes.
+**From a marketplace Template** — The recommended starting point for most users when the desktop is signed into a runtime-bound hitechcloudOS session. A marketplace template arrives pre-configured with a curated set of Apps, Skills, and standing instructions. If the template includes onboarding, the first run can gather your preferences and stage durable workspace guidance so you skip the blank-page problem and get a running environment in minutes.
 
-**From a local template folder** — Point holaOS at a local folder that already contains a `workspace.yaml`. The desktop materializes that template into a new workspace. It does not adopt the source folder in place as a live workspace root.
+**From a local template folder** — Point hitechcloudOS at a local folder that already contains a `workspace.yaml`. The desktop materializes that template into a new workspace. It does not adopt the source folder in place as a live workspace root.
 
 For any new workspace, you can also choose a custom empty folder for where the resulting workspace files should live on disk.
 
@@ -42,12 +42,12 @@ workspace/
   ONBOARD.md         # Optional onboarding script; runs once if present and has content
   apps/              # Installed apps, each with its own app.runtime.yaml
   skills/            # Workspace-local skills, each under skills/<id>/SKILL.md
-  .holaboss/         # Runtime-owned state, memory, and staged attachments
+  .hitechcloud/         # Runtime-owned state, memory, and staged attachments
 ```
 
 `AGENTS.md` is the most important file to know about. It's where standing instructions live — who the agent is, what tone it uses, what rules to follow. Templates ship with a pre-written `AGENTS.md`; blank workspaces start with a minimal scaffold. You can edit it like any text file.
 
-Runtime-owned continuity, workspace-scoped memory, and staged attachments live under `.holaboss/`. Profile-global preference and identity memory live outside the workspace root under the OS-level `memory/` tree.
+Runtime-owned continuity, workspace-scoped memory, and staged attachments live under `.hitechcloud/`. Profile-global preference and identity memory live outside the workspace root under the OS-level `memory/` tree.
 
 For the full specification of the workspace filesystem and runtime contract, see [Concepts → Workspace Model](/docs/concepts/workspace-model).
 

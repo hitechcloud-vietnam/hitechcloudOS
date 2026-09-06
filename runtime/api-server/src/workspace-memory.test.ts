@@ -10,7 +10,7 @@ import type {
   InteractionEntityRecord,
   RuntimeStateStore,
   SemanticMemoryNodeRecord,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 import {
   buildRecalledWorkspaceMemoryContext,
@@ -22,7 +22,7 @@ const tempDirs: string[] = [];
 const ORIGINAL_FETCH = globalThis.fetch;
 const ORIGINAL_ENV = {
   HB_SANDBOX_ROOT: process.env.HB_SANDBOX_ROOT,
-  HOLABOSS_RUNTIME_CONFIG_PATH: process.env.HOLABOSS_RUNTIME_CONFIG_PATH,
+  HITECHCLOUD_RUNTIME_CONFIG_PATH: process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH,
 };
 
 afterEach(() => {
@@ -35,10 +35,10 @@ afterEach(() => {
   } else {
     process.env.HB_SANDBOX_ROOT = ORIGINAL_ENV.HB_SANDBOX_ROOT;
   }
-  if (ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH === undefined) {
-    delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+  if (ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH === undefined) {
+    delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   } else {
-    process.env.HOLABOSS_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH;
+    process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   }
 });
 
@@ -73,7 +73,7 @@ function writeRuntimeConfig(root: string): void {
     "utf8",
   );
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
 }
 
 function makeStoreFixture(root: string, options: {
@@ -1404,21 +1404,21 @@ test("retrieveWorkspaceMemory prefers durable interaction memories for account q
       },
       toolResultArtifactFixture: {
         treeId: "tool-result:gmail:call-1",
-        title: "holaboss_composio.gmail_fetch_emails result",
+        title: "hitechcloud_composio.gmail_fetch_emails result",
         providerId: "gmail",
         accountNamespace: "ops@example.com",
-        toolName: "holaboss_composio.gmail_fetch_emails",
+        toolName: "hitechcloud_composio.gmail_fetch_emails",
         callId: "call-gmail-1",
       },
       additionalInteractionMemories: [
         {
-          entityId: "interaction:topic:holaboss-personal-outreach",
-          canonicalName: "holaboss personal outreach",
+          entityId: "interaction:topic:hitechcloud-personal-outreach",
+          canonicalName: "hitechcloud personal outreach",
           entityType: "topic",
-          nodeId: "semantic:interaction:holaboss-personal-outreach:leaf-1",
-          title: "External individuals contacted the user personally about holaboss",
-          summary: "A small set of external individuals reached out to the user personally about holaboss.",
-          bodyText: "Ben Book at anyIP reached out to the user personally about holaboss.",
+          nodeId: "semantic:interaction:hitechcloud-personal-outreach:leaf-1",
+          title: "External individuals contacted the user personally about hitechcloud",
+          summary: "A small set of external individuals reached out to the user personally about hitechcloud.",
+          bodyText: "Ben Book at anyIP reached out to the user personally about hitechcloud.",
           relationType: "derived_from",
           relationMetadata: {
             entity_key: "artifact:output:output-delegated-1",
@@ -1437,7 +1437,7 @@ test("retrieveWorkspaceMemory prefers durable interaction memories for account q
           relationType: "derived_from",
           metadata: {
             entity_key: "artifact:tool-result:gmail:call-gmail-1",
-            entity_label: "holaboss_composio.gmail_fetch_emails result",
+            entity_label: "hitechcloud_composio.gmail_fetch_emails result",
             entity_type: "artifact",
             resolved_target_kind: "resolved",
           },
@@ -1455,7 +1455,7 @@ test("retrieveWorkspaceMemory prefers durable interaction memories for account q
     },
   });
 
-  assert.equal(result.evidence[0]?.title, "External individuals contacted the user personally about holaboss");
+  assert.equal(result.evidence[0]?.title, "External individuals contacted the user personally about hitechcloud");
   assert.ok(result.evidence[0]?.reasons.includes("relation_match"));
   assert.ok(result.evidence[0]?.reasons.includes("provenance_match_boost"));
   const toolResultHit = result.evidence.find((item) => item.tree_id === "tool-result:gmail:call-1");
@@ -1474,10 +1474,10 @@ test("retrieveWorkspaceMemory prefers durable interaction memories over raw tool
     store: makeStoreFixture(root, {
       toolResultArtifactFixture: {
         treeId: "tool-result:gmail:call-stale-1",
-        title: "holaboss_composio.gmail_fetch_emails result",
+        title: "hitechcloud_composio.gmail_fetch_emails result",
         providerId: "gmail",
         accountNamespace: "ops@example.com",
-        toolName: "holaboss_composio.gmail_fetch_emails",
+        toolName: "hitechcloud_composio.gmail_fetch_emails",
         callId: "call-gmail-stale-1",
       },
       additionalResolverEntities: [
@@ -1565,7 +1565,7 @@ test("retrieveWorkspaceMemory prefers durable interaction memories over raw tool
           relationType: "derived_from",
           metadata: {
             entity_key: "artifact:tool-result:gmail:call-gmail-stale-1",
-            entity_label: "holaboss_composio.gmail_fetch_emails result",
+            entity_label: "hitechcloud_composio.gmail_fetch_emails result",
             entity_type: "artifact",
             target_tree_id: "tool-result:gmail:call-stale-1",
             target_node_id: "tool-result:gmail:call-stale-1:root",
@@ -1590,7 +1590,7 @@ test("retrieveWorkspaceMemory prefers durable interaction memories over raw tool
     "Builder Mode rollout Gmail contact captured in a legacy result",
   );
   assert.ok(result.evidence[0]?.reasons.includes("provenance_relation_priority_boost"));
-  const toolResultChunkHit = result.evidence.find((item) => item.title === "holaboss_composio.gmail_fetch_emails result chunk 1");
+  const toolResultChunkHit = result.evidence.find((item) => item.title === "hitechcloud_composio.gmail_fetch_emails result chunk 1");
   assert.ok(toolResultChunkHit);
   assert.ok(toolResultChunkHit?.reasons.includes("raw_tool_result_penalty"));
 });

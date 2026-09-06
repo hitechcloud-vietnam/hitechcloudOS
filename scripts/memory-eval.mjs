@@ -325,7 +325,7 @@ async function retrieveMemory(baseUrl, params) {
     },
     {
       headers: {
-        "x-holaboss-workspace-id": params.workspaceId,
+        "x-hitechcloud-workspace-id": params.workspaceId,
       },
     },
   ).then((payload) => ({

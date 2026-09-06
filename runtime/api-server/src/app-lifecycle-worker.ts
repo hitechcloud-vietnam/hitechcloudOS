@@ -2,7 +2,7 @@ import { spawn, spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
-import { type RuntimeStateStore } from "@holaboss/runtime-state-store";
+import { type RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 
 import { resolveIntegrationRuntime } from "./integration-runtime.js";
 import type { ResolvedApplicationRuntime, WorkspaceComposeShutdownTarget } from "./workspace-apps.js";
@@ -41,7 +41,7 @@ export interface AppLifecycleStartParams {
   appDir?: string;
   httpPort?: number;
   mcpPort?: number;
-  holabossUserId?: string;
+  hitechcloudUserId?: string;
   workspaceId?: string;
   resolvedApp?: ResolvedApplicationRuntime;
   skipSetup?: boolean;
@@ -344,7 +344,7 @@ function buildShellLifecycleEnv(
     appDir?: string;
     httpPort?: number;
     mcpPort?: number;
-    holabossUserId?: string;
+    hitechcloudUserId?: string;
     workspaceId?: string;
     resolvedApp?: ResolvedApplicationRuntime;
     integrationEnv?: NodeJS.ProcessEnv;
@@ -361,19 +361,19 @@ function buildShellLifecycleEnv(
     env.MCP_PORT = String(params.mcpPort);
   }
   if (
-    params.holabossUserId &&
+    params.hitechcloudUserId &&
     params.resolvedApp &&
-    params.resolvedApp.envContract.includes("HOLABOSS_USER_ID")
+    params.resolvedApp.envContract.includes("HITECHCLOUD_USER_ID")
   ) {
-    env.HOLABOSS_USER_ID = params.holabossUserId;
+    env.HITECHCLOUD_USER_ID = params.hitechcloudUserId;
   }
   if (
     params.workspaceId &&
     params.resolvedApp &&
-    params.resolvedApp.envContract.includes("HOLABOSS_WORKSPACE_ID") &&
-    !env.HOLABOSS_WORKSPACE_ID
+    params.resolvedApp.envContract.includes("HITECHCLOUD_WORKSPACE_ID") &&
+    !env.HITECHCLOUD_WORKSPACE_ID
   ) {
-    env.HOLABOSS_WORKSPACE_ID = params.workspaceId;
+    env.HITECHCLOUD_WORKSPACE_ID = params.workspaceId;
   }
   if (
     params.workspaceId &&
@@ -444,12 +444,12 @@ function maybeApplyAppSchema(
 }
 
 /** Resolve the persistent install-log directory for an app. Stored at
- *  `<appDir>/.holaboss/logs/` so it survives across runtime restarts
+ *  `<appDir>/.hitechcloud/logs/` so it survives across runtime restarts
  *  and stays scoped to the app. Each setup run writes a timestamped
  *  file plus mirrors the latest into `setup.latest.log` so the UI can
  *  surface "most recent setup" without parsing filenames. */
 function appInstallLogDir(appDir: string): string {
-  return path.join(appDir, ".holaboss", "logs");
+  return path.join(appDir, ".hitechcloud", "logs");
 }
 
 /** Best-effort accessor — returns the path to the latest setup log for
@@ -460,7 +460,7 @@ export function latestSetupLogPath(appDir: string): string | null {
   return fs.existsSync(logPath) ? logPath : null;
 }
 
-/** Writes a newline-delimited lifecycle event to `<appDir>/.holaboss/
+/** Writes a newline-delimited lifecycle event to `<appDir>/.hitechcloud/
  *  logs/events.ndjson`. Small, append-only, survives restarts, and is
  *  cheap to tail from the CLI. Schema is intentionally narrow so the
  *  reader doesn't have to deal with optional fields. */
@@ -494,7 +494,7 @@ async function runLifecycleSetup(params: {
   resolvedApp: ResolvedApplicationRuntime;
   httpPort: number;
   mcpPort: number;
-  holabossUserId?: string;
+  hitechcloudUserId?: string;
   integrationEnv?: NodeJS.ProcessEnv;
   spawnImpl?: SpawnLike;
   logger?: { info: (...args: unknown[]) => void; warn: (...args: unknown[]) => void; error: (...args: unknown[]) => void };
@@ -1067,7 +1067,7 @@ export async function startComposeAppTarget(params: {
   resolvedApp: ResolvedApplicationRuntime;
   httpPort: number;
   mcpPort: number;
-  holabossUserId?: string;
+  hitechcloudUserId?: string;
   integrationEnv?: NodeJS.ProcessEnv;
   spawnImpl?: SpawnLike;
   fetchImpl?: typeof fetch;
@@ -1141,7 +1141,7 @@ export async function startShellLifecycleAppTarget(params: {
   resolvedApp: ResolvedApplicationRuntime;
   httpPort: number;
   mcpPort: number;
-  holabossUserId?: string;
+  hitechcloudUserId?: string;
   workspaceId?: string;
   integrationEnv?: NodeJS.ProcessEnv;
   skipSetup?: boolean;
@@ -1212,7 +1212,7 @@ export async function startSubprocessAppTarget(params: {
   resolvedApp: ResolvedApplicationRuntime;
   httpPort: number;
   mcpPort: number;
-  holabossUserId?: string;
+  hitechcloudUserId?: string;
   workspaceId?: string;
   integrationEnv?: NodeJS.ProcessEnv;
   skipSetup?: boolean;
@@ -1456,7 +1456,7 @@ export class RuntimeAppLifecycleExecutor implements AppLifecycleExecutorLike {
         resolvedApp: params.resolvedApp,
         httpPort: params.httpPort,
         mcpPort: params.mcpPort,
-        holabossUserId: params.holabossUserId,
+        hitechcloudUserId: params.hitechcloudUserId,
         integrationEnv,
         spawnImpl,
         fetchImpl
@@ -1472,7 +1472,7 @@ export class RuntimeAppLifecycleExecutor implements AppLifecycleExecutorLike {
         resolvedApp: params.resolvedApp,
         httpPort: params.httpPort,
         mcpPort: params.mcpPort,
-        holabossUserId: params.holabossUserId,
+        hitechcloudUserId: params.hitechcloudUserId,
         workspaceId: params.workspaceId,
         skipSetup: params.skipSetup,
         integrationEnv,
@@ -1490,7 +1490,7 @@ export class RuntimeAppLifecycleExecutor implements AppLifecycleExecutorLike {
         resolvedApp: params.resolvedApp,
         httpPort: params.httpPort,
         mcpPort: params.mcpPort,
-        holabossUserId: params.holabossUserId,
+        hitechcloudUserId: params.hitechcloudUserId,
         workspaceId: params.workspaceId,
         skipSetup: params.skipSetup,
         integrationEnv,

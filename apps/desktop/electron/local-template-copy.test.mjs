@@ -12,11 +12,11 @@ test("desktop local-template copy ignores workspace runtime artifacts", async ()
 
   assert.match(
     source,
-    /const LOCAL_TEMPLATE_IGNORE_NAMES = new Set\(\[[\s\S]*"\.holaboss",[\s\S]*"\.opencode",[\s\S]*"workspace\.json",[\s\S]*\]\);/,
+    /const LOCAL_TEMPLATE_IGNORE_NAMES = new Set\(\[[\s\S]*"\.hitechcloud",[\s\S]*"\.opencode",[\s\S]*"workspace\.json",[\s\S]*\]\);/,
   );
   assert.match(
     source,
-    /function shouldSkipMaterializedWorkspacePath\(relativePath: string\)[\s\S]*rootSegment === "\.holaboss"[\s\S]*rootSegment === "\.opencode"[\s\S]*rootSegment === "workspace\.json"/,
+    /function shouldSkipMaterializedWorkspacePath\(relativePath: string\)[\s\S]*rootSegment === "\.hitechcloud"[\s\S]*rootSegment === "\.opencode"[\s\S]*rootSegment === "workspace\.json"/,
   );
 });
 

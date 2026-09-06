@@ -2,14 +2,14 @@ import { ChevronLeft, X } from "@/components/ui/icons";
 import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
-import { holabossLogoUrl } from "@/lib/assetPaths";
+import { hitechcloudLogoUrl } from "@/lib/assetPaths";
 
 interface OnboardingShellProps {
   /** When provided, top-left "Back" link is rendered. */
   onBack?: () => void;
   /** When provided, top-right close button is rendered (panel variant). */
   onClose?: () => void;
-  /** Footer copy — defaults to the holaboss copyright row. */
+  /** Footer copy — defaults to the hitechcloud copyright row. */
   footer?: ReactNode;
   /** Optional override for the brand row label. */
   brandLabel?: string;
@@ -26,7 +26,7 @@ export function OnboardingShell({
   onBack,
   onClose,
   footer,
-  brandLabel = "holaOS",
+  brandLabel = "hitechcloudOS",
   children,
 }: OnboardingShellProps) {
   return (
@@ -38,7 +38,7 @@ export function OnboardingShell({
       <header className="window-drag relative z-20 flex shrink-0 items-center justify-between gap-3 px-7 pt-[44px] pb-4 sm:px-9">
         <div className="flex min-w-0 items-center gap-2.5">
           <img
-            src={holabossLogoUrl}
+            src={hitechcloudLogoUrl}
             alt=""
             aria-hidden
             className="size-7 shrink-0 object-contain"
@@ -86,7 +86,7 @@ export function OnboardingShell({
         <p className="px-7 py-4 text-xs text-muted-foreground sm:px-9">
           {footer ?? (
             <>
-              © {COPYRIGHT_YEAR} holaos.ai <span className="px-1">|</span>{" "}
+              © {COPYRIGHT_YEAR} hitechcloud.vn <span className="px-1">|</span>{" "}
               All rights reserved
             </>
           )}

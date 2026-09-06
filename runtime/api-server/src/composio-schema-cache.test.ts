@@ -8,7 +8,7 @@ import {
   primeComposioSchemaCache,
 } from "./composio-schema-cache.js";
 import type { ComposioUpstreamTool } from "./composio-tool-registry.js";
-import type { IntegrationConnectionRecord } from "@holaboss/runtime-state-store";
+import type { IntegrationConnectionRecord } from "@hitechcloud/runtime-state-store";
 
 function makeStoreStub() {
   const rows = new Map<string, { schemasJson: string; fetchedAt: string }>();

@@ -78,7 +78,7 @@ export type FinalizeMarketplaceSubmission500 = {
 };
 
 export type FinalizeMarketplaceSubmissionMutationRequest = {
-    holaboss_user_id?: (string | null | null);
+    hitechcloud_user_id?: (string | null | null);
 };
 
 export type FinalizeMarketplaceSubmissionMutationResponse = FinalizeMarketplaceSubmission200;

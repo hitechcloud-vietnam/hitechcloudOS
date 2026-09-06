@@ -4,14 +4,14 @@ This file is a deterministic setup runbook for an agent working from a fresh mac
 
 ## Goal
 
-Bootstrap local holaOS OSS desktop development, including provisioning `git` and Node.js `24`/`npm` when they are missing.
+Bootstrap local hitechcloudOS OSS desktop development, including provisioning `git` and Node.js `24`/`npm` when they are missing.
 
 ## Repository
 
 Use this repository URL:
 
 ```bash
-https://github.com/holaboss-ai/holaOS.git
+https://github.com/hitechcloud-vietnam/hitechcloudOS.git
 ```
 
 ## Quick Installer
@@ -19,14 +19,14 @@ https://github.com/holaboss-ai/holaOS.git
 For a fresh machine bootstrap, the repo ships an installer wrapper that can provision missing prerequisites before cloning and bootstrapping the desktop checkout:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/holaboss-ai/holaOS/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/hitechcloud-vietnam/hitechcloudOS/main/scripts/install.sh | bash
 ```
 
 By default, that script:
 
 - installs `git` if it is missing
 - installs Node.js `24` plus `npm` if they are missing
-- clones the repo into `~/holaboss-ai`
+- clones the repo into `~/hitechcloud-vietnam`
 - creates `apps/desktop/.env` from `apps/desktop/.env.example` if needed
 - runs `npm run desktop:install`
 - runs `npm run desktop:prepare-runtime:local`
@@ -36,7 +36,7 @@ By default, that script:
 If you want the installer to continue directly into the desktop dev environment after verification, use:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/holaboss-ai/holaOS/main/scripts/install.sh | bash -s -- --launch
+curl -fsSL https://raw.githubusercontent.com/hitechcloud-vietnam/hitechcloudOS/main/scripts/install.sh | bash -s -- --launch
 ```
 
 Optional installer flags:
@@ -89,14 +89,14 @@ The repo pins the exact Node version in a root `.nvmrc`. If [nvm](https://github
 If the repository is not already present locally, clone it:
 
 ```bash
-git clone https://github.com/holaboss-ai/holaOS.git holaboss-ai
-cd holaboss-ai
+git clone https://github.com/hitechcloud-vietnam/hitechcloudOS.git hitechcloud-vietnam
+cd hitechcloud-vietnam
 ```
 
 If the repository already exists locally, enter the repository root instead:
 
 ```bash
-cd holaboss-ai
+cd hitechcloud-vietnam
 ```
 
 All commands below must be run from the repository root.
@@ -197,14 +197,14 @@ Important:
 If you want the one-command installer path, use:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/holaboss-ai/holaOS/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/hitechcloud-vietnam/hitechcloudOS/main/scripts/install.sh | bash
 ```
 
 For the equivalent manual fresh setup, the expected command sequence is:
 
 ```bash
-git clone https://github.com/holaboss-ai/holaOS.git holaboss-ai
-cd holaboss-ai
+git clone https://github.com/hitechcloud-vietnam/hitechcloudOS.git hitechcloud-vietnam
+cd hitechcloud-vietnam
 npm run desktop:install
 cp apps/desktop/.env.example apps/desktop/.env
 npm run desktop:prepare-runtime:local

@@ -1,7 +1,7 @@
-// Holaboss desktop host bridge — shared protocol.
+// Hitechcloud desktop host bridge — shared protocol.
 //
 // Imported by BOTH sides so they can never drift:
-//   - the web client (@holaboss/app-host, this package's main entry)
+//   - the web client (@hitechcloud/app-host, this package's main entry)
 //   - the desktop app-surface preload + main process (apps/desktop, via a
 //     workspace:* dep)
 //
@@ -9,13 +9,13 @@
 // docs/plans/2026-06-23-holaapp-desktop-host-bridge.md.
 
 /** Bridge protocol version. Additive ops that a page must feature-detect bump
- *  this so `window.__holabossHost.version` gates them; a hosted page checks
+ *  this so `window.__hitechcloudHost.version` gates them; a hosted page checks
  *  `version >= N`. v2 adds `item.open`; v3 adds `holahub.consume-pending-share`;
  *  v4 adds `colorScheme` / `onColorSchemeChange`. */
 export const BRIDGE_VERSION = 4 as const;
 
 /** The global the app-surface preload injects into the hosted HolaApp page. */
-export const HOST_GLOBAL_KEY = "__holabossHost" as const;
+export const HOST_GLOBAL_KEY = "__hitechcloudHost" as const;
 
 /** IPC channels between the app-surface preload and the desktop main process. */
 export const HOST_IPC = {
@@ -404,7 +404,7 @@ export interface HostOpMap {
 }
 
 /** The shape the preload exposes as `window[HOST_GLOBAL_KEY]`. */
-export interface HolabossHost {
+export interface HitechcloudHost {
   readonly version: number;
   capabilities(): Promise<HostOp[]>;
   invoke<Op extends HostOp>(

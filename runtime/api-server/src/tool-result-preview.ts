@@ -18,9 +18,9 @@ import {
 } from "./tool-result-budget.js";
 import { workspaceStateRelativePath } from "./workspace-bundle-paths.js";
 
-export const TOOL_RESULT_MODE_HEADER = "x-holaboss-tool-result-mode";
+export const TOOL_RESULT_MODE_HEADER = "x-hitechcloud-tool-result-mode";
 export const TOOL_RESULT_MODE_PREVIEW = "preview";
-export const TOOL_RESULT_PREVIEW_SHAPING_ENV = "HOLABOSS_TOOL_RESULT_PREVIEW_SHAPING";
+export const TOOL_RESULT_PREVIEW_SHAPING_ENV = "HITECHCLOUD_TOOL_RESULT_PREVIEW_SHAPING";
 
 export type CapabilityToolResultMode = "default" | "preview";
 

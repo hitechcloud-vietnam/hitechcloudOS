@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export const WORKSPACE_RUNTIME_DIRNAME = ".holaboss";
+export const WORKSPACE_RUNTIME_DIRNAME = ".hitechcloud";
 export const WORKSPACE_STATE_DIRNAME = "state";
 export const WORKSPACE_MEMORY_DIRNAME = "memory";
 export const LEGACY_GLOBAL_MEMORY_WORKSPACE_DIRNAME = "workspace";

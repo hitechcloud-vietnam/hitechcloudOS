@@ -20,7 +20,7 @@ import {
 import { useDefaultApp } from "@/lib/useFileIcon";
 import type { DocxEditorRef } from "@eigenpal/docx-editor-react";
 import type { FUniver } from "@univerjs/presets";
-import { MarkdownEditor as TiptapMarkdownEditor } from "@holaboss/editor";
+import { MarkdownEditor as TiptapMarkdownEditor } from "@hitechcloud/editor";
 import { HtmlPreviewFrame } from "@/components/panes/HtmlPreviewFrame";
 import { PresentationPreview } from "@/components/panes/PresentationPreview";
 import {

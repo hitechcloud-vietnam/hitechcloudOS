@@ -2,15 +2,15 @@
 
 set -euo pipefail
 
-REPO_URL="https://github.com/holaboss-ai/holaOS.git"
-DEFAULT_INSTALL_DIR="${HOLABOSS_INSTALL_DIR:-$HOME/holaboss-ai}"
-HOLABOSS_HOME="${HOLABOSS_HOME:-$HOME/.holaboss}"
-MANAGED_NODE_DIR="${HOLABOSS_HOME}/node"
+REPO_URL="https://github.com/hitechcloud-vietnam/hitechcloudOS.git"
+DEFAULT_INSTALL_DIR="${HITECHCLOUD_INSTALL_DIR:-$HOME/hitechcloud-vietnam}"
+HITECHCLOUD_HOME="${HITECHCLOUD_HOME:-$HOME/.hitechcloud}"
+MANAGED_NODE_DIR="${HITECHCLOUD_HOME}/node"
 LOCAL_BIN_DIR="${HOME}/.local/bin"
 MANAGED_NODE_VERSION="24.14.1"
 
 INSTALL_DIR="${DEFAULT_INSTALL_DIR}"
-REF="${HOLABOSS_INSTALL_REF:-main}"
+REF="${HITECHCLOUD_INSTALL_REF:-main}"
 LAUNCH=0
 
 BLUE='\033[0;34m'
@@ -22,7 +22,7 @@ NC='\033[0m'
 
 usage() {
   cat <<EOF
-Holaboss OSS installer
+Hitechcloud OSS installer
 
 Usage:
   install.sh [OPTIONS]
@@ -31,7 +31,7 @@ Options:
   --launch          Run 'npm run desktop:dev' after setup completes
   --ref NAME        Git branch or tag to clone or update (default: main)
   --branch NAME     Alias for --ref
-  --dir PATH        Install directory (default: ~/holaboss-ai)
+  --dir PATH        Install directory (default: ~/hitechcloud-vietnam)
   -h, --help        Show this help
 EOF
 }
@@ -122,7 +122,7 @@ ensure_shell_line() {
   if ! grep -Fq "${line}" "${target_file}"; then
     {
       printf '\n'
-      printf '# Holaboss installer\n'
+      printf '# Hitechcloud installer\n'
       printf '%s\n' "${line}"
     } >> "${target_file}"
     log_success "Updated ${target_file}"
@@ -297,7 +297,7 @@ install_managed_node() {
   extracted_dir="$(find "${tmp_dir}" -maxdepth 1 -type d -name "node-v${MANAGED_NODE_VERSION}*" | head -1)"
   [[ -n "${extracted_dir}" ]] || fail "Node.js archive extracted but no runtime directory was found"
 
-  mkdir -p "${HOLABOSS_HOME}"
+  mkdir -p "${HITECHCLOUD_HOME}"
   rm -rf "${MANAGED_NODE_DIR}"
   mv "${extracted_dir}" "${MANAGED_NODE_DIR}"
 
@@ -387,7 +387,7 @@ bootstrap_repo() {
   fi
 
   printf '\n'
-  log_success "Holaboss desktop setup is complete"
+  log_success "Hitechcloud desktop setup is complete"
   printf '%bRun%b %bnpm run desktop:dev%b when you are ready to launch the app.\n' "${BLUE}" "${NC}" "${CYAN}" "${NC}"
 }
 

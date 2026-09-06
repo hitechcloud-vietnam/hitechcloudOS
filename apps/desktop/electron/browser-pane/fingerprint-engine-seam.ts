@@ -3,7 +3,7 @@
  *
  * This file is OSS (MIT) and ships in the public core. It defines the interface
  * an engine must satisfy and loads the LICENSED implementation
- * (`@holaboss/fingerprint-ee`, a separate/gitignored package) at RUNTIME. When the
+ * (`@hitechcloud/fingerprint-ee`, a separate/gitignored package) at RUNTIME. When the
  * package is absent — every plain OSS build — `loadFingerprintEngine()` returns
  * null and callers fall back to the Contact-Sales flow. Nothing here depends on the
  * enterprise package at build time.
@@ -12,11 +12,11 @@
  *   1. BUILD-TIME — the package present in `node_modules` (bare specifier below).
  *   2. RUNTIME PLUGIN — a self-contained prebuilt engine bundle (its `dist/` plus
  *      its `node_modules/`) dropped into `<userData>/fingerprint-ee/` (or the dir
- *      named by `$HOLABOSS_FINGERPRINT_ENGINE_PATH`), loaded by ABSOLUTE PATH. This
+ *      named by `$HITECHCLOUD_FINGERPRINT_ENGINE_PATH`), loaded by ABSOLUTE PATH. This
  *      lets an already-released OSS app gain the feature with NO rebuild.
  *
  * Build note: the bare specifier is held in a variable so bundlers don't resolve it
- * statically (it's absent in OSS builds); treat `@holaboss/fingerprint-ee` as
+ * statically (it's absent in OSS builds); treat `@hitechcloud/fingerprint-ee` as
  * external/optional.
  */
 import { app } from "electron";
@@ -102,7 +102,7 @@ interface EnterpriseModule {
   createCamoufoxEngine(): FingerprintBrowserEngine;
 }
 
-const ENTERPRISE_MODULE_ID = "@holaboss/fingerprint-ee";
+const ENTERPRISE_MODULE_ID = "@hitechcloud/fingerprint-ee";
 
 // --- Runtime plugin path -----------------------------------------------------
 //
@@ -110,10 +110,10 @@ const ENTERPRISE_MODULE_ID = "@holaboss/fingerprint-ee";
 //     <dir>/dist/index.js  +  <dir>/dist/service-client.js
 // with the engine's own `node_modules/` beside `dist/` (self-contained, so the
 // forked service child — a plain node process — resolves camoufox-js/etc. there).
-// `dir` = $HOLABOSS_FINGERPRINT_ENGINE_PATH or `<userData>/fingerprint-ee`.
+// `dir` = $HITECHCLOUD_FINGERPRINT_ENGINE_PATH or `<userData>/fingerprint-ee`.
 
 function pluginEngineDir(): string | null {
-  const override = process.env.HOLABOSS_FINGERPRINT_ENGINE_PATH?.trim();
+  const override = process.env.HITECHCLOUD_FINGERPRINT_ENGINE_PATH?.trim();
   if (override) {
     return override;
   }
@@ -263,7 +263,7 @@ interface EnterpriseServiceModule {
 // process never needs (all that runs in the forked service). Importing the barrel
 // on a Launch click is what stalls the UI. Held in a variable so bundlers treat
 // the optional package as an external runtime import.
-const ENTERPRISE_SERVICE_MODULE_ID = "@holaboss/fingerprint-ee/service-client";
+const ENTERPRISE_SERVICE_MODULE_ID = "@hitechcloud/fingerprint-ee/service-client";
 
 let cachedService: FingerprintServiceClient | null | undefined;
 

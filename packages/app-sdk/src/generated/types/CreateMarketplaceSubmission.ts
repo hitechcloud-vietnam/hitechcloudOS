@@ -77,7 +77,7 @@ export type CreateMarketplaceSubmissionMutationRequest = {
      * @type string
     */
     workspace_id: string;
-    holaboss_user_id?: (string | null | null);
+    hitechcloud_user_id?: (string | null | null);
     /**
      * @minLength 1
      * @maxLength 100

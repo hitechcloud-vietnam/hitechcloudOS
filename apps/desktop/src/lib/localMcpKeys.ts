@@ -15,16 +15,16 @@
 //
 // Everything is best-effort and tolerant of a corrupt/blocked store (returns empty).
 
-const INSTALLED_KEY = "holaboss.mcp.installed.v1";
-const KEYS_PREFIX = "holaboss.mcp.keys.v1.";
+const INSTALLED_KEY = "hitechcloud.mcp.installed.v1";
+const KEYS_PREFIX = "hitechcloud.mcp.keys.v1.";
 // Per-server install SPEC (the catalog fields needed to rebuild the attach input:
-// mcpUrl, holabossHosted, each key's target, tool names). Persisted so an install can be
+// mcpUrl, hitechcloudHosted, each key's target, tool names). Persisted so an install can be
 // re-synced/re-attached from local state ALONE — even when its catalog entry isn't loaded.
 // This is what lets a 坚果云 install triggered from the HolaApp catalog (absent from the MCP
 // catalog) survive a relaunch: the MCP-page sync rebuilds its config from this spec instead
 // of dropping (and detaching) it because it isn't in the MCP catalog. Never holds secrets —
 // the credential VALUES live under KEYS_PREFIX; the spec only carries key metadata.
-const SPEC_PREFIX = "holaboss.mcp.spec.v1.";
+const SPEC_PREFIX = "hitechcloud.mcp.spec.v1.";
 
 function hasLocalStorage(): boolean {
   return typeof localStorage !== "undefined";

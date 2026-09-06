@@ -1,4 +1,4 @@
-import { StatusDot } from "@holaboss/ui"
+import { StatusDot } from "@hitechcloud/ui"
 import type { PostStatus } from "../lib/sample-data"
 
 const MAP: Record<

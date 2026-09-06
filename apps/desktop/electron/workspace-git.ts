@@ -6,12 +6,12 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 
 const WORKSPACE_GIT_BRANCH = "main";
-const WORKSPACE_GIT_USER_NAME = "Holaboss Agent";
-const WORKSPACE_GIT_USER_EMAIL = "agent@holaboss.local";
+const WORKSPACE_GIT_USER_NAME = "Hitechcloud Agent";
+const WORKSPACE_GIT_USER_EMAIL = "agent@hitechcloud.local";
 const WORKSPACE_GIT_INITIAL_COMMIT_MESSAGE = "agent: initialize workspace";
 const WORKSPACE_GIT_EXCLUDE_PATTERNS = [
   ".DS_Store",
-  ".holaboss/",
+  ".hitechcloud/",
   ".opencode/",
   ".output/",
   ".turbo/",
@@ -106,7 +106,7 @@ async function writeWorkspaceGitExcludeFile(workspaceDir: string): Promise<void>
   await fs.mkdir(infoDir, { recursive: true });
   const excludePath = path.join(infoDir, "exclude");
   const content = [
-    "# Holaboss workspace-local excludes",
+    "# Hitechcloud workspace-local excludes",
     ...WORKSPACE_GIT_EXCLUDE_PATTERNS,
     "",
   ].join("\n");

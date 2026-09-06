@@ -4,8 +4,8 @@ import {
   validateSlackTokens,
   validateTelegramToken,
   validateWecomCredentials,
-} from "@holaboss/runtime-channel-gateway";
-import type { ChannelConnectionRecord, RuntimeStateStore } from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-channel-gateway";
+import type { ChannelConnectionRecord, RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 
 /** Connection as exposed to the desktop — never includes the bot token. */
 export interface ConnectionView {

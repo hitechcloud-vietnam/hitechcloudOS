@@ -17,14 +17,14 @@ test(
     "runtime",
     "api-server",
     "node_modules",
-    "@holaboss",
+    "@hitechcloud",
     "runtime-state-store",
     "dist",
   );
   const binDir = path.join(root, "runtime", "api-server", "node_modules", ".bin");
   const targetModulePath = path.join(stateStoreDistDir, "debug-cli.mjs");
   const linkedModulePath = path.join(linkedDistDir, "debug-cli.mjs");
-  const linkedShimPath = path.join(binDir, "holaboss-runtime");
+  const linkedShimPath = path.join(binDir, "hitechcloud-runtime");
 
   try {
     fs.mkdirSync(stateStoreDistDir, { recursive: true });
@@ -33,7 +33,7 @@ test(
     fs.writeFileSync(targetModulePath, "#!/usr/bin/env node\nconsole.log('ok');\n", "utf8");
     fs.chmodSync(targetModulePath, 0o755);
     fs.symlinkSync(targetModulePath, linkedModulePath);
-    fs.symlinkSync("../@holaboss/runtime-state-store/dist/debug-cli.mjs", linkedShimPath);
+    fs.symlinkSync("../@hitechcloud/runtime-state-store/dist/debug-cli.mjs", linkedShimPath);
 
     materializeAbsoluteSymlinks(path.join(root, "runtime"));
 

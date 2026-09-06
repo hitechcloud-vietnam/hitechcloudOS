@@ -33,7 +33,7 @@ Phase 3 does not include:
 
 ## File Structure
 
-### Runtime repo (`holaOS`)
+### Runtime repo (`hitechcloudOS`)
 
 | File | Responsibility |
 |------|---------------|
@@ -46,7 +46,7 @@ Phase 3 does not include:
 | `desktop/electron/main.ts` (modify) | Add connection management IPC handlers |
 | `desktop/src/components/panes/IntegrationsPane.tsx` (modify) | Add token import dialog, disconnect, reconnect UI |
 
-### Module repo (`holaboss-modules`)
+### Module repo (`hitechcloud-modules`)
 
 | File | Responsibility |
 |------|---------------|
@@ -84,14 +84,14 @@ test("creates a connection via manual token import and lists it", () => {
   const connection = service.createConnection({
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "manual_token",
     grantedScopes: ["gmail.send", "gmail.readonly"],
     secretRef: "gya_manual-token-value"
   });
 
   assert.equal(connection.provider_id, "google");
-  assert.equal(connection.account_label, "owner@holaboss.ai");
+  assert.equal(connection.account_label, "owner@hitechcloud.vn");
   assert.equal(connection.auth_mode, "manual_token");
   assert.equal(connection.status, "active");
   assert.ok(connection.connection_id);
@@ -113,7 +113,7 @@ test("updates connection status and secret_ref", () => {
   const connection = service.createConnection({
     providerId: "github",
     ownerUserId: "user-1",
-    accountLabel: "holaboss-bot",
+    accountLabel: "hitechcloud-bot",
     authMode: "manual_token",
     grantedScopes: ["repo"],
     secretRef: "ghp_old-token"
@@ -150,7 +150,7 @@ test("deletes a connection and rejects deletion when bindings exist", () => {
   const connection = service.createConnection({
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "manual_token",
     grantedScopes: ["gmail.send"],
     secretRef: "gya_token"
@@ -657,7 +657,7 @@ git commit -m "feat: add desktop connection management with token import UI"
 
 ## Task 4: Migrate Publishing Modules To Broker-Based Token Acquisition
 
-**Files (module repo at `/Users/you/holaboss-ai/holaboss-modules/`):**
+**Files (module repo at `/Users/you/hitechcloud-vietnam/hitechcloud-modules/`):**
 - Create: `reddit/src/server/integration-client.ts`
 - Modify: `reddit/src/server/publisher.ts`
 - Modify: `reddit/app.runtime.yaml`
@@ -673,8 +673,8 @@ git commit -m "feat: add desktop connection management with token import UI"
 - [ ] Create the identical `src/server/integration-client.ts` in `reddit/`, `twitter/`, and `linkedin/`:
 
 ```ts
-const BROKER_URL = process.env.HOLABOSS_INTEGRATION_BROKER_URL ?? "";
-const APP_GRANT = process.env.HOLABOSS_APP_GRANT ?? "";
+const BROKER_URL = process.env.HITECHCLOUD_INTEGRATION_BROKER_URL ?? "";
+const APP_GRANT = process.env.HITECHCLOUD_APP_GRANT ?? "";
 
 interface TokenExchangeResponse {
   token: string;
@@ -786,16 +786,16 @@ Same pattern but `getProviderToken("linkedin")` and `WORKSPACE_LINKEDIN_INTEGRAT
 
 ### Step 3: Update app.runtime.yaml in each module
 
-- [ ] Add `HOLABOSS_INTEGRATION_BROKER_URL` and `HOLABOSS_APP_GRANT` to the `env_contract` list in each module's `app.runtime.yaml`. Keep all existing entries.
+- [ ] Add `HITECHCLOUD_INTEGRATION_BROKER_URL` and `HITECHCLOUD_APP_GRANT` to the `env_contract` list in each module's `app.runtime.yaml`. Keep all existing entries.
 
 ### Step 4: Build each module
 
 - [ ] Run:
 
 ```bash
-cd /Users/you/holaboss-ai/holaboss-modules/reddit && npm run build
-cd /Users/you/holaboss-ai/holaboss-modules/twitter && npm run build
-cd /Users/you/holaboss-ai/holaboss-modules/linkedin && npm run build
+cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/reddit && npm run build
+cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/twitter && npm run build
+cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/linkedin && npm run build
 ```
 
 Expected: all 3 build successfully.
@@ -805,15 +805,15 @@ Expected: all 3 build successfully.
 - [ ] Run:
 
 ```bash
-cd /Users/you/holaboss-ai/holaboss-modules/reddit
+cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/reddit
 git add src/server/integration-client.ts src/server/publisher.ts app.runtime.yaml
 git commit -m "feat: migrate reddit publisher to broker-based token acquisition"
 
-cd /Users/you/holaboss-ai/holaboss-modules/twitter
+cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/twitter
 git add src/server/integration-client.ts src/server/publisher.ts app.runtime.yaml
 git commit -m "feat: migrate twitter publisher to broker-based token acquisition"
 
-cd /Users/you/holaboss-ai/holaboss-modules/linkedin
+cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/linkedin
 git add src/server/integration-client.ts src/server/publisher.ts app.runtime.yaml
 git commit -m "feat: migrate linkedin publisher to broker-based token acquisition"
 ```
@@ -842,8 +842,8 @@ Add a deprecation notice after it:
     env.PLATFORM_INTEGRATION_TOKEN = platformIntegrationTokens[0]!;
     if (typeof process !== "undefined" && process.stderr) {
       process.stderr.write(
-        `[holaboss] DEPRECATION: PLATFORM_INTEGRATION_TOKEN is set for app "${params.appId}". ` +
-        `Migrate to HOLABOSS_INTEGRATION_BROKER_URL + HOLABOSS_APP_GRANT. ` +
+        `[hitechcloud] DEPRECATION: PLATFORM_INTEGRATION_TOKEN is set for app "${params.appId}". ` +
+        `Migrate to HITECHCLOUD_INTEGRATION_BROKER_URL + HITECHCLOUD_APP_GRANT. ` +
         `This env var will be removed in a future release.\n`
       );
     }
@@ -878,7 +878,7 @@ git commit -m "feat: add deprecation warning for PLATFORM_INTEGRATION_TOKEN"
 - [ ] Run:
 
 ```bash
-cd /Users/you/holaboss-ai/holaboss/holaOS
+cd /Users/you/hitechcloud-vietnam/hitechcloud/hitechcloudOS
 
 cd runtime/api-server && node --import tsx --test src/integrations.test.ts
 cd runtime/api-server && node --import tsx --test src/integration-broker.test.ts
@@ -896,9 +896,9 @@ Expected: all tests PASS, desktop typecheck PASS.
 - [ ] Run:
 
 ```bash
-cd /Users/you/holaboss-ai/holaboss-modules/reddit && npm run build
-cd /Users/you/holaboss-ai/holaboss-modules/twitter && npm run build
-cd /Users/you/holaboss-ai/holaboss-modules/linkedin && npm run build
+cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/reddit && npm run build
+cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/twitter && npm run build
+cd /Users/you/hitechcloud-vietnam/hitechcloud-modules/linkedin && npm run build
 ```
 
 Expected: all builds succeed.
@@ -908,7 +908,7 @@ Expected: all builds succeed.
 - [ ] Run:
 
 ```bash
-cd /Users/you/holaboss-ai/holaboss/holaOS && npm run desktop:prepare-runtime:local
+cd /Users/you/hitechcloud-vietnam/hitechcloud/hitechcloudOS && npm run desktop:prepare-runtime:local
 ```
 
 Expected: runtime bundle prepares successfully.

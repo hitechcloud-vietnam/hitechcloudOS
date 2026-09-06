@@ -108,7 +108,7 @@ export const RUNTIME_AGENT_TOOL_DEFINITIONS = [
   {
     id: "open_macos_settings",
     description:
-      "Open a macOS System Settings → Privacy & Security pane (Screen Recording, Accessibility, Full Disk Access, Automation, Files & Folders, Input Monitoring, Camera, Microphone, Location) so the user can grant Holaboss a permission. Use this when an operation fails because the macOS host lacks a privacy permission (e.g. `screencapture` reporting `could not create image from display`): open the relevant pane, tell the user to enable Holaboss there, then retry the original operation. macOS desktop host only — a no-op elsewhere.",
+      "Open a macOS System Settings → Privacy & Security pane (Screen Recording, Accessibility, Full Disk Access, Automation, Files & Folders, Input Monitoring, Camera, Microphone, Location) so the user can grant Hitechcloud a permission. Use this when an operation fails because the macOS host lacks a privacy permission (e.g. `screencapture` reporting `could not create image from display`): open the relevant pane, tell the user to enable Hitechcloud there, then retry the original operation. macOS desktop host only — a no-op elsewhere.",
     policy: "mutate"
   },
   {
@@ -211,7 +211,7 @@ export const RUNTIME_AGENT_TOOL_DEFINITIONS = [
   {
     id: "workspace_apps_scaffold",
     description:
-      "Create the minimum valid holaOS app skeleton under `apps/<app_id>/` for the current workspace using the canonical runtime-managed Node/TypeScript/Express starter files.",
+      "Create the minimum valid hitechcloudOS app skeleton under `apps/<app_id>/` for the current workspace using the canonical runtime-managed Node/TypeScript/Express starter files.",
     policy: "mutate"
   },
   {
@@ -229,13 +229,13 @@ export const RUNTIME_AGENT_TOOL_DEFINITIONS = [
   {
     id: "workspace_apps_ensure_running",
     description:
-      "Start all registered workspace apps, or a selected subset, through the managed holaOS runtime lifecycle instead of using an unmanaged preview server. If this call brings up a NEW MCP server (one not visible at the start of this turn), the result will include `requires_session_refresh: true` and `new_mcp_servers: [...]`. When that happens, finish your current message without invoking the new tools — they will become callable starting from the next user message. The result also surfaces `pending_integrations` for any of the started apps that declared a required `integrations:` entry; the chat UI renders a Connect card automatically — do not call any extra tool, just mention the Connect button in your reply.",
+      "Start all registered workspace apps, or a selected subset, through the managed hitechcloudOS runtime lifecycle instead of using an unmanaged preview server. If this call brings up a NEW MCP server (one not visible at the start of this turn), the result will include `requires_session_refresh: true` and `new_mcp_servers: [...]`. When that happens, finish your current message without invoking the new tools — they will become callable starting from the next user message. The result also surfaces `pending_integrations` for any of the started apps that declared a required `integrations:` entry; the chat UI renders a Connect card automatically — do not call any extra tool, just mention the Connect button in your reply.",
     policy: "mutate"
   },
   {
     id: "workspace_apps_restart",
     description:
-      "Restart one managed workspace app through the holaOS runtime after code or config changes so the managed app surface serves fresh code.",
+      "Restart one managed workspace app through the hitechcloudOS runtime after code or config changes so the managed app surface serves fresh code.",
     policy: "mutate"
   },
   {
@@ -269,13 +269,13 @@ export const RUNTIME_AGENT_TOOL_DEFINITIONS = [
     policy: "inspect"
   },
   {
-    id: "holaboss_workspace_integrations_propose_connect",
+    id: "hitechcloud_workspace_integrations_propose_connect",
     description:
       "Ask the user to connect a Composio-backed integration (Gmail / Slack / Notion / Linear / GitHub / …) via OAuth. Use this when the user expresses intent to connect or use a known third-party service AND that toolkit is not already exposing tools to you (i.e. no `<toolkit>_<verb>` tool is currently in your tool list). DO NOT chain this with `workspace_apps_*` — connecting an integration does NOT require building an app; once OAuth completes, the toolkit's `<toolkit>_<verb>` tools become available automatically. The chat UI renders a Connect card from the result; do not write your own connect instructions, just briefly explain why this integration is needed. Args: `toolkit_slug` (one of the supported toolkit slugs from the workspace integration store catalog), optional `reason` (short user-facing one-liner shown on the card).",
     policy: "coordinate"
   },
   {
-    id: "holaboss_workspace_integrations_set_default_account",
+    id: "hitechcloud_workspace_integrations_set_default_account",
     description:
       "Set the workspace's default account for a Composio provider when the user has multiple active accounts for the same toolkit (e.g. two Gmail accounts, three GitHub accounts). This binding persists across sessions and devices for the same workspace — it answers 'when this workspace makes a Gmail call, which of my Gmail accounts should it use?'. Setting it drops the cached integration tool listing, so your NEXT turn resolves the new account's tools; the current turn still holds the previous account's. Use when (a) the user explicitly says 'use my work gmail / personal account / etc.' in a workspace that already has multiple active accounts for that provider, or (b) the user has multiple active accounts and no default is set and you would otherwise have to guess which one to call. Args: `provider_id` (lowercase Composio slug, e.g. 'gmail'), `connection_id` (the integration connection id; obtain from `workspace_integrations_list_catalog` which lists each provider's connected accounts).",
     policy: "mutate"

@@ -13,9 +13,9 @@ import { remoteApiQuery } from "@/lib/remoteApiQuery";
  * copying the two tokens — the lowest-friction Slack onboarding path.
  */
 const SLACK_APP_MANIFEST = {
-  display_information: { name: "holaOS Agent" },
+  display_information: { name: "hitechcloudOS Agent" },
   features: {
-    bot_user: { display_name: "holaboss", always_online: true },
+    bot_user: { display_name: "hitechcloud", always_online: true },
   },
   oauth_config: {
     scopes: {

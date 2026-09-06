@@ -6,7 +6,7 @@ import test from "node:test";
 
 import { loadDesktopEnv, resolveDesktopEnvPaths } from "./desktopEnv";
 
-const REMOTE_ENV = "HOLABOSS_BACKEND_BASE_URL";
+const REMOTE_ENV = "HITECHCLOUD_BACKEND_BASE_URL";
 
 function withIsolatedRemoteEnv(run: () => void) {
   const previousValue = process.env[REMOTE_ENV];
@@ -24,7 +24,7 @@ function withIsolatedRemoteEnv(run: () => void) {
 
 test("loads legacy desktop/.env when apps/desktop/.env is absent", () => {
   withIsolatedRemoteEnv(() => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "holaboss-desktop-env-"));
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "hitechcloud-desktop-env-"));
     const desktopRoot = path.join(root, "apps", "desktop");
     const legacyDesktopDir = path.join(root, "desktop");
     try {
@@ -49,7 +49,7 @@ test("loads legacy desktop/.env when apps/desktop/.env is absent", () => {
 
 test("apps/desktop/.env takes precedence over legacy desktop/.env", () => {
   withIsolatedRemoteEnv(() => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "holaboss-desktop-env-"));
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "hitechcloud-desktop-env-"));
     const desktopRoot = path.join(root, "apps", "desktop");
     const legacyDesktopDir = path.join(root, "desktop");
     try {
@@ -81,7 +81,7 @@ test("apps/desktop/.env takes precedence over legacy desktop/.env", () => {
 
 test(".env.production overrides .env without outranking the canonical location", () => {
   withIsolatedRemoteEnv(() => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), "holaboss-desktop-env-"));
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "hitechcloud-desktop-env-"));
     const desktopRoot = path.join(root, "apps", "desktop");
     const legacyDesktopDir = path.join(root, "desktop");
     try {

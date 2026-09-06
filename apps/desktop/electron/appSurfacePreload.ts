@@ -1,7 +1,7 @@
 // Preload for the app-surface BrowserView (hosted HolaApp web pages).
 //
-// Exposes the versioned host bridge `window.__holabossHost`, which
-// @holaboss/app-host wraps, so a hosted HolaApp page can request native
+// Exposes the versioned host bridge `window.__hitechcloudHost`, which
+// @hitechcloud/app-host wraps, so a hosted HolaApp page can request native
 // desktop operations (e.g. open a chat with context).
 //
 // The hosted page is UNTRUSTED web content. This surface is intentionally
@@ -19,7 +19,7 @@ import {
   HOST_IPC,
   type HostColorScheme,
   type HostOp,
-} from "@holaboss/app-host/protocol";
+} from "@hitechcloud/app-host/protocol";
 import { contextBridge, ipcRenderer } from "electron";
 
 // The desktop's light/dark scheme, mirrored to the hosted page so a surface

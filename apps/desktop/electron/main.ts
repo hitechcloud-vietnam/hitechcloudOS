@@ -1,4 +1,4 @@
-// holaboss-2026.616.1 bundle cycle: cdhash 1ee72b15 stuck in Apple notary; bump bytes to force fresh ticket.
+// hitechcloud-2026.616.1 bundle cycle: cdhash 1ee72b15 stuck in Apple notary; bump bytes to force fresh ticket.
 import { loadDesktopEnv } from "./desktopEnv";
 import { applyLoginShellPathToEnv } from "./shell-path";
 import { ensureExtractedWindowsRuntime } from "./runtime-archive";
@@ -43,7 +43,7 @@ import {
   type OpenItemInput,
   type OpenItemResult,
   type ShareDraft,
-} from "@holaboss/app-host/protocol";
+} from "@hitechcloud/app-host/protocol";
 
 loadDesktopEnv();
 
@@ -60,11 +60,11 @@ function initialDesktopAppName(): string {
   if (
     process.platform === "darwin" &&
     (!electronApp.isPackaged ||
-      process.env.HOLABOSS_INTERNAL_DEV?.trim() === "1")
+      process.env.HITECHCLOUD_INTERNAL_DEV?.trim() === "1")
   ) {
-    return "holaOS Dev";
+    return "hitechcloudOS Dev";
   }
-  return "holaOS";
+  return "hitechcloudOS";
 }
 
 electronApp.setName(initialDesktopAppName());
@@ -109,7 +109,7 @@ function recordMainProcessCrash(kind: string, detail: unknown): void {
 }
 
 // EPIPE on stdio writes is a benign teardown race that Electron would
-// otherwise surface as a "holaOS encountered an error" modal. Trigger: a
+// otherwise surface as a "hitechcloudOS encountered an error" modal. Trigger: a
 // child / utility process (or the embedded runtime) writes via
 // `console.info`/`.warn`/`.error` after its stdio pipe has been closed on the
 // parent side. Suppressed silently and deliberately; everything else is
@@ -203,7 +203,7 @@ import {
   generateMarketplaceTemplateContent as sdkGenerateMarketplaceTemplateContent,
   listMarketplaceSubmissions as sdkListMarketplaceSubmissions,
   materializeMarketplaceTemplate as sdkMaterializeMarketplaceTemplate,
-} from "@holaboss/app-sdk/core";
+} from "@hitechcloud/app-sdk/core";
 import {
   type ModelCatalogInputModality,
 } from "../shared/model-catalog.js";
@@ -222,7 +222,7 @@ import {
   createRuntimeClient,
   isTransientRuntimeError as sdkIsTransientRuntimeError,
   runtimeErrorFromBody,
-} from "@holaboss/runtime-client";
+} from "@hitechcloud/runtime-client";
 import { installBffFetchHandler } from "./bff-fetch.js";
 import {
   fetchAllMcpToolNames,
@@ -330,10 +330,10 @@ import type {
   ProfileFingerprint,
 } from "../shared/browser-pane-protocol.js";
 
-const APP_DISPLAY_NAME = "holaOS";
-const MAC_APP_MENU_PRODUCT_LABEL = "holaOS";
-const MAC_DEV_APP_MENU_PRODUCT_LABEL = "holaOS Dev";
-const AUTH_CALLBACK_PROTOCOL = "ai.holaboss.app";
+const APP_DISPLAY_NAME = "hitechcloudOS";
+const MAC_APP_MENU_PRODUCT_LABEL = "hitechcloudOS";
+const MAC_DEV_APP_MENU_PRODUCT_LABEL = "hitechcloudOS Dev";
+const AUTH_CALLBACK_PROTOCOL = "ai.hitechcloud.app";
 const DESKTOP_LAUNCH_ID = randomUUID();
 const nodeRequire = createRequire(__filename);
 
@@ -384,9 +384,9 @@ function loadMacPermissions(): typeof import("node-mac-permissions") {
 }
 
 const verboseTelemetryEnabled =
-  process.env.HOLABOSS_VERBOSE_TELEMETRY?.trim() === "1";
+  process.env.HITECHCLOUD_VERBOSE_TELEMETRY?.trim() === "1";
 const chromiumStderrLoggingEnabled =
-  process.env.HOLABOSS_CHROMIUM_STDERR_LOGS?.trim() === "1";
+  process.env.HITECHCLOUD_CHROMIUM_STDERR_LOGS?.trim() === "1";
 const HOME_URL = "https://www.google.com";
 // A fingerprint (anti-detect) profile lands here on a plain human Launch, so you
 // immediately see how the identity presents — IP/WebRTC/DNS leaks, timezone
@@ -395,9 +395,9 @@ const HOME_URL = "https://www.google.com";
 const FINGERPRINT_DEFAULT_LANDING_URL = "https://www.browserscan.net";
 // A launched fingerprint profile presents as the host product (not "Camoufox") in
 // the macOS dock / menu bar — the engine stamps this name + icon onto the shared
-// Camoufox.app bundle (see @holaboss/fingerprint-ee brand.ts). One constant to
-// change if we ever want a distinct browser sub-brand (e.g. "holaOS Browser").
-const FINGERPRINT_BROWSER_BRAND_NAME = "holaOS";
+// Camoufox.app bundle (see @hitechcloud/fingerprint-ee brand.ts). One constant to
+// change if we ever want a distinct browser sub-brand (e.g. "hitechcloudOS Browser").
+const FINGERPRINT_BROWSER_BRAND_NAME = "hitechcloudOS";
 const AUTH_POPUP_WIDTH = 380;
 const AUTH_POPUP_HEIGHT = 460;
 const AUTH_POPUP_CLOSE_DELAY_MS = 260;
@@ -405,8 +405,8 @@ const AUTH_POPUP_MARGIN_PX = 8;
 const MAIN_WINDOW_CLOSED_LISTENER_BUFFER = 8;
 const MAIN_WINDOW_MIN_LISTENER_BUDGET = 32;
 const APP_THEMES = new Set([
-  "holaos-dark",
-  "holaos-light",
+  "hitechcloudos-dark",
+  "hitechcloudos-light",
   "catppuccin-dark",
   "catppuccin-light",
   "rose-pine-dark",
@@ -422,23 +422,23 @@ const APP_THEMES = new Set([
   "vitesse-dark",
   "vitesse-light",
 ]);
-const DEFAULT_APP_THEME = "holaos-light";
-const GITHUB_RELEASES_OWNER = "holaboss-ai";
-const GITHUB_RELEASES_REPO = "holaOS-releases";
+const DEFAULT_APP_THEME = "hitechcloudos-light";
+const GITHUB_RELEASES_OWNER = "hitechcloud-vietnam";
+const GITHUB_RELEASES_REPO = "hitechcloudOS-releases";
 const APP_UPDATE_CHECK_INTERVAL_MS = 12 * 60 * 60 * 1000;
 const APP_UPDATE_SUPPORTED_PLATFORMS = new Set(["darwin", "win32"]);
 const LOCAL_OSS_TEMPLATE_USER_ID = "local-oss";
-const HOLABOSS_HOME_URL = "https://www.holaos.ai";
-const HOLABOSS_DOCS_URL = `https://github.com/${GITHUB_RELEASES_OWNER}/${GITHUB_RELEASES_REPO}`;
-const HOLABOSS_HELP_URL = `${HOLABOSS_DOCS_URL}/issues`;
-const RUNTIME_PROVIDER_KIND_HOLABOSS_PROXY = "holaboss_proxy";
+const HITECHCLOUD_HOME_URL = "https://www.hitechcloud.vn";
+const HITECHCLOUD_DOCS_URL = `https://github.com/${GITHUB_RELEASES_OWNER}/${GITHUB_RELEASES_REPO}`;
+const HITECHCLOUD_HELP_URL = `${HITECHCLOUD_DOCS_URL}/issues`;
+const RUNTIME_PROVIDER_KIND_HITECHCLOUD_PROXY = "hitechcloud_proxy";
 const RUNTIME_PROVIDER_KIND_OPENAI_COMPATIBLE = "openai_compatible";
 const RUNTIME_PROVIDER_KIND_ANTHROPIC_NATIVE = "anthropic_native";
 const RUNTIME_PROVIDER_KIND_OPENROUTER = "openrouter";
-const RUNTIME_HOLABOSS_PROVIDER_ID = "holaboss_model_proxy";
-const RUNTIME_HOLABOSS_PROVIDER_ALIASES = [
-  "holaboss",
-  RUNTIME_HOLABOSS_PROVIDER_ID,
+const RUNTIME_HITECHCLOUD_PROVIDER_ID = "hitechcloud_model_proxy";
+const RUNTIME_HITECHCLOUD_PROVIDER_ALIASES = [
+  "hitechcloud",
+  RUNTIME_HITECHCLOUD_PROVIDER_ID,
 ] as const;
 const RUNTIME_REMOVED_PROVIDER_IDS = new Set([
   "openai_codex",
@@ -498,10 +498,10 @@ function maybeAuthCallbackUrl(argument: string | undefined): string | null {
     : null;
 }
 
-// Deep links share the ai.holaboss.app scheme. `maybeAuthCallbackUrl` above is
+// Deep links share the ai.hitechcloud.app scheme. `maybeAuthCallbackUrl` above is
 // the scheme-prefix filter (picks our URL out of argv / commandLine); the host
 // then decides intent — `open-app` opens a HolaApp surface, anything else is
-// the OAuth callback. e.g. ai.holaboss.app://open-app?appId=gofunds[&path=/x]
+// the OAuth callback. e.g. ai.hitechcloud.app://open-app?appId=gofunds[&path=/x]
 /** Our scheme, parsed — or null for anything that isn't one of our deep links. */
 function deepLinkUrl(argument: string | undefined): URL | null {
   if (!argument) {
@@ -721,7 +721,7 @@ function focusMainWindow(): void {
   }
 }
 
-// Single entry for every ai.holaboss.app:// deep link. Every known verb is split
+// Single entry for every ai.hitechcloud.app:// deep link. Every known verb is split
 // off before the fallthrough, so an action link is never misread as an auth
 // token — which is what an unrecognised hostname becomes.
 function dispatchDeepLink(targetUrl: string): void {
@@ -930,14 +930,14 @@ function shouldUseMacMockKeychain(): boolean {
   if (process.platform !== "darwin") {
     return false;
   }
-  const override = process.env.HOLABOSS_MAC_USE_MOCK_KEYCHAIN?.trim();
+  const override = process.env.HITECHCLOUD_MAC_USE_MOCK_KEYCHAIN?.trim();
   if (override === "1") {
     return true;
   }
   if (override === "0") {
     return false;
   }
-  return !app.isPackaged || process.env.HOLABOSS_INTERNAL_DEV?.trim() === "1";
+  return !app.isPackaged || process.env.HITECHCLOUD_INTERNAL_DEV?.trim() === "1";
 }
 
 function configureMacKeychainPolicy() {
@@ -957,7 +957,7 @@ configureEmbeddedOAuthCompatPolicy();
 function shouldUseDevMacAppIdentity(): boolean {
   return (
     process.platform === "darwin" &&
-    (!app.isPackaged || process.env.HOLABOSS_INTERNAL_DEV?.trim() === "1")
+    (!app.isPackaged || process.env.HITECHCLOUD_INTERNAL_DEV?.trim() === "1")
   );
 }
 
@@ -1366,7 +1366,7 @@ let authPopupCloseTimer: ReturnType<typeof setTimeout> | null = null;
 let statusItemTray: Tray | null = null;
 const unresponsiveDesktopWindows = new WeakSet<BrowserWindow>();
 let attachedAppSurfaceView: BrowserView | null = null;
-let currentTheme = "holaos-light";
+let currentTheme = "hitechcloudos-light";
 let activeBrowserWorkspaceId = "";
 let activeBrowserSpaceId: BrowserSpaceId = "agent";
 let activeBrowserSessionId = "";
@@ -1522,7 +1522,7 @@ function runtimeApiPortForUserDataPath(userDataPath: string): number {
 
 function resolveRuntimeApiPort(): number {
   const explicit = parseRuntimeApiPort(
-    process.env.HOLABOSS_RUNTIME_API_PORT?.trim() || "",
+    process.env.HITECHCLOUD_RUNTIME_API_PORT?.trim() || "",
   );
   if (explicit !== null) {
     return explicit;
@@ -1626,13 +1626,13 @@ function runtimeBundlePythonRelativePaths(
 const CURRENT_RUNTIME_PLATFORM = runtimePlatformFromProcessPlatform();
 const RUNTIME_BUNDLE_DIR = runtimeBundleDirName(CURRENT_RUNTIME_PLATFORM);
 const DEV_RUNTIME_ROOT =
-  process.env.HOLABOSS_DEV_RUNTIME_ROOT?.trim() ||
-  path.join(os.tmpdir(), `holaboss-runtime-${CURRENT_RUNTIME_PLATFORM}-full`);
+  process.env.HITECHCLOUD_DEV_RUNTIME_ROOT?.trim() ||
+  path.join(os.tmpdir(), `hitechcloud-runtime-${CURRENT_RUNTIME_PLATFORM}-full`);
 const configuredDesktopUserDataDir =
-  process.env.HOLABOSS_DESKTOP_USER_DATA_DIR?.trim() || "";
+  process.env.HITECHCLOUD_DESKTOP_USER_DATA_DIR?.trim() || "";
 const DESKTOP_USER_DATA_DIR = (
   configuredDesktopUserDataDir ||
-  (isDev ? "holaboss-local-dev" : "holaboss-local")
+  (isDev ? "hitechcloud-local-dev" : "hitechcloud-local")
 ).replace(/[\\/]+/g, "_");
 const normalizeBaseUrl = (value: string): string =>
   value.trim().replace(/\/+$/, "");
@@ -1668,7 +1668,7 @@ function loadPackagedDesktopConfig(): PackagedDesktopConfig {
     return {};
   }
 
-  const configPath = path.join(process.resourcesPath, "holaboss-config.json");
+  const configPath = path.join(process.resourcesPath, "hitechcloud-config.json");
   try {
     if (!existsSync(configPath)) {
       return {};
@@ -1685,7 +1685,7 @@ const packagedDesktopConfig = loadPackagedDesktopConfig();
 
 function configuredMacWebAuthnKeychainAccessGroup(): string {
   return (
-    process.env.HOLABOSS_MAC_WEBAUTHN_KEYCHAIN_ACCESS_GROUP?.trim() ||
+    process.env.HITECHCLOUD_MAC_WEBAUTHN_KEYCHAIN_ACCESS_GROUP?.trim() ||
     packagedDesktopConfig.macWebAuthnKeychainAccessGroup?.trim() ||
     ""
   );
@@ -1735,7 +1735,7 @@ function preferredAppUpdateChannel(): AppUpdateChannel | null {
 
 function effectiveAppUpdateChannel(): AppUpdateChannel {
   return (
-    normalizeAppUpdateChannel(process.env.HOLABOSS_APP_UPDATE_CHANNEL) ??
+    normalizeAppUpdateChannel(process.env.HITECHCLOUD_APP_UPDATE_CHANNEL) ??
     preferredAppUpdateChannel() ??
     DEFAULT_APP_UPDATE_CHANNEL
   );
@@ -1750,7 +1750,7 @@ function syncAppUpdateChannelState() {
 }
 const INTERNAL_DEV_BACKEND_OVERRIDES_ENABLED =
   Boolean(RESOLVED_DEV_SERVER_URL) ||
-  process.env.HOLABOSS_INTERNAL_DEV?.trim() === "1";
+  process.env.HITECHCLOUD_INTERNAL_DEV?.trim() === "1";
 function internalOverride(envName: string): string {
   if (!INTERNAL_DEV_BACKEND_OVERRIDES_ENABLED) {
     return "";
@@ -1778,32 +1778,32 @@ function configuredRemoteBaseUrl(
   return "";
 }
 const AUTH_BASE_URL = configuredRemoteBaseUrl(
-  ["HOLABOSS_AUTH_BASE_URL"],
+  ["HITECHCLOUD_AUTH_BASE_URL"],
   packagedDesktopConfig.authBaseUrl,
 );
 const BACKEND_BASE_URL = configuredRemoteBaseUrl(
-  ["HOLABOSS_BACKEND_BASE_URL"],
+  ["HITECHCLOUD_BACKEND_BASE_URL"],
   packagedDesktopConfig.backendBaseUrl,
 );
 // The web frontend origin that hosts web HolaApp pages (need-review et al.) —
 // NOT a backend/api host. Mirrors the backend's WEB_APP_BASE_URL
-// (prod https://www.holaos.ai, staging https://www.imerchstaging.com,
+// (prod https://www.hitechcloud.vn, staging https://www.imerchstaging.com,
 // local http://localhost:5173). Kept out of the public repo like the other
 // origins; web HolaApp surfaces resolve to `<WEB_APP_BASE_URL>/apps/<id>`.
 const WEB_APP_BASE_URL = configuredRemoteBaseUrl(
-  ["HOLABOSS_WEB_APP_BASE_URL", "WEB_APP_BASE_URL"],
+  ["HITECHCLOUD_WEB_APP_BASE_URL", "WEB_APP_BASE_URL"],
   packagedDesktopConfig.webAppBaseUrl,
 );
-// HolaHub is a system-level surface on its OWN subdomain (prod hub.holaos.ai,
+// HolaHub is a system-level surface on its OWN subdomain (prod hub.hitechcloud.vn,
 // staging hub.imerchstaging.com, local http://localhost:5174) — NOT a
 // `<WEB_APP_BASE_URL>/apps/<id>` HolaApp route. Derive its origin from
 // WEB_APP_BASE_URL (www.* → hub.*, local :5173 → the hub dev server :5174),
 /** HolaHub's app id — the identity a hand-off from it is attributed to. */
 const HUB_APP_ID = "holahub";
 
-// overridable with HOLABOSS_HUB_APP_BASE_URL. The "Home" nav loads its root.
+// overridable with HITECHCLOUD_HUB_APP_BASE_URL. The "Home" nav loads its root.
 const HUB_APP_BASE_URL = ((): string => {
-  const explicit = configuredRemoteBaseUrl(["HOLABOSS_HUB_APP_BASE_URL"]);
+  const explicit = configuredRemoteBaseUrl(["HITECHCLOUD_HUB_APP_BASE_URL"]);
   if (explicit) {
     return explicit;
   }
@@ -1828,9 +1828,9 @@ const HUB_APP_BASE_URL = ((): string => {
 // `<base>/mcp/<holaAppId>/sse`. The gateway treats `/mcp/*` as auth-exempt
 // pass-through to the workflow-backend (the servers do their own bearer auth),
 // so this defaults to the backend/api host. Override with
-// HOLABOSS_WEB_HOLAAPP_MCP_BASE_URL if the MCP lives elsewhere.
+// HITECHCLOUD_WEB_HOLAAPP_MCP_BASE_URL if the MCP lives elsewhere.
 const WEB_HOLAAPP_MCP_BASE_URL =
-  configuredRemoteBaseUrl(["HOLABOSS_WEB_HOLAAPP_MCP_BASE_URL"]) ||
+  configuredRemoteBaseUrl(["HITECHCLOUD_WEB_HOLAAPP_MCP_BASE_URL"]) ||
   BACKEND_BASE_URL;
 const WEB_HOLAAPP_MCP_TIMEOUT_MS = 60_000;
 // Cap on how long a web HolaApp surface load may block before we clear the renderer's
@@ -1854,11 +1854,11 @@ const APP_SURFACE_FAILED_CHANNEL = "appSurface:failed";
 // attaches each installed app's server and clears the allowlist — see installedHolaAppIds.
 const DESKTOP_CONTROL_PLANE_BASE_URL =
   configuredRemoteBaseUrl(
-    ["HOLABOSS_DESKTOP_CONTROL_PLANE_BASE_URL"],
+    ["HITECHCLOUD_DESKTOP_CONTROL_PLANE_BASE_URL"],
     packagedDesktopConfig.desktopControlPlaneBaseUrl,
   ) || serviceBaseUrlFromControlPlane(BACKEND_BASE_URL, 3060);
 const AUTH_SIGN_IN_URL = configuredRemoteBaseUrl(
-  ["HOLABOSS_AUTH_SIGN_IN_URL"],
+  ["HITECHCLOUD_AUTH_SIGN_IN_URL"],
   packagedDesktopConfig.authSignInUrl,
 );
 
@@ -1972,7 +1972,7 @@ function assertSafeAppId(value: unknown): string {
 
 function configureStableUserDataPath() {
   const explicit =
-    process.env.HOLABOSS_DESKTOP_USER_DATA_PATH?.trim() ||
+    process.env.HITECHCLOUD_DESKTOP_USER_DATA_PATH?.trim() ||
     recoveredDevLaunchContext?.userDataPath?.trim() ||
     "";
   const nextUserDataPath = explicit
@@ -2038,21 +2038,21 @@ function loadRuntimeModelCatalogCache(): RuntimeModelCatalogPayload {
         runtimeConfigField(payload.catalog_version as string | undefined) ||
         null,
       defaultBackgroundModel:
-        normalizeRuntimeHolabossCatalogDefaultModelId(
+        normalizeRuntimeHitechcloudCatalogDefaultModelId(
           runtimeFirstNonEmptyString(
             payload.defaultBackgroundModel as string | undefined,
             payload.default_background_model as string | undefined,
           ),
         ) || null,
       defaultEmbeddingModel:
-        normalizeRuntimeHolabossCatalogDefaultModelId(
+        normalizeRuntimeHitechcloudCatalogDefaultModelId(
           runtimeFirstNonEmptyString(
             payload.defaultEmbeddingModel as string | undefined,
             payload.default_embedding_model as string | undefined,
           ),
         ) || null,
       defaultImageModel:
-        normalizeRuntimeHolabossCatalogDefaultModelId(
+        normalizeRuntimeHitechcloudCatalogDefaultModelId(
           runtimeFirstNonEmptyString(
             payload.defaultImageModel as string | undefined,
             payload.default_image_model as string | undefined,
@@ -2269,7 +2269,7 @@ function isReleaseStyleAppVersion(version: string) {
 
 function currentDesktopReleaseTag() {
   const version = currentAppVersion();
-  return version ? `holaOS-${version}` : "";
+  return version ? `hitechcloudOS-${version}` : "";
 }
 
 function appUpdateSupported() {
@@ -2731,7 +2731,7 @@ type MacPermissionResult = {
   opened: boolean;
 };
 
-// Ensure Holaboss is REGISTERED with macOS for the requested privacy permission.
+// Ensure Hitechcloud is REGISTERED with macOS for the requested privacy permission.
 // macOS only lists/grants an app for a permission after the app performs that
 // permission's canonical trigger API — and those APIs live only here in the main
 // process. For trigger-able kinds we invoke the API (which registers the app AND
@@ -2739,7 +2739,7 @@ type MacPermissionResult = {
 // rest we open the relevant Settings pane for a manual grant. The agent calls
 // this (through the desktop bridge) when a host op fails for lack of a
 // permission, then retries. In dev the unsigned binary registers as "Electron";
-// a signed holaOS.app registers as "Holaboss".
+// a signed hitechcloudOS.app registers as "Hitechcloud".
 async function ensureMacPermission(
   rawKind: string,
 ): Promise<MacPermissionResult> {
@@ -2764,7 +2764,7 @@ async function ensureMacPermission(
         // rejects without registering the app. Use the native
         // CGRequestScreenCaptureAccess via node-mac-permissions: it raises the
         // system prompt on the first ask AND opens the Settings pane on failure
-        // — that's what actually adds Holaboss to the Screen Recording list.
+        // — that's what actually adds Hitechcloud to the Screen Recording list.
         // (getMediaAccessStatus reports "denied" even when merely not-yet-asked.)
         const { askForScreenCaptureAccess, getAuthStatus: getMacAuthStatus } =
           loadMacPermissions();
@@ -2808,7 +2808,7 @@ async function ensureMacPermission(
         if (systemPreferences.isTrustedAccessibilityClient(false)) {
           status = "granted";
         } else {
-          // `true` adds Holaboss to the Accessibility list + raises the prompt.
+          // `true` adds Hitechcloud to the Accessibility list + raises the prompt.
           systemPreferences.isTrustedAccessibilityClient(true);
           registered = true;
           opened = openMacPrivacyPane("accessibility");
@@ -2843,7 +2843,7 @@ async function handleMacosPermissionRequest(
     response.writeHead(statusCode, { "content-type": "application/json" });
     response.end(JSON.stringify(body));
   };
-  const headerToken = request.headers["x-holaboss-desktop-token"];
+  const headerToken = request.headers["x-hitechcloud-desktop-token"];
   const token = Array.isArray(headerToken) ? headerToken[0] : headerToken;
   if (!authToken || token !== authToken) {
     sendJson(401, { error: "unauthorized" });
@@ -2953,7 +2953,7 @@ const desktopAuthClient =
 
 interface RuntimeBindingExchangePayload {
   sandbox_id: string;
-  holaboss_user_id: string;
+  hitechcloud_user_id: string;
   target_kind: string;
   model_proxy_api_key?: string;
   auth_token?: string;
@@ -3004,7 +3004,7 @@ interface PopupThemePalette {
 }
 
 function isLightAppTheme(theme: string): boolean {
-  return theme.endsWith("-light") || theme === "holaboss" || theme === "sepia" || theme === "paper";
+  return theme.endsWith("-light") || theme === "hitechcloud" || theme === "sepia" || theme === "paper";
 }
 
 function getPopupThemePalette(theme: string): PopupThemePalette {
@@ -4051,7 +4051,7 @@ interface CancelQueuedSessionInputResponsePayload {
   updated_at: string;
 }
 
-interface HolabossClientConfigPayload {
+interface HitechcloudClientConfigPayload {
   projectsUrl: string;
   marketplaceUrl: string;
 }
@@ -4134,8 +4134,8 @@ interface WorkspaceSkillListResponsePayload {
   skills: WorkspaceSkillRecordPayload[];
 }
 
-interface HolabossCreateWorkspacePayload {
-  holaboss_user_id: string;
+interface HitechcloudCreateWorkspacePayload {
+  hitechcloud_user_id: string;
   location?: WorkspaceLocationPayload | null;
   harness?: string | null;
   name: string;
@@ -4165,7 +4165,7 @@ interface WorkspaceRuntimeFolderSelectionPayload {
   rootPath: string | null;
 }
 
-interface HolabossQueueSessionInputPayload {
+interface HitechcloudQueueSessionInputPayload {
   text: string;
   /** Ambient open-app context for the AGENT only — folded into the turn
    * instruction by the runtime, never persisted as the user message. */
@@ -4182,22 +4182,22 @@ interface HolabossQueueSessionInputPayload {
   app_id?: string | null;
 }
 
-interface HolabossPauseSessionRunPayload {
+interface HitechcloudPauseSessionRunPayload {
   workspace_id: string;
   session_id: string;
 }
 
-interface HolabossAnswerUserQuestionAnswer {
+interface HitechcloudAnswerUserQuestionAnswer {
   question_id: string;
   option_id?: string | null;
   response_text?: string | null;
   notes?: string | null;
 }
 
-interface HolabossAnswerUserQuestionPayload {
+interface HitechcloudAnswerUserQuestionPayload {
   workspace_id: string;
   session_id: string;
-  answers: HolabossAnswerUserQuestionAnswer[];
+  answers: HitechcloudAnswerUserQuestionAnswer[];
   model?: string | null;
   thinking_value?: string | null;
 }
@@ -4210,20 +4210,20 @@ interface AnswerUserQuestionResponsePayload {
   status?: string;
 }
 
-interface HolabossUpdateQueuedSessionInputPayload {
+interface HitechcloudUpdateQueuedSessionInputPayload {
   workspace_id: string;
   session_id: string;
   input_id: string;
   text: string;
 }
 
-interface HolabossCancelQueuedSessionInputPayload {
+interface HitechcloudCancelQueuedSessionInputPayload {
   workspace_id: string;
   session_id: string;
   input_id: string;
 }
 
-interface HolabossStreamSessionOutputsPayload {
+interface HitechcloudStreamSessionOutputsPayload {
   sessionId: string;
   workspaceId?: string | null;
   inputId?: string | null;
@@ -4231,11 +4231,11 @@ interface HolabossStreamSessionOutputsPayload {
   stopOnTerminal?: boolean;
 }
 
-interface HolabossSessionStreamHandlePayload {
+interface HitechcloudSessionStreamHandlePayload {
   streamId: string;
 }
 
-interface HolabossSessionStreamEventPayload {
+interface HitechcloudSessionStreamEventPayload {
   streamId: string;
   type: "event" | "error" | "done";
   event?: {
@@ -4246,7 +4246,7 @@ interface HolabossSessionStreamEventPayload {
   error?: string;
 }
 
-interface HolabossSessionStreamDebugEntry {
+interface HitechcloudSessionStreamDebugEntry {
   at: string;
   streamId: string;
   phase: string;
@@ -4254,23 +4254,23 @@ interface HolabossSessionStreamDebugEntry {
 }
 
 const DEFAULT_PROJECTS_URL =
-  internalOverride("HOLABOSS_PROJECTS_URL") ||
-  internalOverride("HOLABOSS_CLI_PROJECTS_URL") ||
+  internalOverride("HITECHCLOUD_PROJECTS_URL") ||
+  internalOverride("HITECHCLOUD_CLI_PROJECTS_URL") ||
   normalizeBaseUrl(packagedDesktopConfig.projectsUrl || "") ||
   serviceBaseUrlFromControlPlane(DESKTOP_CONTROL_PLANE_BASE_URL, 3033);
 const DEFAULT_MARKETPLACE_URL =
-  internalOverride("HOLABOSS_MARKETPLACE_URL") ||
-  internalOverride("HOLABOSS_CLI_MARKETPLACE_URL") ||
+  internalOverride("HITECHCLOUD_MARKETPLACE_URL") ||
+  internalOverride("HITECHCLOUD_CLI_MARKETPLACE_URL") ||
   normalizeBaseUrl(packagedDesktopConfig.marketplaceUrl || "") ||
   serviceBaseUrlFromControlPlane(DESKTOP_CONTROL_PLANE_BASE_URL, 3037);
 const DEFAULT_PROACTIVE_URL =
-  internalOverride("HOLABOSS_PROACTIVE_URL") ||
-  internalOverride("HOLABOSS_CLI_PROACTIVE_URL") ||
+  internalOverride("HITECHCLOUD_PROACTIVE_URL") ||
+  internalOverride("HITECHCLOUD_CLI_PROACTIVE_URL") ||
   normalizeBaseUrl(packagedDesktopConfig.proactiveUrl || "") ||
   serviceBaseUrlFromControlPlane(DESKTOP_CONTROL_PLANE_BASE_URL, 3032);
 
 const sessionOutputStreams = new Map<string, AbortController>();
-const sessionStreamDebugLog: HolabossSessionStreamDebugEntry[] = [];
+const sessionStreamDebugLog: HitechcloudSessionStreamDebugEntry[] = [];
 let lastRuntimeStateSignature = "";
 let lastRuntimeConfigSignature = "";
 let lastRuntimeBindingRefreshAtMs = 0;
@@ -4317,7 +4317,7 @@ function browserAcceptedLanguages(): string {
 }
 
 // Google (and other SSO providers) flag non-standard User-Agents: the app-name
-// (Holaboss/…) and Electron/… tokens Electron adds make Google treat the view
+// (Hitechcloud/…) and Electron/… tokens Electron adds make Google treat the view
 // as an embedded/untrusted client and break sign-in with a CookieMismatch page.
 // Strip them so the browser presents as plain Chrome.
 //
@@ -4325,7 +4325,7 @@ function browserAcceptedLanguages(): string {
 // `(KHTML, like Gecko)` marker and the `Chrome/…` token, then an `Electron/…`
 // token before Safari. Matching those positions (rather than the literal app
 // name via app.getName()) makes this robust to the product name — including
-// dev names with spaces ("holaOS Dev") and any drift between the name baked
+// dev names with spaces ("hitechcloudOS Dev") and any drift between the name baked
 // into the UA and app.getName() at call time, which previously left the app
 // token in place and re-triggered CookieMismatch.
 function stripBrowserAppUserAgentTokens(userAgent: string): string {
@@ -4532,7 +4532,7 @@ function workspaceRuntimeDbPathForStartupCheck(
   const rootPath = trimmedPath
     ? path.resolve(trimmedPath)
     : workspaceDirectoryPath(workspaceId);
-  return path.join(rootPath, ".holaboss", "state", "runtime.db");
+  return path.join(rootPath, ".hitechcloud", "state", "runtime.db");
 }
 
 function workspaceRuntimeLegacyBackfillComplete(dbPath: string): boolean {
@@ -4737,7 +4737,7 @@ function diagnosticsBundleFileName(date = new Date()) {
     .toISOString()
     .replace(/\.\d{3}Z$/, "Z")
     .replace(/:/g, "-");
-  return `holaboss-diagnostics-${timestamp}.zip`;
+  return `hitechcloud-diagnostics-${timestamp}.zip`;
 }
 
 async function exportDesktopDiagnosticsBundle() {
@@ -4792,7 +4792,7 @@ function revealDiagnosticsBundle(targetPath: string): boolean {
   ) {
     return false;
   }
-  if (!/^holaboss-diagnostics-.+\.zip$/.test(path.basename(resolved))) {
+  if (!/^hitechcloud-diagnostics-.+\.zip$/.test(path.basename(resolved))) {
     return false;
   }
   shell.showItemInFolder(resolved);
@@ -4814,7 +4814,7 @@ function openWorkspaceRuntimeDiagnosticsDatabases(): Database.Database[] {
     if (!workspacePath) {
       continue;
     }
-    const workspaceRuntimeDbPath = path.join(workspacePath, ".holaboss", "state", "runtime.db");
+    const workspaceRuntimeDbPath = path.join(workspacePath, ".hitechcloud", "state", "runtime.db");
     if (!existsSync(workspaceRuntimeDbPath) || seenPaths.has(workspaceRuntimeDbPath)) {
       continue;
     }
@@ -5470,31 +5470,31 @@ async function readRuntimeConfigFile(): Promise<Record<string, string>> {
     );
     const providersPayload = runtimeConfigObject(parsedRecord.providers);
     const integrationsPayload = runtimeConfigObject(parsedRecord.integrations);
-    const holabossIntegration = runtimeConfigObject(
-      integrationsPayload.holaboss,
+    const hitechcloudIntegration = runtimeConfigObject(
+      integrationsPayload.hitechcloud,
     );
-    const holabossProvider = runtimeConfigObject(
-      providersPayload[RUNTIME_HOLABOSS_PROVIDER_ID],
+    const hitechcloudProvider = runtimeConfigObject(
+      providersPayload[RUNTIME_HITECHCLOUD_PROVIDER_ID],
     );
-    const holabossLegacyPayload = runtimeConfigObject(parsedRecord.holaboss);
+    const hitechcloudLegacyPayload = runtimeConfigObject(parsedRecord.hitechcloud);
     const legacyPayload =
-      Object.keys(holabossLegacyPayload).length > 0
-        ? holabossLegacyPayload
+      Object.keys(hitechcloudLegacyPayload).length > 0
+        ? hitechcloudLegacyPayload
         : parsedRecord;
 
     const normalized: Record<string, string> = {};
     const authToken = runtimeFirstNonEmptyString(
-      holabossIntegration.auth_token as string | undefined,
-      holabossProvider.api_key as string | undefined,
+      hitechcloudIntegration.auth_token as string | undefined,
+      hitechcloudProvider.api_key as string | undefined,
       legacyPayload.auth_token as string | undefined,
       legacyPayload.model_proxy_api_key as string | undefined,
     );
     const userId = runtimeFirstNonEmptyString(
-      holabossIntegration.user_id as string | undefined,
+      hitechcloudIntegration.user_id as string | undefined,
       legacyPayload.user_id as string | undefined,
     );
     const bindingSandboxId = runtimeFirstNonEmptyString(
-      holabossIntegration.sandbox_id as string | undefined,
+      hitechcloudIntegration.sandbox_id as string | undefined,
       legacyPayload.sandbox_id as string | undefined,
     );
     const sandboxId =
@@ -5505,7 +5505,7 @@ async function readRuntimeConfigFile(): Promise<Record<string, string>> {
             bindingSandboxId,
           );
     const modelProxyBaseUrl = runtimeFirstNonEmptyString(
-      holabossProvider.base_url as string | undefined,
+      hitechcloudProvider.base_url as string | undefined,
       legacyPayload.model_proxy_base_url as string | undefined,
     );
     const defaultModel = normalizeLegacyRuntimeModelToken(
@@ -5603,8 +5603,8 @@ function trimTrailingSlash(value: string): string {
 async function validateRuntimeProvider(
   providerId: string,
 ): Promise<ValidateProviderResult> {
-  // Holaboss = managed proxy, gated by Better Auth session cookie.
-  if (providerId === "holaboss") {
+  // Hitechcloud = managed proxy, gated by Better Auth session cookie.
+  if (providerId === "hitechcloud") {
     const cookie = authCookieHeader();
     if (!cookie) {
       return { ok: false, detail: "Not signed in" };
@@ -5615,7 +5615,7 @@ async function validateRuntimeProvider(
   const document = await readRuntimeConfigDocument();
   const providers = (document.providers as Record<string, unknown>) ?? {};
   const storageId =
-    providerId === "holaboss" ? "holaboss_model_proxy" : providerId;
+    providerId === "hitechcloud" ? "hitechcloud_model_proxy" : providerId;
   const provider = providers[storageId] as Record<string, unknown> | undefined;
   if (!provider) {
     return { ok: false, detail: "Not configured" };
@@ -5688,23 +5688,23 @@ async function writeRuntimeConfigTextAtomically(
   }
 }
 
-function managedHolabossRuntimeProviderGroup(
+function managedHitechcloudRuntimeProviderGroup(
   providerModelGroups: RuntimeProviderModelGroupPayload[],
 ): RuntimeProviderModelGroupPayload | null {
   return (
     providerModelGroups.find(
       (group) =>
         canonicalRuntimeProviderId(group.providerId) ===
-        RUNTIME_HOLABOSS_PROVIDER_ID,
+        RUNTIME_HITECHCLOUD_PROVIDER_ID,
     ) ?? null
   );
 }
 
-function managedHolabossRuntimeModelConfig(
+function managedHitechcloudRuntimeModelConfig(
   model: RuntimeProviderModelPayload,
 ): Record<string, unknown> {
   return {
-    provider_id: RUNTIME_HOLABOSS_PROVIDER_ID,
+    provider_id: RUNTIME_HITECHCLOUD_PROVIDER_ID,
     model_id: model.modelId,
     ...(model.label ? { label: model.label } : {}),
     ...(model.reasoning !== undefined ? { reasoning: model.reasoning } : {}),
@@ -5726,11 +5726,11 @@ function managedHolabossRuntimeModelConfig(
   };
 }
 
-function withManagedHolabossProviderModels(
+function withManagedHitechcloudProviderModels(
   document: Record<string, unknown>,
   providerModelGroups: RuntimeProviderModelGroupPayload[],
 ): Record<string, unknown> {
-  const group = managedHolabossRuntimeProviderGroup(providerModelGroups);
+  const group = managedHitechcloudRuntimeProviderGroup(providerModelGroups);
   if (!group || group.models.length === 0) {
     return document;
   }
@@ -5740,15 +5740,15 @@ function withManagedHolabossProviderModels(
 
   for (const model of group.models) {
     const token = canonicalRuntimeModelToken(
-      RUNTIME_HOLABOSS_PROVIDER_ID,
+      RUNTIME_HITECHCLOUD_PROVIDER_ID,
       normalizeRuntimeProviderModelToken(
-        RUNTIME_HOLABOSS_PROVIDER_ID,
+        RUNTIME_HITECHCLOUD_PROVIDER_ID,
         model.token,
         model.modelId,
       ),
       model.modelId,
     );
-    const nextPayload = managedHolabossRuntimeModelConfig(model);
+    const nextPayload = managedHitechcloudRuntimeModelConfig(model);
     const currentPayload = runtimeConfigObject(currentModels[token]);
     const currentText = JSON.stringify(currentPayload);
     const nextText = JSON.stringify(nextPayload);
@@ -5768,12 +5768,12 @@ function withManagedHolabossProviderModels(
   };
 }
 
-function runtimeConfigNeedsManagedHolabossModelRefresh(
+function runtimeConfigNeedsManagedHitechcloudModelRefresh(
   document: Record<string, unknown>,
   providerModelGroups: RuntimeProviderModelGroupPayload[],
 ): boolean {
   return (
-    withManagedHolabossProviderModels(document, providerModelGroups) !==
+    withManagedHitechcloudProviderModels(document, providerModelGroups) !==
     document
   );
 }
@@ -6185,7 +6185,7 @@ function runtimeConfigHasBindingMaterial(
 function canUsePersistedRuntimeBindingWithoutAuth(
   config: Record<string, string>,
 ): boolean {
-  if (process.env.HOLABOSS_INTERNAL_DEV?.trim() !== "1") {
+  if (process.env.HITECHCLOUD_INTERNAL_DEV?.trim() !== "1") {
     return false;
   }
   return runtimeConfigHasBindingMaterial(config);
@@ -6193,7 +6193,7 @@ function canUsePersistedRuntimeBindingWithoutAuth(
 
 // Org-billing: the desktop's active org (Better-Auth session activeOrganizationId).
 // Written into the runtime config so model-proxy calls forward it as
-// X-Holaboss-Org-Id and consumption attributes to this org. Best-effort — on any
+// X-Hitechcloud-Org-Id and consumption attributes to this org. Best-effort — on any
 // failure we return null and the product side falls back to the personal org.
 async function resolveDesktopActiveOrgId(): Promise<string | null> {
   try {
@@ -6215,7 +6215,7 @@ async function resolveDesktopActiveOrgId(): Promise<string | null> {
 // BYO (bring-your-own-key) org — unlike resolveDesktopActiveOrgId this does NOT
 // null out the personal org, because a solo user's BYO provider keys are stored
 // under their real personal-org id (the web gateway resolves personal → that id).
-// Forwarded as X-Holaboss-Byo-Org-Id so the backend can surface + run this org's
+// Forwarded as X-Hitechcloud-Byo-Org-Id so the backend can surface + run this org's
 // BYO models. Billing still uses resolveDesktopActiveOrgId (null for personal),
 // so wallet attribution is unchanged. See runtime-config byoOrgId.
 async function resolveDesktopByoOrgId(): Promise<string | null> {
@@ -6260,11 +6260,11 @@ async function writeRuntimeConfigFile(update: RuntimeConfigUpdatePayload) {
     const integrationsPayload = runtimeConfigObject(
       currentDocument.integrations,
     );
-    const holabossIntegration = runtimeConfigObject(
-      integrationsPayload.holaboss,
+    const hitechcloudIntegration = runtimeConfigObject(
+      integrationsPayload.hitechcloud,
     );
-    const holabossProvider = runtimeConfigObject(
-      providersPayload[RUNTIME_HOLABOSS_PROVIDER_ID],
+    const hitechcloudProvider = runtimeConfigObject(
+      providersPayload[RUNTIME_HITECHCLOUD_PROVIDER_ID],
     );
     const next = { ...current };
     const entries: Array<[keyof RuntimeConfigUpdatePayload, string]> = [
@@ -6295,13 +6295,13 @@ async function writeRuntimeConfigFile(update: RuntimeConfigUpdatePayload) {
     }
 
     const modelProxyApiKey = runtimeModelProxyApiKeyFromConfig(next);
-    const managedDefaultBackgroundModel = normalizeRuntimeHolabossCatalogDefaultModelId(
+    const managedDefaultBackgroundModel = normalizeRuntimeHitechcloudCatalogDefaultModelId(
       update.defaultBackgroundModel,
     );
-    const managedDefaultEmbeddingModel = normalizeRuntimeHolabossCatalogDefaultModelId(
+    const managedDefaultEmbeddingModel = normalizeRuntimeHitechcloudCatalogDefaultModelId(
       update.defaultEmbeddingModel,
     );
-    const managedDefaultImageModel = normalizeRuntimeHolabossCatalogDefaultModelId(
+    const managedDefaultImageModel = normalizeRuntimeHitechcloudCatalogDefaultModelId(
       update.defaultImageModel,
     );
     if (modelProxyApiKey) {
@@ -6325,11 +6325,11 @@ async function writeRuntimeConfigFile(update: RuntimeConfigUpdatePayload) {
       }
     };
 
-    assignOrDelete(holabossIntegration, "auth_token", next.auth_token);
-    assignOrDelete(holabossIntegration, "user_id", next.user_id);
-    assignOrDelete(holabossIntegration, "sandbox_id", next.sandbox_id);
-    assignOrDelete(holabossProvider, "api_key", next.auth_token);
-    assignOrDelete(holabossProvider, "base_url", next.model_proxy_base_url);
+    assignOrDelete(hitechcloudIntegration, "auth_token", next.auth_token);
+    assignOrDelete(hitechcloudIntegration, "user_id", next.user_id);
+    assignOrDelete(hitechcloudIntegration, "sandbox_id", next.sandbox_id);
+    assignOrDelete(hitechcloudProvider, "api_key", next.auth_token);
+    assignOrDelete(hitechcloudProvider, "base_url", next.model_proxy_base_url);
     assignOrDelete(runtimePayload, "sandbox_id", next.sandbox_id);
     assignOrDelete(runtimePayload, "default_model", next.default_model);
     assignOrDelete(runtimePayload, "default_provider", next.default_provider);
@@ -6396,11 +6396,11 @@ async function writeRuntimeConfigFile(update: RuntimeConfigUpdatePayload) {
       runtimeModelProxyApiKeyFromConfig(next) &&
       runtimeConfigField(next.model_proxy_base_url) &&
       (Object.keys(currentBackgroundTasks).length === 0 ||
-        (isHolabossProviderAlias(currentBackgroundProviderId) &&
+        (isHitechcloudProviderAlias(currentBackgroundProviderId) &&
           !currentBackgroundModel))
     ) {
       runtimePayload.background_tasks = {
-        provider: RUNTIME_HOLABOSS_PROVIDER_ID,
+        provider: RUNTIME_HITECHCLOUD_PROVIDER_ID,
         model: managedDefaultBackgroundModel,
       };
     } else if (Object.keys(currentBackgroundTasks).length > 0) {
@@ -6412,12 +6412,12 @@ async function writeRuntimeConfigFile(update: RuntimeConfigUpdatePayload) {
       runtimeConfigField(next.model_proxy_base_url) &&
       (
         Object.keys(currentRecallEmbeddings).length === 0 ||
-        (isHolabossProviderAlias(currentRecallEmbeddingsProviderId) &&
+        (isHitechcloudProviderAlias(currentRecallEmbeddingsProviderId) &&
           !currentRecallEmbeddingsModel)
       )
     ) {
       runtimePayload.recall_embeddings = {
-        provider: RUNTIME_HOLABOSS_PROVIDER_ID,
+        provider: RUNTIME_HITECHCLOUD_PROVIDER_ID,
         model: managedDefaultEmbeddingModel,
       };
     } else if (Object.keys(currentRecallEmbeddings).length > 0) {
@@ -6428,11 +6428,11 @@ async function writeRuntimeConfigFile(update: RuntimeConfigUpdatePayload) {
       runtimeModelProxyApiKeyFromConfig(next) &&
       runtimeConfigField(next.model_proxy_base_url) &&
       (Object.keys(currentImageGeneration).length === 0 ||
-        (isHolabossProviderAlias(currentImageGenerationProviderId) &&
+        (isHitechcloudProviderAlias(currentImageGenerationProviderId) &&
           !currentImageGenerationModel))
     ) {
       runtimePayload.image_generation = {
-        provider: RUNTIME_HOLABOSS_PROVIDER_ID,
+        provider: RUNTIME_HITECHCLOUD_PROVIDER_ID,
         model: managedDefaultImageModel,
       };
     } else if (Object.keys(currentImageGeneration).length > 0) {
@@ -6440,20 +6440,20 @@ async function writeRuntimeConfigFile(update: RuntimeConfigUpdatePayload) {
     }
 
     if (
-      Object.keys(holabossProvider).length > 0 &&
-      !runtimeConfigField(holabossProvider.kind as string | undefined)
+      Object.keys(hitechcloudProvider).length > 0 &&
+      !runtimeConfigField(hitechcloudProvider.kind as string | undefined)
     ) {
-      holabossProvider.kind = RUNTIME_PROVIDER_KIND_HOLABOSS_PROXY;
+      hitechcloudProvider.kind = RUNTIME_PROVIDER_KIND_HITECHCLOUD_PROXY;
     }
-    if (Object.keys(holabossIntegration).length > 0) {
-      integrationsPayload.holaboss = holabossIntegration;
+    if (Object.keys(hitechcloudIntegration).length > 0) {
+      integrationsPayload.hitechcloud = hitechcloudIntegration;
     } else {
-      delete integrationsPayload.holaboss;
+      delete integrationsPayload.hitechcloud;
     }
-    if (Object.keys(holabossProvider).length > 0) {
-      providersPayload[RUNTIME_HOLABOSS_PROVIDER_ID] = holabossProvider;
+    if (Object.keys(hitechcloudProvider).length > 0) {
+      providersPayload[RUNTIME_HITECHCLOUD_PROVIDER_ID] = hitechcloudProvider;
     } else {
-      delete providersPayload[RUNTIME_HOLABOSS_PROVIDER_ID];
+      delete providersPayload[RUNTIME_HITECHCLOUD_PROVIDER_ID];
     }
 
     let nextDocument: Record<string, unknown> = {
@@ -6461,10 +6461,10 @@ async function writeRuntimeConfigFile(update: RuntimeConfigUpdatePayload) {
       runtime: runtimePayload,
       providers: providersPayload,
       integrations: integrationsPayload,
-      holaboss: next,
+      hitechcloud: next,
     };
     if (runtimeConfigIsControlPlaneManaged(next)) {
-      nextDocument = withManagedHolabossProviderModels(
+      nextDocument = withManagedHitechcloudProviderModels(
         nextDocument,
         runtimeModelCatalogState.providerModelGroups,
       );
@@ -6510,11 +6510,11 @@ function canonicalRuntimeProviderId(providerId: string): string {
     return "";
   }
   if (
-    RUNTIME_HOLABOSS_PROVIDER_ALIASES.some(
+    RUNTIME_HITECHCLOUD_PROVIDER_ALIASES.some(
       (alias) => alias === normalized.toLowerCase(),
     )
   ) {
-    return RUNTIME_HOLABOSS_PROVIDER_ID;
+    return RUNTIME_HITECHCLOUD_PROVIDER_ID;
   }
   return normalized;
 }
@@ -6533,7 +6533,7 @@ function canonicalRuntimeModelToken(
   if (!normalizedToken) {
     return `${canonicalProviderId}/${normalizedModelId}`;
   }
-  if (canonicalProviderId !== RUNTIME_HOLABOSS_PROVIDER_ID) {
+  if (canonicalProviderId !== RUNTIME_HITECHCLOUD_PROVIDER_ID) {
     return normalizedToken;
   }
   if (!normalizedToken.includes("/")) {
@@ -6542,7 +6542,7 @@ function canonicalRuntimeModelToken(
   const [prefix, ...rest] = normalizedToken.split("/");
   if (
     rest.length > 0 &&
-    RUNTIME_HOLABOSS_PROVIDER_ALIASES.some(
+    RUNTIME_HITECHCLOUD_PROVIDER_ALIASES.some(
       (alias) => alias === prefix.trim().toLowerCase(),
     )
   ) {
@@ -6610,11 +6610,11 @@ function runtimeProviderLabel(providerId: string): string {
     return "MiniMax";
   }
   if (
-    normalized === RUNTIME_HOLABOSS_PROVIDER_ID ||
-    normalized === "holaboss" ||
-    normalized.includes("holaboss")
+    normalized === RUNTIME_HITECHCLOUD_PROVIDER_ID ||
+    normalized === "hitechcloud" ||
+    normalized.includes("hitechcloud")
   ) {
-    return "Holaboss Proxy";
+    return "Hitechcloud Proxy";
   }
   return providerId
     .split(/[-_]/)
@@ -6632,15 +6632,15 @@ function normalizeRuntimeProviderKind(
   const normalizedKind = rawKind.trim().toLowerCase();
   const normalizedBaseUrl = baseUrl.trim().toLowerCase();
   if (
-    normalizedKind === RUNTIME_PROVIDER_KIND_HOLABOSS_PROXY ||
-    normalizedProviderId === RUNTIME_HOLABOSS_PROVIDER_ID ||
-    normalizedProviderId === "holaboss" ||
-    normalizedProviderId.includes("holaboss")
+    normalizedKind === RUNTIME_PROVIDER_KIND_HITECHCLOUD_PROXY ||
+    normalizedProviderId === RUNTIME_HITECHCLOUD_PROVIDER_ID ||
+    normalizedProviderId === "hitechcloud" ||
+    normalizedProviderId.includes("hitechcloud")
   ) {
-    return RUNTIME_PROVIDER_KIND_HOLABOSS_PROXY;
+    return RUNTIME_PROVIDER_KIND_HITECHCLOUD_PROXY;
   }
   if (!normalizedKind && normalizedBaseUrl.includes("model-proxy")) {
-    return RUNTIME_PROVIDER_KIND_HOLABOSS_PROXY;
+    return RUNTIME_PROVIDER_KIND_HITECHCLOUD_PROXY;
   }
   if (
     normalizedKind === RUNTIME_PROVIDER_KIND_OPENROUTER ||
@@ -6671,7 +6671,7 @@ function runtimeModelIdFromToken(token: string): string {
   if (
     normalizedPrefix.includes("openai") ||
     normalizedPrefix.includes("anthropic") ||
-    normalizedPrefix.includes("holaboss") ||
+    normalizedPrefix.includes("hitechcloud") ||
     normalizedPrefix.includes("openrouter") ||
     normalizedPrefix.includes("gemini") ||
     normalizedPrefix.includes("google") ||
@@ -7053,7 +7053,7 @@ function normalizeRuntimeProviderModelGroups(
   return groups;
 }
 
-function normalizeRuntimeHolabossCatalogDefaultModelId(
+function normalizeRuntimeHitechcloudCatalogDefaultModelId(
   value: string | null | undefined,
 ): string {
   const normalized = runtimeFirstNonEmptyString(value);
@@ -7061,7 +7061,7 @@ function normalizeRuntimeHolabossCatalogDefaultModelId(
     return "";
   }
   const modelId = normalizeRuntimeProviderModelId(
-    RUNTIME_HOLABOSS_PROVIDER_ID,
+    RUNTIME_HITECHCLOUD_PROVIDER_ID,
     runtimeModelIdFromToken(normalized),
   );
   if (
@@ -7188,7 +7188,7 @@ function runtimeProviderModelGroups(
   for (const [providerId, rawProvider] of Object.entries(providersPayload)) {
     const canonicalProviderId = canonicalRuntimeProviderId(providerId);
     if (
-      isHolabossProviderAlias(canonicalProviderId) ||
+      isHitechcloudProviderAlias(canonicalProviderId) ||
       isRemovedRuntimeProviderId(canonicalProviderId)
     ) {
       continue;
@@ -7238,7 +7238,7 @@ function runtimeProviderModelGroups(
     if (providerId && modelId) {
       const normalizedProviderId = canonicalRuntimeProviderId(providerId);
       if (
-        isHolabossProviderAlias(normalizedProviderId) ||
+        isHitechcloudProviderAlias(normalizedProviderId) ||
         isRemovedRuntimeProviderId(normalizedProviderId)
       ) {
         continue;
@@ -7285,9 +7285,9 @@ function runtimeProviderModelGroups(
   return groups;
 }
 
-function isHolabossProviderAlias(providerId: string): boolean {
+function isHitechcloudProviderAlias(providerId: string): boolean {
   const normalized = providerId.trim().toLowerCase();
-  return RUNTIME_HOLABOSS_PROVIDER_ALIASES.some(
+  return RUNTIME_HITECHCLOUD_PROVIDER_ALIASES.some(
     (alias) => alias === normalized,
   );
 }
@@ -7308,19 +7308,19 @@ function runtimeModelCatalogPayloadFromResponse(
       runtimeConfigField(payload?.catalog_version as string | undefined) ||
       null,
     defaultBackgroundModel:
-      normalizeRuntimeHolabossCatalogDefaultModelId(
+      normalizeRuntimeHitechcloudCatalogDefaultModelId(
         runtimeConfigField(
           payload?.default_background_model as string | undefined,
         ) || "",
       ) || null,
     defaultEmbeddingModel:
-      normalizeRuntimeHolabossCatalogDefaultModelId(
+      normalizeRuntimeHitechcloudCatalogDefaultModelId(
         runtimeConfigField(
           payload?.default_embedding_model as string | undefined,
         ) || "",
       ) || null,
     defaultImageModel:
-      normalizeRuntimeHolabossCatalogDefaultModelId(
+      normalizeRuntimeHitechcloudCatalogDefaultModelId(
         runtimeConfigField(
           payload?.default_image_model as string | undefined,
         ) || "",
@@ -7446,17 +7446,17 @@ async function fetchDesktopRuntimeModelCatalog(): Promise<RuntimeModelCatalogRes
   // Forward the active org so the backend can add this org's BYO (your-key)
   // provider models to the catalog. Billing org is null for personal; the BYO
   // org is NOT (a solo user's keys live under their personal-org id), so send it
-  // separately as X-Holaboss-Byo-Org-Id — that's what surfaces personal BYO models.
+  // separately as X-Hitechcloud-Byo-Org-Id — that's what surfaces personal BYO models.
   const [activeOrgId, byoOrgId] = await Promise.all([
     resolveDesktopActiveOrgId(),
     resolveDesktopByoOrgId(),
   ]);
   const catalogHeaders: Record<string, string> = { Cookie: cookieHeader };
   if (activeOrgId) {
-    catalogHeaders["X-Holaboss-Org-Id"] = activeOrgId;
+    catalogHeaders["X-Hitechcloud-Org-Id"] = activeOrgId;
   }
   if (byoOrgId) {
-    catalogHeaders["X-Holaboss-Byo-Org-Id"] = byoOrgId;
+    catalogHeaders["X-Hitechcloud-Byo-Org-Id"] = byoOrgId;
   }
   let response: Response;
   const controller = new AbortController();
@@ -7536,7 +7536,7 @@ async function refreshRuntimeModelCatalogIfNeeded(options?: {
   }
   if (!shouldRefreshRuntimeModelCatalog(Boolean(options?.force))) {
     let didSyncDefaults = false;
-    if (await syncManagedHolabossDefaultsToRuntimeConfigIfNeeded()) {
+    if (await syncManagedHitechcloudDefaultsToRuntimeConfigIfNeeded()) {
       didSyncDefaults = true;
     }
     if (didSyncDefaults) {
@@ -7546,7 +7546,7 @@ async function refreshRuntimeModelCatalogIfNeeded(options?: {
   }
   if (!options?.force && hasRecentRuntimeModelCatalogRefreshFailure()) {
     let didSyncDefaults = false;
-    if (await syncManagedHolabossDefaultsToRuntimeConfigIfNeeded()) {
+    if (await syncManagedHitechcloudDefaultsToRuntimeConfigIfNeeded()) {
       didSyncDefaults = true;
     }
     if (didSyncDefaults) {
@@ -7565,7 +7565,7 @@ async function refreshRuntimeModelCatalogIfNeeded(options?: {
       );
       await persistRuntimeModelCatalog(payload);
       let didSyncDefaults = false;
-      if (await syncManagedHolabossDefaultsToRuntimeConfigIfNeeded(payload)) {
+      if (await syncManagedHitechcloudDefaultsToRuntimeConfigIfNeeded(payload)) {
         didSyncDefaults = true;
       }
       if (didSyncDefaults) {
@@ -7619,13 +7619,13 @@ function refreshRuntimeModelCatalogInBackground(): void {
     .catch(() => undefined);
 }
 
-async function syncManagedHolabossDefaultsToRuntimeConfigIfNeeded(
+async function syncManagedHitechcloudDefaultsToRuntimeConfigIfNeeded(
   managedCatalog: RuntimeModelCatalogPayload = runtimeModelCatalogState,
 ): Promise<boolean> {
   const currentConfig = await readRuntimeConfigFile();
   const currentDocument = await readRuntimeConfigDocument();
   if (
-    !runtimeBindingNeedsManagedHolabossDefaultsRefresh(
+    !runtimeBindingNeedsManagedHitechcloudDefaultsRefresh(
       currentConfig,
       currentDocument,
     )
@@ -7867,7 +7867,7 @@ async function getRuntimeConfig(): Promise<RuntimeConfigPayload> {
 async function getRuntimeConfigWithoutCatalogRefresh(): Promise<RuntimeConfigPayload> {
   const managedCatalog = runtimeModelCatalogState;
   let didSyncDefaults = false;
-  if (await syncManagedHolabossDefaultsToRuntimeConfigIfNeeded(managedCatalog)) {
+  if (await syncManagedHitechcloudDefaultsToRuntimeConfigIfNeeded(managedCatalog)) {
     didSyncDefaults = true;
   }
   if (didSyncDefaults) {
@@ -8490,7 +8490,7 @@ function authCookieHeader() {
     if (live !== cachedCookieHeader) {
       cachedCookieHeader = live;
       persistPlaintextAuthCache(live);
-      // The runtime holds its own copy, taken from HOLABOSS_AUTH_COOKIE at
+      // The runtime holds its own copy, taken from HITECHCLOUD_AUTH_COOKIE at
       // spawn. This function exists because that value rotates; the runtime had
       // no way to hear about it, so its cookie-authenticated calls (Composio
       // search / connections / proxy) eventually 401 while chat keeps working
@@ -8521,7 +8521,7 @@ function authCookieHeader() {
 function requireAuthClient() {
   if (!desktopAuthClient) {
     throw new Error(
-      "Remote authentication is not configured. Set HOLABOSS_AUTH_BASE_URL and HOLABOSS_AUTH_SIGN_IN_URL outside the public repo.",
+      "Remote authentication is not configured. Set HITECHCLOUD_AUTH_BASE_URL and HITECHCLOUD_AUTH_SIGN_IN_URL outside the public repo.",
     );
   }
   return desktopAuthClient;
@@ -8536,7 +8536,7 @@ function getMarketplaceAppSdkClient() {
   }
   if (!AUTH_BASE_URL) {
     throw new Error(
-      "Remote backend is not configured. Set HOLABOSS_AUTH_BASE_URL outside the public repo.",
+      "Remote backend is not configured. Set HITECHCLOUD_AUTH_BASE_URL outside the public repo.",
     );
   }
   marketplaceAppSdkClientCache = buildAppSdkClient({
@@ -8554,7 +8554,7 @@ function getMarketplaceAppSdkClient() {
 function requireControlPlaneBaseUrl() {
   if (!DESKTOP_CONTROL_PLANE_BASE_URL) {
     throw new Error(
-      "Remote backend is not configured. Set HOLABOSS_BACKEND_BASE_URL outside the public repo.",
+      "Remote backend is not configured. Set HITECHCLOUD_BACKEND_BASE_URL outside the public repo.",
     );
   }
   return DESKTOP_CONTROL_PLANE_BASE_URL;
@@ -8718,7 +8718,7 @@ function runtimeConfigIsControlPlaneManaged(
   return modelProxyBaseUrl.includes("/api/v1/model-proxy");
 }
 
-function runtimeBindingNeedsManagedHolabossDefaultsRefresh(
+function runtimeBindingNeedsManagedHitechcloudDefaultsRefresh(
   config: Record<string, string>,
   document: Record<string, unknown>,
 ): boolean {
@@ -8736,7 +8736,7 @@ function runtimeBindingNeedsManagedHolabossDefaultsRefresh(
     return true;
   }
   if (
-    runtimeConfigNeedsManagedHolabossModelRefresh(
+    runtimeConfigNeedsManagedHitechcloudModelRefresh(
       document,
       runtimeModelCatalogState.providerModelGroups,
     )
@@ -8794,15 +8794,15 @@ function runtimeBindingNeedsManagedHolabossDefaultsRefresh(
   return (
     (Boolean(runtimeModelCatalogState.defaultBackgroundModel) &&
       (Object.keys(currentBackgroundTasks).length === 0 ||
-        (isHolabossProviderAlias(currentBackgroundProviderId) &&
+        (isHitechcloudProviderAlias(currentBackgroundProviderId) &&
           !currentBackgroundModel))) ||
     (Boolean(runtimeModelCatalogState.defaultEmbeddingModel) &&
       (Object.keys(currentRecallEmbeddings).length === 0 ||
-        (isHolabossProviderAlias(currentRecallEmbeddingsProviderId) &&
+        (isHitechcloudProviderAlias(currentRecallEmbeddingsProviderId) &&
           !currentRecallEmbeddingsModel))) ||
     (Boolean(runtimeModelCatalogState.defaultImageModel) &&
       (Object.keys(currentImageGeneration).length === 0 ||
-        (isHolabossProviderAlias(currentImageGenerationProviderId) &&
+        (isHitechcloudProviderAlias(currentImageGenerationProviderId) &&
           !currentImageGenerationModel)))
   );
 }
@@ -8827,19 +8827,19 @@ function sessionQueueRequiresRuntimeBinding(
   const explicitProviderId =
     configuredProviderIdForRuntimeModelToken(selectedModelToken);
   if (explicitProviderId) {
-    return isHolabossProviderAlias(explicitProviderId);
+    return isHitechcloudProviderAlias(explicitProviderId);
   }
 
   const defaultProviderId = runtimeConfigField(config.default_provider);
   if (defaultProviderId) {
-    return isHolabossProviderAlias(defaultProviderId);
+    return isHitechcloudProviderAlias(defaultProviderId);
   }
 
   const defaultModelProviderId = configuredProviderIdForRuntimeModelToken(
     config.default_model,
   );
   if (defaultModelProviderId) {
-    return isHolabossProviderAlias(defaultModelProviderId);
+    return isHitechcloudProviderAlias(defaultModelProviderId);
   }
 
   return runtimeConfigIsControlPlaneManaged(config);
@@ -8920,7 +8920,7 @@ async function clearRuntimeBindingSecrets(reason: string): Promise<void> {
   });
 }
 
-async function clearManagedHolabossDefaultSelection(
+async function clearManagedHitechcloudDefaultSelection(
   reason: string,
 ): Promise<void> {
   const currentConfig = await readRuntimeConfigFile();
@@ -8937,26 +8937,26 @@ async function clearManagedHolabossDefaultSelection(
     currentConfig,
     runtimeModelCatalogState.providerModelGroups,
   );
-  const holabossGroupHasModelToken = (token: string): boolean =>
+  const hitechcloudGroupHasModelToken = (token: string): boolean =>
     Boolean(token) &&
     providerGroups.some(
       (group) =>
-        isHolabossProviderAlias(group.providerId) &&
+        isHitechcloudProviderAlias(group.providerId) &&
         group.models.some((model) => model.token.trim() === token),
     );
-  const clearDefaultProvider = isHolabossProviderAlias(defaultProviderId);
+  const clearDefaultProvider = isHitechcloudProviderAlias(defaultProviderId);
   const clearDefaultModel =
     clearDefaultProvider ||
-    isHolabossProviderAlias(
+    isHitechcloudProviderAlias(
       configuredProviderIdForRuntimeModelToken(defaultModelToken),
     ) ||
-    holabossGroupHasModelToken(defaultModelToken);
+    hitechcloudGroupHasModelToken(defaultModelToken);
   const clearSubagentModel =
     clearDefaultProvider ||
-    isHolabossProviderAlias(
+    isHitechcloudProviderAlias(
       configuredProviderIdForRuntimeModelToken(subagentModelToken),
     ) ||
-    holabossGroupHasModelToken(subagentModelToken);
+    hitechcloudGroupHasModelToken(subagentModelToken);
   if (!clearDefaultProvider && !clearDefaultModel && !clearSubagentModel) {
     return;
   }
@@ -9026,7 +9026,7 @@ async function provisionRuntimeBindingForAuthenticatedUser(
     const currentConfig = await readRuntimeConfigFile();
     const currentDocument = await readRuntimeConfigDocument();
     const managedDefaultsNeedRefresh =
-      runtimeBindingNeedsManagedHolabossDefaultsRefresh(
+      runtimeBindingNeedsManagedHitechcloudDefaultsRefresh(
         currentConfig,
         currentDocument,
       );
@@ -9075,7 +9075,7 @@ async function provisionRuntimeBindingForAuthenticatedUser(
       const nextConfig = await writeRuntimeConfigFile({
         authToken: modelProxyApiKey,
         modelProxyApiKey,
-        userId: binding.holaboss_user_id,
+        userId: binding.hitechcloud_user_id,
         orgId: activeOrgId,
         byoOrgId,
         sandboxId: binding.sandbox_id,
@@ -9175,7 +9175,7 @@ async function ensureRuntimeBindingReadyForWorkspaceFlow(
     if (canUsePersistedRuntimeBindingWithoutAuth(currentConfig)) {
       return;
     }
-    await clearManagedHolabossDefaultSelection(
+    await clearManagedHitechcloudDefaultSelection(
       `${reason}:missing_auth_session`,
     );
     if (runtimeModelProxyApiKeyFromConfig(currentConfig)) {
@@ -9442,7 +9442,7 @@ async function syncPersistedAuthSessionOnStartup(): Promise<void> {
     emitAuthUserUpdated(user);
     if (!user) {
       const currentConfig = await readRuntimeConfigFile();
-      await clearManagedHolabossDefaultSelection(
+      await clearManagedHitechcloudDefaultSelection(
         "startup_missing_auth_session",
       );
       if (runtimeModelProxyApiKeyFromConfig(currentConfig)) {
@@ -9486,7 +9486,7 @@ function marketplaceBaseUrl() {
 }
 
 /**
- * BFF (Hono) marketplace base URL — used by the @holaboss/app-sdk client
+ * BFF (Hono) marketplace base URL — used by the @hitechcloud/app-sdk client
  * (both main-side and renderer-direct via bff:fetch). Lives on the Hono
  * server at `/api/marketplace`, NOT behind the `/gateway/marketplace`
  * Python control-plane proxy. Distinct from `marketplaceBaseUrl()` which
@@ -9511,8 +9511,8 @@ async function controlPlaneHeaders(
   // the user identity. Main-process fetch is not subject to browser
   // CORS — the earlier "no Cookie" comment was about renderer-process
   // constraints that don't apply here.
-  // TODO(phase-2): Once the Python backend reads X-Holaboss-User-Id
-  // from the gateway-injected header, remove holaboss_user_id from
+  // TODO(phase-2): Once the Python backend reads X-Hitechcloud-User-Id
+  // from the gateway-injected header, remove hitechcloud_user_id from
   // request bodies in requestControlPlaneJson callers.
   const cookie = authCookieHeader();
   if (cookie) {
@@ -10045,7 +10045,7 @@ async function requestDesktopControlPlaneJson<T>({
   }
 }
 
-function getHolabossClientConfig(): HolabossClientConfigPayload {
+function getHitechcloudClientConfig(): HitechcloudClientConfigPayload {
   return {
     projectsUrl: projectsBaseUrl(),
     marketplaceUrl: marketplaceBaseUrl(),
@@ -10580,7 +10580,7 @@ async function listMemoryBrowserGraph(
 
 // Restarts a single workspace app via the runtime's capabilities tool. Used
 // after an integration binding is added/changed so the app re-reads
-// HOLABOSS_APP_GRANT (which is captured at boot in the bridge-transport
+// HITECHCLOUD_APP_GRANT (which is captured at boot in the bridge-transport
 // module and otherwise stays stale until the next process restart).
 async function restartWorkspaceApp(
   workspaceId: string,
@@ -10721,7 +10721,7 @@ async function composioFetch<T>(
 ): Promise<T> {
   if (!AUTH_BASE_URL) {
     throw new Error(
-      "Backend is not configured (HOLABOSS_AUTH_BASE_URL missing)",
+      "Backend is not configured (HITECHCLOUD_AUTH_BASE_URL missing)",
     );
   }
   // Cookie is read inside executeRequest so the retry path picks up the
@@ -11882,7 +11882,7 @@ async function composioDeleteUpstream(
  *
  * The composio-mcp host this used to start no longer exists. Composio tools are
  * resolved inline now, and the runtime actively removes the legacy
- * `holaboss_composio` registry entry — so `/api/v1/composio-mcp/ensure-running`
+ * `hitechcloud_composio` registry entry — so `/api/v1/composio-mcp/ensure-running`
  * has had no route for some time and every call here 404'd straight into the
  * callers' `catch {}`.
  *
@@ -12081,7 +12081,7 @@ const APP_TO_PROVIDER: Record<string, string> = {
 };
 
 async function resolveTemplateIntegrations(
-  payload: HolabossCreateWorkspacePayload,
+  payload: HitechcloudCreateWorkspacePayload,
 ): Promise<ResolveTemplateIntegrationsResult> {
   // Infer requirements from the app names in the payload or selected template
   const appNames: string[] = payload.template_apps ?? [];
@@ -12170,7 +12170,7 @@ const LOCAL_TEMPLATE_IGNORE_NAMES = new Set([
   ".turbo",
   "coverage",
   ".DS_Store",
-  ".holaboss",
+  ".hitechcloud",
   ".opencode",
   "workspace.json",
 ]);
@@ -12198,7 +12198,7 @@ function shouldSkipLocalTemplateEntry(name: string) {
 }
 
 function shouldPreserveWorkspaceRuntimeEntry(name: string) {
-  return name === ".holaboss" || name === "workspace.json";
+  return name === ".hitechcloud" || name === "workspace.json";
 }
 
 function shouldSkipMaterializedWorkspacePath(relativePath: string) {
@@ -12208,7 +12208,7 @@ function shouldSkipMaterializedWorkspacePath(relativePath: string) {
   }
   const rootSegment = normalized.split("/")[0];
   return (
-    rootSegment === ".holaboss" ||
+    rootSegment === ".hitechcloud" ||
     rootSegment === ".opencode" ||
     rootSegment === "workspace.json"
   );
@@ -12257,10 +12257,10 @@ function replaceOrAppendMaterializedTemplateFile(
 
 function localModulesRootCandidates() {
   return [
-    internalOverride("HOLABOSS_MODULES_ROOT"),
-    path.resolve(process.cwd(), "..", "..", "holaboss-modules"),
-    path.resolve(process.cwd(), "..", "holaboss-modules"),
-    path.resolve(app.getAppPath(), "..", "..", "..", "..", "holaboss-modules"),
+    internalOverride("HITECHCLOUD_MODULES_ROOT"),
+    path.resolve(process.cwd(), "..", "..", "hitechcloud-modules"),
+    path.resolve(process.cwd(), "..", "hitechcloud-modules"),
+    path.resolve(app.getAppPath(), "..", "..", "..", "..", "hitechcloud-modules"),
   ].filter(Boolean);
 }
 
@@ -12576,7 +12576,7 @@ async function enrichLocalTemplateWithApps(
   templateRoot: string,
   files: MaterializedTemplateFilePayload[],
 ): Promise<MaterializedTemplateFilePayload[]> {
-  if (process.env.HOLABOSS_INTERNAL_DEV?.trim() !== "1") {
+  if (process.env.HITECHCLOUD_INTERNAL_DEV?.trim() !== "1") {
     return files;
   }
 
@@ -12597,7 +12597,7 @@ async function enrichLocalTemplateWithApps(
   const modulesRoot = resolveLocalModulesRoot();
   if (!modulesRoot) {
     throw new Error(
-      "Local template enrichment needs holaboss-modules, but no local modules root was found.",
+      "Local template enrichment needs hitechcloud-modules, but no local modules root was found.",
     );
   }
 
@@ -12669,7 +12669,7 @@ async function copyLocalTemplateAppNodeModulesToWorkspace(
   templateRoot: string,
   workspaceId: string,
 ) {
-  if (process.env.HOLABOSS_INTERNAL_DEV?.trim() !== "1") {
+  if (process.env.HITECHCLOUD_INTERNAL_DEV?.trim() !== "1") {
     return;
   }
 
@@ -12746,7 +12746,7 @@ async function materializeLocalTemplate(payload: {
 }
 
 async function materializeMarketplaceTemplate(payload: {
-  holaboss_user_id: string;
+  hitechcloud_user_id: string;
   template_name: string;
   template_ref?: string | null;
   template_commit?: string | null;
@@ -13081,7 +13081,7 @@ async function requestRuntimeJson<T>({
 
 function workspaceHarness() {
   return (
-    (process.env.HOLABOSS_RUNTIME_HARNESS || "pi").trim().toLowerCase() || "pi"
+    (process.env.HITECHCLOUD_RUNTIME_HARNESS || "pi").trim().toLowerCase() || "pi"
   );
 }
 
@@ -13096,7 +13096,7 @@ function normalizeRequestedWorkspaceHarness(
 }
 
 function requestedWorkspaceTemplateMode(
-  payload: HolabossCreateWorkspacePayload,
+  payload: HitechcloudCreateWorkspacePayload,
 ): "template" | "empty" {
   return payload.template_mode === "empty" ||
     payload.template_mode === "empty_onboarding"
@@ -13319,7 +13319,7 @@ function workspaceRuntimeSessionHeaders(
 ): Record<string, string> {
   const authToken = (session.runtime_auth_token ?? "").trim();
   return {
-    "X-Holaboss-Workspace-Id": session.workspace_id,
+    "X-Hitechcloud-Workspace-Id": session.workspace_id,
     ...(authToken ? { "X-API-Key": authToken } : {}),
   };
 }
@@ -13696,7 +13696,7 @@ async function stageMaterializedAttachment(params: {
 
     try {
       if (isHeicAttachmentMimeType(resolvedMimeType)) {
-        cleanupDir = await fs.mkdtemp(path.join(os.tmpdir(), "holaboss-heic-stage-"));
+        cleanupDir = await fs.mkdtemp(path.join(os.tmpdir(), "hitechcloud-heic-stage-"));
         imageSourceName = replaceAttachmentExtension(
           name,
           HEIC_CONVERSION_OUTPUT_EXTENSION,
@@ -13864,7 +13864,7 @@ async function stageSessionAttachments(
 
   const batchId = randomUUID();
   const relativeRoot = path.posix.join(
-    ".holaboss",
+    ".hitechcloud",
     "input-attachments",
     batchId,
   );
@@ -13992,7 +13992,7 @@ async function stageSessionAttachmentPaths(
 
     if (!relativeRoot || !absoluteRoot) {
       relativeRoot = path.posix.join(
-        ".holaboss",
+        ".hitechcloud",
         "input-attachments",
         batchId,
       );
@@ -15764,8 +15764,8 @@ async function pickWorkspaceRelocationFolder(
     }
     // Accept if it contains a matching workspace identity file.
     for (const identityFilePath of [
-      path.join(rootPath, ".holaboss", "state", "workspace_id"),
-      path.join(rootPath, ".holaboss", "workspace_id"),
+      path.join(rootPath, ".hitechcloud", "state", "workspace_id"),
+      path.join(rootPath, ".hitechcloud", "workspace_id"),
     ]) {
       if (!existsSync(identityFilePath)) {
         continue;
@@ -16510,7 +16510,7 @@ function contextualWorkspaceCreateError(stage: string, error: unknown) {
 }
 
 async function queueSessionInput(
-  payload: HolabossQueueSessionInputPayload,
+  payload: HitechcloudQueueSessionInputPayload,
 ): Promise<EnqueueSessionInputResponsePayload> {
   await syncDesktopBrowserCapabilityConfig();
   const currentConfig = await readRuntimeConfigFile();
@@ -16584,7 +16584,7 @@ async function queueSessionInput(
 }
 
 async function pauseSessionRun(
-  payload: HolabossPauseSessionRunPayload,
+  payload: HitechcloudPauseSessionRunPayload,
 ): Promise<PauseSessionRunResponsePayload> {
   const response = await requestWorkspaceRuntimeJson<PauseSessionRunResponsePayload>(
     payload.workspace_id,
@@ -16618,7 +16618,7 @@ async function pauseSessionRun(
 }
 
 async function answerSessionUserQuestion(
-  payload: HolabossAnswerUserQuestionPayload,
+  payload: HitechcloudAnswerUserQuestionPayload,
 ): Promise<AnswerUserQuestionResponsePayload> {
   const response =
     await requestWorkspaceRuntimeJson<AnswerUserQuestionResponsePayload>(
@@ -16660,7 +16660,7 @@ async function answerSessionUserQuestion(
 }
 
 async function updateQueuedSessionInput(
-  payload: HolabossUpdateQueuedSessionInputPayload,
+  payload: HitechcloudUpdateQueuedSessionInputPayload,
 ): Promise<UpdateQueuedSessionInputResponsePayload> {
   return requestWorkspaceRuntimeJson<UpdateQueuedSessionInputResponsePayload>(
     payload.workspace_id,
@@ -16676,7 +16676,7 @@ async function updateQueuedSessionInput(
 }
 
 async function cancelQueuedSessionInput(
-  payload: HolabossCancelQueuedSessionInputPayload,
+  payload: HitechcloudCancelQueuedSessionInputPayload,
 ): Promise<CancelQueuedSessionInputResponsePayload> {
   return requestWorkspaceRuntimeJson<CancelQueuedSessionInputResponsePayload>(
     payload.workspace_id,
@@ -16754,7 +16754,7 @@ async function* iterSseEvents(stream: NodeJS.ReadableStream) {
   }
 }
 
-function emitSessionStreamEvent(payload: HolabossSessionStreamEventPayload) {
+function emitSessionStreamEvent(payload: HitechcloudSessionStreamEventPayload) {
   const detail =
     payload.type === "event"
       ? `event=${payload.event?.event || "message"} id=${payload.event?.id || "-"}`
@@ -16784,8 +16784,8 @@ function emitSessionStreamEvent(payload: HolabossSessionStreamEventPayload) {
 }
 
 async function openSessionOutputStream(
-  payload: HolabossStreamSessionOutputsPayload,
-): Promise<HolabossSessionStreamHandlePayload> {
+  payload: HitechcloudStreamSessionOutputsPayload,
+): Promise<HitechcloudSessionStreamHandlePayload> {
   const streamId = crypto.randomUUID();
   const controller = new AbortController();
   sessionOutputStreams.set(streamId, controller);
@@ -17011,7 +17011,7 @@ async function closeSessionOutputStream(
 // Additive to the local-runtime General agent — a different agent surface.
 const employeeChatStreams = new Map<string, AbortController>();
 
-function emitEmployeeStreamEvent(payload: HolabossSessionStreamEventPayload): void {
+function emitEmployeeStreamEvent(payload: HitechcloudSessionStreamEventPayload): void {
   for (const win of BrowserWindow.getAllWindows().filter(
     (w) => !w.isDestroyed(),
   )) {
@@ -17080,7 +17080,7 @@ function openHolaEmployeeChatStream(payload: {
   threadId: string;
   message: string;
   attachments?: { name: string; mimeType: string; contentBase64: string }[];
-}): HolabossSessionStreamHandlePayload {
+}): HitechcloudSessionStreamHandlePayload {
   const streamId = crypto.randomUUID();
   const controller = new AbortController();
   employeeChatStreams.set(streamId, controller);
@@ -17335,7 +17335,7 @@ async function resolveRuntimeRoot() {
     log: (message) => void appendRuntimeLog(`[runtime-archive] ${message}\n`),
   });
   const candidates = [
-    process.env.HOLABOSS_RUNTIME_ROOT,
+    process.env.HITECHCLOUD_RUNTIME_ROOT,
     extractedWindowsRoot ?? undefined,
     isDev ? path.resolve(__dirname, "..", RUNTIME_BUNDLE_DIR) : undefined,
     isDev
@@ -17800,9 +17800,9 @@ async function refreshRuntimeStatus() {
   )
     ? persisted?.pid ?? null
     : null;
-  const harness = process.env.HOLABOSS_RUNTIME_HARNESS || "pi";
+  const harness = process.env.HITECHCLOUD_RUNTIME_HARNESS || "pi";
   const workflowBackend =
-    process.env.HOLABOSS_RUNTIME_WORKFLOW_BACKEND || "remote_api";
+    process.env.HITECHCLOUD_RUNTIME_WORKFLOW_BACKEND || "remote_api";
   const url = runtimeBaseUrl();
   const healthy = await isRuntimeHealthy(url);
   const hasBundle = Boolean(runtimeRoot && executablePath);
@@ -17848,7 +17848,7 @@ async function refreshRuntimeStatus() {
           ? ""
           : runtimeStatus.lastError
         : validationError ||
-          `Runtime bundle not found. Set HOLABOSS_RUNTIME_ROOT or package ${RUNTIME_BUNDLE_DIR} into app resources.`,
+          `Runtime bundle not found. Set HITECHCLOUD_RUNTIME_ROOT or package ${RUNTIME_BUNDLE_DIR} into app resources.`,
   });
   emitRuntimeState();
   return runtimeStatus;
@@ -18015,9 +18015,9 @@ async function startEmbeddedRuntime() {
         ? await resolveRuntimeExecutablePath(runtimeRoot)
         : null;
       const sandboxRoot = runtimeSandboxRoot();
-      const harness = process.env.HOLABOSS_RUNTIME_HARNESS || "pi";
+      const harness = process.env.HITECHCLOUD_RUNTIME_HARNESS || "pi";
       const workflowBackend =
-        process.env.HOLABOSS_RUNTIME_WORKFLOW_BACKEND || "remote_api";
+        process.env.HITECHCLOUD_RUNTIME_WORKFLOW_BACKEND || "remote_api";
       const url = runtimeBaseUrl();
 
       await fs.mkdir(sandboxRoot, { recursive: true });
@@ -18073,7 +18073,7 @@ async function startEmbeddedRuntime() {
           runtimeRoot && executablePath
             ? ""
             : validationError ||
-              `Runtime bundle not found. Set HOLABOSS_RUNTIME_ROOT or package ${RUNTIME_BUNDLE_DIR} into app resources.`,
+              `Runtime bundle not found. Set HITECHCLOUD_RUNTIME_ROOT or package ${RUNTIME_BUNDLE_DIR} into app resources.`,
       });
       emitRuntimeState();
 
@@ -18155,26 +18155,26 @@ async function startEmbeddedRuntime() {
           HB_SANDBOX_ROOT: sandboxRoot,
           SANDBOX_AGENT_BIND_HOST: "127.0.0.1",
           SANDBOX_AGENT_BIND_PORT: String(runtimeApiPort()),
-          HOLABOSS_EMBEDDED_RUNTIME: "1",
+          HITECHCLOUD_EMBEDDED_RUNTIME: "1",
           SANDBOX_AGENT_HARNESS: harness,
-          HOLABOSS_RUNTIME_WORKFLOW_BACKEND: workflowBackend,
-          HOLABOSS_HOST_STATE_DB_PATH: runtimeDatabasePath(),
-          HOLABOSS_RUNTIME_DB_PATH: runtimeDatabasePath(),
-          HOLABOSS_CONTROL_PLANE_DB_PATH: controlPlaneDatabasePath(),
-          HOLABOSS_RUNTIME_LOG_PATH: runtimeLogsPath(),
-          HOLABOSS_RUNTIME_CONFIG_PATH: runtimeConfigPath(),
-          HOLABOSS_DESKTOP_LAUNCH_ID: DESKTOP_LAUNCH_ID,
-          HOLABOSS_DESKTOP_APP_VERSION: app.getVersion(),
-          HOLABOSS_DESKTOP_BROWSER_ENABLED: currentDesktopBrowserCapabilityConfig()
+          HITECHCLOUD_RUNTIME_WORKFLOW_BACKEND: workflowBackend,
+          HITECHCLOUD_HOST_STATE_DB_PATH: runtimeDatabasePath(),
+          HITECHCLOUD_RUNTIME_DB_PATH: runtimeDatabasePath(),
+          HITECHCLOUD_CONTROL_PLANE_DB_PATH: controlPlaneDatabasePath(),
+          HITECHCLOUD_RUNTIME_LOG_PATH: runtimeLogsPath(),
+          HITECHCLOUD_RUNTIME_CONFIG_PATH: runtimeConfigPath(),
+          HITECHCLOUD_DESKTOP_LAUNCH_ID: DESKTOP_LAUNCH_ID,
+          HITECHCLOUD_DESKTOP_APP_VERSION: app.getVersion(),
+          HITECHCLOUD_DESKTOP_BROWSER_ENABLED: currentDesktopBrowserCapabilityConfig()
             .enabled
             ? "true"
             : "false",
-          HOLABOSS_DESKTOP_BROWSER_URL: desktopBrowserServiceUrl,
-          HOLABOSS_DESKTOP_BROWSER_AUTH_TOKEN:
+          HITECHCLOUD_DESKTOP_BROWSER_URL: desktopBrowserServiceUrl,
+          HITECHCLOUD_DESKTOP_BROWSER_AUTH_TOKEN:
             desktopBrowserServiceAuthToken,
           PYTHONDONTWRITEBYTECODE: "1",
-          HOLABOSS_AUTH_BASE_URL: AUTH_BASE_URL,
-          HOLABOSS_AUTH_COOKIE: authCookieHeader() ?? "",
+          HITECHCLOUD_AUTH_BASE_URL: AUTH_BASE_URL,
+          HITECHCLOUD_AUTH_COOKIE: authCookieHeader() ?? "",
           // Bearer-form of the same Better-Auth session, used by
           // ComposioApiClient (runtime/api-server/src/composio-api-client.ts)
           // to call /api/composio/internal/* without a cookie jar. Same
@@ -18182,7 +18182,7 @@ async function startEmbeddedRuntime() {
           // in yet), createComposioApiClientFromEnv() returns null and
           // dependent features stay quietly disabled until the runtime
           // is restarted after sign-in.
-          HOLABOSS_AUTH_BEARER_TOKEN: authBearerToken(),
+          HITECHCLOUD_AUTH_BEARER_TOKEN: authBearerToken(),
         },
         stdio: "pipe",
         windowsHide: process.platform === "win32",
@@ -18343,7 +18343,7 @@ function browserSessionId(value?: string | null): string {
 
 /**
  * Persistent Electron session for third-party HolaApp app-surfaces (Notion, …).
- * Uses the stable `persist:holaboss-browser-root` partition so a login the user
+ * Uses the stable `persist:hitechcloud-browser-root` partition so a login the user
  * did in a surface survives restarts, plus a native (non-Electron) user-agent so
  * sites behave normally. This replaces the retired in-app browser's
  * `ensureBrowserWorkspace().session` — the app-surface never needed the tab
@@ -18418,7 +18418,7 @@ function getOrCreateAppSurfaceView(
       // browser partition — the SAME cookie jar as the imported browser profile
       // and the agent's automation browser — so a login the user already has
       // (imported or done in the in-app browser) carries into the surface.
-      // First-party Holaboss surfaces pass no session and keep the default
+      // First-party Hitechcloud surfaces pass no session and keep the default
       // session (+ Better-Auth cookie seeding). `session` is immutable after
       // creation, so it must be set here; the view is cached per surface id and
       // the workspace is stable within a run.
@@ -18464,7 +18464,7 @@ function getOrCreateAppSurfaceView(
             // Pin the popup to the SAME session as the surface. Child windows
             // do NOT inherit the opener's session (Electron >=14), so without
             // this the popup lands on the default session — which keeps the raw
-            // `Holaboss/… Electron/…` UA. Google's Gaia flags that UA as an
+            // `Hitechcloud/… Electron/…` UA. Google's Gaia flags that UA as an
             // embedded client and serves its CookieMismatch ("problem with your
             // cookie settings") page, breaking OAuth sign-in. Sharing the
             // surface session gives the popup the stripped plain-Chrome UA
@@ -18875,7 +18875,7 @@ function resolveWebHolaAppUrl(
   // mirroring navigateAppSurface — e.g. `?record=<id>` for a deep-link.
   const suffix = typeof urlPath === "string" ? urlPath : "";
   // Third-party apps (e.g. Notion) supply an absolute origin to load directly
-  // instead of the Holaboss-hosted `<WEB_APP_BASE_URL>/apps/<id>` route.
+  // instead of the Hitechcloud-hosted `<WEB_APP_BASE_URL>/apps/<id>` route.
   if (absoluteUrl) {
     return `${absoluteUrl}${suffix}`;
   }
@@ -18885,15 +18885,15 @@ function resolveWebHolaAppUrl(
   if (holaAppId === "holahub") {
     if (!HUB_APP_BASE_URL) {
       throw new Error(
-        "HUB_APP_BASE_URL is not configured — set HOLABOSS_HUB_APP_BASE_URL " +
-          "(or HOLABOSS_WEB_APP_BASE_URL) to open HolaHub.",
+        "HUB_APP_BASE_URL is not configured — set HITECHCLOUD_HUB_APP_BASE_URL " +
+          "(or HITECHCLOUD_WEB_APP_BASE_URL) to open HolaHub.",
       );
     }
     return `${HUB_APP_BASE_URL}${suffix}`;
   }
   if (!WEB_APP_BASE_URL) {
     throw new Error(
-      "WEB_APP_BASE_URL is not configured — set HOLABOSS_WEB_APP_BASE_URL " +
+      "WEB_APP_BASE_URL is not configured — set HITECHCLOUD_WEB_APP_BASE_URL " +
         "(the web frontend origin) to open web HolaApps.",
     );
   }
@@ -19033,7 +19033,7 @@ async function navigateWebHolaAppSurface(
   const existing = appSurfaceViews.get(surfaceKey);
   // Third-party surfaces (absoluteUrl, e.g. Notion) are plain embedded browsers.
   // Bind them to a persistent partition + native user-agent so their logins
-  // survive restarts and sites don't see an Electron UA. First-party Holaboss
+  // survive restarts and sites don't see an Electron UA. First-party Hitechcloud
   // surfaces stay on the default session (their auth is seeded separately below).
   let surfaceSession: Electron.Session | undefined;
   if (absoluteUrl && !existing) {
@@ -19130,8 +19130,8 @@ async function navigateWebHolaAppSurface(
   }
 
   // Third-party apps (absoluteUrl) are plain embedded browser surfaces: they
-  // don't carry the Holaboss session and have no Holaboss MCP, so skip the
-  // auth-cookie seeding and MCP attach (both are Holaboss-hosted-app concerns).
+  // don't carry the Hitechcloud session and have no Hitechcloud MCP, so skip the
+  // auth-cookie seeding and MCP attach (both are Hitechcloud-hosted-app concerns).
   if (!absoluteUrl) {
     // Re-seed on every navigate — the Better Auth token rotates. Must finish before the
     // page loads so the surface session is authenticated.
@@ -19344,7 +19344,7 @@ async function discoverWebHolaAppMcpTools(
         params: {
           protocolVersion: "2024-11-05",
           capabilities: {},
-          clientInfo: { name: "holaboss-desktop", version: "0.0.0" },
+          clientInfo: { name: "hitechcloud-desktop", version: "0.0.0" },
         },
       }),
     }).catch(() => null);
@@ -19398,7 +19398,7 @@ async function attachWebHolaAppMcp(
     const registry = asYamlRecord(data.mcp_registry);
     const servers = asYamlRecord(registry.servers);
     const appServers = asYamlRecord(registry.app_servers);
-    // Discover the app's tools FIRST. An id with no Holaboss-hosted `/mcp/<id>`
+    // Discover the app's tools FIRST. An id with no Hitechcloud-hosted `/mcp/<id>`
     // server (e.g. Notion, now a catalog-only external app served by the backend
     // — its tools come from a connected Composio account, not a hosted MCP)
     // yields zero tools: skip attaching entirely rather than write a dead server
@@ -19601,7 +19601,7 @@ async function ensureSystemMcpAttached(workspaceId: string): Promise<void> {
 // src/lib/mcpMarketplace.ts, catalog GET /gateway/wapp/mcp-catalog). Installing writes a
 // REMOTE MCP server entry into workspace.yaml mcp_registry.servers[id], applying the user's
 // required keys by target (header → headers, query → url query string) and — for
-// holaboss-hosted servers — ALSO the Better-Auth session bearer, exactly like
+// hitechcloud-hosted servers — ALSO the Better-Auth session bearer, exactly like
 // attachWebHolaAppMcp. The user's keys arrive over IPC from the renderer's LOCAL store
 // (never a gateway call) and, like the existing api-key path, land only in the local
 // workspace.yaml.
@@ -19614,7 +19614,7 @@ async function ensureSystemMcpAttached(workspaceId: string): Promise<void> {
 interface MarketplaceMcpAttachConfig {
   id: string;
   mcpUrl: string;
-  holabossHosted: boolean;
+  hitechcloudHosted: boolean;
   headerKeys: Record<string, string>;
   queryKeys: Record<string, string>;
   envKeys: Record<string, string>;
@@ -19659,7 +19659,7 @@ function normalizeMarketplaceMcpConfig(
   return {
     id,
     mcpUrl,
-    holabossHosted: v.holabossHosted === true,
+    hitechcloudHosted: v.hitechcloudHosted === true,
     headerKeys: stringRecordFromUnknown(v.headerKeys),
     queryKeys: stringRecordFromUnknown(v.queryKeys),
     envKeys: stringRecordFromUnknown(v.envKeys),
@@ -19674,10 +19674,10 @@ function normalizeMarketplaceMcpConfig(
   };
 }
 
-// Resolve the server url: holaboss-hosted paths get the API base prepended; query-target
+// Resolve the server url: hitechcloud-hosted paths get the API base prepended; query-target
 // keys are appended to the query string. External urls are used as-is (plus query keys).
 function resolveMarketplaceMcpUrl(config: MarketplaceMcpAttachConfig): string {
-  const base = config.holabossHosted
+  const base = config.hitechcloudHosted
     ? `${WEB_HOLAAPP_MCP_BASE_URL}${config.mcpUrl}`
     : config.mcpUrl;
   const queryEntries = Object.entries(config.queryKeys);
@@ -19690,12 +19690,12 @@ function resolveMarketplaceMcpUrl(config: MarketplaceMcpAttachConfig): string {
   return `${base}${base.includes("?") ? "&" : "?"}${qs}`;
 }
 
-// Resolve the request headers: the header-target keys, plus (holaboss-hosted only) the
+// Resolve the request headers: the header-target keys, plus (hitechcloud-hosted only) the
 // Better-Auth session bearer, read fresh from the main process on each attach.
 function resolveMarketplaceMcpHeaders(
   config: MarketplaceMcpAttachConfig,
 ): Record<string, string> {
-  const bearer = config.holabossHosted ? authBearerToken() : "";
+  const bearer = config.hitechcloudHosted ? authBearerToken() : "";
   return {
     ...config.headerKeys,
     ...(bearer ? { Authorization: `Bearer ${bearer}` } : {}),
@@ -19735,7 +19735,7 @@ async function discoverMarketplaceMcpTools(
         params: {
           protocolVersion: "2024-11-05",
           capabilities: {},
-          clientInfo: { name: "holaboss-desktop", version: "0.0.0" },
+          clientInfo: { name: "hitechcloud-desktop", version: "0.0.0" },
         },
       }),
     }).catch(() => null);
@@ -19770,7 +19770,7 @@ async function attachHostedMcpServer(
   workspaceId: string,
   config: MarketplaceMcpAttachConfig,
 ): Promise<void> {
-  if (config.holabossHosted && !WEB_HOLAAPP_MCP_BASE_URL) {
+  if (config.hitechcloudHosted && !WEB_HOLAAPP_MCP_BASE_URL) {
     return;
   }
   if (Object.keys(config.envKeys).length > 0) {
@@ -20075,7 +20075,7 @@ async function validateCustomMcpKey(
         params: {
           protocolVersion: "2024-11-05",
           capabilities: {},
-          clientInfo: { name: "holaboss-desktop", version: "0.0.0" },
+          clientInfo: { name: "hitechcloud-desktop", version: "0.0.0" },
         },
       }),
     });
@@ -20258,7 +20258,7 @@ function ensureCommandMcpOpenShim(): { dir: string; captureFile: string } {
   // drawio process's open() resolves without launching anything.
   const script = [
     "#!/bin/sh",
-    "# Holaboss: suppress the drawio MCP server's system-browser popup and capture",
+    "# Hitechcloud: suppress the drawio MCP server's system-browser popup and capture",
     "# the editor URL so the desktop loads it into the in-app draw.io surface.",
     `capture=${JSON.stringify(captureFile)}`,
     'for arg in "$@"; do',
@@ -20540,7 +20540,7 @@ let statusRequestSeq = 0;
 const STATUS_TIMEOUT_MS = 8_000;
 
 // Fallback only: the HolaApps main tracks in `installedHolaAppIds` — a SUBSET
-// (Holaboss-hosted `/mcp/<id>` apps; external / api-key apps are excluded), so this
+// (Hitechcloud-hosted `/mcp/<id>` apps; external / api-key apps are excluded), so this
 // is used solely when the renderer can't answer.
 function installedAppItems(): InstalledItem[] {
   return [...installedHolaAppIds].map((id) => ({
@@ -23148,7 +23148,7 @@ async function ensureDefaultWorkspaceSkills(workspaceRoot: string): Promise<void
     }
     const markerPath = path.join(
       workspaceRoot,
-      ".holaboss",
+      ".hitechcloud",
       "state",
       "default-skills-seeded.json",
     );
@@ -23988,7 +23988,7 @@ async function exportHtmlToPdf(
   let tempDirPath = "";
   try {
     tempDirPath = await fs.mkdtemp(
-      path.join(app.getPath("temp"), "holaboss-html-pdf-"),
+      path.join(app.getPath("temp"), "hitechcloud-html-pdf-"),
     );
     const tempHtmlPath = path.join(tempDirPath, "index.html");
     await fs.writeFile(
@@ -24378,7 +24378,7 @@ function createAuthPopupHtml() {
         <div class="profileRow">
           <div id="avatar" class="avatar">H</div>
           <div class="identityWrap">
-            <div id="identityName" class="identityName">Holaboss account</div>
+            <div id="identityName" class="identityName">Hitechcloud account</div>
             <div id="identity" class="identity">Loading session...</div>
           </div>
           <div id="badge" class="badge idle">Checking</div>
@@ -24470,9 +24470,9 @@ function createAuthPopupHtml() {
     </div>
     <script>
       const LINKS = {
-        home: ${JSON.stringify(HOLABOSS_HOME_URL)},
-        docs: ${JSON.stringify(HOLABOSS_DOCS_URL)},
-        help: ${JSON.stringify(HOLABOSS_HELP_URL)}
+        home: ${JSON.stringify(HITECHCLOUD_HOME_URL)},
+        docs: ${JSON.stringify(HITECHCLOUD_DOCS_URL)},
+        help: ${JSON.stringify(HITECHCLOUD_HELP_URL)}
       };
 
       const state = {
@@ -24559,7 +24559,7 @@ function createAuthPopupHtml() {
         const noticeText = state.authError || state.authMessage;
 
         els.avatar.textContent = sessionInitials(state.user);
-        els.identityName.textContent = isSignedIn ? (sessionDisplayName(state.user) || "Holaboss account") : "Holaboss account";
+        els.identityName.textContent = isSignedIn ? (sessionDisplayName(state.user) || "Hitechcloud account") : "Hitechcloud account";
         els.identity.textContent = isSignedIn ? (sessionEmail(state.user) || sessionUserId(state.user) || "Signed in") : "Not connected";
         els.badge.className = "badge " + badgeTone;
         els.badge.textContent = badgeLabel;
@@ -26915,7 +26915,7 @@ function readClipboardImagePayload(): ClipboardImagePayload | null {
 }
 
 const singleInstanceLock =
-  process.env.HOLABOSS_DISABLE_SINGLE_INSTANCE_LOCK?.trim() === "1"
+  process.env.HITECHCLOUD_DISABLE_SINGLE_INSTANCE_LOCK?.trim() === "1"
     ? true
     : app.requestSingleInstanceLock();
 app.setName(
@@ -27582,7 +27582,7 @@ app.whenReady().then(async () => {
   });
   // Full app relaunch — heavier hammer than runtime:restart, used by error
   // surfaces where the renderer/main may itself be in a bad state (e.g. the
-  // "Holaboss couldn't start" blocker). Electron's app.relaunch() schedules
+  // "Hitechcloud couldn't start" blocker). Electron's app.relaunch() schedules
   // the next instance, then app.quit() exits the current one. Awaiting the
   // IPC roundtrip is meaningless because the process is going away — the
   // renderer just kicks it and forgets.
@@ -27595,7 +27595,7 @@ app.whenReady().then(async () => {
   );
   // Organization (tenant) context. The active org is stored server-side on the
   // Better-Auth session (`session.activeOrganizationId`); the frontend gateway
-  // reads it to inject `x-holaboss-org-id` on every proxied backend call — so
+  // reads it to inject `x-hitechcloud-org-id` on every proxied backend call — so
   // switching the active org here re-scopes the whole app with no per-call
   // header. We go through the client (not a manual fetch) so `set-active`'s
   // session rotation is captured by the client's Set-Cookie handling; a manual
@@ -27818,7 +27818,7 @@ app.whenReady().then(async () => {
       return { ok: true };
     },
   );
-  // Renderer-side BFF clients (e.g. @holaboss/app-sdk in renderer, billing
+  // Renderer-side BFF clients (e.g. @hitechcloud/app-sdk in renderer, billing
   // RPC calls) reach the BFF via the bff:fetch IPC bridge — main injects
   // the auth cookie there, so the renderer never sees it. The two URL
   // accessors below stay because the renderer still needs to know which
@@ -27857,7 +27857,7 @@ app.whenReady().then(async () => {
       clearPlaintextAuthCache();
     }
     const runtimeConfig = await readRuntimeConfigFile();
-    await clearManagedHolabossDefaultSelection("auth_sign_out");
+    await clearManagedHitechcloudDefaultSelection("auth_sign_out");
     if (
       runtimeConfigIsControlPlaneManaged(runtimeConfig) &&
       runtimeModelProxyApiKeyFromConfig(runtimeConfig)
@@ -28163,7 +28163,7 @@ app.whenReady().then(async () => {
       const nextConfig = await writeRuntimeConfigFile({
         authToken: modelProxyApiKey,
         modelProxyApiKey,
-        userId: binding.holaboss_user_id,
+        userId: binding.hitechcloud_user_id,
         orgId: activeOrgId,
         byoOrgId,
         sandboxId: binding.sandbox_id,
@@ -28189,7 +28189,7 @@ app.whenReady().then(async () => {
     },
   );
   handleTrustedIpc("workspace:getClientConfig", ["main"], () =>
-    getHolabossClientConfig(),
+    getHitechcloudClientConfig(),
   );
   handleTrustedIpc("workspace:pickTemplateFolder", ["main"], async () =>
     pickTemplateFolder(),
@@ -29009,37 +29009,37 @@ app.whenReady().then(async () => {
   handleTrustedIpc(
     "workspace:queueSessionInput",
     ["main"],
-    async (_event, payload: HolabossQueueSessionInputPayload) =>
+    async (_event, payload: HitechcloudQueueSessionInputPayload) =>
       queueSessionInput(payload),
   );
   handleTrustedIpc(
     "workspace:pauseSessionRun",
     ["main"],
-    async (_event, payload: HolabossPauseSessionRunPayload) =>
+    async (_event, payload: HitechcloudPauseSessionRunPayload) =>
       pauseSessionRun(payload),
   );
   handleTrustedIpc(
     "workspace:answerUserQuestion",
     ["main"],
-    async (_event, payload: HolabossAnswerUserQuestionPayload) =>
+    async (_event, payload: HitechcloudAnswerUserQuestionPayload) =>
       answerSessionUserQuestion(payload),
   );
   handleTrustedIpc(
     "workspace:updateQueuedSessionInput",
     ["main"],
-    async (_event, payload: HolabossUpdateQueuedSessionInputPayload) =>
+    async (_event, payload: HitechcloudUpdateQueuedSessionInputPayload) =>
       updateQueuedSessionInput(payload),
   );
   handleTrustedIpc(
     "workspace:cancelQueuedSessionInput",
     ["main"],
-    async (_event, payload: HolabossCancelQueuedSessionInputPayload) =>
+    async (_event, payload: HitechcloudCancelQueuedSessionInputPayload) =>
       cancelQueuedSessionInput(payload),
   );
   handleTrustedIpc(
     "workspace:openSessionOutputStream",
     ["main"],
-    async (_event, payload: HolabossStreamSessionOutputsPayload) =>
+    async (_event, payload: HitechcloudStreamSessionOutputsPayload) =>
       openSessionOutputStream(payload),
   );
   handleTrustedIpc(
@@ -29366,7 +29366,7 @@ app.whenReady().then(async () => {
   handleTrustedIpc(
     "workspace:resolveTemplateIntegrations",
     ["main"],
-    async (_event, payload: HolabossCreateWorkspacePayload) =>
+    async (_event, payload: HitechcloudCreateWorkspacePayload) =>
       resolveTemplateIntegrations(payload),
   );
   handleTrustedIpc(
@@ -29386,7 +29386,7 @@ app.whenReady().then(async () => {
         readmeMd: string | null;
       },
     ) => {
-      const holabossUserId = await controlPlaneWorkspaceUserId();
+      const hitechcloudUserId = await controlPlaneWorkspaceUserId();
       const client = getMarketplaceAppSdkClient();
       // author_name is accepted by the backend but not yet reflected in the
       // kubb v3 generated SDK type (default-value fields are dropped).
@@ -29399,7 +29399,7 @@ app.whenReady().then(async () => {
         apps: payload.apps,
         onboarding_md: payload.onboardingMd,
         readme_md: payload.readmeMd,
-        holaboss_user_id: holabossUserId,
+        hitechcloud_user_id: hitechcloudUserId,
         author_name: payload.authorName ?? "",
       };
       return await sdkCreateMarketplaceSubmission(
@@ -29531,11 +29531,11 @@ app.whenReady().then(async () => {
     "workspace:finalizeSubmission",
     ["main"],
     async (_event, submissionId: string) => {
-      const holabossUserId = await controlPlaneWorkspaceUserId();
+      const hitechcloudUserId = await controlPlaneWorkspaceUserId();
       const client = getMarketplaceAppSdkClient();
       return await sdkFinalizeMarketplaceSubmission(
         submissionId,
-        { holaboss_user_id: holabossUserId },
+        { hitechcloud_user_id: hitechcloudUserId },
         { client },
       );
     },
@@ -29691,7 +29691,7 @@ app.whenReady().then(async () => {
     status: "starting",
     url: runtimeBaseUrl(),
     sandboxRoot: runtimeSandboxRoot(),
-    harness: process.env.HOLABOSS_RUNTIME_HARNESS || "pi",
+    harness: process.env.HITECHCLOUD_RUNTIME_HARNESS || "pi",
     startupMessage: runtimeStartupMessage(),
     lastError: "",
   });
@@ -29723,7 +29723,7 @@ app.whenReady().then(async () => {
     );
     try {
       dialog.showErrorBox(
-        "holaOS couldn't finish starting",
+        "hitechcloudOS couldn't finish starting",
         `${detail}\n\nThe log is in runtime.log; Help → Export diagnostics collects it.`,
       );
     } catch {

@@ -1,4 +1,4 @@
-import type { MemoryEntryRecord } from "@holaboss/runtime-state-store";
+import type { MemoryEntryRecord } from "@hitechcloud/runtime-state-store";
 
 import type { AgentRecalledMemoryContext } from "./memory-retrieval-pack.js";
 import {

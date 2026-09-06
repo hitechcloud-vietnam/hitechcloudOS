@@ -17,11 +17,11 @@ on:
         default: main
         type: string
       release_tag:
-        description: GitHub release tag to create in holaOS-releases
+        description: GitHub release tag to create in hitechcloudOS-releases
         required: true
         type: string
       release_title:
-        description: Optional GitHub release title (defaults to holaOS <version>)
+        description: Optional GitHub release title (defaults to hitechcloudOS <version>)
         required: false
         type: string
       prerelease:
@@ -42,7 +42,7 @@ permissions:
   contents: read
 
 env:
-  HOLABOSS_RELEASES_REPO: holaboss-ai/holaOS-releases
+  HITECHCLOUD_RELEASES_REPO: hitechcloud-vietnam/hitechcloudOS-releases
 
 jobs:
   desktop-typecheck:
@@ -78,12 +78,12 @@ jobs:
       # Turbo's ^build builds the desktop's workspace deps (remote-api, app-sdk,
       # editor, ui, runtime-client) before typechecking.
       - name: Desktop typecheck
-        run: bunx turbo run typecheck --filter=holaboss-local
+        run: bunx turbo run typecheck --filter=hitechcloud-local
 
       # apps/desktop's node:test files were never executed by any CI job, so
       # the invariants they encode drifted silently — that is how the DMG
-      # undersize bug reached a release twice (holaOS-2026.608.2 and again on
-      # holaOS-2026.815.1). They read source and config files only, so they
+      # undersize bug reached a release twice (hitechcloudOS-2026.608.2 and again on
+      # hitechcloudOS-2026.815.1). They read source and config files only, so they
       # need no build and cost about a second. The 20 that had rotted into
       # pinning formatting rather than behavior are gone, so this now gates
       # the whole suite rather than a hand-listed subset.
@@ -234,10 +234,10 @@ jobs:
           PI_OFFLINE: "1"
         run: >-
           bunx turbo run typecheck build test
-          --filter=@holaboss/runtime-state-store
-          --filter=@holaboss/runtime-harness-host
-          --filter=@holaboss/runtime-harnesses
-          --filter=@holaboss/runtime-channel-gateway
+          --filter=@hitechcloud/runtime-state-store
+          --filter=@hitechcloud/runtime-harness-host
+          --filter=@hitechcloud/runtime-harnesses
+          --filter=@hitechcloud/runtime-channel-gateway
 
   sdk-app-sdk:
     if: ${{ github.event_name != 'workflow_dispatch' }}
@@ -268,7 +268,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: App SDK checks
-        run: bunx turbo run typecheck test build --filter=@holaboss/app-sdk
+        run: bunx turbo run typecheck test build --filter=@hitechcloud/app-sdk
 
   runtime-api-server:
     if: ${{ github.event_name != 'workflow_dispatch' }}
@@ -301,7 +301,7 @@ jobs:
       # ^build auto-builds runtime-state-store + remote-api before the api-server
       # typecheck/test/build — no manual ordering needed.
       - name: Runtime API server checks
-        run: bunx turbo run typecheck test build --filter=@holaboss/runtime-api-server
+        run: bunx turbo run typecheck test build --filter=@hitechcloud/runtime-api-server
 
   packages:
     if: ${{ github.event_name != 'workflow_dispatch' }}
@@ -336,7 +336,7 @@ jobs:
       # app-host was not excluded on purpose — it was simply never listed, so
       # its nine tests had never run in CI. They pass; it is gated now.
       - name: Package checks
-        run: bunx turbo run typecheck test build --filter=@holaboss/remote-api --filter=@holaboss/runtime-client --filter=@holaboss/editor --filter=@holaboss/ui --filter=@holaboss/app-host
+        run: bunx turbo run typecheck test build --filter=@hitechcloud/remote-api --filter=@hitechcloud/runtime-client --filter=@hitechcloud/editor --filter=@hitechcloud/ui --filter=@hitechcloud/app-host
 
   ensure-release:
     if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -360,16 +360,16 @@ jobs:
         id: release_meta
         run: |
           release_tag="${{ inputs.release_tag }}"
-          if ! printf '%s' "${release_tag}" | grep -Eq '^holaOS-[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "release_tag must match holaOS-YYYY.MDD.R; got ${release_tag}" >&2
+          if ! printf '%s' "${release_tag}" | grep -Eq '^hitechcloudOS-[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "release_tag must match hitechcloudOS-YYYY.MDD.R; got ${release_tag}" >&2
             exit 1
           fi
 
-          release_version="${release_tag#holaOS-}"
+          release_version="${release_tag#hitechcloudOS-}"
           release_title="${{ inputs.release_title }}"
           release_channel="${{ inputs.release_channel }}"
           if [ -z "${release_title}" ]; then
-            release_title="holaOS ${release_version}"
+            release_title="hitechcloudOS ${release_version}"
           fi
           if [ "${release_channel}" != "latest" ] && [ "${release_channel}" != "beta" ]; then
             echo "release_channel must be one of: latest, beta; got ${release_channel}" >&2
@@ -394,12 +394,12 @@ jobs:
 
       - name: Ensure release tag is available
         env:
-          GH_TOKEN: ${{ secrets.HOLABOSS_RELEASES_REPO_TOKEN }}
+          GH_TOKEN: ${{ secrets.HITECHCLOUD_RELEASES_REPO_TOKEN }}
           RELEASE_TAG: ${{ steps.release_meta.outputs.release_tag }}
-          RELEASE_GH_REPO: holaboss-ai/holaOS-releases
+          RELEASE_GH_REPO: hitechcloud-vietnam/hitechcloudOS-releases
         run: |
           if [ -z "${GH_TOKEN}" ]; then
-            echo "manual release publishing to ${RELEASE_GH_REPO} requires HOLABOSS_RELEASES_REPO_TOKEN" >&2
+            echo "manual release publishing to ${RELEASE_GH_REPO} requires HITECHCLOUD_RELEASES_REPO_TOKEN" >&2
             exit 1
           fi
 
@@ -435,9 +435,9 @@ jobs:
     env:
       RELEASE_TAG: ${{ needs.ensure-release.outputs.release_tag }}
       RELEASE_CHANNEL: ${{ needs.ensure-release.outputs.release_channel }}
-      HOLABOSS_RELEASE_CHANNEL: ${{ needs.ensure-release.outputs.release_channel }}
-      DESKTOP_ASSET_PREFIX: holaboss-desktop-macos
-      DESKTOP_RELEASE_ASSET_NAME: holaOS-macos-arm64.dmg
+      HITECHCLOUD_RELEASE_CHANNEL: ${{ needs.ensure-release.outputs.release_channel }}
+      DESKTOP_ASSET_PREFIX: hitechcloud-desktop-macos
+      DESKTOP_RELEASE_ASSET_NAME: hitechcloudOS-macos-arm64.dmg
       MAC_CERTIFICATE: ${{ secrets.MAC_CERTIFICATE }}
       MAC_CERTIFICATE_PASSWORD: ${{ secrets.MAC_CERTIFICATE_PASSWORD }}
       APPLE_ID: ${{ secrets.APPLE_ID }}
@@ -468,7 +468,7 @@ jobs:
         env:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           SENTRY_ENVIRONMENT: production
-          HOLABOSS_RUNTIME_VERSION: ${{ env.RELEASE_TAG }}
+          HITECHCLOUD_RUNTIME_VERSION: ${{ env.RELEASE_TAG }}
         run: bash runtime/deploy/package_macos_runtime.sh out/runtime-macos
 
       - name: Upload runtime Sentry source maps
@@ -477,7 +477,7 @@ jobs:
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG }}
-          SENTRY_PROJECT: holaboss-runtime
+          SENTRY_PROJECT: hitechcloud-runtime
         run: |
           npx @sentry/cli sourcemaps upload \
             --release "${{ env.RELEASE_TAG }}" \
@@ -485,7 +485,7 @@ jobs:
             runtime/api-server/dist
 
       - name: Build app SDK
-        run: bun --filter=@holaboss/app-sdk run build
+        run: bun --filter=@hitechcloud/app-sdk run build
 
       - name: Require mac signing and notarization credentials
         run: |
@@ -553,16 +553,16 @@ jobs:
         working-directory: apps/desktop
         shell: bash
         env:
-          HOLABOSS_RELEASE_TAG: ${{ env.RELEASE_TAG }}
-          HOLABOSS_RUNTIME_DIR: ${{ github.workspace }}/out/runtime-macos/
-          HOLABOSS_AUTH_BASE_URL: ${{ vars.HOLABOSS_AUTH_BASE_URL }}
-          HOLABOSS_AUTH_SIGN_IN_URL: ${{ vars.HOLABOSS_AUTH_SIGN_IN_URL }}
-          HOLABOSS_BACKEND_BASE_URL: ${{ vars.HOLABOSS_BACKEND_BASE_URL }}
-          HOLABOSS_WEB_APP_BASE_URL: ${{ vars.HOLABOSS_WEB_APP_BASE_URL }}
-          HOLABOSS_DESKTOP_CONTROL_PLANE_BASE_URL: ${{ vars.HOLABOSS_DESKTOP_CONTROL_PLANE_BASE_URL }}
-          HOLABOSS_PROJECTS_URL: ${{ vars.HOLABOSS_PROJECTS_URL }}
-          HOLABOSS_MARKETPLACE_URL: ${{ vars.HOLABOSS_MARKETPLACE_URL }}
-          HOLABOSS_PROACTIVE_URL: ${{ vars.HOLABOSS_PROACTIVE_URL }}
+          HITECHCLOUD_RELEASE_TAG: ${{ env.RELEASE_TAG }}
+          HITECHCLOUD_RUNTIME_DIR: ${{ github.workspace }}/out/runtime-macos/
+          HITECHCLOUD_AUTH_BASE_URL: ${{ vars.HITECHCLOUD_AUTH_BASE_URL }}
+          HITECHCLOUD_AUTH_SIGN_IN_URL: ${{ vars.HITECHCLOUD_AUTH_SIGN_IN_URL }}
+          HITECHCLOUD_BACKEND_BASE_URL: ${{ vars.HITECHCLOUD_BACKEND_BASE_URL }}
+          HITECHCLOUD_WEB_APP_BASE_URL: ${{ vars.HITECHCLOUD_WEB_APP_BASE_URL }}
+          HITECHCLOUD_DESKTOP_CONTROL_PLANE_BASE_URL: ${{ vars.HITECHCLOUD_DESKTOP_CONTROL_PLANE_BASE_URL }}
+          HITECHCLOUD_PROJECTS_URL: ${{ vars.HITECHCLOUD_PROJECTS_URL }}
+          HITECHCLOUD_MARKETPLACE_URL: ${{ vars.HITECHCLOUD_MARKETPLACE_URL }}
+          HITECHCLOUD_PROACTIVE_URL: ${{ vars.HITECHCLOUD_PROACTIVE_URL }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           GITHUB_TOKEN: ${{ github.token }}
           CSC_LINK: ${{ steps.prepare_mac_certificate.outputs.certificate_path }}
@@ -590,7 +590,7 @@ jobs:
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG }}
-          SENTRY_PROJECT: holaboss-desktop
+          SENTRY_PROJECT: hitechcloud-desktop
         run: |
           npx @sentry/cli sourcemaps upload \
             --release "${{ env.RELEASE_TAG }}" \
@@ -602,7 +602,7 @@ jobs:
         working-directory: apps/desktop
         shell: bash
         env:
-          HOLABOSS_RELEASE_TAG: ${{ env.RELEASE_TAG }}
+          HITECHCLOUD_RELEASE_TAG: ${{ env.RELEASE_TAG }}
           CSC_LINK: ${{ steps.prepare_mac_certificate.outputs.certificate_path }}
           CSC_KEY_PASSWORD: ${{ env.MAC_CERTIFICATE_PASSWORD }}
         run: |
@@ -623,7 +623,7 @@ jobs:
             echo "app-update.yml is missing from signed app bundle" >&2
             exit 1
           fi
-          packaged_app="${RUNNER_TEMP}/holaOS.app"
+          packaged_app="${RUNNER_TEMP}/hitechcloudOS.app"
           rm -rf "${packaged_app}"
           ditto "${app_path}" "${packaged_app}"
           echo "app_path=${packaged_app}" >> "${GITHUB_OUTPUT}"
@@ -722,7 +722,7 @@ jobs:
         working-directory: apps/desktop
         shell: bash
         env:
-          HOLABOSS_RELEASE_TAG: ${{ env.RELEASE_TAG }}
+          HITECHCLOUD_RELEASE_TAG: ${{ env.RELEASE_TAG }}
         run: |
           set -euo pipefail
           app_path="${{ steps.build_signed_app.outputs.app_path }}"
@@ -733,7 +733,7 @@ jobs:
           # Split dmg + zip into two electron-builder calls inside the helper,
           # then merge the zip-pass `*-mac.yml` entries back into the dmg-pass
           # manifests so files: keeps both. Combined `--mac dmg zip` shipped
-          # holaOS-2026.608.2 with the DMG's Electron Framework main binary
+          # hitechcloudOS-2026.608.2 with the DMG's Electron Framework main binary
           # stripped (Gatekeeper rejected with "Apple could not verify"); the
           # split avoids that, and the merge keeps downstream
           # merge-mac-update-manifests.rb happy. Validation below hard-fails
@@ -788,11 +788,11 @@ jobs:
               abort("#{path} files: is missing a .dmg entry") unless has_dmg
             ' "${mac_manifest_path}"
           done < <(find apps/desktop/out/release -maxdepth 1 -name '*-mac.yml' -print)
-          if ! zipinfo -1 "${zip_path}" | grep -Eq '^holaOS\.app/'; then
-            echo "macOS zip does not contain holaOS.app as the root app bundle" >&2
+          if ! zipinfo -1 "${zip_path}" | grep -Eq '^hitechcloudOS\.app/'; then
+            echo "macOS zip does not contain hitechcloudOS.app as the root app bundle" >&2
             exit 1
           fi
-          if ! zipinfo -1 "${zip_path}" | grep -Fxq 'holaOS.app/Contents/Resources/app-update.yml'; then
+          if ! zipinfo -1 "${zip_path}" | grep -Fxq 'hitechcloudOS.app/Contents/Resources/app-update.yml'; then
             echo "app-update.yml is missing from final macOS zip" >&2
             exit 1
           fi
@@ -800,9 +800,9 @@ jobs:
           rm -rf "${extract_dir}"
           mkdir -p "${extract_dir}"
           ditto -x -k "${zip_path}" "${extract_dir}"
-          extracted_app="${extract_dir}/holaOS.app"
+          extracted_app="${extract_dir}/hitechcloudOS.app"
           if [ ! -d "${extracted_app}" ]; then
-            echo "holaOS.app was not extracted from the final macOS zip" >&2
+            echo "hitechcloudOS.app was not extracted from the final macOS zip" >&2
             exit 1
           fi
           verify_attempt=1
@@ -844,7 +844,7 @@ jobs:
             exit 1
           fi
           # Hard fail if the Electron Framework main binary is missing — this is the specific
-          # regression we shipped on holaOS-2026.608.2 where the DMG output stripped it.
+          # regression we shipped on hitechcloudOS-2026.608.2 where the DMG output stripped it.
           fw_bin="${mounted_app}/Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework"
           if [ ! -f "${fw_bin}" ]; then
             echo "Electron Framework main binary is missing from DMG: ${fw_bin}" >&2
@@ -912,9 +912,9 @@ jobs:
     env:
       RELEASE_TAG: ${{ needs.ensure-release.outputs.release_tag }}
       RELEASE_CHANNEL: ${{ needs.ensure-release.outputs.release_channel }}
-      HOLABOSS_RELEASE_CHANNEL: ${{ needs.ensure-release.outputs.release_channel }}
-      DESKTOP_ASSET_PREFIX: holaboss-desktop-windows
-      DESKTOP_RELEASE_ASSET_NAME: holaOS-windows-x64-setup.exe
+      HITECHCLOUD_RELEASE_CHANNEL: ${{ needs.ensure-release.outputs.release_channel }}
+      DESKTOP_ASSET_PREFIX: hitechcloud-desktop-windows
+      DESKTOP_RELEASE_ASSET_NAME: hitechcloudOS-windows-x64-setup.exe
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -1095,22 +1095,22 @@ jobs:
           Write-Host "Azure Trusted Signing authorization validated with a signed probe executable."
 
       - name: Build app SDK
-        run: bun --filter=@holaboss/app-sdk run build
+        run: bun --filter=@hitechcloud/app-sdk run build
 
       - name: Build Windows desktop installer
         id: build_windows_installer
         working-directory: apps/desktop
         shell: pwsh
         env:
-          HOLABOSS_RELEASE_TAG: ${{ env.RELEASE_TAG }}
-          HOLABOSS_AUTH_BASE_URL: ${{ vars.HOLABOSS_AUTH_BASE_URL }}
-          HOLABOSS_AUTH_SIGN_IN_URL: ${{ vars.HOLABOSS_AUTH_SIGN_IN_URL }}
-          HOLABOSS_BACKEND_BASE_URL: ${{ vars.HOLABOSS_BACKEND_BASE_URL }}
-          HOLABOSS_WEB_APP_BASE_URL: ${{ vars.HOLABOSS_WEB_APP_BASE_URL }}
-          HOLABOSS_DESKTOP_CONTROL_PLANE_BASE_URL: ${{ vars.HOLABOSS_DESKTOP_CONTROL_PLANE_BASE_URL }}
-          HOLABOSS_PROJECTS_URL: ${{ vars.HOLABOSS_PROJECTS_URL }}
-          HOLABOSS_MARKETPLACE_URL: ${{ vars.HOLABOSS_MARKETPLACE_URL }}
-          HOLABOSS_PROACTIVE_URL: ${{ vars.HOLABOSS_PROACTIVE_URL }}
+          HITECHCLOUD_RELEASE_TAG: ${{ env.RELEASE_TAG }}
+          HITECHCLOUD_AUTH_BASE_URL: ${{ vars.HITECHCLOUD_AUTH_BASE_URL }}
+          HITECHCLOUD_AUTH_SIGN_IN_URL: ${{ vars.HITECHCLOUD_AUTH_SIGN_IN_URL }}
+          HITECHCLOUD_BACKEND_BASE_URL: ${{ vars.HITECHCLOUD_BACKEND_BASE_URL }}
+          HITECHCLOUD_WEB_APP_BASE_URL: ${{ vars.HITECHCLOUD_WEB_APP_BASE_URL }}
+          HITECHCLOUD_DESKTOP_CONTROL_PLANE_BASE_URL: ${{ vars.HITECHCLOUD_DESKTOP_CONTROL_PLANE_BASE_URL }}
+          HITECHCLOUD_PROJECTS_URL: ${{ vars.HITECHCLOUD_PROJECTS_URL }}
+          HITECHCLOUD_MARKETPLACE_URL: ${{ vars.HITECHCLOUD_MARKETPLACE_URL }}
+          HITECHCLOUD_PROACTIVE_URL: ${{ vars.HITECHCLOUD_PROACTIVE_URL }}
           GITHUB_TOKEN: ${{ github.token }}
           WINDOWS_SIGNING_ENDPOINT: ${{ vars.WINDOWS_SIGNING_ENDPOINT }}
           WINDOWS_SIGNING_ACCOUNT_NAME: ${{ vars.WINDOWS_SIGNING_ACCOUNT_NAME }}
@@ -1121,7 +1121,7 @@ jobs:
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           SENTRY_ENVIRONMENT: production
-          HOLABOSS_RUNTIME_VERSION: ${{ env.RELEASE_TAG }}
+          HITECHCLOUD_RUNTIME_VERSION: ${{ env.RELEASE_TAG }}
         run: |
           $requiredSigningEnv = @(
             "WINDOWS_SIGNING_ENDPOINT",
@@ -1214,7 +1214,7 @@ jobs:
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG }}
-          SENTRY_PROJECT: holaboss-desktop
+          SENTRY_PROJECT: hitechcloud-desktop
         run: |
           npx @sentry/cli sourcemaps upload \
             --release "${{ env.RELEASE_TAG }}" \
@@ -1231,7 +1231,7 @@ jobs:
             throw "$manifestName was not generated"
           }
 
-          $stableInstallerName = "holaOS-windows-x64-setup.exe"
+          $stableInstallerName = "hitechcloudOS-windows-x64-setup.exe"
           $manifestContent = Get-Content -LiteralPath $manifestPath -Raw
           if ($manifestContent -notmatch [regex]::Escape($stableInstallerName)) {
             throw "$manifestName does not reference $stableInstallerName"
@@ -1289,10 +1289,10 @@ jobs:
       RELEASE_TAG: ${{ needs.ensure-release.outputs.release_tag }}
       RELEASE_TITLE: ${{ needs.ensure-release.outputs.release_title }}
       RELEASE_CHANNEL: ${{ needs.ensure-release.outputs.release_channel }}
-      HOLABOSS_RELEASE_CHANNEL: ${{ needs.ensure-release.outputs.release_channel }}
+      HITECHCLOUD_RELEASE_CHANNEL: ${{ needs.ensure-release.outputs.release_channel }}
       PRERELEASE: ${{ inputs.prerelease }}
       SOURCE_GH_REPO: ${{ github.repository }}
-      RELEASE_GH_REPO: holaboss-ai/holaOS-releases
+      RELEASE_GH_REPO: hitechcloud-vietnam/hitechcloudOS-releases
     steps:
       - name: Checkout release repository helpers
         uses: actions/checkout@v7
@@ -1303,25 +1303,25 @@ jobs:
       - name: Download Linux runtime release artifacts
         uses: actions/download-artifact@v8
         with:
-          name: holaOS-runtime-linux-${{ inputs.release_tag }}
+          name: hitechcloudOS-runtime-linux-${{ inputs.release_tag }}
           path: release-assets/linux-runtime
 
       - name: Download macOS desktop release artifacts
         uses: actions/download-artifact@v8
         with:
-          name: holaboss-desktop-macos-${{ inputs.release_tag }}
+          name: hitechcloud-desktop-macos-${{ inputs.release_tag }}
           path: release-assets/macos-desktop
 
       - name: Download Intel macOS desktop release artifacts
         uses: actions/download-artifact@v8
         with:
-          name: holaboss-desktop-macos-intel-${{ inputs.release_tag }}
+          name: hitechcloud-desktop-macos-intel-${{ inputs.release_tag }}
           path: release-assets/macos-intel-desktop
 
       - name: Download Windows desktop release artifacts
         uses: actions/download-artifact@v8
         with:
-          name: holaboss-desktop-windows-${{ inputs.release_tag }}
+          name: hitechcloud-desktop-windows-${{ inputs.release_tag }}
           path: release-assets/windows-desktop
 
       - name: Merge shared macOS updater manifests
@@ -1368,13 +1368,13 @@ jobs:
 
       - name: Publish validated GitHub release
         env:
-          GH_TOKEN: ${{ secrets.HOLABOSS_RELEASES_REPO_TOKEN }}
+          GH_TOKEN: ${{ secrets.HITECHCLOUD_RELEASES_REPO_TOKEN }}
         run: |
           notes_path="$(mktemp)"
           trap 'rm -f "${notes_path}"' EXIT
 
           if [ -z "${GH_TOKEN}" ]; then
-            echo "manual release publishing to ${RELEASE_GH_REPO} requires HOLABOSS_RELEASES_REPO_TOKEN" >&2
+            echo "manual release publishing to ${RELEASE_GH_REPO} requires HITECHCLOUD_RELEASES_REPO_TOKEN" >&2
             exit 1
           fi
 
@@ -1395,9 +1395,9 @@ jobs:
           : > "${notes_path}"
 
           linux_runtime_dir="release-assets/linux-runtime"
-          linux_runtime_asset="${linux_runtime_dir}/holaOS-runtime-linux-x64.tar.gz"
-          linux_runtime_checksum_asset="${linux_runtime_dir}/holaOS-runtime-linux-x64.tar.gz.sha256"
-          linux_runtime_manifest_asset="${linux_runtime_dir}/holaOS-runtime-linux-x64.json"
+          linux_runtime_asset="${linux_runtime_dir}/hitechcloudOS-runtime-linux-x64.tar.gz"
+          linux_runtime_checksum_asset="${linux_runtime_dir}/hitechcloudOS-runtime-linux-x64.tar.gz.sha256"
+          linux_runtime_manifest_asset="${linux_runtime_dir}/hitechcloudOS-runtime-linux-x64.json"
           for linux_asset in \
             "${linux_runtime_asset}" \
             "${linux_runtime_checksum_asset}" \
@@ -1409,7 +1409,7 @@ jobs:
             fi
           done
 
-          mac_dmg_asset="release-assets/macos-desktop/holaOS-macos-arm64.dmg"
+          mac_dmg_asset="release-assets/macos-desktop/hitechcloudOS-macos-arm64.dmg"
           mac_zip_asset="$(find release-assets/macos-desktop -maxdepth 1 -name '*.zip' ! -name '*.blockmap' -print -quit)"
           mac_zip_blockmap_asset="${mac_zip_asset}.blockmap"
           if [ ! -f "${mac_dmg_asset}" ]; then
@@ -1425,7 +1425,7 @@ jobs:
             exit 1
           fi
 
-          mac_intel_dmg_asset="release-assets/macos-intel-desktop/holaOS-macos-x64.dmg"
+          mac_intel_dmg_asset="release-assets/macos-intel-desktop/hitechcloudOS-macos-x64.dmg"
           mac_intel_zip_asset="$(find release-assets/macos-intel-desktop -maxdepth 1 -name '*.zip' ! -name '*.blockmap' -print -quit)"
           mac_intel_zip_blockmap_asset="${mac_intel_zip_asset}.blockmap"
           if [ ! -f "${mac_intel_dmg_asset}" ]; then
@@ -1480,7 +1480,7 @@ jobs:
             windows_release_dir="${windows_release_dir}/release"
           fi
 
-          windows_installer_asset="${windows_release_dir}/holaOS-windows-x64-setup.exe"
+          windows_installer_asset="${windows_release_dir}/hitechcloudOS-windows-x64-setup.exe"
           windows_blockmap_asset="${windows_installer_asset}.blockmap"
           if [ ! -f "${windows_installer_asset}" ]; then
             echo "missing Windows installer release asset" >&2
@@ -1501,8 +1501,8 @@ jobs:
             if [ ! -f "${windows_manifest_asset}" ]; then
               continue
             fi
-            if ! grep -q 'holaOS-windows-x64-setup\.exe' "${windows_manifest_asset}"; then
-              echo "${windows_manifest_asset} does not reference holaOS-windows-x64-setup.exe" >&2
+            if ! grep -q 'hitechcloudOS-windows-x64-setup\.exe' "${windows_manifest_asset}"; then
+              echo "${windows_manifest_asset} does not reference hitechcloudOS-windows-x64-setup.exe" >&2
               exit 1
             fi
             append_upload_path "${windows_manifest_asset}"
@@ -1547,7 +1547,7 @@ jobs:
               "${upload_paths[@]}"
           fi
 
-      # Mirror every binary the previous step pushed to holaOS-releases
+      # Mirror every binary the previous step pushed to hitechcloudOS-releases
       # up to a Cloudflare R2 bucket. GitHub Releases stay authoritative
       # for installed clients — electron-updater keeps pulling from
       # `provider: "github"` until a future PR flips electron-builder
@@ -1557,8 +1557,8 @@ jobs:
       # subdirectory of a shared bucket like landing-assets/desktop/):
       #
       #   ${prefix}<channel>/<name>          — marketing downloads
-      #                                         (latest/holaOS-macos-arm64.dmg,
-      #                                          beta/holaOS-macos-arm64.dmg)
+      #                                         (latest/hitechcloudOS-macos-arm64.dmg,
+      #                                          beta/hitechcloudOS-macos-arm64.dmg)
       #   ${prefix}tags/<tag>/<name>         — pinned-version downloads
       #
       # The bare ${prefix}<name> (flat) layout used by PR #410 is gone —
@@ -1585,7 +1585,7 @@ jobs:
           R2_KEY_PREFIX: desktop/
           # Public origin that fronts the bucket — used to build the URLs
           # handed to the Cloudflare cache-purge step below.
-          R2_PUBLIC_BASE_URL: ${{ vars.R2_PUBLIC_BASE_URL || 'https://assets.holaboss.ai' }}
+          R2_PUBLIC_BASE_URL: ${{ vars.R2_PUBLIC_BASE_URL || 'https://assets.hitechcloud.vn' }}
         run: |
           set -euo pipefail
 

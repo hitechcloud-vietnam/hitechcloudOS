@@ -248,7 +248,7 @@ class CreateSubmissionPayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     workspace_id: str
-    holaboss_user_id: str | None = None
+    hitechcloud_user_id: str | None = None
     name: str = Field(..., min_length=1, max_length=100)
     description: str = Field(..., min_length=1, max_length=500)
     category: str = "general"
@@ -266,7 +266,7 @@ class CreateSubmissionResponse(BaseModel):
 
 class FinalizePayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    holaboss_user_id: str | None = None
+    hitechcloud_user_id: str | None = None
 
 
 class FinalizeResponse(BaseModel):
@@ -277,7 +277,7 @@ class FinalizeResponse(BaseModel):
 
 class PackageFromSandboxPayload(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    holaboss_user_id: str | None = None
+    hitechcloud_user_id: str | None = None
 
 
 class PackageFromSandboxResponse(BaseModel):
@@ -298,9 +298,9 @@ async def create_submission(payload: CreateSubmissionPayload, request: Request):
     if archive_storage is None:
         raise HTTPException(status_code=500, detail="Archive storage not configured")
 
-    author_id = (payload.holaboss_user_id or "").strip()
+    author_id = (payload.hitechcloud_user_id or "").strip()
     if not author_id:
-        raise HTTPException(status_code=422, detail="holaboss_user_id is required")
+        raise HTTPException(status_code=422, detail="hitechcloud_user_id is required")
 
     template_id = _slugify(payload.name)
     version = "1.0.0"
@@ -374,7 +374,7 @@ async def package_from_sandbox(
         raise HTTPException(status_code=409, detail=f"Submission status is '{record.status}', expected 'pending_upload'")
 
     workspace_id = record.manifest.get("workspace_id") or ""
-    holaboss_user_id = (payload.holaboss_user_id or record.author_id).strip()
+    hitechcloud_user_id = (payload.hitechcloud_user_id or record.author_id).strip()
 
     # Export workspace files from sandbox
     workspace_service = request.app.state.workspace_service
@@ -384,7 +384,7 @@ async def package_from_sandbox(
     try:
         tar_bytes = await workspace_service.export_workspace_files(
             workspace_id=workspace_id,
-            holaboss_user_id=holaboss_user_id,
+            hitechcloud_user_id=hitechcloud_user_id,
         )
     except WorkspaceDependencyError as exc:
         raise HTTPException(status_code=502, detail=f"Failed to export workspace: {exc}") from exc
@@ -624,16 +624,16 @@ git commit -m "chore: mark /publish endpoint as deprecated"
 ### Task 6: Add `archiver` dependency + packaging utility
 
 **Files:**
-- Modify: `holaOS/desktop/package.json`
-- Create: `holaOS/desktop/electron/workspace-packager.ts`
+- Modify: `hitechcloudOS/desktop/package.json`
+- Create: `hitechcloudOS/desktop/electron/workspace-packager.ts`
 
 - [ ] **Step 1: Install archiver**
 
-Run: `cd holaOS/desktop && npm install archiver && npm install -D @types/archiver`
+Run: `cd hitechcloudOS/desktop && npm install archiver && npm install -D @types/archiver`
 
 - [ ] **Step 2: Create the workspace packager module**
 
-Create `holaOS/desktop/electron/workspace-packager.ts`:
+Create `hitechcloudOS/desktop/electron/workspace-packager.ts`:
 
 ```typescript
 import fs from "node:fs";
@@ -676,7 +676,7 @@ const GLOBAL_IGNORE = new Set([
   ".cache",
   ".turbo",
   "coverage",
-  ".holaboss",
+  ".hitechcloud",
 ]);
 
 const SENSITIVE_PATTERNS = [".pem", ".key"];
@@ -775,7 +775,7 @@ export async function uploadToPresignedUrl(url: string, data: Buffer): Promise<v
 - [ ] **Step 3: Commit**
 
 ```bash
-cd holaOS
+cd hitechcloudOS
 git add desktop/package.json desktop/package-lock.json desktop/electron/workspace-packager.ts
 git commit -m "feat(desktop): add workspace packager for publish flow"
 ```
@@ -785,9 +785,9 @@ git commit -m "feat(desktop): add workspace packager for publish flow"
 ### Task 7: Desktop IPC handlers + preload + types
 
 **Files:**
-- Modify: `holaOS/desktop/src/types/electron.d.ts`
-- Modify: `holaOS/desktop/electron/preload.ts`
-- Modify: `holaOS/desktop/electron/main.ts`
+- Modify: `hitechcloudOS/desktop/src/types/electron.d.ts`
+- Modify: `hitechcloudOS/desktop/electron/preload.ts`
+- Modify: `hitechcloudOS/desktop/electron/main.ts`
 
 - [ ] **Step 1: Add types to `electron.d.ts`**
 
@@ -837,7 +837,7 @@ Add to the `workspace` section of `ElectronAPI`:
 
 - [ ] **Step 2: Add preload bindings**
 
-In `holaOS/desktop/electron/preload.ts`, add to the `workspace` object:
+In `hitechcloudOS/desktop/electron/preload.ts`, add to the `workspace` object:
 
 ```typescript
     createSubmission: (payload: CreateSubmissionPayload) =>
@@ -875,7 +875,7 @@ Add near the other workspace IPC registrations (~line 11890):
       },
       body: JSON.stringify({
         workspace_id: payload.workspaceId,
-        holaboss_user_id: userId,
+        hitechcloud_user_id: userId,
         name: payload.name,
         description: payload.description,
         category: payload.category,
@@ -925,7 +925,7 @@ Add near the other workspace IPC registrations (~line 11890):
         "Content-Type": "application/json",
         "X-API-Key": apiKey,
       },
-      body: JSON.stringify({ holaboss_user_id: userId }),
+      body: JSON.stringify({ hitechcloud_user_id: userId }),
     });
 
     if (!response.ok) {
@@ -939,13 +939,13 @@ Add near the other workspace IPC registrations (~line 11890):
 
 - [ ] **Step 4: Run typecheck**
 
-Run: `cd holaOS && npm --prefix desktop run typecheck`
+Run: `cd hitechcloudOS && npm --prefix desktop run typecheck`
 Expected: PASS
 
 - [ ] **Step 5: Commit**
 
 ```bash
-cd holaOS
+cd hitechcloudOS
 git add desktop/src/types/electron.d.ts desktop/electron/preload.ts desktop/electron/main.ts
 git commit -m "feat(desktop): add publish IPC handlers for three-step submission flow"
 ```
@@ -955,13 +955,13 @@ git commit -m "feat(desktop): add publish IPC handlers for three-step submission
 ### Task 8: Desktop PublishDialog UI component
 
 **Files:**
-- Create: `holaOS/desktop/src/components/publish/PublishDialog.tsx`
+- Create: `hitechcloudOS/desktop/src/components/publish/PublishDialog.tsx`
 
 This is a 4-step wizard dialog matching the web's publish flow, using the desktop's established dialog pattern (custom overlay, Base UI components, lucide-react icons, Tailwind + cva).
 
 - [ ] **Step 1: Create the PublishDialog component**
 
-Create `holaOS/desktop/src/components/publish/PublishDialog.tsx`. The component follows the `SettingsDialog` overlay pattern:
+Create `hitechcloudOS/desktop/src/components/publish/PublishDialog.tsx`. The component follows the `SettingsDialog` overlay pattern:
 
 - 4 steps: Template Info → Apps → Onboarding → Review & Publish
 - Left sidebar with step navigation (matching web's stepper)
@@ -985,13 +985,13 @@ Full implementation should follow the web dialog structure step-for-step, replac
 
 - [ ] **Step 2: Run typecheck**
 
-Run: `cd holaOS && npm --prefix desktop run typecheck`
+Run: `cd hitechcloudOS && npm --prefix desktop run typecheck`
 Expected: PASS
 
 - [ ] **Step 3: Commit**
 
 ```bash
-cd holaOS
+cd hitechcloudOS
 git add desktop/src/components/publish/PublishDialog.tsx
 git commit -m "feat(desktop): add PublishDialog UI component"
 ```
@@ -1001,8 +1001,8 @@ git commit -m "feat(desktop): add PublishDialog UI component"
 ### Task 9: Wire up publish trigger in desktop
 
 **Files:**
-- Modify: `holaOS/desktop/src/components/layout/AppShell.tsx`
-- Modify: `holaOS/desktop/src/components/layout/TopTabsBar.tsx`
+- Modify: `hitechcloudOS/desktop/src/components/layout/AppShell.tsx`
+- Modify: `hitechcloudOS/desktop/src/components/layout/TopTabsBar.tsx`
 
 - [ ] **Step 1: Add publish state to AppShell**
 
@@ -1043,13 +1043,13 @@ In `TopTabsBar.tsx`, add a publish button in the workspace dropdown menu (near t
 
 - [ ] **Step 3: Run typecheck**
 
-Run: `cd holaOS && npm --prefix desktop run typecheck`
+Run: `cd hitechcloudOS && npm --prefix desktop run typecheck`
 Expected: PASS
 
 - [ ] **Step 4: Commit**
 
 ```bash
-cd holaOS
+cd hitechcloudOS
 git add desktop/src/components/layout/AppShell.tsx desktop/src/components/layout/TopTabsBar.tsx desktop/src/components/publish/PublishDialog.tsx
 git commit -m "feat(desktop): wire publish dialog trigger in workspace menu"
 ```
@@ -1083,7 +1083,7 @@ const handleSubmit = async () => {
         credentials: "include",
         body: JSON.stringify({
           workspace_id: workspaceId,
-          holaboss_user_id: userId,
+          hitechcloud_user_id: userId,
           name,
           description,
           category,
@@ -1108,7 +1108,7 @@ const handleSubmit = async () => {
         credentials: "include",
         body: JSON.stringify({
           submission_id: submission.submission_id,
-          holaboss_user_id: userId,
+          hitechcloud_user_id: userId,
         }),
       }
     );
@@ -1124,7 +1124,7 @@ const handleSubmit = async () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ holaboss_user_id: userId }),
+        body: JSON.stringify({ hitechcloud_user_id: userId }),
       }
     );
     if (!finalizeRes.ok) {

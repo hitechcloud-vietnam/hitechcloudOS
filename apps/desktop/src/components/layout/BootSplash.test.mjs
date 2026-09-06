@@ -14,8 +14,8 @@ test("BootSplash is a fixed full-bleed brand splash with dot loader", async () =
 
   assert.match(source, /export function BootSplash\(/);
   assert.match(source, /fixed inset-0 z-20 flex items-center justify-center/);
-  assert.match(source, /holaboss-splash-dot 1\.2s ease-in-out infinite/);
-  assert.match(source, /src=\{holabossLogoUrl\}/);
+  assert.match(source, /hitechcloud-splash-dot 1\.2s ease-in-out infinite/);
+  assert.match(source, /src=\{hitechcloudLogoUrl\}/);
 });
 
 test("BootGate gates the shell on runtime readiness via the shared BootSplash", async () => {

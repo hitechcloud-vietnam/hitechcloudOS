@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
-  HOLAOS_HOME_URL,
+  HITECHCLOUDOS_HOME_URL,
   buildDesktopBillingLinks,
   deriveAppBaseUrl,
   normalizeBaseUrl,
@@ -10,31 +10,31 @@ import {
 
 test("deriveAppBaseUrl", async (t) => {
   await t.test(
-    "given the holaos.ai prod API host, derives the www.holaos.ai web host",
+    "given the hitechcloud.vn prod API host, derives the www.hitechcloud.vn web host",
     () => {
       assert.equal(
-        deriveAppBaseUrl("https://api.holaos.ai"),
-        "https://www.holaos.ai",
+        deriveAppBaseUrl("https://api.hitechcloud.vn"),
+        "https://www.hitechcloud.vn",
       );
     },
   );
 
   await t.test(
-    "given the holaos.ai API host with a trailing path, still derives www.holaos.ai (path is dropped, origin only)",
+    "given the hitechcloud.vn API host with a trailing path, still derives www.hitechcloud.vn (path is dropped, origin only)",
     () => {
       assert.equal(
-        deriveAppBaseUrl("https://api.holaos.ai/api/v1"),
-        "https://www.holaos.ai",
+        deriveAppBaseUrl("https://api.hitechcloud.vn/api/v1"),
+        "https://www.hitechcloud.vn",
       );
     },
   );
 
   await t.test(
-    "given the holaboss.ai legacy prod API host, derives app.holaboss.ai",
+    "given the hitechcloud.vn legacy prod API host, derives app.hitechcloud.vn",
     () => {
       assert.equal(
-        deriveAppBaseUrl("https://api.holaboss.ai"),
-        "https://app.holaboss.ai",
+        deriveAppBaseUrl("https://api.hitechcloud.vn"),
+        "https://app.hitechcloud.vn",
       );
     },
   );
@@ -90,33 +90,33 @@ test("deriveAppBaseUrl", async (t) => {
   );
 
   await t.test(
-    "given an empty string, falls back to the holaos.ai home URL (the canonical default)",
+    "given an empty string, falls back to the hitechcloud.vn home URL (the canonical default)",
     () => {
-      assert.equal(deriveAppBaseUrl(""), HOLAOS_HOME_URL);
-      assert.equal(HOLAOS_HOME_URL, "https://www.holaos.ai");
+      assert.equal(deriveAppBaseUrl(""), HITECHCLOUDOS_HOME_URL);
+      assert.equal(HITECHCLOUDOS_HOME_URL, "https://www.hitechcloud.vn");
     },
   );
 
   await t.test(
-    "given a malformed URL, falls back to the holaos.ai home URL",
+    "given a malformed URL, falls back to the hitechcloud.vn home URL",
     () => {
-      assert.equal(deriveAppBaseUrl("not a url"), HOLAOS_HOME_URL);
+      assert.equal(deriveAppBaseUrl("not a url"), HITECHCLOUDOS_HOME_URL);
     },
   );
 });
 
 test("buildDesktopBillingLinks", async (t) => {
   await t.test(
-    "given the www.holaos.ai web base, builds all four billing links rooted there",
+    "given the www.hitechcloud.vn web base, builds all four billing links rooted there",
     () => {
-      const links = buildDesktopBillingLinks("https://www.holaos.ai");
+      const links = buildDesktopBillingLinks("https://www.hitechcloud.vn");
       assert.deepEqual(links, {
-        billingPageUrl: "https://www.holaos.ai/app/settings?tab=billing",
+        billingPageUrl: "https://www.hitechcloud.vn/app/settings?tab=billing",
         addCreditsUrl:
-          "https://www.holaos.ai/app/settings?tab=billing&intent=add-credits",
+          "https://www.hitechcloud.vn/app/settings?tab=billing&intent=add-credits",
         upgradeUrl:
-          "https://www.holaos.ai/app/settings?tab=billing&intent=upgrade",
-        usageUrl: "https://www.holaos.ai/app/settings?tab=billing&intent=usage",
+          "https://www.hitechcloud.vn/app/settings?tab=billing&intent=upgrade",
+        usageUrl: "https://www.hitechcloud.vn/app/settings?tab=billing&intent=usage",
       });
     },
   );
@@ -133,16 +133,16 @@ test("buildDesktopBillingLinks", async (t) => {
   );
 
   await t.test(
-    "given an empty base URL, falls back to the holaos.ai home URL so the user still lands on the live web app",
+    "given an empty base URL, falls back to the hitechcloud.vn home URL so the user still lands on the live web app",
     () => {
       const links = buildDesktopBillingLinks("");
       assert.equal(
         links.billingPageUrl,
-        "https://www.holaos.ai/app/settings?tab=billing",
+        "https://www.hitechcloud.vn/app/settings?tab=billing",
       );
       assert.equal(
         links.billingPageUrl,
-        `${HOLAOS_HOME_URL}/app/settings?tab=billing`,
+        `${HITECHCLOUDOS_HOME_URL}/app/settings?tab=billing`,
       );
     },
   );
@@ -150,17 +150,17 @@ test("buildDesktopBillingLinks", async (t) => {
 
 test("deriveAppBaseUrl piped into buildDesktopBillingLinks (the production code path)", async (t) => {
   await t.test(
-    "given api.holaos.ai, the Manage button URL lands on www.holaos.ai (regression test for the app./www. mixup)",
+    "given api.hitechcloud.vn, the Manage button URL lands on www.hitechcloud.vn (regression test for the app./www. mixup)",
     () => {
-      const appBase = deriveAppBaseUrl("https://api.holaos.ai");
+      const appBase = deriveAppBaseUrl("https://api.hitechcloud.vn");
       const links = buildDesktopBillingLinks(appBase);
       assert.equal(
         links.billingPageUrl,
-        "https://www.holaos.ai/app/settings?tab=billing",
+        "https://www.hitechcloud.vn/app/settings?tab=billing",
       );
       assert.equal(
         links.addCreditsUrl,
-        "https://www.holaos.ai/app/settings?tab=billing&intent=add-credits",
+        "https://www.hitechcloud.vn/app/settings?tab=billing&intent=add-credits",
       );
     },
   );
@@ -194,13 +194,13 @@ test("deriveAppBaseUrl piped into buildDesktopBillingLinks (the production code 
 
 test("normalizeBaseUrl", async (t) => {
   await t.test("strips a single trailing slash", () => {
-    assert.equal(normalizeBaseUrl("https://www.holaos.ai/"), "https://www.holaos.ai");
+    assert.equal(normalizeBaseUrl("https://www.hitechcloud.vn/"), "https://www.hitechcloud.vn");
   });
 
   await t.test("strips multiple trailing slashes", () => {
     assert.equal(
-      normalizeBaseUrl("https://www.holaos.ai///"),
-      "https://www.holaos.ai",
+      normalizeBaseUrl("https://www.hitechcloud.vn///"),
+      "https://www.hitechcloud.vn",
     );
   });
 

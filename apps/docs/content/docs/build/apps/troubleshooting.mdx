@@ -5,11 +5,11 @@ description: Diagnose and fix failures in the local runtime, desktop, or workspa
 
 Use this page when `desktop:dev`, the embedded runtime, or a packaged runtime is not behaving the way the code says it should.
 
-If you hit something that is not covered here, we always welcome issues. Real setup failures, unclear docs, and runtime edge cases are all useful signals for improving `holaOS` and holaOS Desktop.
+If you hit something that is not covered here, we always welcome issues. Real setup failures, unclear docs, and runtime edge cases are all useful signals for improving `hitechcloudOS` and hitechcloudOS Desktop.
 
 ## First triage commands
 
-For the desktop dev loop, first resolve the embedded runtime port. If you want deterministic local curls, launch `desktop:dev` with `export HOLABOSS_RUNTIME_API_PORT=39160`; otherwise run the helper below and substitute the printed value as `RUNTIME_PORT`.
+For the desktop dev loop, first resolve the embedded runtime port. If you want deterministic local curls, launch `desktop:dev` with `export HITECHCLOUD_RUNTIME_API_PORT=39160`; otherwise run the helper below and substitute the printed value as `RUNTIME_PORT`.
 
 ```bash
 npm run desktop:typecheck
@@ -25,19 +25,19 @@ Most early failures happen in the desktop `predev` hook, before the app window e
 
 - Verify that Node.js `24+` and `bun` are installed.
 - Re-run `bun install` if the desktop dependency tree is incomplete. The root `npm run desktop:install` wrapper resolves to the same Bun install step.
-- Check `apps/desktop/.env`. `apps/desktop/scripts/validate-dev-env.mjs` requires at least one configured remote base URL such as `HOLABOSS_BACKEND_BASE_URL`, `HOLABOSS_PROACTIVE_URL`, `HOLABOSS_CLI_PROACTIVE_URL`, or `HOLABOSS_DESKTOP_CONTROL_PLANE_BASE_URL`.
+- Check `apps/desktop/.env`. `apps/desktop/scripts/validate-dev-env.mjs` requires at least one configured remote base URL such as `HITECHCLOUD_BACKEND_BASE_URL`, `HITECHCLOUD_PROACTIVE_URL`, `HITECHCLOUD_CLI_PROACTIVE_URL`, or `HITECHCLOUD_DESKTOP_CONTROL_PLANE_BASE_URL`.
 - If the failure happens during native module rebuild, re-run `bun install` and then `npm run desktop:typecheck`.
 
 ## The embedded runtime does not pass health checks
 
-In desktop dev, the embedded runtime binds to `127.0.0.1:<derived-port>`, not a fixed `5160`. `apps/desktop/electron/main.ts` resolves that port from `HOLABOSS_RUNTIME_API_PORT` or, when unset, from a hash of the Electron `userData` path. Port `5060` is rejected.
+In desktop dev, the embedded runtime binds to `127.0.0.1:<derived-port>`, not a fixed `5160`. `apps/desktop/electron/main.ts` resolves that port from `HITECHCLOUD_RUNTIME_API_PORT` or, when unset, from a hash of the Electron `userData` path. Port `5060` is rejected.
 
 - Run `bash apps/desktop/scripts/check-runtime-status.sh` and use the printed `runtime port` for the curls on this page.
 - Check `curl http://127.0.0.1:$RUNTIME_PORT/healthz`.
 - Inspect `runtime.log` under the Electron `userData` directory.
 - Inspect the embedded sandbox root under `sandbox-host/`, especially `sandbox-host/state/runtime-config.json`, `sandbox-host/state/host-state.db`, and `sandbox-host/state/control-plane.db`.
-- If you set a custom user-data path, make sure you are looking in `HOLABOSS_DESKTOP_USER_DATA_PATH`. Otherwise dev resolves `HOLABOSS_DESKTOP_USER_DATA_DIR` from the shell or `apps/desktop/.env`, and if that is unset it falls back to `holaboss-local-dev`.
-- If you want a stable debug port, launch desktop with `HOLABOSS_RUNTIME_API_PORT=39160`.
+- If you set a custom user-data path, make sure you are looking in `HITECHCLOUD_DESKTOP_USER_DATA_PATH`. Otherwise dev resolves `HITECHCLOUD_DESKTOP_USER_DATA_DIR` from the shell or `apps/desktop/.env`, and if that is unset it falls back to `hitechcloud-local-dev`.
+- If you want a stable debug port, launch desktop with `HITECHCLOUD_RUNTIME_API_PORT=39160`.
 
 ## The runtime bundle is stale
 
@@ -59,7 +59,7 @@ npm run desktop:prepare-runtime:local
 
 The launch mode controls the default port:
 
-- embedded desktop runtime: derived `127.0.0.1:<runtime-port>` from `HOLABOSS_RUNTIME_API_PORT` or the resolved `userData` path
+- embedded desktop runtime: derived `127.0.0.1:<runtime-port>` from `HITECHCLOUD_RUNTIME_API_PORT` or the resolved `userData` path
 - packaged launcher: `8080` unless `SANDBOX_RUNTIME_API_PORT` or `SANDBOX_AGENT_BIND_PORT` overrides it
 - raw `runtime/api-server/dist/index.mjs`: `3060` unless `SANDBOX_RUNTIME_API_PORT`, `SANDBOX_AGENT_BIND_PORT`, or `PORT` overrides it
 
@@ -74,14 +74,14 @@ Check the provider path first:
 - verify that the selected model name matches the provider contract
 - verify that `runtime-config.json` is being read from the expected path
 
-The runtime config parser merges values from `runtime`, `providers.holaboss_model_proxy`, `integrations.holaboss`, and `capabilities.desktop_browser`. The executable examples for this are in `runtime/api-server/src/runtime-config.test.ts`.
+The runtime config parser merges values from `runtime`, `providers.hitechcloud_model_proxy`, `integrations.hitechcloud`, and `capabilities.desktop_browser`. The executable examples for this are in `runtime/api-server/src/runtime-config.test.ts`.
 
-If you are using direct provider fallback instead of the holaOS model proxy path, verify the corresponding direct-provider env vars such as `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `OPENROUTER_API_KEY`.
+If you are using direct provider fallback instead of the hitechcloudOS model proxy path, verify the corresponding direct-provider env vars such as `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `OPENROUTER_API_KEY`.
 
 From the Electron `userData` directory, a quick shape check looks like this:
 
 ```bash
-jq '.providers.holaboss_model_proxy, .integrations.holaboss, .capabilities.desktop_browser' \
+jq '.providers.hitechcloud_model_proxy, .integrations.hitechcloud, .capabilities.desktop_browser' \
   "<userData>/sandbox-host/state/runtime-config.json"
 ```
 
@@ -109,11 +109,11 @@ curl \
   "http://127.0.0.1:${RUNTIME_PORT}/api/v1/apps/my_app/setup-log?workspace_id=workspace-1"
 ```
 
-This returns the tail of `<workspace>/apps/my_app/.holaboss/logs/setup.latest.log` and recent lifecycle events from `events.ndjson`.
+This returns the tail of `<workspace>/apps/my_app/.hitechcloud/logs/setup.latest.log` and recent lifecycle events from `events.ndjson`.
 
 ## Workspace creation fails mid-bootstrap
 
-Workspace creation now emits structured stage logs from Electron main with the `[holaboss.createWorkspace]` prefix.
+Workspace creation now emits structured stage logs from Electron main with the `[hitechcloud.createWorkspace]` prefix.
 
 If first-workspace onboarding appears stuck around template apply, runtime record creation, or activation, inspect those stage lines in desktop logs before changing runtime code.
 
@@ -136,10 +136,10 @@ Check these files first:
 - `workspace.yaml`
 - `AGENTS.md`
 - `apps/<app-id>/app.runtime.yaml`
-- `.holaboss/`
+- `.hitechcloud/`
 - `<userData>/sandbox-host/state/host-state.db`
 - `<userData>/sandbox-host/state/control-plane.db`
-- `.holaboss/state/runtime.db`
+- `.hitechcloud/state/runtime.db`
 
 If the workspace files are valid but the runtime still behaves unexpectedly, compare the current bundle against the source revision you used to stage it.
 
@@ -147,4 +147,4 @@ If the workspace files are valid but the runtime still behaves unexpectedly, com
 
 If none of the fixes on this page help, submit an issue here:
 
-- [Open a GitHub issue](https://github.com/holaboss-ai/holaOS/issues/new/choose)
+- [Open a GitHub issue](https://github.com/hitechcloud-ai/hitechcloudOS/issues/new/choose)

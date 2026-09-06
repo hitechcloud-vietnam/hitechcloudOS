@@ -11,7 +11,7 @@ export function isBetaHarness(id: string | null | undefined): boolean {
 
 /**
  * Agents that run against an external coding subscription (Claude Code → Claude
- * plan, Codex → ChatGPT/OpenAI plan) rather than the built-in Holaboss model
+ * plan, Codex → ChatGPT/OpenAI plan) rather than the built-in Hitechcloud model
  * proxy. Surfaced with a subtle "to use with your code plan" hint so users know
  * they can reuse their existing plan instead of paying separately.
  */

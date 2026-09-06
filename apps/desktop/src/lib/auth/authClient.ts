@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 export const AUTH_BASE_URL = "";
 export const AUTH_SIGN_IN_URL = "";
-export const AUTH_PROTOCOL_SCHEME = "ai.holaboss.app";
+export const AUTH_PROTOCOL_SCHEME = "ai.hitechcloud.app";
 export const DEFAULT_MODEL_PROXY_BASE_URL = "";
 export const DEFAULT_RUNTIME_MODEL = "openai/gpt-5.4";
 

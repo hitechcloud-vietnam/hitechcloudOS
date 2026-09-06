@@ -3,7 +3,7 @@ import type {
   InteractionEntityRecord,
   RuntimeStateStore,
   SemanticMemoryCategory,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 import { createBackgroundTaskMemoryModelClient } from "./background-task-model.js";
 import { queryMemoryModelEmbedding } from "./memory-model-client.js";

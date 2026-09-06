@@ -1,7 +1,7 @@
 # Inline Composio Runtime Tools (delete the composio-mcp host)
 
 Status: draft → in-progress
-Author: Holaboss + claude
+Author: Hitechcloud + claude
 Date: 2026-06-11
 
 ## Problem
@@ -49,7 +49,7 @@ implementation. Every PR will be measured against them.
    full validation window before old code is removed.
 
 2. **Feature-flag from day one**. Old composio-mcp host stays operative
-   until the flag flips. Flag: `HOLABOSS_INLINE_COMPOSIO_TOOLS`. Default
+   until the flag flips. Flag: `HITECHCLOUD_INLINE_COMPOSIO_TOOLS`. Default
    OFF until Phase 4.
 
 3. **No comment archaeology**. Per project CLAUDE.md and user feedback:
@@ -87,7 +87,7 @@ implementation. Every PR will be measured against them.
    degrades back to "connected but propose_connect" which is exactly
    what we're trying to eliminate.
 
-9. **Migration is idempotent**. Stripping the `holaboss_composio`
+9. **Migration is idempotent**. Stripping the `hitechcloud_composio`
    server from old `workspace.yaml` files must be safe to run multiple
    times and harmless on workspaces that never had the entry.
 
@@ -102,7 +102,7 @@ implementation. Every PR will be measured against them.
   (it does — `pi.ts` imports it).
 - Inventory every call site that touches `ComposioMcpManager`,
   `composio-mcp-host`, or `workspace.yaml` `mcp_registry.servers.
-  holaboss_composio`.
+  hitechcloud_composio`.
 - Write a regression checklist: scenarios that MUST keep working
   through every subsequent phase, e.g. "front session delegates for
   active integrations" / "subagent calls notion_fetch_data
@@ -135,7 +135,7 @@ just a new sibling.
 **Verification gate**: green tests + manual: connect a fresh toolkit
 end-to-end, verify the cache row exists.
 
-### Phase 2 — Inline runtime tools (behind `HOLABOSS_INLINE_COMPOSIO_TOOLS`)
+### Phase 2 — Inline runtime tools (behind `HITECHCLOUD_INLINE_COMPOSIO_TOOLS`)
 
 - New `runtime/harnesses/src/composio-inline-tools.ts`. Reads
   `store.listIntegrationConnections({status: 'active'})`, filters by
@@ -144,7 +144,7 @@ end-to-end, verify the cache row exists.
   `ToolDefinition` ready to merge into pi's tool registry.
 - Tool handler: POST to Hono `/api/composio/execute`. Map Hono error
   responses to `[composio_error:<reason>:<slug>]` per Principle 7.
-- Feature flag: when `process.env.HOLABOSS_INLINE_COMPOSIO_TOOLS === 'true'`,
+- Feature flag: when `process.env.HITECHCLOUD_INLINE_COMPOSIO_TOOLS === 'true'`,
   pi.ts spreads inline tools into the session's tool list. When false,
   no inline tools are registered (old composio-mcp host path stays
   authoritative).
@@ -200,9 +200,9 @@ known failure modes from Phase 0 regression checklist.
 - Remove `composioMcpManager` injection in `app.ts`, `queue-worker.ts`,
   `claimed-input-executor.ts` (`ensureFreshFor` call), and
   `runtime-agent-tools.ts`.
-- Strip the `mcp_registry.servers.holaboss_composio` block from
+- Strip the `mcp_registry.servers.hitechcloud_composio` block from
   workspace.yaml on workspace open (idempotent migration helper).
-- Drop the now-unused `HOLABOSS_INLINE_COMPOSIO_TOOLS` flag.
+- Drop the now-unused `HITECHCLOUD_INLINE_COMPOSIO_TOOLS` flag.
 - Keep the structured logging namespace (`composio_mcp.*` events
   conceptually still apply to the inline path — bootstrap is just
   "register tools from cache" now).
@@ -275,7 +275,7 @@ mcp_registry blocks) work after migration.
   (`composioMcpManager` option), `runtime-agent-tools.ts`
   (`workspaceAppEnsureRunning`'s opportunistic bootstrap call).
 - One-shot migration: idempotent strip of the
-  `mcp_registry.servers.holaboss_composio` block from existing
+  `mcp_registry.servers.hitechcloud_composio` block from existing
   `workspace.yaml` files at workspace-open time.
 
 **Regression checklist** to keep green through every subsequent phase
@@ -386,7 +386,7 @@ resolution.
   fetches from the list endpoint and returns
   `HarnessRuntimeToolDefinitionLike[]` whose execute handler POSTs to
   the execute endpoint. Feature-flagged behind
-  `HOLABOSS_INLINE_COMPOSIO_TOOLS=true`. Index re-exports added.
+  `HITECHCLOUD_INLINE_COMPOSIO_TOOLS=true`. Index re-exports added.
 - `pi.ts` calls `resolveComposioInlineTools` at session setup and
   spreads the returned tools into `nonSkillCustomTools` alongside the
   existing runtime tools / MCP tools.
@@ -489,25 +489,25 @@ them.
   `ensureFreshFor` short-circuit with
   `{status: "skipped", reason: "inline_composio_tools_enabled"}`
   when the flag is on, and strip any stale
-  `mcp_registry.servers.holaboss_composio` block from
+  `mcp_registry.servers.hitechcloud_composio` block from
   `workspace.yaml` so the legacy URL doesn't keep pointing at a
   dead port.
 - The same default flip applies to the harness side
   (`composio-inline-tools.ts::composioInlineToolsEnabled`) and the
   ts-runner `fetchComposioInlineToolRefs` env check, so both ends
   of the new path activate by default.
-- `HOLABOSS_INLINE_COMPOSIO_TOOLS=false` (or `=0` / empty) reverts
+- `HITECHCLOUD_INLINE_COMPOSIO_TOOLS=false` (or `=0` / empty) reverts
   everything to the Phase 2 dual-path state.
 
 **Tests.**
 
 - Existing manager tests now pin
-  `HOLABOSS_INLINE_COMPOSIO_TOOLS=false` in their `before` hook so
+  `HITECHCLOUD_INLINE_COMPOSIO_TOOLS=false` in their `before` hook so
   legacy bootstrap paths are still exercised end-to-end.
 - New test `ensureRunning short-circuits with skipped:
   inline_composio_tools_enabled when the inline flag is on`
   verifies (a) the bootstrap is skipped, (b) Composio API is not
-  called, and (c) any pre-existing `holaboss_composio` block is
+  called, and (c) any pre-existing `hitechcloud_composio` block is
   stripped from `workspace.yaml`.
 - 89 / 89 across the full composio + capability + runtime-config
   test surface.
@@ -531,10 +531,10 @@ in staging.
 - Drop the manager construction / wiring in `app.ts`,
   `queue-worker.ts`, `claimed-input-executor.ts`,
   `runtime-agent-tools.ts`.
-- Drop the `HOLABOSS_INLINE_COMPOSIO_TOOLS` flag and its env
+- Drop the `HITECHCLOUD_INLINE_COMPOSIO_TOOLS` flag and its env
   defaults — the path becomes unconditional.
 - Idempotent migration: strip
-  `mcp_registry.servers.holaboss_composio` on workspace open so
+  `mcp_registry.servers.hitechcloud_composio` on workspace open so
   stale entries left over from before the cutover don't linger.
 
 ### Phase 5 reflection
@@ -568,7 +568,7 @@ in staging.
 desktop opens a workspace) now runs an idempotent
 `removeComposioMcpRegistryEntry(workspaceDir)` before
 `ensureAllAppsRunning`. Old workspace.yaml files that still carry
-the dead `mcp_registry.servers.holaboss_composio` block get cleaned
+the dead `mcp_registry.servers.hitechcloud_composio` block get cleaned
 on the next workspace open. Safe to run multiple times; harmless on
 workspaces that never had the entry.
 

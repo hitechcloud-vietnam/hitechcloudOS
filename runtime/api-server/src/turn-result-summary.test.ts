@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import type { TurnResultRecord } from "@holaboss/runtime-state-store";
+import type { TurnResultRecord } from "@hitechcloud/runtime-state-store";
 
 import { compactTurnSummary } from "./turn-result-summary.js";
 

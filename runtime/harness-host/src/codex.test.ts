@@ -173,14 +173,14 @@ test("codexMcpToolTraceFields maps mcpToolCall to a tool_call with the bare tool
     {
       type: "mcpToolCall",
       id: "call_9",
-      server: "holaboss_runtime_tools",
-      tool: "holaboss_workspace_integrations_propose_connect",
+      server: "hitechcloud_runtime_tools",
+      tool: "hitechcloud_workspace_integrations_propose_connect",
       arguments: { toolkit_slug: "gmail" },
     },
     false,
   );
   // Bare tool name (not server.tool) so the propose_connect card/gate still match.
-  assert.equal(started.tool_name, "holaboss_workspace_integrations_propose_connect");
+  assert.equal(started.tool_name, "hitechcloud_workspace_integrations_propose_connect");
   assert.deepEqual(started.tool_args, { toolkit_slug: "gmail" });
   assert.equal(started.result, undefined);
 
@@ -284,11 +284,11 @@ test("prepareCodexHome disables native multi-agent + auto-memory before the mcp 
   });
 });
 
-test("HOLABOSS_CODEX_MULTI_AGENT / HOLABOSS_CODEX_MEMORY opt back into the native features", () => {
-  const prevMa = process.env.HOLABOSS_CODEX_MULTI_AGENT;
-  const prevMem = process.env.HOLABOSS_CODEX_MEMORY;
-  process.env.HOLABOSS_CODEX_MULTI_AGENT = "1";
-  process.env.HOLABOSS_CODEX_MEMORY = "true";
+test("HITECHCLOUD_CODEX_MULTI_AGENT / HITECHCLOUD_CODEX_MEMORY opt back into the native features", () => {
+  const prevMa = process.env.HITECHCLOUD_CODEX_MULTI_AGENT;
+  const prevMem = process.env.HITECHCLOUD_CODEX_MEMORY;
+  process.env.HITECHCLOUD_CODEX_MULTI_AGENT = "1";
+  process.env.HITECHCLOUD_CODEX_MEMORY = "true";
   try {
     withSharedCodexHome(() => {
       const prep = prepareCodexHome(
@@ -305,8 +305,8 @@ test("HOLABOSS_CODEX_MULTI_AGENT / HOLABOSS_CODEX_MEMORY opt back into the nativ
       prep.cleanup();
     });
   } finally {
-    restoreEnv("HOLABOSS_CODEX_MULTI_AGENT", prevMa);
-    restoreEnv("HOLABOSS_CODEX_MEMORY", prevMem);
+    restoreEnv("HITECHCLOUD_CODEX_MULTI_AGENT", prevMa);
+    restoreEnv("HITECHCLOUD_CODEX_MEMORY", prevMem);
   }
 });
 

@@ -5,13 +5,13 @@ description: End-to-end walkthrough for turning a working workspace into a publi
 
 <p className="eyebrow">Creator guide</p>
 
-A Template is a published snapshot of a working Workspace. You don't design one from scratch in a form — you build it inside holaOS Desktop, get it genuinely working on your own tasks, then publish what you made. This page is the full walkthrough.
+A Template is a published snapshot of a working Workspace. You don't design one from scratch in a form — you build it inside hitechcloudOS Desktop, get it genuinely working on your own tasks, then publish what you made. This page is the full walkthrough.
 
 ---
 
 ## 1. Open a Workspace
 
-Install holaOS Desktop and start a new blank workspace. Template authoring currently happens through Desktop rather than a separate cloud workspace editor.
+Install hitechcloudOS Desktop and start a new blank workspace. Template authoring currently happens through Desktop rather than a separate cloud workspace editor.
 
 A fresh workspace lives under the runtime OS root and looks like this:
 
@@ -21,7 +21,7 @@ A fresh workspace lives under the runtime OS root and looks like this:
   AGENTS.md            # standing instructions read by the root workspace agent
   apps/                # installed Apps (each has its own app.runtime.yaml)
   skills/              # reusable markdown instruction packs
-  .holaboss/           # runtime-owned state, memory, attachments, logs
+  .hitechcloud/           # runtime-owned state, memory, attachments, logs
 ```
 
 Pick a model provider (OpenAI, Anthropic, OpenRouter, or local via Ollama) in Desktop's settings before you run anything substantive.
@@ -65,7 +65,7 @@ A few rules that matter:
 - **One pattern per skill.** If a Skill is doing three things, split it. Skills are small sharp tools.
 - **Show examples, including failure modes.** What a bad draft looks like, what the fix is.
 - `AGENTS.md` vs. Skill: always-on behavior → `AGENTS.md`. Context-activated behavior → Skill.
-- The runtime can auto-promote recurring patterns from successful runs into Skill drafts. Review and commit them into `skills/` before publishing — runtime-generated drafts live under workspace-managed state in `.holaboss/` and are not bundled.
+- The runtime can auto-promote recurring patterns from successful runs into Skill drafts. Review and commit them into `skills/` before publishing — runtime-generated drafts live under workspace-managed state in `.hitechcloud/` and are not bundled.
 
 Browse published Skills from the Marketplace and your existing workspaces — both are useful starting points for how other creators structure descriptions and bodies.
 
@@ -84,7 +84,7 @@ Automations are the scheduled side of the workspace — things that run without 
 
 ## 3. Understand what gets packaged
 
-When you publish, holaOS does not upload a byte-for-byte copy of your working workspace. The packager bundles the workspace files that are safe to ship, adds publish metadata, and excludes runtime state plus local App source trees. The resulting archive looks roughly like this:
+When you publish, hitechcloudOS does not upload a byte-for-byte copy of your working workspace. The packager bundles the workspace files that are safe to ship, adds publish metadata, and excludes runtime state plus local App source trees. The resulting archive looks roughly like this:
 
 ```text
 <template-archive>/
@@ -120,7 +120,7 @@ The Publish dialog also submits listing metadata to the marketplace control plan
 
 A Template is not a live workspace snapshot. Keep these out:
 
-- `.holaboss/` — runtime-managed state
+- `.hitechcloud/` — runtime-managed state
 - `memory/` — legacy personal-memory roots if your workspace still contains one
 - `.git/` — version history of your working copy
 - `apps/` source trees you only have locally — published templates do not bundle App bytes, so unpublished local App directories are not a portable dependency

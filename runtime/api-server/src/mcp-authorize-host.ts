@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
  * Path + node-bin resolution mirrors harness-model-discovery.ts.
  */
 function runtimeRootDir(): string {
-  const configured = (process.env.HOLABOSS_RUNTIME_ROOT ?? "").trim();
+  const configured = (process.env.HITECHCLOUD_RUNTIME_ROOT ?? "").trim();
   if (configured) {
     return path.resolve(configured);
   }
@@ -37,7 +37,7 @@ function harnessHostEntryPath(): { entryPath: string; argsPrefix: string[] } {
 }
 
 function runtimeNodeBin(): string {
-  return (process.env.HOLABOSS_RUNTIME_NODE_BIN ?? "").trim() || process.execPath;
+  return (process.env.HITECHCLOUD_RUNTIME_NODE_BIN ?? "").trim() || process.execPath;
 }
 
 export interface AuthorizeMcpResult {

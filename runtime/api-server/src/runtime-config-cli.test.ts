@@ -9,12 +9,12 @@ import { runRuntimeConfigCli } from "./runtime-config-cli.js";
 const tempDirs: string[] = [];
 const envNames = [
   "HB_SANDBOX_ROOT",
-  "HOLABOSS_RUNTIME_CONFIG_PATH",
-  "HOLABOSS_SANDBOX_AUTH_TOKEN",
-  "HOLABOSS_USER_ID",
-  "HOLABOSS_MODEL_PROXY_BASE_URL",
-  "HOLABOSS_MODEL_PROXY_BASE_URL_DEFAULT",
-  "HOLABOSS_DEFAULT_MODEL"
+  "HITECHCLOUD_RUNTIME_CONFIG_PATH",
+  "HITECHCLOUD_SANDBOX_AUTH_TOKEN",
+  "HITECHCLOUD_USER_ID",
+  "HITECHCLOUD_MODEL_PROXY_BASE_URL",
+  "HITECHCLOUD_MODEL_PROXY_BASE_URL_DEFAULT",
+  "HITECHCLOUD_DEFAULT_MODEL"
 ] as const;
 
 const envSnapshot = new Map<string, string | undefined>();
@@ -46,9 +46,9 @@ function makeTempDir(prefix: string): string {
 test("runRuntimeConfigCli resolves runtime config into a product payload", async () => {
   const root = makeTempDir("hb-runtime-config-cli-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
-  process.env.HOLABOSS_SANDBOX_AUTH_TOKEN = "env-token";
-  process.env.HOLABOSS_MODEL_PROXY_BASE_URL_DEFAULT = "https://runtime.example/api/v1/model-proxy";
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
+  process.env.HITECHCLOUD_SANDBOX_AUTH_TOKEN = "env-token";
+  process.env.HITECHCLOUD_MODEL_PROXY_BASE_URL_DEFAULT = "https://runtime.example/api/v1/model-proxy";
 
   let stdout = "";
   let stderr = "";
@@ -85,7 +85,7 @@ test("runRuntimeConfigCli resolves runtime config into a product payload", async
     subagent_model: "",
     runtime_mode: "oss",
     default_provider: "",
-    holaboss_enabled: false,
+    hitechcloud_enabled: false,
     desktop_browser_enabled: false,
     desktop_browser_url: "",
     desktop_browser_auth_token: "",
@@ -97,7 +97,7 @@ test("runRuntimeConfigCli resolves runtime config into a product payload", async
 test("runRuntimeConfigCli updates runtime config and returns status payloads", async () => {
   const root = makeTempDir("hb-runtime-config-cli-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
 
   let stdout = "";
   let stderr = "";
@@ -151,8 +151,8 @@ test("runRuntimeConfigCli updates runtime config and returns status payloads", a
     default_model: "gpt-5.4",
     subagent_model: null,
     runtime_mode: "oss",
-    default_provider: "holaboss_model_proxy",
-    holaboss_enabled: true,
+    default_provider: "hitechcloud_model_proxy",
+    hitechcloud_enabled: true,
     desktop_browser_enabled: true,
     desktop_browser_url: "http://127.0.0.1:8787/api/v1/browser"
   });

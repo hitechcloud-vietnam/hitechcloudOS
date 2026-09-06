@@ -3,7 +3,7 @@ import type {
   MemoryEntryType,
   MemoryStalenessPolicy,
   MemoryVerificationPolicy,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 export interface MemoryGovernanceRule {
   memoryType: MemoryEntryType;

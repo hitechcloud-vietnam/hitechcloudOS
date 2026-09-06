@@ -11,7 +11,7 @@
 // to the Electron main process over IPC to be written into the local workspace.yaml. No
 // `/gateway/*` call ever carries the keys. This mirrors the existing HolaApp API-key
 // install path (attachCustomMcpServer in electron/main.ts) but is kept separate because
-// the MCP catalog's shape (holabossHosted, requiredKeys[], tools[]) differs from a HolaApp.
+// the MCP catalog's shape (hitechcloudHosted, requiredKeys[], tools[]) differs from a HolaApp.
 
 import { bffFetch } from "./bff-fetch-bridge";
 import {
@@ -57,11 +57,11 @@ export interface McpCatalogEntry {
 	category?: string;
 	badge?: string;
 	tags?: string[];
-	/** Holaboss-hosted → a PATH like "/mcp/<id>/mcp" (prepend the API base in main);
+	/** Hitechcloud-hosted → a PATH like "/mcp/<id>/mcp" (prepend the API base in main);
 	 * external → an absolute URL. */
 	mcpUrl: string;
-	/** true → main ALSO attaches the Holaboss session bearer (Authorization header). */
-	holabossHosted: boolean;
+	/** true → main ALSO attaches the Hitechcloud session bearer (Authorization header). */
+	hitechcloudHosted: boolean;
 	requiredKeys: McpRequiredKey[];
 	/** Optional web surface to open (e.g. the provider's site) for the user to get a key. */
 	surfaceUrl?: string;
@@ -69,7 +69,7 @@ export interface McpCatalogEntry {
 	tools?: McpTool[];
 	/** Shown in the marketplace but greyed / not-installable (backend availability=coming_soon). */
 	comingSoon: boolean;
-	/** false = a community (user-uploaded) server, not Holaboss-vetted — install is
+	/** false = a community (user-uploaded) server, not Hitechcloud-vetted — install is
 	 * gated behind an "unverified — its tools run in your agent" consent prompt. */
 	verified: boolean;
 	/** Local install state (from localMcpKeys), merged in by listMcpCatalog. */
@@ -82,7 +82,7 @@ export interface McpCatalogEntry {
 export interface McpAttachInput {
 	id: string;
 	mcpUrl: string;
-	holabossHosted: boolean;
+	hitechcloudHosted: boolean;
 	headerKeys: Record<string, string>;
 	queryKeys: Record<string, string>;
 	envKeys: Record<string, string>;
@@ -174,7 +174,7 @@ function normalizeMcpEntry(value: unknown): McpCatalogEntry | null {
 		id,
 		name,
 		mcpUrl,
-		holabossHosted: value.holabossHosted === true,
+		hitechcloudHosted: value.hitechcloudHosted === true,
 		requiredKeys,
 		comingSoon: value.comingSoon === true,
 		// Default true unless the backend explicitly marks it unverified (community).
@@ -272,7 +272,7 @@ export function buildAttachInput(
 	return {
 		id: entry.id,
 		mcpUrl: entry.mcpUrl,
-		holabossHosted: entry.holabossHosted,
+		hitechcloudHosted: entry.hitechcloudHosted,
 		headerKeys,
 		queryKeys,
 		envKeys,
@@ -283,7 +283,7 @@ export function buildAttachInput(
 
 /** Build a synthetic `McpCatalogEntry` from a HolaApp's `hostedMcpInstall` block
  * so the shared MCP install gate (McpInstallDialog) + attach machinery can
- * install an APP's Holaboss-hosted, BYO-credential MCP. The app id is the server
+ * install an APP's Hitechcloud-hosted, BYO-credential MCP. The app id is the server
  * id; `installMcp(entry, values, app.holaAppId)` then tags it app-owned so it
  * lands in `app_servers` (grouped under its app), not the standalone pool. */
 export function hostedMcpInstallToEntry(app: {
@@ -292,7 +292,7 @@ export function hostedMcpInstallToEntry(app: {
 	iconUrl?: string;
 	hostedMcpInstall: {
 		mcpUrl: string;
-		holabossHosted?: boolean;
+		hitechcloudHosted?: boolean;
 		requiredKeys: McpRequiredKey[];
 		tools?: McpTool[];
 	};
@@ -301,10 +301,10 @@ export function hostedMcpInstallToEntry(app: {
 		id: app.holaAppId,
 		name: app.title,
 		mcpUrl: app.hostedMcpInstall.mcpUrl,
-		holabossHosted: app.hostedMcpInstall.holabossHosted !== false,
+		hitechcloudHosted: app.hostedMcpInstall.hitechcloudHosted !== false,
 		requiredKeys: app.hostedMcpInstall.requiredKeys,
 		comingSoon: false,
-		// A HolaApp's own hosted MCP is Holaboss-official — no consent prompt.
+		// A HolaApp's own hosted MCP is Hitechcloud-official — no consent prompt.
 		verified: true,
 		installed: false,
 		...(app.iconUrl ? { iconUrl: app.iconUrl } : {}),
@@ -354,7 +354,7 @@ export async function uninstallMcp(id: string): Promise<void> {
 }
 
 /** Re-apply every installed MCP server to main from local state (on catalog load / app
- * restart), so main can hold the resolved configs and refresh the Holaboss session bearer
+ * restart), so main can hold the resolved configs and refresh the Hitechcloud session bearer
  * per turn — mirroring holaApps:sync. */
 export async function syncInstalledMcps(
 	catalog: McpCatalogEntry[],
@@ -367,7 +367,7 @@ export async function syncInstalledMcps(
 
 /** Re-apply every installed APP-OWNED hosted MCP (a HolaApp's `hostedMcpInstall`,
  * e.g. jianguoyun) to main from local state, so main holds the resolved configs and
- * refreshes the Holaboss session bearer per turn — the app-owned twin of
+ * refreshes the Hitechcloud session bearer per turn — the app-owned twin of
  * `syncInstalledMcps`, kept on its OWN track (never catalog-reconciled, so it can't
  * be detached by the standalone marketplace sync). Torn down with the app on uninstall. */
 export async function syncInstalledAppHostedMcps(
@@ -378,7 +378,7 @@ export async function syncInstalledAppHostedMcps(
 		installed: boolean;
 		hostedMcpInstall?: {
 			mcpUrl: string;
-			holabossHosted?: boolean;
+			hitechcloudHosted?: boolean;
 			requiredKeys: McpRequiredKey[];
 			tools?: McpTool[];
 		};

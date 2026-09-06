@@ -4,10 +4,10 @@ import test from "node:test";
 
 const MAIN_PATH = new URL("./main.ts", import.meta.url);
 
-test("desktop main process installs a minimal macOS app menu for Holaboss", async () => {
+test("desktop main process installs a minimal macOS app menu for Hitechcloud", async () => {
   const source = await readFile(MAIN_PATH, "utf8");
 
-  assert.match(source, /const MAC_APP_MENU_PRODUCT_LABEL = "holaOS";/);
+  assert.match(source, /const MAC_APP_MENU_PRODUCT_LABEL = "hitechcloudOS";/);
   assert.match(source, /function focusOrCreateMainWindow\(\) \{/);
   assert.match(source, /if \(!mainWindow \|\| mainWindow\.isDestroyed\(\)\) \{\s*createMainWindow\(\);\s*return;\s*\}/);
   assert.match(source, /if \(mainWindow\.isMinimized\(\)\) \{\s*mainWindow\.restore\(\);\s*\}/);

@@ -35,7 +35,7 @@ export interface ChatMessage {
   outputs?: WorkspaceOutputRecordPayload[];
   backgroundTaskReferences?: ChatBackgroundTaskReference[];
   pendingIntegrations?: ChatPendingIntegration[];
-  // Proposals emitted by `holaboss_workspace_integrations_propose_connect`. Same
+  // Proposals emitted by `hitechcloud_workspace_integrations_propose_connect`. Same
   // visual treatment as pendingIntegrations but no app_id (the agent is
   // asking to add to the account-level integration pool so it can call
   // the toolkit's tools directly — no app wrapping).
@@ -117,8 +117,8 @@ export interface PendingOptimisticUserMessage {
 
 declare global {
   interface Window {
-    __holabossQueuedMessagesPreviewState?: QueuedSessionInputPreviewDescriptor[];
-    __holabossDevQueuedMessagesPreview?: {
+    __hitechcloudQueuedMessagesPreviewState?: QueuedSessionInputPreviewDescriptor[];
+    __hitechcloudDevQueuedMessagesPreview?: {
       single: (text?: string) => void;
       multiple: () => void;
       clear: () => void;

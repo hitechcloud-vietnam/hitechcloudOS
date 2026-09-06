@@ -76,7 +76,7 @@ test("shapeCapabilityToolResultPayload spills browser screenshots in preview mod
     const shaped = payload as Record<string, unknown>;
     const screenshot = shaped.screenshot as Record<string, unknown>;
     assert.equal(Object.prototype.hasOwnProperty.call(screenshot, "base64"), false);
-    assert.match(String(screenshot.file_path ?? ""), /^\.holaboss\/state\/tool-results\/browser_get_state\//);
+    assert.match(String(screenshot.file_path ?? ""), /^\.hitechcloud\/state\/tool-results\/browser_get_state\//);
     assert.equal(
       fs.existsSync(
         path.join(
@@ -98,7 +98,7 @@ test("shapeCapabilityToolResultPayload spills browser screenshots in preview mod
     assert.equal(state.media_total, 45);
     assert.equal(state.media_has_more, true);
     assert.equal(state.next_media_offset, 22);
-    assert.match(String(shaped.full_state_path ?? ""), /^\.holaboss\/state\/tool-results\/browser_get_state\//);
+    assert.match(String(shaped.full_state_path ?? ""), /^\.hitechcloud\/state\/tool-results\/browser_get_state\//);
     assert.equal(
       fs.existsSync(
         path.join(
@@ -146,7 +146,7 @@ test("shapeCapabilityToolResultPayload clips and spills terminal events in previ
     assert.equal(shaped.has_more, true);
     assert.equal(shaped.next_after_sequence, 40);
     assert.equal(shaped.remaining_event_count, 45);
-    assert.match(String(shaped.full_events_path ?? ""), /^\.holaboss\/state\/tool-results\/terminal_session_read\//);
+    assert.match(String(shaped.full_events_path ?? ""), /^\.hitechcloud\/state\/tool-results\/terminal_session_read\//);
     assert.equal(
       fs.existsSync(
         path.join(

@@ -3,7 +3,7 @@ title: Workspace Model
 description: The workspace filesystem layout and the split between authored state, runtime-owned state, continuity, and durable memory forests.
 ---
 
-Workspaces live under the runtime OS root. In desktop mode that root comes from the local host data directory. In standalone runtime deployments it defaults to `/holaboss`.
+Workspaces live under the runtime OS root. In desktop mode that root comes from the local host data directory. In standalone runtime deployments it defaults to `/hitechcloud`.
 
 <DiagramFileTree
   root={{
@@ -68,7 +68,7 @@ Workspaces live under the runtime OS root. In desktop mode that root comes from 
                 ],
               },
               {
-                name: ".holaboss/",
+                name: ".hitechcloud/",
                 meta: "Workspace-owned runtime state and memory",
                 children: [
                   {
@@ -321,15 +321,15 @@ Workspace-local apps live under `apps/<app-id>/`. Each app must provide `app.run
 
 If you are changing app behavior, continue into [App Anatomy](/docs/build/apps/app-anatomy) rather than treating this page as the full contract reference.
 
-### `.holaboss/`
+### `.hitechcloud/`
 
-`<workspace-id>/.holaboss/` now holds the workspace bundle's runtime-owned surfaces:
+`<workspace-id>/.hitechcloud/` now holds the workspace bundle's runtime-owned surfaces:
 
-- `.holaboss/state/`
+- `.hitechcloud/state/`
   - workspace identity marker, persisted harness-session mapping, shared workspace SQLite, MCP sidecar state, todos, scratchpads, and archived session exports
-- `.holaboss/memory/`
+- `.hitechcloud/memory/`
   - workspace-scoped runtime continuity plus durable interaction memory
-- `.holaboss/input-attachments/`
+- `.hitechcloud/input-attachments/`
   - staged attachment batches referenced by in-flight runs
 
 ### `state/host-state.db`
@@ -340,13 +340,13 @@ If you are changing app behavior, continue into [App Anatomy](/docs/build/apps/a
 
 `state/control-plane.db` is the sandbox-global control-plane database. It keeps workspace registry metadata, runtime user profiles, integration connections and bindings, OAuth app config, and app catalog metadata.
 
-### `<workspace-id>/.holaboss/state/runtime.db`
+### `<workspace-id>/.hitechcloud/state/runtime.db`
 
-`<workspace-id>/.holaboss/state/runtime.db` is the durable runtime execution database for one workspace. It keeps sessions, bindings, queue state, turn results, request snapshots, output folders, app runtime state, cronjobs, runtime notifications, task proposals, evolve skill candidates, memory update proposals, workspace plugins, plugin-owned bases, plugin-owned workflows, plugin-owned custom teammates, and workspace-scoped memory metadata such as interaction entities, leaves, semantic nodes, and search docs. The workspace identity file still lives alongside it at `<workspace-id>/.holaboss/state/workspace_id` as the on-disk marker for workspace discovery and migration.
+`<workspace-id>/.hitechcloud/state/runtime.db` is the durable runtime execution database for one workspace. It keeps sessions, bindings, queue state, turn results, request snapshots, output folders, app runtime state, cronjobs, runtime notifications, task proposals, evolve skill candidates, memory update proposals, workspace plugins, plugin-owned bases, plugin-owned workflows, plugin-owned custom teammates, and workspace-scoped memory metadata such as interaction entities, leaves, semantic nodes, and search docs. The workspace identity file still lives alongside it at `<workspace-id>/.hitechcloud/state/workspace_id` as the on-disk marker for workspace discovery and migration.
 
-### `<workspace-id>/.holaboss/memory/`
+### `<workspace-id>/.hitechcloud/memory/`
 
-`<workspace-id>/.holaboss/memory/` is where workspace-local markdown memory now lives. It contains three different kinds of surfaces:
+`<workspace-id>/.hitechcloud/memory/` is where workspace-local markdown memory now lives. It contains three different kinds of surfaces:
 
 - `runtime/`
   - runtime-generated continuity projections such as `latest-turn.md`, `recent-turns/`, `session-state/`, `session-memory/`, and blocker snapshots
@@ -372,7 +372,7 @@ The important boundary is that `runtime/` is resume state, while `interaction/` 
 - `identity/`
   - optional secondary durable user-identity docs
 
-Workspace-scoped markdown memory lives inside each workspace at `<workspace-id>/.holaboss/memory/`, while integration memory and profile-global memory live under the shared `memory/` root.
+Workspace-scoped markdown memory lives inside each workspace at `<workspace-id>/.hitechcloud/memory/`, while integration memory and profile-global memory live under the shared `memory/` root.
 
 The memory browser turns those physical and namespaced files into two main forests:
 

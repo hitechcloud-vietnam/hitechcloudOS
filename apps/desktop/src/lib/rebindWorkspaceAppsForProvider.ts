@@ -3,7 +3,7 @@ import { composioToolkitMatchesProvider } from "@/lib/workspaceDesktop";
 /**
  * After a fresh OAuth grant, migrate every app-scoped binding in the
  * workspace that matches this provider over to the new connection_id and
- * restart each affected app so it re-captures HOLABOSS_APP_GRANT at boot.
+ * restart each affected app so it re-captures HITECHCLOUD_APP_GRANT at boot.
  * The agent's direct Composio path resolves on every call so it's already
  * current, but apps cache the grant at start time and would otherwise keep
  * using a stale (or absent) connection until next workspace reload.

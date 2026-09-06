@@ -7,10 +7,10 @@ import {
 import type { MemoryModelClientConfig } from "./memory-model-client.js";
 import { resolveProductRuntimeConfig } from "./runtime-config.js";
 
-const HOLABOSS_PROVIDER_ID = "holaboss_model_proxy";
+const HITECHCLOUD_PROVIDER_ID = "hitechcloud_model_proxy";
 const PROVIDER_ID_ALIASES: Record<string, string> = {
-  holaboss: HOLABOSS_PROVIDER_ID,
-  [HOLABOSS_PROVIDER_ID]: HOLABOSS_PROVIDER_ID,
+  hitechcloud: HITECHCLOUD_PROVIDER_ID,
+  [HITECHCLOUD_PROVIDER_ID]: HITECHCLOUD_PROVIDER_ID,
   openai: "openai_direct",
   anthropic: "anthropic_direct",
   openrouter: "openrouter_direct",
@@ -33,7 +33,7 @@ const LEGACY_DIRECT_PROVIDER_MODEL_ALIASES: Record<
   },
 };
 const BACKGROUND_TASK_MODEL_DEFAULTS: Record<string, string | null> = {
-  [HOLABOSS_PROVIDER_ID]: "gpt-5.4",
+  [HITECHCLOUD_PROVIDER_ID]: "gpt-5.4",
   openai_direct: "gpt-5.4",
   anthropic_direct: "claude-sonnet-4-6",
   openrouter_direct: "openai/gpt-5.4",
@@ -128,9 +128,9 @@ function providerPayloadForId(
   providerId: string,
 ): Record<string, unknown> {
   const providersPayload = asRecord(document.providers);
-  if (providerId === HOLABOSS_PROVIDER_ID) {
+  if (providerId === HITECHCLOUD_PROVIDER_ID) {
     return asRecord(
-      providersPayload[HOLABOSS_PROVIDER_ID] ?? providersPayload.holaboss,
+      providersPayload[HITECHCLOUD_PROVIDER_ID] ?? providersPayload.hitechcloud,
     );
   }
   return asRecord(providersPayload[providerId]);
@@ -193,7 +193,7 @@ function backgroundProviderIsAvailable(
   if (!normalizedProviderId) {
     return false;
   }
-  if (normalizedProviderId === HOLABOSS_PROVIDER_ID) {
+  if (normalizedProviderId === HITECHCLOUD_PROVIDER_ID) {
     return Boolean(
       runtimeConfig.authToken.trim() ||
       runtimeConfig.modelProxyBaseUrl.trim() ||
@@ -270,9 +270,9 @@ export function resolveBackgroundTaskModelSelection(params: {
         );
         const resolvedProviderId =
           resolved.configuredProviderId ??
-          (defaultProviderId === HOLABOSS_PROVIDER_ID &&
+          (defaultProviderId === HITECHCLOUD_PROVIDER_ID &&
           selectedModel.includes("/")
-            ? HOLABOSS_PROVIDER_ID
+            ? HITECHCLOUD_PROVIDER_ID
             : resolved.providerId);
         providerId = normalizeBackgroundProviderId(resolvedProviderId);
       } catch {
@@ -284,7 +284,7 @@ export function resolveBackgroundTaskModelSelection(params: {
     providerId = defaultProviderId;
   }
   if (!providerId && runtimeConfig.modelProxyBaseUrl.trim()) {
-    providerId = HOLABOSS_PROVIDER_ID;
+    providerId = HITECHCLOUD_PROVIDER_ID;
   }
 
   if (!backgroundProviderIsAvailable(document, providerId, runtimeConfig)) {

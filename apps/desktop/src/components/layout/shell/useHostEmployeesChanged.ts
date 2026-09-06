@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 /**
- * Bridges the host op `window.__holabossHost.employees.changed` into the shell.
+ * Bridges the host op `window.__hitechcloudHost.employees.changed` into the shell.
  * The HolaEmployee `/employees` web surface calls it after creating, renaming,
  * or archiving an employee; main relays `host:employeesChanged`, and here we
  * invalidate the roster query so the sidebar reflects the change immediately.

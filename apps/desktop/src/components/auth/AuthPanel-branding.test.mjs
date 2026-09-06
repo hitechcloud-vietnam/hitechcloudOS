@@ -4,15 +4,15 @@ import test from "node:test";
 
 const AUTH_PANEL_PATH = new URL("./AuthPanel.tsx", import.meta.url);
 
-test("auth panel sign-in messaging uses holaOS sign-in branding", async () => {
+test("auth panel sign-in messaging uses hitechcloudOS sign-in branding", async () => {
   const source = await readFile(AUTH_PANEL_PATH, "utf8");
 
   assert.match(
     source,
-    /Complete the flow on the holaOS sign-in page\./,
+    /Complete the flow on the hitechcloudOS sign-in page\./,
   );
   assert.doesNotMatch(
     source,
-    /Complete the flow on the Holaboss sign-in page\./,
+    /Complete the flow on the Hitechcloud sign-in page\./,
   );
 });

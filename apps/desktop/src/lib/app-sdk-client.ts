@@ -1,5 +1,5 @@
 /**
- * Renderer-side @holaboss/app-sdk client backed by the bff:fetch IPC bridge.
+ * Renderer-side @hitechcloud/app-sdk client backed by the bff:fetch IPC bridge.
  *
  * Architectural rationale: Chromium 138+ blocks third-party cookies on
  * cross-site fetch even with `SameSite=None; Secure`. Our renderer (origin
@@ -18,7 +18,7 @@ import type {
   RequestConfig,
   ResponseConfig,
   ResponseErrorConfig,
-} from "@holaboss/app-sdk/core";
+} from "@hitechcloud/app-sdk/core";
 
 import { bffFetch } from "./bff-fetch-bridge";
 
@@ -71,7 +71,7 @@ export function installRendererAuthCacheListeners(): () => void {
 }
 
 // ---------------------------------------------------------------------------
-// Internal: a thin re-implementation of @holaboss/app-sdk's `createAppClient`
+// Internal: a thin re-implementation of @hitechcloud/app-sdk's `createAppClient`
 // that uses bffFetch instead of globalThis.fetch. We can't override fetch in
 // the upstream SDK (it reaches for the global directly), so we provide a
 // drop-in client function with the same RequestConfig/ResponseConfig shape.
@@ -203,7 +203,7 @@ let marketplaceClientCache:
   | null = null;
 
 /**
- * Renderer-side @holaboss/app-sdk client targeting the marketplace BFF.
+ * Renderer-side @hitechcloud/app-sdk client targeting the marketplace BFF.
  * All requests go through `bffFetch` — main injects the auth cookie.
  */
 export function getMarketplaceAppSdkClient() {
@@ -267,7 +267,7 @@ export async function billingRpcFetch<T>(
   const baseURL = cachedApiBaseUrl ?? "";
   if (!baseURL) {
     throw new Error(
-      "Remote billing is not configured. Set HOLABOSS_AUTH_BASE_URL outside the public repo.",
+      "Remote billing is not configured. Set HITECHCLOUD_AUTH_BASE_URL outside the public repo.",
     );
   }
 
@@ -303,7 +303,7 @@ export async function billingRpcFetch<T>(
 //
 // These hit the plain Hono gateway routes `/api/org-model-keys` (NOT oRPC, so
 // no `{json}` envelope). The gateway resolves the active org from the session
-// cookie and injects `x-holaboss-org-id` for us — same as the web panel. All
+// cookie and injects `x-hitechcloud-org-id` for us — same as the web panel. All
 // requests go through `bffFetch` so main injects the Better-Auth cookie.
 // ---------------------------------------------------------------------------
 
@@ -339,7 +339,7 @@ async function requireApiBaseUrl(): Promise<string> {
   const baseURL = cachedApiBaseUrl ?? "";
   if (!baseURL) {
     throw new Error(
-      "Remote API is not configured. Set HOLABOSS_AUTH_BASE_URL outside the public repo.",
+      "Remote API is not configured. Set HITECHCLOUD_AUTH_BASE_URL outside the public repo.",
     );
   }
   return baseURL;

@@ -43,7 +43,7 @@ export type GetMarketplaceSkill200 = {
     tags?: string[];
     long_description?: (string | null | null);
     /**
-     * @default "Holaboss"
+     * @default "Hitechcloud"
      * @type string | undefined
     */
     author?: string;

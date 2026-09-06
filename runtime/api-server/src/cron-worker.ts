@@ -5,7 +5,7 @@ import { CronExpressionParser } from "cron-parser";
 import {
   type CronjobRecord,
   type RuntimeStateStore,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 import type { QueueWorkerLike } from "./queue-worker.js";
 import { processDueCronjobs } from "./cronjob-runtime.js";

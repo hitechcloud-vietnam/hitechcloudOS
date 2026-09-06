@@ -22,7 +22,7 @@ import { fileURLToPath } from "node:url";
 // Terminal, Windows Terminal). 2J = viewport, 3J = scrollback, H = home.
 process.stdout.write("\x1b[2J\x1b[3J\x1b[H");
 process.stdout.write(
-  "[Holaboss] dev runtime starting — predev finished, logs below are live.\n\n",
+  "[Hitechcloud] dev runtime starting — predev finished, logs below are live.\n\n",
 );
 
 // Resolve concurrently's JS entry from its own manifest and run it directly
@@ -62,11 +62,11 @@ const watchRuntime = /^(1|true|yes|on)$/i.test(process.env.WATCH_RUNTIME ?? "");
 
 if (watchRuntime) {
   process.stdout.write(
-    "[Holaboss] WATCH_RUNTIME=1 — live-syncing runtime/ on change (heavier; can loop).\n\n",
+    "[Hitechcloud] WATCH_RUNTIME=1 — live-syncing runtime/ on change (heavier; can loop).\n\n",
   );
 } else {
   process.stdout.write(
-    "[Holaboss] runtime watch OFF — using the staged runtime. Set WATCH_RUNTIME=1 to live-sync runtime/ edits.\n\n",
+    "[Hitechcloud] runtime watch OFF — using the staged runtime. Set WATCH_RUNTIME=1 to live-sync runtime/ edits.\n\n",
   );
 }
 
@@ -148,7 +148,7 @@ function terminateChildTree(signal) {
   }
   if (tearingDown) return;
   tearingDown = true;
-  process.stderr.write("[Holaboss] stopping dev tree (electron + watchers)...\n");
+  process.stderr.write("[Hitechcloud] stopping dev tree (electron + watchers)...\n");
   if (child.pid !== undefined && !child.killed) {
     const result = spawnSync(
       "taskkill",

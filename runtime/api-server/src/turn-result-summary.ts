@@ -1,4 +1,4 @@
-import type { TurnResultRecord } from "@holaboss/runtime-state-store";
+import type { TurnResultRecord } from "@hitechcloud/runtime-state-store";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);

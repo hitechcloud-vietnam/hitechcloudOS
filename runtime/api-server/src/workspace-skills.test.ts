@@ -13,8 +13,8 @@ import {
 } from "./workspace-skills.js";
 
 const ORIGINAL_ENV = {
-  HOLABOSS_EMBEDDED_SKILLS_DIR: process.env.HOLABOSS_EMBEDDED_SKILLS_DIR,
-  HOLABOSS_RUNTIME_ROOT: process.env.HOLABOSS_RUNTIME_ROOT,
+  HITECHCLOUD_EMBEDDED_SKILLS_DIR: process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR,
+  HITECHCLOUD_RUNTIME_ROOT: process.env.HITECHCLOUD_RUNTIME_ROOT,
 };
 
 const TEMP_DIRS: string[] = [];
@@ -58,15 +58,15 @@ function expectedResolvedSkill(params: {
 }
 
 afterEach(() => {
-  if (ORIGINAL_ENV.HOLABOSS_EMBEDDED_SKILLS_DIR === undefined) {
-    delete process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+  if (ORIGINAL_ENV.HITECHCLOUD_EMBEDDED_SKILLS_DIR === undefined) {
+    delete process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
   } else {
-    process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = ORIGINAL_ENV.HOLABOSS_EMBEDDED_SKILLS_DIR;
+    process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = ORIGINAL_ENV.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
   }
-  if (ORIGINAL_ENV.HOLABOSS_RUNTIME_ROOT === undefined) {
-    delete process.env.HOLABOSS_RUNTIME_ROOT;
+  if (ORIGINAL_ENV.HITECHCLOUD_RUNTIME_ROOT === undefined) {
+    delete process.env.HITECHCLOUD_RUNTIME_ROOT;
   } else {
-    process.env.HOLABOSS_RUNTIME_ROOT = ORIGINAL_ENV.HOLABOSS_RUNTIME_ROOT;
+    process.env.HITECHCLOUD_RUNTIME_ROOT = ORIGINAL_ENV.HITECHCLOUD_RUNTIME_ROOT;
   }
   for (const dir of TEMP_DIRS.splice(0)) {
     fs.rmSync(dir, { recursive: true, force: true });
@@ -75,27 +75,27 @@ afterEach(() => {
 
 test("resolveWorkspaceSkills includes embedded defaults when no workspace skills are configured", () => {
   const embeddedRoot = makeTempDir("hb-embedded-skills-");
-  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedRoot;
-  writeSkill(embeddedRoot, "holaboss-runtime");
+  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedRoot;
+  writeSkill(embeddedRoot, "hitechcloud-runtime");
 
   const workspaceDir = makeTempDir("hb-workspace-no-skills-");
 
   assert.deepEqual(resolveWorkspaceSkills(workspaceDir), [
     expectedResolvedSkill({
       root: embeddedRoot,
-      skillId: "holaboss-runtime",
+      skillId: "hitechcloud-runtime",
       origin: "embedded",
     })
   ]);
 });
 
-test("resolveWorkspaceSkills finds bundled embedded skills when HOLABOSS_RUNTIME_ROOT points at the bundle root", () => {
-  delete process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+test("resolveWorkspaceSkills finds bundled embedded skills when HITECHCLOUD_RUNTIME_ROOT points at the bundle root", () => {
+  delete process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
   const runtimeBundleRoot = makeTempDir("hb-runtime-bundle-root-");
   const embeddedRoot = path.join(runtimeBundleRoot, "runtime", "harnesses", "src", "embedded-skills");
   fs.mkdirSync(embeddedRoot, { recursive: true });
   writeSkill(embeddedRoot, "skill-creator");
-  process.env.HOLABOSS_RUNTIME_ROOT = runtimeBundleRoot;
+  process.env.HITECHCLOUD_RUNTIME_ROOT = runtimeBundleRoot;
 
   const workspaceDir = makeTempDir("hb-workspace-bundle-embedded-skills-");
 
@@ -110,7 +110,7 @@ test("resolveWorkspaceSkills finds bundled embedded skills when HOLABOSS_RUNTIME
 
 test("projectSessionVisibleWorkspaceSkills returns all resolved skills as a stable copy", () => {
   const embeddedRoot = makeTempDir("hb-embedded-skills-");
-  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedRoot;
+  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedRoot;
   writeSkill(embeddedRoot, "app-builder-sdk");
   writeSkill(embeddedRoot, "build-dashboard");
   writeSkill(embeddedRoot, "skill-creator");
@@ -127,7 +127,7 @@ test("projectSessionVisibleWorkspaceSkills returns all resolved skills as a stab
 
 test("resolveWorkspaceSkills keeps embedded defaults authoritative when workspace skills reuse the same id", () => {
   const embeddedRoot = makeTempDir("hb-embedded-skills-");
-  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedRoot;
+  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedRoot;
   writeSkill(embeddedRoot, "alpha", "embedded alpha");
   writeSkill(embeddedRoot, "beta", "embedded beta");
 
@@ -150,8 +150,8 @@ test("resolveWorkspaceSkills keeps embedded defaults authoritative when workspac
 
 test("resolveWorkspaceSkills includes workspace-local skills without requiring workspace.yaml skill allowlists", () => {
   const embeddedRoot = makeTempDir("hb-embedded-skills-");
-  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedRoot;
-  writeSkill(embeddedRoot, "holaboss-runtime");
+  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedRoot;
+  writeSkill(embeddedRoot, "hitechcloud-runtime");
   writeSkill(embeddedRoot, "beta");
 
   const workspaceDir = makeTempDir("hb-workspace-enabled-skills-");
@@ -164,7 +164,7 @@ test("resolveWorkspaceSkills includes workspace-local skills without requiring w
     resolved.map((skill) => ({ skill_id: skill.skill_id, origin: skill.origin })),
     [
       { skill_id: "beta", origin: "embedded" },
-      { skill_id: "holaboss-runtime", origin: "embedded" },
+      { skill_id: "hitechcloud-runtime", origin: "embedded" },
       { skill_id: "alpha", origin: "workspace" },
       { skill_id: "gamma", origin: "workspace" }
     ]
@@ -173,7 +173,7 @@ test("resolveWorkspaceSkills includes workspace-local skills without requiring w
 
 test("resolveWorkspaceSkills ignores legacy agents.proactive.skills_path fallback", () => {
   const embeddedRoot = makeTempDir("hb-embedded-skills-empty-");
-  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedRoot;
+  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedRoot;
   const workspaceDir = makeTempDir("hb-workspace-legacy-skills-path-");
   const legacySkillsRoot = path.join(workspaceDir, "legacy-skills");
   writeSkill(legacySkillsRoot, "legacy-only");
@@ -188,7 +188,7 @@ test("resolveWorkspaceSkills ignores legacy agents.proactive.skills_path fallbac
 
 test("resolveWorkspaceSkills ignores skills.path and still resolves workspace skills from fixed skills directory", () => {
   const embeddedRoot = makeTempDir("hb-embedded-skills-empty-");
-  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedRoot;
+  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedRoot;
 
   const workspaceDir = makeTempDir("hb-workspace-fixed-skills-path-");
   const customSkillsRoot = path.join(workspaceDir, "custom-skills");
@@ -209,7 +209,7 @@ test("resolveWorkspaceSkills ignores skills.path and still resolves workspace sk
 
 test("resolveWorkspaceSkills ignores invalid skill format when frontmatter is missing required fields", () => {
   const embeddedRoot = makeTempDir("hb-embedded-skills-empty-");
-  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedRoot;
+  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedRoot;
 
   const workspaceDir = makeTempDir("hb-workspace-invalid-skill-format-");
   const skillsRoot = path.join(workspaceDir, "skills");
@@ -242,7 +242,7 @@ test("resolveWorkspaceSkills ignores invalid skill format when frontmatter is mi
 
 test("prepareInstructionWithQuotedWorkspaceSkills strips leading slash skills into canonical blocks", () => {
   const embeddedRoot = makeTempDir("hb-embedded-skills-empty-");
-  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedRoot;
+  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedRoot;
 
   const workspaceDir = makeTempDir("hb-workspace-quoted-skills-");
   const skillsRoot = path.join(workspaceDir, "skills");
@@ -280,7 +280,7 @@ test("prepareInstructionWithQuotedWorkspaceSkills strips leading slash skills in
 
 test("resolveWorkspaceSkills captures declared granted tools and commands and invokeWorkspaceSkill returns canonical metadata", () => {
   const embeddedRoot = makeTempDir("hb-embedded-skills-empty-");
-  process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedRoot;
+  process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedRoot;
 
   const workspaceDir = makeTempDir("hb-workspace-skill-grants-");
   const skillDir = path.join(workspaceDir, "skills", "deploy-helper");
@@ -291,7 +291,7 @@ test("resolveWorkspaceSkills captures declared granted tools and commands and in
       "---",
       "name: deploy-helper",
       "description: Deployment helper",
-      "holaboss:",
+      "hitechcloud:",
       "  granted_tools:",
       "    - bash",
       "    - Deploy",
@@ -338,7 +338,7 @@ test("embedded app-builder-sdk skill only references bundled local assets", () =
 
   assert.doesNotMatch(skillBody, /docs\/pm\/app-vibe-coding\.md/);
   assert.doesNotMatch(skillBody, /experiments\/app-builder-sdk\//);
-  assert.doesNotMatch(skillBody, /holaOS\/desktop\//);
+  assert.doesNotMatch(skillBody, /hitechcloudOS\/desktop\//);
   // Snapshot lives as a single canonical sdk-package/ tree; no flat sdk/
   // duplicates and no nested sdk-package/reference/ duplicates.
   assert.doesNotMatch(skillBody, /`sdk\/[^`]+`/);

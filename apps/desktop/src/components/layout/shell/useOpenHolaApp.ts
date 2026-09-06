@@ -46,7 +46,7 @@ export function useOpenHolaApp() {
        * surface-based gate can render it. */
       apiKeyInstall?: ApiKeyInstall;
       /** Hosted-MCP install config (坚果云) — carried so the surface-based gate can
-       * render its credential fields + attach the Holaboss-hosted MCP on submit. */
+       * render its credential fields + attach the Hitechcloud-hosted MCP on submit. */
       hostedMcpInstall?: HostedMcpInstall;
       /** Command/stdio MCP install (drawio) — when present, ensure the local MCP
        * server is attached + its editor is up BEFORE the surface loads, so

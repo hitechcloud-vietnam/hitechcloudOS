@@ -6,8 +6,8 @@ import type {
   TurnContext,
 } from "../types.ts"
 
-export const LOCAL_APP_ACTION_API_PATH = "/__holaboss/actions/run"
-export const LOCAL_APP_ACTION_HEALTH_PATH = "/__holaboss/actions/health"
+export const LOCAL_APP_ACTION_API_PATH = "/__hitechcloud/actions/run"
+export const LOCAL_APP_ACTION_HEALTH_PATH = "/__hitechcloud/actions/health"
 
 export interface LocalAppActionTurnContext {
   turnId?: string | null
@@ -218,9 +218,9 @@ function normalizedTurnContextFromBody(value: unknown): LocalAppActionTurnContex
 }
 
 function normalizedTurnContextFromHeaders(headers: Headers): LocalAppActionTurnContext | null {
-  const sessionId = nonEmptyString(headers.get("x-holaboss-session-id"))
-  const inputId = nonEmptyString(headers.get("x-holaboss-input-id"))
-  const turnId = nonEmptyString(headers.get("x-holaboss-turn-id")) ?? inputId
+  const sessionId = nonEmptyString(headers.get("x-hitechcloud-session-id"))
+  const inputId = nonEmptyString(headers.get("x-hitechcloud-input-id"))
+  const turnId = nonEmptyString(headers.get("x-hitechcloud-turn-id")) ?? inputId
   if (!sessionId || !turnId) {
     return null
   }

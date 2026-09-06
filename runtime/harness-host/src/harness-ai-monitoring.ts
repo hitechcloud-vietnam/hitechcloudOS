@@ -1,4 +1,4 @@
-const AI_SPAN_ATTRIBUTE = "holaboss.ai_span";
+const AI_SPAN_ATTRIBUTE = "hitechcloud.vn_span";
 
 export interface HarnessGenAiUsageMetrics {
   inputTokens?: number | null;
@@ -56,28 +56,28 @@ export function harnessGenAiSpanAttributes(params: {
     "gen_ai.request.model": params.model,
   };
   if (params.providerId?.trim()) {
-    attributes["holaboss.provider_id"] = params.providerId.trim();
+    attributes["hitechcloud.provider_id"] = params.providerId.trim();
   }
   if (params.workspaceId?.trim()) {
-    attributes["holaboss.workspace_id"] = params.workspaceId.trim();
+    attributes["hitechcloud.workspace_id"] = params.workspaceId.trim();
   }
   if (params.sessionId?.trim()) {
-    attributes["holaboss.session_id"] = params.sessionId.trim();
+    attributes["hitechcloud.session_id"] = params.sessionId.trim();
   }
   if (params.inputId?.trim()) {
-    attributes["holaboss.input_id"] = params.inputId.trim();
+    attributes["hitechcloud.input_id"] = params.inputId.trim();
   }
   if (params.userId?.trim()) {
-    attributes["holaboss.user_id"] = params.userId.trim();
+    attributes["hitechcloud.user_id"] = params.userId.trim();
   }
   if (params.sandboxId?.trim()) {
-    attributes["holaboss.sandbox_id"] = params.sandboxId.trim();
+    attributes["hitechcloud.sandbox_id"] = params.sandboxId.trim();
   }
   if (params.agentName?.trim()) {
     attributes["gen_ai.agent.name"] = params.agentName.trim();
   }
   if (params.thinkingValue?.trim()) {
-    attributes["holaboss.thinking_value"] = params.thinkingValue.trim();
+    attributes["hitechcloud.thinking_value"] = params.thinkingValue.trim();
   }
   return attributes;
 }
@@ -111,7 +111,7 @@ export function applyHarnessGenAiUsageMetrics(
     );
   }
   if (usage.totalTokens !== null && usage.totalTokens !== undefined) {
-    span.setAttribute("holaboss.token_usage.total_tokens", usage.totalTokens);
+    span.setAttribute("hitechcloud.token_usage.total_tokens", usage.totalTokens);
   }
   if (usage.inputCostUsd !== null && usage.inputCostUsd !== undefined) {
     span.setAttribute("gen_ai.cost.input_tokens", usage.inputCostUsd);

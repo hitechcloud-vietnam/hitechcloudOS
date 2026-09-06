@@ -10,7 +10,7 @@ import { setTimeout as sleep } from "node:timers/promises";
 
 import { load as parseYaml } from "js-yaml";
 
-import { RuntimeStateStore, utcNowIso } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore, utcNowIso } from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import {
@@ -25,7 +25,7 @@ import { noteHarnessWaitingForUserOnToolCompletion } from "../../harnesses/src/r
 
 const ORIGINAL_ENV = {
   HB_SANDBOX_ROOT: process.env.HB_SANDBOX_ROOT,
-  HOLABOSS_RUNTIME_CONFIG_PATH: process.env.HOLABOSS_RUNTIME_CONFIG_PATH,
+  HITECHCLOUD_RUNTIME_CONFIG_PATH: process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH,
 };
 
 function writeRuntimeConfig(root: string, document: Record<string, unknown>): void {
@@ -33,7 +33,7 @@ function writeRuntimeConfig(root: string, document: Record<string, unknown>): vo
   fs.mkdirSync(path.dirname(configPath), { recursive: true });
   fs.writeFileSync(configPath, `${JSON.stringify(document, null, 2)}\n`, "utf8");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
 }
 
 async function startStaticHttpServer(
@@ -545,7 +545,7 @@ test("rerunTask restarts an existing delegated task by task id", async () => {
       sessionId: mainSessionId,
       payload: {
         text: "Retry this task with the current composer model.",
-        model: "holaboss_model_proxy/gpt-5.5",
+        model: "hitechcloud_model_proxy/gpt-5.5",
         thinking_value: "medium",
       },
     });
@@ -624,7 +624,7 @@ test("rerunTask restarts an existing delegated task by task id", async () => {
       sessionId: mainSessionId,
       inputId: controllerInput.inputId,
       taskId: "HOL-1",
-      selectedModel: "holaboss_model_proxy/gpt-5.5",
+      selectedModel: "hitechcloud_model_proxy/gpt-5.5",
     }) as Record<string, unknown>;
 
     assert.equal(wakeCalls, 1);
@@ -644,11 +644,11 @@ test("rerunTask restarts an existing delegated task by task id", async () => {
     const rerunRun = store.getSubagentRun({ workspaceId, subagentId });
     assert.equal(rerunRun?.status, "queued");
     assert.equal(rerunRun?.currentChildInputId, rerunRun?.latestChildInputId);
-    assert.equal(rerunRun?.effectiveModel, "holaboss_model_proxy/gpt-5.5");
+    assert.equal(rerunRun?.effectiveModel, "hitechcloud_model_proxy/gpt-5.5");
     const rerunInput = rerunRun?.currentChildInputId
       ? store.getInput({ workspaceId, inputId: rerunRun.currentChildInputId })
       : null;
-    assert.equal(rerunInput?.payload.model, "holaboss_model_proxy/gpt-5.5");
+    assert.equal(rerunInput?.payload.model, "hitechcloud_model_proxy/gpt-5.5");
     assert.equal(rerunInput?.payload.thinking_value, "medium");
   } finally {
     store.close();
@@ -2004,7 +2004,7 @@ function makeHarness(): Harness {
     status: "active",
   });
   const workspaceDir = path.join(workspaceRoot, workspace.id);
-  fs.mkdirSync(path.join(workspaceDir, ".holaboss"), { recursive: true });
+  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud"), { recursive: true });
 
   const service = new RuntimeAgentToolsService(store, { workspaceRoot });
   return {
@@ -2210,10 +2210,10 @@ afterEach(() => {
   } else {
     process.env.HB_SANDBOX_ROOT = ORIGINAL_ENV.HB_SANDBOX_ROOT;
   }
-  if (ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH === undefined) {
-    delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+  if (ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH === undefined) {
+    delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   } else {
-    process.env.HOLABOSS_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH;
+    process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   }
 });
 
@@ -2450,7 +2450,7 @@ test("workspace app registration rejects providerEffectAction providers missing 
   fs.writeFileSync(
     path.join(harness.workspaceDir, "apps", "provider-effect-demo", "src", "send.ts"),
     [
-      "import { providerEffectAction } from \"@holaboss/app-builder-sdk\";",
+      "import { providerEffectAction } from \"@hitechcloud/app-builder-sdk\";",
       "",
       "export const send = providerEffectAction({",
       "  provider: \"gmail\",",
@@ -2521,7 +2521,7 @@ test("workspace app registration accepts store-catalog providers beyond the OSS 
   assert.equal(result.registered, true);
 });
 
-test("workspace app registration rejects a dashboard app whose src/client doesn't import any @holaboss/ui layout", async () => {
+test("workspace app registration rejects a dashboard app whose src/client doesn't import any @hitechcloud/ui layout", async () => {
   await harness.service.scaffoldWorkspaceApp({
     workspaceId: harness.workspaceId,
     appId: "naked-dash",
@@ -2536,7 +2536,7 @@ test("workspace app registration rejects a dashboard app whose src/client doesn'
   );
   fs.mkdirSync(clientDir, { recursive: true });
   // A dashboard component that does the exact failure mode: stack of
-  // hand-rolled cards, no @holaboss/ui layout primitive in sight.
+  // hand-rolled cards, no @hitechcloud/ui layout primitive in sight.
   fs.writeFileSync(
     path.join(clientDir, "Dashboard.tsx"),
     [
@@ -2564,7 +2564,7 @@ test("workspace app registration rejects a dashboard app whose src/client doesn'
       assert.equal((error as RuntimeAgentToolsServiceError).statusCode, 400);
       assert.match(
         (error as RuntimeAgentToolsServiceError).message,
-        /only 0 distinct named import\(s\) from `@holaboss\/ui`/,
+        /only 0 distinct named import\(s\) from `@hitechcloud\/ui`/,
       );
       const msg = (error as RuntimeAgentToolsServiceError).message;
       assert.ok(msg.includes("Button"), `expected Button in error, got: ${msg}`);
@@ -2575,7 +2575,7 @@ test("workspace app registration rejects a dashboard app whose src/client doesn'
   );
 });
 
-test("workspace app registration accepts a dashboard app that uses any @holaboss/ui layout", async () => {
+test("workspace app registration accepts a dashboard app that uses any @hitechcloud/ui layout", async () => {
   await harness.service.scaffoldWorkspaceApp({
     workspaceId: harness.workspaceId,
     appId: "real-dash",
@@ -2592,7 +2592,7 @@ test("workspace app registration accepts a dashboard app that uses any @holaboss
   fs.writeFileSync(
     path.join(clientDir, "Dashboard.tsx"),
     [
-      "import { Badge, Button, Card } from \"@holaboss/ui\";",
+      "import { Badge, Button, Card } from \"@hitechcloud/ui\";",
       "export function Dashboard() {",
       "  return (",
       "    <Card>",
@@ -2628,7 +2628,7 @@ test("workspace app registration ignores ui lint for integration-only apps witho
     name: "Headless Module",
   });
   // No src/client; the scaffold default is integration-only. Register
-  // must not demand @holaboss/ui imports from these.
+  // must not demand @hitechcloud/ui imports from these.
   const result = (await harness.service.registerWorkspaceApp({
     workspaceId: harness.workspaceId,
     appId: "headless-mod",
@@ -3173,7 +3173,7 @@ mcp:
   path: /mcp/sse
   tools: []
 env_contract:
-  - HOLABOSS_WORKSPACE_ID
+  - HITECHCLOUD_WORKSPACE_ID
 smoke_tests:
   - name: queue_task
     kind: delegated_task_action
@@ -3208,7 +3208,7 @@ smoke_tests:
       },
     );
     server = await startStaticHttpServer(async (request, response) => {
-      if (request.method !== "POST" || request.url !== "/__holaboss/actions/run") {
+      if (request.method !== "POST" || request.url !== "/__hitechcloud/actions/run") {
         response.statusCode = 404;
         response.end("not found");
         return;
@@ -3359,7 +3359,7 @@ mcp:
   path: /mcp/sse
   tools: []
 env_contract:
-  - HOLABOSS_WORKSPACE_ID
+  - HITECHCLOUD_WORKSPACE_ID
 smoke_tests:
   - name: queue_task
     kind: delegated_task_action
@@ -3388,7 +3388,7 @@ smoke_tests:
       },
     );
     server = await startStaticHttpServer(async (request, response) => {
-      if (request.method !== "POST" || request.url !== "/__holaboss/actions/run") {
+      if (request.method !== "POST" || request.url !== "/__hitechcloud/actions/run") {
         response.statusCode = 404;
         response.end("not found");
         return;
@@ -3610,7 +3610,7 @@ mcp:
   tools:
     - demo_tool
 env_contract:
-  - HOLABOSS_WORKSPACE_ID
+  - HITECHCLOUD_WORKSPACE_ID
 `,
       "utf8",
     );
@@ -3805,7 +3805,7 @@ test("installWorkspaceApp delegates to lifecycle.installFromArchive and flags re
           fs.mkdirSync(path.join(wsDir, "apps", appId), { recursive: true });
           fs.writeFileSync(
             path.join(wsDir, "apps", appId, "app.runtime.yaml"),
-            `app_id: ${appId}\nname: Twitter\nslug: twitter\nlifecycle:\n  setup: "true"\n  start: "true"\nhealthchecks:\n  mcp:\n    path: /mcp/health\n    timeout_s: 30\n    interval_s: 5\nmcp:\n  transport: http-sse\n  port: 13100\n  path: /mcp/sse\n  tools:\n    - twitter_create_post\nenv_contract:\n  - HOLABOSS_WORKSPACE_ID\n`,
+            `app_id: ${appId}\nname: Twitter\nslug: twitter\nlifecycle:\n  setup: "true"\n  start: "true"\nhealthchecks:\n  mcp:\n    path: /mcp/health\n    timeout_s: 30\n    interval_s: 5\nmcp:\n  transport: http-sse\n  port: 13100\n  path: /mcp/sse\n  tools:\n    - twitter_create_post\nenv_contract:\n  - HITECHCLOUD_WORKSPACE_ID\n`,
             "utf8",
           );
           return { ok: true, ready: true, detail: "App installed and running", error: null };
@@ -3894,7 +3894,7 @@ test("installWorkspaceApp omits pending_integrations when the catalog entry has 
           fs.mkdirSync(path.join(wsDir, "apps", appId), { recursive: true });
           fs.writeFileSync(
             path.join(wsDir, "apps", appId, "app.runtime.yaml"),
-            `app_id: ${appId}\nname: CSV Tool\nslug: csv-tool\nlifecycle:\n  setup: "true"\n  start: "true"\nhealthchecks:\n  mcp:\n    path: /mcp/health\n    timeout_s: 30\n    interval_s: 5\nmcp:\n  transport: http-sse\n  port: 13100\n  path: /mcp/sse\n  tools: []\nenv_contract:\n  - HOLABOSS_WORKSPACE_ID\n`,
+            `app_id: ${appId}\nname: CSV Tool\nslug: csv-tool\nlifecycle:\n  setup: "true"\n  start: "true"\nhealthchecks:\n  mcp:\n    path: /mcp/health\n    timeout_s: 30\n    interval_s: 5\nmcp:\n  transport: http-sse\n  port: 13100\n  path: /mcp/sse\n  tools: []\nenv_contract:\n  - HITECHCLOUD_WORKSPACE_ID\n`,
             "utf8",
           );
           return { ok: true, ready: true, detail: "ok", error: null };
@@ -4031,7 +4031,7 @@ mcp:
   tools:
     - demo_tool
 env_contract:
-  - HOLABOSS_WORKSPACE_ID
+  - HITECHCLOUD_WORKSPACE_ID
 `,
       "utf8",
     );
@@ -4135,9 +4135,9 @@ test("ensureWorkspaceAppsRunning queues post-build polish onto the same App Buil
     fs.writeFileSync(
       path.join(workspaceRoot, workspaceId, "apps", "demo-app", "src", "client", "index.tsx"),
       [
-        'import "@holaboss/ui/styles.css";',
+        'import "@hitechcloud/ui/styles.css";',
         'import "./app.css";',
-        'import { Button, Card, CardContent } from "@holaboss/ui";',
+        'import { Button, Card, CardContent } from "@hitechcloud/ui";',
         "",
         "export default function DemoApp() {",
         "  return (",
@@ -4217,7 +4217,7 @@ mcp:
   tools:
     - demo_tool
 env_contract:
-  - HOLABOSS_WORKSPACE_ID
+  - HITECHCLOUD_WORKSPACE_ID
 `,
     "utf8",
   );
@@ -4378,7 +4378,7 @@ test("updateWorkspaceInstructions appends a managed AGENTS.md rule without distu
     assert.match(result.full_text, /User-authored intro\./);
     assert.match(
       result.full_text,
-      /<!-- holaboss-managed-workspace-instructions:start -->/,
+      /<!-- hitechcloud-managed-workspace-instructions:start -->/,
     );
     assert.match(
       result.full_text,
@@ -4467,7 +4467,7 @@ test("updateWorkspaceInstructions replaces and clears the managed AGENTS.md sect
     assert.match(cleared.full_text, /User-authored intro\./);
     assert.doesNotMatch(
       cleared.full_text,
-      /holaboss-managed-workspace-instructions/,
+      /hitechcloud-managed-workspace-instructions/,
     );
   } finally {
     store.close();

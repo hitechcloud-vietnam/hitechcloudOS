@@ -1,5 +1,5 @@
 // Verify the runtime-broker transport's body shape, error mapping, and env
-// resolution. Mocks fetch so we don't need a real Holaboss runtime running.
+// resolution. Mocks fetch so we don't need a real Hitechcloud runtime running.
 
 import { describe, test, expect, beforeEach, afterEach } from "bun:test"
 import { createRuntimeBrokerTransport } from "../src/bridge-transports/runtime-broker.ts"
@@ -25,8 +25,8 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  delete process.env.HOLABOSS_INTEGRATION_BROKER_URL
-  delete process.env.HOLABOSS_APP_GRANT
+  delete process.env.HITECHCLOUD_INTEGRATION_BROKER_URL
+  delete process.env.HITECHCLOUD_APP_GRANT
 })
 
 describe("runtime-broker transport", () => {
@@ -75,9 +75,9 @@ describe("runtime-broker transport", () => {
     })
   })
 
-  test("env fallback: brokerUrl + grant resolved from HOLABOSS_* env when not passed", async () => {
-    process.env.HOLABOSS_INTEGRATION_BROKER_URL = "http://runtime:9000/"  // trailing slash
-    process.env.HOLABOSS_APP_GRANT = "grant:ws_env:env_app:env_nonce"
+  test("env fallback: brokerUrl + grant resolved from HITECHCLOUD_* env when not passed", async () => {
+    process.env.HITECHCLOUD_INTEGRATION_BROKER_URL = "http://runtime:9000/"  // trailing slash
+    process.env.HITECHCLOUD_APP_GRANT = "grant:ws_env:env_app:env_nonce"
 
     const transport = createRuntimeBrokerTransport({
       provider: "twitter",
@@ -103,7 +103,7 @@ describe("runtime-broker transport", () => {
       provider: "slack",
       grant: "grant:x:x:x",
       fetchImpl: mockFetch(),
-    })).toThrow(/HOLABOSS_INTEGRATION_BROKER_URL/)
+    })).toThrow(/HITECHCLOUD_INTEGRATION_BROKER_URL/)
   })
 
   test("missing grant throws at construction", () => {
@@ -111,7 +111,7 @@ describe("runtime-broker transport", () => {
       provider: "slack",
       brokerUrl: "http://localhost:8080",
       fetchImpl: mockFetch(),
-    })).toThrow(/HOLABOSS_APP_GRANT/)
+    })).toThrow(/HITECHCLOUD_APP_GRANT/)
   })
 
   test("missing provider throws at construction", () => {
@@ -187,10 +187,10 @@ describe("runtime-broker transport", () => {
     expect("body" in sent.request).toBe(false)   // body field absent, not "body: undefined"
   })
 
-  // Holaboss session crashes Hono auth middleware → Worker bubbles up a generic
+  // Hitechcloud session crashes Hono auth middleware → Worker bubbles up a generic
   // 500 wrapped by runtime's ComposioService. The transport recognises the
   // signature and recasts to 401 so bridge.ts maps to `not_connected` and the
-  // agent surfaces "please re-login to Holaboss" instead of "upstream 500".
+  // agent surfaces "please re-login to Hitechcloud" instead of "upstream 500".
   test("Hono auth crash (500 with 'Composio proxy via Hono failed' detail) recast to 401", async () => {
     const transport = createRuntimeBrokerTransport({
       brokerUrl: "http://localhost:8080",
@@ -206,8 +206,8 @@ describe("runtime-broker transport", () => {
     const result = await transport({ method: "GET", url: "https://slack.com/api/auth.test" })
     expect(result.status).toBe(401)
     const body = result.body as Record<string, unknown>
-    expect(body.error).toBe("holaboss_session_invalid")
-    expect(String(body.message)).toMatch(/log in to holaboss/i)
+    expect(body.error).toBe("hitechcloud_session_invalid")
+    expect(String(body.message)).toMatch(/log in to hitechcloud/i)
     expect(body.broker_status).toBe(500)
     expect((body.broker_body as Record<string, unknown>).detail).toMatch(/Composio proxy via Hono failed/)
   })
@@ -226,7 +226,7 @@ describe("runtime-broker transport", () => {
 
     const result = await transport({ method: "POST", url: "https://slack.com/api/chat.postMessage", body: {} })
     expect(result.status).toBe(401)
-    expect((result.body as Record<string, unknown>).error).toBe("holaboss_session_invalid")
+    expect((result.body as Record<string, unknown>).error).toBe("hitechcloud_session_invalid")
   })
 
   test("non-Hono broker errors (grant_invalid) NOT recast — pass through unchanged", async () => {
@@ -243,6 +243,6 @@ describe("runtime-broker transport", () => {
 
     const result = await transport({ method: "GET", url: "https://slack.com/api/auth.test" })
     expect(result.status).toBe(401)
-    expect((result.body as Record<string, unknown>).error).toBe("grant_invalid")  // NOT holaboss_session_invalid
+    expect((result.body as Record<string, unknown>).error).toBe("grant_invalid")  // NOT hitechcloud_session_invalid
   })
 })

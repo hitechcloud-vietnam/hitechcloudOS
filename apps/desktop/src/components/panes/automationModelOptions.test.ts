@@ -94,8 +94,8 @@ test("reconcile keeps a valid pin, else falls back to harness default / null", (
 // A runtime provider group carrying explicit thinking metadata for a model.
 const PROVIDER_GROUPS = [
   {
-    providerId: "holaboss_model_proxy",
-    providerLabel: "Holaboss",
+    providerId: "hitechcloud_model_proxy",
+    providerLabel: "Hitechcloud",
     kind: "backend",
     models: [
       {

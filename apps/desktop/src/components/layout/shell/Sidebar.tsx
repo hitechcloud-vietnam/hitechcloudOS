@@ -311,7 +311,7 @@ function SidebarExpanded() {
 
 // DataTransfer MIME carrying a dragged pinned item's id so dropping it on
 // another pinned row reorders the flat list.
-const PINNED_MOVE_DRAG_TYPE = "application/x-holaboss-pinned-move";
+const PINNED_MOVE_DRAG_TYPE = "application/x-hitechcloud-pinned-move";
 
 function FavoriteRow({ item }: { item: FavoriteItem }) {
   const toggleFavorite = useSetAtom(toggleFavoriteAtom);
@@ -554,7 +554,7 @@ function FavoriteRow({ item }: { item: FavoriteItem }) {
   );
 }
 
-const ENTERPRISE_URL = "https://www.holaos.ai/enterprise";
+const ENTERPRISE_URL = "https://www.hitechcloud.vn/enterprise";
 
 // A distinct, card-styled call to action — deliberately NOT a plain nav item —
 // sitting just above Settings. Opens the marketing Enterprise page in the user's
@@ -1040,7 +1040,7 @@ function SidebarWorkspaceSection() {
 // The profile selector = the active org (Better-Auth `setActiveOrganization`).
 // "Personal" is the user's team-of-one org (today's experience, unchanged);
 // picking a real org re-scopes the desktop to that org — every backend call
-// re-scopes because the gateway injects `x-holaboss-org-id` from the session.
+// re-scopes because the gateway injects `x-hitechcloud-org-id` from the session.
 
 function OrgProfileSelector() {
   const { organizations, activeOrg, switching, switchOrg } = useOrganizations();

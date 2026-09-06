@@ -9,7 +9,7 @@ const RUNTIME_PLATFORM_MAP = new Map([
 ]);
 
 export function resolveRuntimePlatform(options = {}) {
-  const explicitValue = options.explicitPlatform ?? process.env.HOLABOSS_RUNTIME_PLATFORM ?? "";
+  const explicitValue = options.explicitPlatform ?? process.env.HITECHCLOUD_RUNTIME_PLATFORM ?? "";
   const explicitPlatform = String(explicitValue).trim().toLowerCase();
   if (explicitPlatform) {
     const resolved = RUNTIME_PLATFORM_MAP.get(explicitPlatform);

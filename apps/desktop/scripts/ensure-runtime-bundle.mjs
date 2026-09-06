@@ -27,7 +27,7 @@ if (!bundleExists || bundleStale) {
     stdio: "inherit",
     env: {
       ...process.env,
-      HOLABOSS_RUNTIME_PLATFORM: runtimeBundleState.runtimePlatform,
+      HITECHCLOUD_RUNTIME_PLATFORM: runtimeBundleState.runtimePlatform,
     }
   });
 }

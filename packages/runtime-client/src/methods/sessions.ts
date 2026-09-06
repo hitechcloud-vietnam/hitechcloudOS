@@ -118,7 +118,7 @@ export type EnqueueSessionInputResponse = {
   has_queued_inputs?: boolean;
 };
 
-// TODO: tighten type — payload mirrors HolabossQueueSessionInputPayload but
+// TODO: tighten type — payload mirrors HitechcloudQueueSessionInputPayload but
 // sent as the runtime POST body directly (snake_case fields).
 export type QueueSessionInputBody = Record<string, unknown>;
 

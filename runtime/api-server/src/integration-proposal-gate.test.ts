@@ -9,7 +9,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import {
@@ -57,7 +57,7 @@ function appendProposeConnectEvent(store: RuntimeStateStore, params: {
     sequence: params.sequence,
     eventType: "tool_call",
     payload: {
-      tool_name: "holaboss_workspace_integrations_propose_connect",
+      tool_name: "hitechcloud_workspace_integrations_propose_connect",
       phase: "completed",
       result: {
         content: [
@@ -90,7 +90,7 @@ function appendMcpProposeConnectEvent(store: RuntimeStateStore, params: {
   });
   const mcpEnvelopeJson = JSON.stringify({
     content: [{ type: "text", text: innerToolJson }],
-    details: { tool_id: "holaboss_workspace_integrations_propose_connect" },
+    details: { tool_id: "hitechcloud_workspace_integrations_propose_connect" },
   });
   store.appendOutputEvent({
     workspaceId: params.workspaceId,
@@ -100,7 +100,7 @@ function appendMcpProposeConnectEvent(store: RuntimeStateStore, params: {
     eventType: "tool_call",
     payload: {
       tool_name:
-        "mcp__holaboss_runtime_tools__holaboss_workspace_integrations_propose_connect",
+        "mcp__hitechcloud_runtime_tools__hitechcloud_workspace_integrations_propose_connect",
       phase: "completed",
       result: [{ type: "text", text: mcpEnvelopeJson }],
     },

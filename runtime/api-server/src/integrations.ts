@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { type RuntimeStateStore } from "@holaboss/runtime-state-store";
+import { type RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 
 import {
   type IntegrationReadinessResult,
@@ -51,7 +51,7 @@ export class IntegrationServiceError extends Error {
 }
 
 // `workspace_default` — workspace's preferred account per provider (set
-//   via holaboss_workspace_integrations_set_default_account or Settings).
+//   via hitechcloud_workspace_integrations_set_default_account or Settings).
 // `conversation_pin` — session-scoped account override (reserved; not
 //   yet consumed by the MCP host, but resolver path is wired).
 // See active-account-resolver.ts for the four-layer model.

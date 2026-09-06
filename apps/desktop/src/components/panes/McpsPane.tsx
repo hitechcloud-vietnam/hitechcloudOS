@@ -320,7 +320,7 @@ function McpsBrowse({
       {consentEntry ? (
         <ConfirmDialog
           confirmLabel="Install anyway"
-          description={`${consentEntry.name} is community-contributed and hasn't been vetted by holaOS — its tools run inside your agent. Only install servers you trust.`}
+          description={`${consentEntry.name} is community-contributed and hasn't been vetted by hitechcloudOS — its tools run inside your agent. Only install servers you trust.`}
           destructive
           onConfirm={() => void toggle(consentEntry, true)}
           onOpenChange={(next) => {

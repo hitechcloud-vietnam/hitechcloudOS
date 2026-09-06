@@ -1,6 +1,6 @@
-# @holaboss/runtime-client
+# @hitechcloud/runtime-client
 
-TypeScript client for the in-sandbox Holaboss runtime API server (Fastify, port 8080
+TypeScript client for the in-sandbox Hitechcloud runtime API server (Fastify, port 8080
 inside sandboxes / dynamic port on desktop).
 
 ## Status
@@ -9,7 +9,7 @@ Foundation in progress. F1: skeleton only. The real client lands in F2.
 
 ## Why this exists
 
-`holaOS/desktop/electron/main.ts` has 59 inline `requestRuntimeJson(...)` calls plus
+`hitechcloudOS/desktop/electron/main.ts` has 59 inline `requestRuntimeJson(...)` calls plus
 hand-rolled retry/timeout/error parsing. This SDK extracts that machinery so:
 
 - Main process imports typed methods instead of writing fetch boilerplate.

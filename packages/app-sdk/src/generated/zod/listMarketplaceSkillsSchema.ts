@@ -17,7 +17,7 @@ export const listMarketplaceSkills200Schema = z.object({
 "icon": z.string(),
 "tags": z.array(z.string()).optional(),
 "long_description": z.union([z.string(), z.null(), z.null()]).optional(),
-"author": z.string().default("Holaboss"),
+"author": z.string().default("Hitechcloud"),
 "source": z.string().default("official"),
 "verified": z.boolean().default(true),
 "install_count": z.int().default(0),

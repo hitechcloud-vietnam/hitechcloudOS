@@ -9,7 +9,7 @@ import {
 
 function makeComposio(fetchImpl: typeof fetch): ComposioService {
   return new ComposioService({
-    honoBaseUrl: "https://app.holaboss.test",
+    honoBaseUrl: "https://app.hitechcloud.test",
     authCookie: "hb_session=abc",
     fetchImpl,
   });

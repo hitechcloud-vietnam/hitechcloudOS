@@ -1,5 +1,5 @@
-const OVERLAY_ID = "holaboss-browser-popup-loading-overlay";
-const STYLE_ID = "holaboss-browser-popup-loading-style";
+const OVERLAY_ID = "hitechcloud-browser-popup-loading-overlay";
+const STYLE_ID = "hitechcloud-browser-popup-loading-style";
 
 function ensureStyle() {
   if (document.getElementById(STYLE_ID)) {
@@ -55,10 +55,10 @@ function ensureStyle() {
       border-radius: 999px;
       border: 2px solid rgba(255, 255, 255, 0.18);
       border-top-color: rgba(123, 255, 194, 0.95);
-      animation: holaboss-browser-popup-spin 720ms linear infinite;
+      animation: hitechcloud-browser-popup-spin 720ms linear infinite;
     }
 
-    @keyframes holaboss-browser-popup-spin {
+    @keyframes hitechcloud-browser-popup-spin {
       to {
         transform: rotate(360deg);
       }

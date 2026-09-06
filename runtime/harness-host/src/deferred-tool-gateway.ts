@@ -19,7 +19,7 @@
  * their schemas cost nothing. The model sees a compact catalogue of tool NAMES
  * grouped by family — carried in this gateway's tool `description`, because pi's
  * `buildSystemPrompt` takes an early return on the `customPrompt` path (which
- * holaOS always uses) and never emits `promptGuidelines`; anything put there is
+ * hitechcloudOS always uses) and never emits `promptGuidelines`; anything put there is
  * silently dropped. Names are self-describing (`github_create_a_commit`), so the
  * catalogue costs a few hundred tokens instead of tens of thousands.
  *

@@ -3,8 +3,8 @@ name: Publish SDK
 on:
   push:
     tags:
-      - "@holaboss/app-sdk@*"
-      - "@holaboss/ui@*"
+      - "@hitechcloud/app-sdk@*"
+      - "@hitechcloud/ui@*"
 
   workflow_dispatch:
     inputs:
@@ -46,8 +46,8 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "push" ]]; then
             TAG="${GITHUB_REF#refs/tags/}"
-            # Extract package name: @holaboss/app-sdk@1.0.0 -> app-sdk
-            PACKAGE=$(echo "$TAG" | sed 's/@holaboss\///' | sed 's/@.*//')
+            # Extract package name: @hitechcloud/app-sdk@1.0.0 -> app-sdk
+            PACKAGE=$(echo "$TAG" | sed 's/@hitechcloud\///' | sed 's/@.*//')
             VERSION=$(echo "$TAG" | grep -oP '@[^@]+$' | sed 's/@//')
           else
             PACKAGE="${{ inputs.package }}"
@@ -57,7 +57,7 @@ jobs:
           echo "package_name=$PACKAGE" >> "$GITHUB_OUTPUT"
           echo "package_dir=sdk/$PACKAGE" >> "$GITHUB_OUTPUT"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "📦 Package: @holaboss/$PACKAGE@$VERSION"
+          echo "📦 Package: @hitechcloud/$PACKAGE@$VERSION"
 
       - name: Verify package exists
         run: |
@@ -237,5 +237,5 @@ jobs:
             npm pack --dry-run
           else
             npm publish --access public --provenance
-            echo "✅ Published @holaboss/${{ needs.validate.outputs.package_name }}@${{ needs.validate.outputs.version }}"
+            echo "✅ Published @hitechcloud/${{ needs.validate.outputs.package_name }}@${{ needs.validate.outputs.version }}"
           fi

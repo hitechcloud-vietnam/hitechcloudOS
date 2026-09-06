@@ -6,7 +6,7 @@ import path from "node:path";
 import { createInterface } from "node:readline";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import { RuntimeStateStore, hostStateDbPath } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore, hostStateDbPath } from "@hitechcloud/runtime-state-store";
 
 import {
   RuntimeAppLifecycleExecutor,
@@ -190,8 +190,8 @@ const MAIN_SESSION_RUNTIME_TOOL_IDS = new Set([
   "cronjobs_run_now",
   "capability_install",
   "workspace_integrations_list_catalog",
-  "holaboss_workspace_integrations_propose_connect",
-  "holaboss_workspace_integrations_set_default_account",
+  "hitechcloud_workspace_integrations_propose_connect",
+  "hitechcloud_workspace_integrations_set_default_account",
   "mcp_connect",
   "mcp_refresh",
 ]);
@@ -526,7 +526,7 @@ function selectedHarness(request: TsRunnerRequest): string {
 }
 
 function runtimeRootDir(): string {
-  const configured = (process.env.HOLABOSS_RUNTIME_ROOT ?? "").trim();
+  const configured = (process.env.HITECHCLOUD_RUNTIME_ROOT ?? "").trim();
   if (configured) {
     return path.resolve(configured);
   }
@@ -984,9 +984,9 @@ async function fetchComposioInlineToolRefs(params: {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "x-holaboss-workspace-id": params.workspaceId,
-        "x-holaboss-session-id": params.sessionId,
-        "x-holaboss-input-id": params.inputId,
+        "x-hitechcloud-workspace-id": params.workspaceId,
+        "x-hitechcloud-session-id": params.sessionId,
+        "x-hitechcloud-input-id": params.inputId,
       },
       signal: AbortSignal.timeout(5_000),
     });
@@ -1006,7 +1006,7 @@ async function fetchComposioInlineToolRefs(params: {
 function runtimeNodeBin(): string {
   return (
     firstNonEmptyString(
-      process.env.HOLABOSS_RUNTIME_NODE_BIN,
+      process.env.HITECHCLOUD_RUNTIME_NODE_BIN,
       process.execPath,
     ) ?? process.execPath
   );
@@ -1044,7 +1044,7 @@ function defaultProviderId(): string {
     return normalizeProviderId(configured);
   } catch {
     return normalizeProviderId(
-      process.env.HOLABOSS_DEFAULT_PROVIDER_ID ?? DEFAULT_PROVIDER_ID,
+      process.env.HITECHCLOUD_DEFAULT_PROVIDER_ID ?? DEFAULT_PROVIDER_ID,
     );
   }
 }
@@ -1052,14 +1052,14 @@ function defaultProviderId(): string {
 function defaultSessionMode(): string {
   return (
     firstNonEmptyString(
-      process.env.HOLABOSS_SESSION_MODE,
+      process.env.HITECHCLOUD_SESSION_MODE,
       DEFAULT_SESSION_MODE,
     ) ?? DEFAULT_SESSION_MODE
   );
 }
 
 function defaultExtraTools(harnessId?: string | null): string[] {
-  const configured = (process.env.HOLABOSS_EXTRA_TOOLS ?? "")
+  const configured = (process.env.HITECHCLOUD_EXTRA_TOOLS ?? "")
     .split(",")
     .map((token) => token.trim())
     .filter(Boolean);
@@ -1257,11 +1257,11 @@ function projectWorkspaceSkillsForSession(params: {
   return params.workspaceSkills;
 }
 
-function explicitHolabossUserId(request: TsRunnerRequest): string | undefined {
+function explicitHitechcloudUserId(request: TsRunnerRequest): string | undefined {
   return (
     firstNonEmptyString(
-      request.holaboss_user_id,
-      request.context.holaboss_user_id,
+      request.hitechcloud_user_id,
+      request.context.hitechcloud_user_id,
     ) ?? undefined
   );
 }
@@ -1428,8 +1428,8 @@ async function loadOperatorSurfaceContext(params: {
       method: "GET",
       headers: {
         "content-type": "application/json; charset=utf-8",
-        "x-holaboss-desktop-token": authToken,
-        "x-holaboss-workspace-id": params.workspaceId,
+        "x-hitechcloud-desktop-token": authToken,
+        "x-hitechcloud-workspace-id": params.workspaceId,
       },
       signal: controller.signal,
     });
@@ -2024,7 +2024,7 @@ const inProcessRunHarnessHost: TsRunnerExecutionDeps["runHarnessHost"] = async (
  * The slice of harness-host's in-process entry point this module calls.
  *
  * Declared structurally rather than imported as
- * `typeof import("@holaboss/runtime-harness-host")`, because that import is a
+ * `typeof import("@hitechcloud/runtime-harness-host")`, because that import is a
  * real resolution even though it is type-only: it needs the package present in
  * api-server's node_modules, which is exactly the duplication being removed
  * above. The staged build catches this where the dev workspace does not — the
@@ -2124,7 +2124,7 @@ async function defaultBootstrapApplications(params: {
   try {
     const result = await bootstrapResolvedApplications({
       workspaceDir: params.workspaceDir,
-      holabossUserId: explicitHolabossUserId(params.request),
+      hitechcloudUserId: explicitHitechcloudUserId(params.request),
       resolvedApplications: params.resolvedApplications,
       store,
       workspaceId: params.request.workspace_id,
@@ -2157,9 +2157,9 @@ export function resolvedApplicationMcpHeaders(
 ): Record<string, string> {
   return {
     "X-Workspace-Id": request.workspace_id,
-    "X-Holaboss-Workspace-Id": request.workspace_id,
-    "X-Holaboss-Session-Id": request.session_id,
-    "X-Holaboss-Input-Id": request.input_id,
+    "X-Hitechcloud-Workspace-Id": request.workspace_id,
+    "X-Hitechcloud-Session-Id": request.session_id,
+    "X-Hitechcloud-Input-Id": request.input_id,
   };
 }
 

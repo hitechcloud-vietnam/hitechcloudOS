@@ -448,7 +448,7 @@ export function RewardsPane() {
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden bg-background">
       <PageHeader
-        description="All the ways to earn credits in holaOS."
+        description="All the ways to earn credits in hitechcloudOS."
         maxWidth="3xl"
         title={
           <span className="flex items-center gap-2">

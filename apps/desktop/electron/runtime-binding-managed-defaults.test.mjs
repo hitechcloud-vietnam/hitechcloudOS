@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const mainSourcePath = path.join(__dirname, "main.ts");
 
-test("desktop runtime binding refreshes when managed Holaboss defaults are still missing", async () => {
+test("desktop runtime binding refreshes when managed Hitechcloud defaults are still missing", async () => {
   const source = await readFile(mainSourcePath, "utf8");
   const provisionFunction =
     source.match(
@@ -16,7 +16,7 @@ test("desktop runtime binding refreshes when managed Holaboss defaults are still
 
   assert.match(
     source,
-    /function runtimeBindingNeedsManagedHolabossDefaultsRefresh\(\s*config: Record<string, string>,\s*document: Record<string, unknown>,\s*\): boolean \{/,
+    /function runtimeBindingNeedsManagedHitechcloudDefaultsRefresh\(\s*config: Record<string, string>,\s*document: Record<string, unknown>,\s*\): boolean \{/,
   );
   assert.match(
     source,
@@ -28,7 +28,7 @@ test("desktop runtime binding refreshes when managed Holaboss defaults are still
   );
   assert.match(
     source,
-    /const managedDefaultsNeedRefresh =[\s\S]*runtimeBindingNeedsManagedHolabossDefaultsRefresh\(\s*currentConfig,\s*currentDocument,\s*\);/,
+    /const managedDefaultsNeedRefresh =[\s\S]*runtimeBindingNeedsManagedHitechcloudDefaultsRefresh\(\s*currentConfig,\s*currentDocument,\s*\);/,
   );
   assert.match(
     provisionFunction,

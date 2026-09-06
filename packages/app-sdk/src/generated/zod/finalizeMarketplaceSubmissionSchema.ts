@@ -44,7 +44,7 @@ export const finalizeMarketplaceSubmission500Schema = z.object({
     })
 
 export const finalizeMarketplaceSubmissionMutationRequestSchema = z.object({
-    "holaboss_user_id": z.union([z.string(), z.null(), z.null()]).optional()
+    "hitechcloud_user_id": z.union([z.string(), z.null(), z.null()]).optional()
     })
 
 export const finalizeMarketplaceSubmissionMutationResponseSchema = finalizeMarketplaceSubmission200Schema

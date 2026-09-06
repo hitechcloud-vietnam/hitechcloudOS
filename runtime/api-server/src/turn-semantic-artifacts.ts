@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import type { RuntimeStateStore, SessionMessageRecord, TurnResultRecord } from "@holaboss/runtime-state-store";
+import type { RuntimeStateStore, SessionMessageRecord, TurnResultRecord } from "@hitechcloud/runtime-state-store";
 
 import { compactTurnSummary } from "./turn-result-summary.js";
 
@@ -211,8 +211,8 @@ function integrationAccountFromToolResult(result: unknown): IntegrationToolAccou
       continue;
     }
     const meta = isRecord(candidate._meta) ? candidate._meta : null;
-    const integration = meta && isRecord(meta.holaboss_integration_account)
-      ? meta.holaboss_integration_account
+    const integration = meta && isRecord(meta.hitechcloud_integration_account)
+      ? meta.hitechcloud_integration_account
       : null;
     const providerId = integration && optionalString(integration.provider_id);
     const accountNamespace = integration && optionalString(integration.account_namespace);

@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import { RuntimeStateStore, type RuntimeStateStore as RuntimeStateStoreType } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore, type RuntimeStateStore as RuntimeStateStoreType } from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import { appendDurableMemoryRelatedSections } from "./memory-related-entities.js";
@@ -274,7 +274,7 @@ test("rebuildWorkspaceMemoryGraph re-syncs forwarded output artifact relations f
       [
         "# Build Fix Report",
         "",
-        "Ben Book at anyIP reached out to the user personally about holaboss.",
+        "Ben Book at anyIP reached out to the user personally about hitechcloud.",
       ].join("\n"),
       "utf8",
     );
@@ -334,21 +334,21 @@ test("rebuildWorkspaceMemoryGraph re-syncs forwarded output artifact relations f
       eventType: "tool_call",
       payload: {
         phase: "completed",
-        tool_name: "holaboss_composio.gmail_fetch_emails",
-        tool_id: "holaboss_composio.gmail_fetch_emails",
+        tool_name: "hitechcloud_composio.gmail_fetch_emails",
+        tool_id: "hitechcloud_composio.gmail_fetch_emails",
         call_id: "call-gmail-rebuild-1",
         error: false,
         result: {
           content: [
             {
               type: "text",
-              text: "Ben Book at anyIP reached out to the user personally about holaboss.",
+              text: "Ben Book at anyIP reached out to the user personally about hitechcloud.",
             },
           ],
           details: {
             raw: {
               _meta: {
-                holaboss_integration_account: {
+                hitechcloud_integration_account: {
                   provider_id: "gmail",
                   connected_account_id: "ca_gmail_primary",
                   account_namespace: "ops@example.com",
@@ -504,11 +504,11 @@ test("rebuildWorkspaceMemoryGraph repairs legacy related keys before rebuilding 
     });
     store.upsertInteractionEntity({
       workspaceId: "workspace-1",
-      entityId: "interaction:topic:holaboss-outreach",
+      entityId: "interaction:topic:hitechcloud-outreach",
       entityType: "topic",
-      canonicalName: "Holaboss outreach",
-      slug: "topic-holaboss-outreach",
-      summary: "Holaboss outreach memory.",
+      canonicalName: "Hitechcloud outreach",
+      slug: "topic-hitechcloud-outreach",
+      summary: "Hitechcloud outreach memory.",
       aliases: [],
       isSystem: false,
       status: "active",
@@ -527,13 +527,13 @@ test("rebuildWorkspaceMemoryGraph repairs legacy related keys before rebuilding 
     store.upsertInteractionLeaf({
       workspaceId: "workspace-1",
       leafId: "leaf-outreach",
-      entityId: "interaction:topic:holaboss-outreach",
-      subjectKey: "holaboss:outreach:anyip",
-      path: "leaves/holaboss-outreach.md",
-      title: "Holaboss outreach note",
-      summary: "Ben Book at anyIP reached out to the user personally about holaboss.",
-      fingerprint: "holaboss-outreach-anyip",
-      bodySha256: "holaboss-outreach-anyip-sha",
+      entityId: "interaction:topic:hitechcloud-outreach",
+      subjectKey: "hitechcloud:outreach:anyip",
+      path: "leaves/hitechcloud-outreach.md",
+      title: "Hitechcloud outreach note",
+      summary: "Ben Book at anyIP reached out to the user personally about hitechcloud.",
+      fingerprint: "hitechcloud-outreach-anyip",
+      bodySha256: "hitechcloud-outreach-anyip-sha",
       tags: ["outreach"],
       secondaryEntityIds: [],
       sourceType: "manual",
@@ -549,22 +549,22 @@ test("rebuildWorkspaceMemoryGraph repairs legacy related keys before rebuilding 
 
     const leafAbsolutePath = path.join(
       workspaceMemoryDir(path.join(root, "workspace", "workspace-1")),
-      "leaves/holaboss-outreach.md",
+      "leaves/hitechcloud-outreach.md",
     );
     fs.mkdirSync(path.dirname(leafAbsolutePath), { recursive: true });
     fs.writeFileSync(
       leafAbsolutePath,
       appendDurableMemoryRelatedSections(
         [
-          "# Holaboss outreach note",
+          "# Hitechcloud outreach note",
           "",
           "## Summary",
           "",
-          "Ben Book at anyIP reached out to the user personally about holaboss.",
+          "Ben Book at anyIP reached out to the user personally about hitechcloud.",
           "",
           "## Evidence",
           "",
-          "Ben Book at anyIP reached out to the user personally about holaboss.",
+          "Ben Book at anyIP reached out to the user personally about hitechcloud.",
         ].join("\n"),
         {
           relatedEntities: [
@@ -611,7 +611,7 @@ test("rebuildWorkspaceMemoryGraph repairs legacy related keys before rebuilding 
     const relations = store.listSemanticMemoryRelations({
       category: "workspace",
       workspaceId: "workspace-1",
-      treeId: "interaction:topic:holaboss-outreach",
+      treeId: "interaction:topic:hitechcloud-outreach",
       limit: 50,
       offset: 0,
     });

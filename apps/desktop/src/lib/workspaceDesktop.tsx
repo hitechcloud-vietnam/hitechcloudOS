@@ -154,7 +154,7 @@ export interface DesktopLifecycleStep {
 interface WorkspaceDesktopContextValue {
   runtimeConfig: RuntimeConfigPayload | null;
   runtimeStatus: RuntimeStatusPayload | null;
-  clientConfig: HolabossClientConfigPayload | null;
+  clientConfig: HitechcloudClientConfigPayload | null;
   workspaces: WorkspaceRecordPayload[];
   hasHydratedWorkspaceList: boolean;
   selectedWorkspace: WorkspaceRecordPayload | null;
@@ -278,7 +278,7 @@ export function WorkspaceDesktopProvider({ children }: { children: ReactNode }) 
   const { selectedWorkspaceId, setSelectedWorkspaceId } = useWorkspaceSelection();
   const [runtimeConfig, setRuntimeConfig] = useState<RuntimeConfigPayload | null>(null);
   const [runtimeStatus, setRuntimeStatus] = useState<RuntimeStatusPayload | null>(null);
-  const [clientConfig, setClientConfig] = useState<HolabossClientConfigPayload | null>(null);
+  const [clientConfig, setClientConfig] = useState<HitechcloudClientConfigPayload | null>(null);
   const [workspaces, setWorkspaces] = useState<WorkspaceRecordPayload[]>([]);
   const [hasHydratedWorkspaceList, setHasHydratedWorkspaceList] = useState(false);
   const [installedApps, setInstalledApps] = useState<WorkspaceInstalledAppDefinition[]>([]);
@@ -1183,7 +1183,7 @@ export function WorkspaceDesktopProvider({ children }: { children: ReactNode }) 
     if (!isSignedIn) {
       return {
         tone: "info" as const,
-        message: "Local template import is available without sign-in. Sign in only for synced holaOS product settings."
+        message: "Local template import is available without sign-in. Sign in only for synced hitechcloudOS product settings."
       };
     }
 

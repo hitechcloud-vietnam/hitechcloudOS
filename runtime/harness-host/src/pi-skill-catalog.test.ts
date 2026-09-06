@@ -4,7 +4,7 @@ import test from "node:test";
 import { renderPiSkillCatalog } from "./pi.js";
 
 // pi's own <available_skills> block cost ~4,860 tokens for 41 skills — over a
-// quarter of it absolute SKILL.md paths the model never needs, since holaOS
+// quarter of it absolute SKILL.md paths the model never needs, since hitechcloudOS
 // loads skills BY NAME through the `skill` tool. This catalogue replaces it.
 test("renders one line per skill, name first, no filesystem paths", () => {
   const out = renderPiSkillCatalog([

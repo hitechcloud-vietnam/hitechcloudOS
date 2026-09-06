@@ -1,5 +1,5 @@
-// @holaboss/app-host — the web-facing client a HolaApp page imports to request
-// native desktop operations from the holaOS host.
+// @hitechcloud/app-host — the web-facing client a HolaApp page imports to request
+// native desktop operations from the hitechcloudOS host.
 //
 // Safe to import anywhere: when the page is NOT running inside the desktop the
 // bridge is absent, `host.isAvailable()` is false, and the ops throw
@@ -12,7 +12,7 @@ import {
   type ChatStartInput,
   type ChatStartResult,
   type EmployeesChangedInput,
-  type HolabossHost,
+  type HitechcloudHost,
   HOST_GLOBAL_KEY,
   HOST_OPS,
   type HostOp,
@@ -25,14 +25,14 @@ export * from "./protocol.ts";
 export class HostUnavailableError extends Error {
   constructor() {
     super(
-      "Holaboss desktop host is not available — this page is not running inside the holaOS desktop app.",
+      "Hitechcloud desktop host is not available — this page is not running inside the hitechcloudOS desktop app.",
     );
     this.name = "HostUnavailableError";
   }
 }
 
 /** Resolve the injected bridge, or null if absent / version-incompatible. */
-function bridge(): HolabossHost | null {
+function bridge(): HitechcloudHost | null {
   if (typeof window === "undefined") {
     return null;
   }
@@ -45,7 +45,7 @@ function bridge(): HolabossHost | null {
     typeof (candidate as { version?: unknown }).version === "number" &&
     (candidate as { version: number }).version >= BRIDGE_VERSION
   ) {
-    return candidate as HolabossHost;
+    return candidate as HitechcloudHost;
   }
   return null;
 }

@@ -20,7 +20,7 @@ function deferrableAdminBlock(): string {
  *  appears on the turn that produced it. */
 const UI_AFFORDANCE_TOOLS = [
   // -> Connect card (proposedIntegrationsFromToolResult)
-  "holaboss_workspace_integrations_propose_connect",
+  "hitechcloud_workspace_integrations_propose_connect",
   // -> Authorize card (mcpAuthorizationsFromToolResult)
   "mcp_connect",
   "mcp_reauthorize",
@@ -61,7 +61,7 @@ test("the genuinely rare admin tools are still deferred", () => {
     // ApiKeyInstallGate comes from activeWebAppSurface, not a tool result — and
     // set_default_account feeds nothing either. Both are correctly deferred.
     "capability_install",
-    "holaboss_workspace_integrations_set_default_account",
+    "hitechcloud_workspace_integrations_set_default_account",
     "open_macos_settings",
     "update_workspace_instructions",
   ]) {

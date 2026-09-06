@@ -39,7 +39,7 @@ const HARNESS_INSTALL_URLS: Record<string, string> = {
 
 /**
  * Env-var prefix the runtime reads to override a harness's binary / model /
- * args (HOLABOSS_<PREFIX>_PATH / _MODEL / _ARGS). Mostly the uppercased id,
+ * args (HITECHCLOUD_<PREFIX>_PATH / _MODEL / _ARGS). Mostly the uppercased id,
  * but `claude-code` historically uses the shorter `CLAUDE` prefix.
  */
 const HARNESS_ENV_PREFIX: Record<string, string> = {
@@ -343,7 +343,7 @@ function AgentDetailsMenu({
                   key={suffix}
                   className="rounded bg-fg-4 px-1.5 py-0.5 font-mono text-[10px] leading-4 text-foreground/70"
                 >
-                  {`HOLABOSS_${envPrefix}_${suffix}`}
+                  {`HITECHCLOUD_${envPrefix}_${suffix}`}
                 </code>
               ))}
             </div>

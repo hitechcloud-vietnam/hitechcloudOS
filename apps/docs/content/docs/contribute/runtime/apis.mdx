@@ -22,7 +22,7 @@ The same API server shows up under different ports depending on how you started 
 
 - Running `runtime/api-server/dist/index.mjs` directly defaults to `0.0.0.0:3060` unless `SANDBOX_RUNTIME_API_PORT`, `SANDBOX_AGENT_BIND_PORT`, or `PORT` is set.
 - The packaged runtime launcher defaults to `0.0.0.0:8080` through `runtime/deploy/bootstrap/shared.sh`.
-- The embedded desktop runtime binds to `127.0.0.1:<derived-port>`. `apps/desktop/electron/main.ts` resolves that port from `HOLABOSS_RUNTIME_API_PORT` or, when unset, from a hash of the Electron `userData` path. Port `5060` is rejected, and `5160` is only the bootstrap fallback before per-profile derivation runs.
+- The embedded desktop runtime binds to `127.0.0.1:<derived-port>`. `apps/desktop/electron/main.ts` resolves that port from `HITECHCLOUD_RUNTIME_API_PORT` or, when unset, from a hash of the Electron `userData` path. Port `5060` is rejected, and `5160` is only the bootstrap fallback before per-profile derivation runs.
 
 Use the right port before you assume a route is broken.
 
@@ -45,10 +45,10 @@ The examples below use `RUNTIME_PORT` as a placeholder for the desktop runtime p
 
 Runtime-tool routes are not generic anonymous helpers. The runtime and harness host now propagate turn-aware headers so the API can associate tool mutations with the current run:
 
-- `x-holaboss-workspace-id`
-- `x-holaboss-session-id`
-- `x-holaboss-input-id`
-- `x-holaboss-selected-model`
+- `x-hitechcloud-workspace-id`
+- `x-hitechcloud-session-id`
+- `x-hitechcloud-input-id`
+- `x-hitechcloud-selected-model`
 
 That is how `write_report` and other runtime tools can persist outputs with stable session and input context instead of falling back to detached file writes.
 
@@ -57,10 +57,10 @@ Representative `write_report` call:
 ```bash
 RUNTIME_PORT=39160
 curl -X POST http://127.0.0.1:${RUNTIME_PORT}/api/v1/capabilities/runtime-tools/reports \
-  -H 'x-holaboss-workspace-id: workspace-1' \
-  -H 'x-holaboss-session-id: session-main' \
-  -H 'x-holaboss-input-id: input-1' \
-  -H 'x-holaboss-selected-model: openai_direct/gpt-5.4' \
+  -H 'x-hitechcloud-workspace-id: workspace-1' \
+  -H 'x-hitechcloud-session-id: session-main' \
+  -H 'x-hitechcloud-input-id: input-1' \
+  -H 'x-hitechcloud-selected-model: openai_direct/gpt-5.4' \
   -H 'content-type: application/json' \
   -d '{
     "title": "Tariff update brief",
@@ -131,7 +131,7 @@ That path now matters for report artifacts because the runtime can persist them 
 The app install path has two operational contracts worth treating as API behavior, not implementation detail:
 
 - `POST /api/v1/apps/install-archive` serializes installs per `(workspace_id, app_id)` and returns `409` with `app install already in progress for this id` when a second install races the same target.
-- `GET /api/v1/apps/:appId/setup-log?workspace_id=...` returns the latest setup log tail plus recent structured events from `<workspace>/apps/<appId>/.holaboss/logs/`.
+- `GET /api/v1/apps/:appId/setup-log?workspace_id=...` returns the latest setup log tail plus recent structured events from `<workspace>/apps/<appId>/.hitechcloud/logs/`.
 
 Representative setup-log debug call:
 

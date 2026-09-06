@@ -1,14 +1,14 @@
 {
-  "name": "@holaboss/runtime-api-server",
+  "name": "@hitechcloud/runtime-api-server",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "bin": {
-    "holaboss-runtime-api": "dist/index.mjs",
-    "holaboss-runtime-runtime-config": "dist/runtime-config-cli.mjs",
-    "holaboss-runtime-workspace-runtime-plan": "dist/workspace-runtime-plan.mjs",
-    "holaboss-runtime-workspace-mcp-host": "dist/workspace-mcp-host.mjs",
-    "holaboss-runtime-workspace-mcp-sidecar": "dist/workspace-mcp-sidecar.mjs"
+    "hitechcloud-runtime-api": "dist/index.mjs",
+    "hitechcloud-runtime-runtime-config": "dist/runtime-config-cli.mjs",
+    "hitechcloud-runtime-workspace-runtime-plan": "dist/workspace-runtime-plan.mjs",
+    "hitechcloud-runtime-workspace-mcp-host": "dist/workspace-mcp-host.mjs",
+    "hitechcloud-runtime-workspace-mcp-sidecar": "dist/workspace-mcp-sidecar.mjs"
   },
   "scripts": {
     "build": "tsup --config tsup.config.ts",
@@ -23,9 +23,9 @@
   "dependencies": {
     "@earendil-works/pi-coding-agent": "0.80.2",
     "@fastify/websocket": "^11.2.0",
-    "@holaboss/remote-api": "workspace:*",
-    "@holaboss/runtime-channel-gateway": "workspace:*",
-    "@holaboss/runtime-state-store": "workspace:*",
+    "@hitechcloud/remote-api": "workspace:*",
+    "@hitechcloud/runtime-channel-gateway": "workspace:*",
+    "@hitechcloud/runtime-state-store": "workspace:*",
     "@larksuiteoapi/node-sdk": "^1.67.0",
     "@modelcontextprotocol/sdk": "^1.28.0",
     "@slack/socket-mode": "^2.0.7",

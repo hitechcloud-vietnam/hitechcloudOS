@@ -1,8 +1,8 @@
-/* Source of truth for everything @holaboss/ui ships visually.
-   Consumers should `import "@holaboss/ui/styles.css"` and nothing else
+/* Source of truth for everything @hitechcloud/ui ships visually.
+   Consumers should `import "@hitechcloud/ui/styles.css"` and nothing else
    — Tailwind utilities used by the primitives + layouts are baked in
    at build time, so a consumer's Tailwind config does not need a
-   custom @source entry for node_modules/@holaboss/ui. */
+   custom @source entry for node_modules/@hitechcloud/ui. */
 
 @import "tailwindcss";
 
@@ -18,7 +18,7 @@
 
 /* Default theme. Apps that need a different palette can layer their own
    `[data-theme="..."]` overrides after this import. */
-@import "./tokens/themes/holaos.css";
+@import "./tokens/themes/hitechcloudos.css";
 
 /* Default border color. Tailwind v4 changed the bare `border` utility's
    default color from a fixed gray (`#e5e7eb` in v3) to `currentColor`,
@@ -26,7 +26,7 @@
    ends up with a border the color of its text — usually near-black.
    Agents trained on v3 conventions write bare `border` expecting gray,
    and the result is pure-black hairlines everywhere. Reset the default
-   to the holaOS `--border` token so v3-style class usage stays valid.
+   to the hitechcloudOS `--border` token so v3-style class usage stays valid.
 
    We deliberately sit this in `@layer utilities` rather than
    `@layer base` because Tailwind v4's preflight emits its own

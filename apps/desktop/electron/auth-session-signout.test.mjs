@@ -33,7 +33,7 @@ test("signing out clears every piece of persisted auth state", async () => {
   // local credential rather than leaving a half-signed-out desktop.
   assert.match(handler, /\}\s*finally\s*\{/);
   assert.match(handler, /clearPersistedAuthCookie\(\)/);
-  assert.match(handler, /await clearManagedHolabossDefaultSelection\("auth_sign_out"\)/);
+  assert.match(handler, /await clearManagedHitechcloudDefaultSelection\("auth_sign_out"\)/);
   assert.match(handler, /emitAuthUserUpdated\(null\)/);
 });
 

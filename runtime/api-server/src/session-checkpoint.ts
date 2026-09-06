@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import type { PostRunJobRecord, RuntimeStateStore } from "@holaboss/runtime-state-store";
+import type { PostRunJobRecord, RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 
 import {
   resolveHarnessModelBudget,
@@ -265,7 +265,7 @@ export function maxFiniteNumber(...values: Array<number | null | undefined>): nu
 }
 
 function runtimeRootDir(): string {
-  const configured = (process.env.HOLABOSS_RUNTIME_ROOT ?? "").trim();
+  const configured = (process.env.HITECHCLOUD_RUNTIME_ROOT ?? "").trim();
   if (configured) {
     return path.resolve(configured);
   }
@@ -273,7 +273,7 @@ function runtimeRootDir(): string {
 }
 
 function runtimeNodeBin(): string {
-  return process.env.HOLABOSS_RUNTIME_NODE_BIN?.trim() || process.execPath;
+  return process.env.HITECHCLOUD_RUNTIME_NODE_BIN?.trim() || process.execPath;
 }
 
 function harnessHostEntryPath(): { entryPath: string; argsPrefix: string[] } {

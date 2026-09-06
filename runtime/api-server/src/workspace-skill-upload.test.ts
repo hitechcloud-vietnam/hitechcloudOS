@@ -33,7 +33,7 @@ test("a bare SKILL.md installs as a skill folder", async () => {
   assert.ok(fs.existsSync(landed));
 });
 
-test("Anthropic allowed-tools is mapped to holaboss_granted_tools", async () => {
+test("Anthropic allowed-tools is mapped to hitechcloud_granted_tools", async () => {
   const dir = workspace();
   const result = await importSkillFromUpload({
     workspaceDir: dir,
@@ -45,7 +45,7 @@ test("Anthropic allowed-tools is mapped to holaboss_granted_tools", async () => 
     path.join(dir, "skills", "weekly-report", "SKILL.md"),
     "utf8",
   );
-  assert.match(written, /holaboss_granted_tools/);
+  assert.match(written, /hitechcloud_granted_tools/);
   assert.doesNotMatch(written, /allowed-tools/);
 });
 

@@ -11,7 +11,7 @@ import type { InternalTab } from "./internalTabs";
  * The app-open collapse is kept out of here so it can't outlive the app that
  * caused it — see `sidebarCollapsedAtom`. */
 const sidebarCollapsedPreferenceAtom = atomWithStorage(
-  "holaboss-new-shell-sidebar-collapsed-v1",
+  "hitechcloud-new-shell-sidebar-collapsed-v1",
   false,
 );
 
@@ -42,7 +42,7 @@ export const sidebarCollapsedAtom = atom(
  * reads the stored choice on first render so the shell mounts in the right mode. */
 export type SidebarMode = "local" | "employee";
 export const sidebarModeAtom = atomWithStorage<SidebarMode>(
-  "holaboss-sidebar-mode-v1",
+  "hitechcloud-sidebar-mode-v1",
   "local",
   undefined,
   { getOnInit: true },
@@ -84,7 +84,7 @@ export const centerFullscreenAtom = atom(false);
  */
 export const contextCardCollapsedBySessionAtom = atomWithStorage<
   Record<string, boolean>
->("holaboss.chat.contextCardCollapsedBySession", {});
+>("hitechcloud.chat.contextCardCollapsedBySession", {});
 
 /**
  * Sidebar width when expanded. Resizable via the right-edge drag handle.
@@ -95,7 +95,7 @@ export const SIDEBAR_MIN_WIDTH = 220;
 export const SIDEBAR_MAX_WIDTH = 480;
 export const SIDEBAR_DEFAULT_WIDTH = 260;
 export const sidebarWidthAtom = atomWithStorage<number>(
-  "holaboss-new-shell-sidebar-width-v1",
+  "hitechcloud-new-shell-sidebar-width-v1",
   SIDEBAR_DEFAULT_WIDTH,
 );
 
@@ -105,7 +105,7 @@ export const sidebarWidthAtom = atomWithStorage<number>(
  */
 export type SidebarSection = "home" | "issues" | "inbox";
 export const sidebarSectionAtom = atomWithStorage<SidebarSection>(
-  "holaboss-new-shell-sidebar-section-v1",
+  "hitechcloud-new-shell-sidebar-section-v1",
   "home",
 );
 
@@ -133,13 +133,13 @@ export const shortcutsHelpOpenAtom = atom(false);
 
 /** Is the Apps expandable group in the sidebar expanded? Persists. */
 export const appsExpandedAtom = atomWithStorage(
-  "holaboss-new-shell-apps-expanded-v1",
+  "hitechcloud-new-shell-apps-expanded-v1",
   true,
 );
 
 /** Is the Output section (formerly Library/Artifacts) expanded? Persists. */
 export const outputExpandedAtom = atomWithStorage(
-  "holaboss-new-shell-output-expanded-v1",
+  "hitechcloud-new-shell-output-expanded-v1",
   true,
 );
 
@@ -156,7 +156,7 @@ export const outputExpandedAtom = atomWithStorage(
 // with the atom defaults, lock the seed ref to the current workspace,
 // and never reconcile against the real persisted preferences.
 export const focusModeAtom = atomWithStorage(
-  "holaboss-new-shell-focus-mode-v1",
+  "hitechcloud-new-shell-focus-mode-v1",
   false,
   undefined,
   { getOnInit: true },
@@ -178,9 +178,9 @@ export type WorkspaceMainViewMode = "workspace" | "chat";
 // Exported so AppShell's migration code can read the legacy key
 // directly from localStorage without instantiating its atom.
 export const DEFAULT_MAIN_VIEW_MODE_STORAGE_KEY =
-  "holaboss.default-main-view-mode-v1";
+  "hitechcloud.default-main-view-mode-v1";
 export const LEGACY_WORKSPACE_MAIN_VIEW_MODE_MAP_STORAGE_KEY =
-  "holaboss-new-shell-workspace-main-view-v1";
+  "hitechcloud-new-shell-workspace-main-view-v1";
 
 /**
  * The user's single preference for which view a workspace opens to.
@@ -222,13 +222,13 @@ export const CHAT_PANEL_MIN_WIDTH = 420;
 export const CHAT_PANEL_MAX_WIDTH = 720;
 export const CHAT_PANEL_DEFAULT_WIDTH = 480;
 export const chatPanelWidthAtom = atomWithStorage<number>(
-  "holaboss-new-shell-chat-panel-width-v1",
+  "hitechcloud-new-shell-chat-panel-width-v1",
   CHAT_PANEL_DEFAULT_WIDTH,
 );
 
 /** Is the right-hand chat panel hidden in split mode? Persists. */
 export const chatPanelHiddenAtom = atomWithStorage(
-  "holaboss-new-shell-chat-panel-hidden-v1",
+  "hitechcloud-new-shell-chat-panel-hidden-v1",
   false,
 );
 
@@ -251,7 +251,7 @@ export const chatPanelViewAtom = atom<ChatPanelView>("chat");
  * survives restarts (outputs created while away still read as new).
  */
 export const lastSeenOutputsCountAtom = atomWithStorage<Record<string, number>>(
-  "holaboss.chat.lastSeenOutputsCount",
+  "hitechcloud.chat.lastSeenOutputsCount",
   {},
 );
 
@@ -287,18 +287,18 @@ export type WorkspaceOverlay =
   // a chromeless full-width web surface with the sidebar as its exit.
   | "holaemployee"
   | "rewards"
-  | "holahub"
-  // Full-page WYSIWYG "Share to HolaHub" composer — pick turns/outputs, toggle the
+  | "hitechhub"
+  // Full-page WYSIWYG "Share to Hitechhub" composer — pick turns/outputs, toggle the
   // model annotation, write a caption, then hand off to the hub to publish. The
   // conversation to share rides in `shareSessionPayloadAtom`.
-  | "holahub-share";
-// The app opens to Home (the HolaHub surface) — it's the first-class landing.
+  | "hitechhub-share";
+// The app opens to Home (the Hitechhub surface) — it's the first-class landing.
 // This only decides the initial screen: it's cleared the moment the user starts
 // a chat/session, so nobody's trapped.
-export const workspaceOverlayAtom = atom<WorkspaceOverlay | null>("holahub");
+export const workspaceOverlayAtom = atom<WorkspaceOverlay | null>("hitechhub");
 
-/** The conversation staged for the full-page "Share to HolaHub" composer. Set by
- *  `useOpenSharePreview` right before flipping the overlay to "holahub-share". */
+/** The conversation staged for the full-page "Share to Hitechhub" composer. Set by
+ *  `useOpenSharePreview` right before flipping the overlay to "hitechhub-share". */
 export interface ShareSessionPayload {
   messages: ChatMessage[];
   workspaceId: string | null;
@@ -329,7 +329,7 @@ export interface ChatModelRequest {
 }
 export const chatModelRequestAtom = atom<ChatModelRequest | null>(null);
 
-/** How the "Share to HolaHub" composer opens: the whole conversation (a
+/** How the "Share to Hitechhub" composer opens: the whole conversation (a
  *  transcript "session" post) or just the produced artifacts (a media "post"). */
 export type ShareMode = "conversation" | "outputs";
 
@@ -337,7 +337,7 @@ export type ShareMode = "conversation" | "outputs";
  *  before it stages the payload. SharePreviewPane seeds its initial tab from it. */
 export const shareInitialModeAtom = atom<ShareMode>("conversation");
 
-/** The active chat's "Share to HolaHub" action, published by ChatPane when the
+/** The active chat's "Share to Hitechhub" action, published by ChatPane when the
  *  session has messages (else null). The shell's chat toolbar reads it so the
  *  Share control sits with the other header actions on the right — a dropdown
  *  that opens the composer straight into the chosen mode. `hasOutputs` gates the
@@ -353,10 +353,10 @@ export const chatShareActionAtom = atom<{
 export type CustomizeTab = "apps" | "capabilities" | "skills" | "mcps";
 export const customizeTabAtom = atom<CustomizeTab>("apps");
 
-// When set, the Discover (holahub) overlay opens navigated to this path (e.g.
+// When set, the Discover (hitechhub) overlay opens navigated to this path (e.g.
 // `/threads/<postId>` to jump straight to a post an agent just published)
 // instead of its home feed. Cleared on a plain Discover open from the sidebar.
-export const holahubPendingPathAtom = atom<string | null>(null);
+export const hitechhubPendingPathAtom = atom<string | null>(null);
 
 // The active Employee-space section. Most sections are the SAME embedded web
 // surface ("holaemployee") at a different `?section=` — the web Cloud Home hides
@@ -368,7 +368,7 @@ export const holahubPendingPathAtom = atom<string | null>(null);
 export type CloudSection = "home" | "catalog" | "members";
 export const cloudSectionAtom = atom<CloudSection>("home");
 
-/** A pending "install this catalog item" intent from a hosted page (HolaHub's
+/** A pending "install this catalog item" intent from a hosted page (Hitechhub's
  * install op → HOST_INSTALL_EVENT). CustomizePane consumes it: opens the item's
  * tab + focuses its native install detail, then clears this. */
 export type PendingHubInstall = {
@@ -377,7 +377,7 @@ export type PendingHubInstall = {
 };
 export const pendingHubInstallAtom = atom<PendingHubInstall | null>(null);
 
-/** A pending HolaApp install intent from a hosted page (HolaHub), for the flavors
+/** A pending HolaApp install intent from a hosted page (Hitechhub), for the flavors
  * the HeadlessInstaller can't complete headlessly (connection-tier / hosted-MCP
  * that need credentials up front). The HolaApp store (HolaAppMarketplacePane)
  * consumes it: opens that app's own install gate, then clears this. Holds the
@@ -385,7 +385,7 @@ export const pendingHubInstallAtom = atom<PendingHubInstall | null>(null);
 export const pendingHubAppInstallAtom = atom<string | null>(null);
 
 /** A HolaApp whose detail page the store should open on arrival. Set by
- * `useHostOpenApp` when HolaHub asks to open a connection-tier app — it has no
+ * `useHostOpenApp` when Hitechhub asks to open a connection-tier app — it has no
  * surface, so "Manage" lands on its ConnectionAppDetail (connected accounts,
  * add/refresh/disconnect). Consumed and cleared by HolaAppMarketplacePane. */
 export const pendingHubAppDetailAtom = atom<string | null>(null);
@@ -435,7 +435,7 @@ export const activeWebAppSurfaceAtom = atom<ActiveWebAppSurface | null>(null);
  * again). Because both "surface open" and "connected" are durable, the gate
  * survives navigation and restarts without any per-session bookkeeping. */
 export const apiKeyConnectedAppsAtom = atomWithStorage<Record<string, boolean>>(
-  "holaboss-apikey-connected-apps-v1",
+  "hitechcloud-apikey-connected-apps-v1",
   {},
 );
 
@@ -446,7 +446,7 @@ export const apiKeyConnectedAppsAtom = atomWithStorage<Record<string, boolean>>(
  * creating a session.
  */
 export const selectedWorkspaceIdAtom = atomWithStorage<string>(
-  "holaboss-selected-workspace-v1",
+  "hitechcloud-selected-workspace-v1",
   "",
 );
 
@@ -455,7 +455,7 @@ export const selectedWorkspaceIdAtom = atomWithStorage<string>(
  *  all read/write it through selectedSessionIdAtom, so they never diverge. */
 export const selectedSessionByWorkspaceAtom = atomWithStorage<
   Record<string, string>
->("holaboss-selected-session-by-workspace-v1", {});
+>("hitechcloud-selected-session-by-workspace-v1", {});
 
 /** The selected session for the CURRENT workspace. Writing it updates the
  *  per-workspace map, so switching workspace restores that workspace's own
@@ -546,7 +546,7 @@ export const activeInternalTabIdAtom = atom(
  * session. Persisted so the dot survives reloads.
  */
 export const sessionLastViewedAtAtom = atomWithStorage<Record<string, string>>(
-  "holaboss-session-last-viewed-v1",
+  "hitechcloud-session-last-viewed-v1",
   {},
 );
 
@@ -556,7 +556,7 @@ export const sessionLastViewedAtAtom = atomWithStorage<Record<string, string>>(
  * collapsedFavoriteGroupsAtom for the Pinned section.
  */
 export const collapsedSessionGroupsAtom = atomWithStorage<string[]>(
-  "holaboss-session-groups-collapsed-v1",
+  "hitechcloud-session-groups-collapsed-v1",
   [],
 );
 

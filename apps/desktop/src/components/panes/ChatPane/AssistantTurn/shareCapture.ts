@@ -5,7 +5,7 @@ import type {
   ShareDraftItem,
   ShareDraftSessionStep,
   ShareDraftSessionTurn,
-} from "@holaboss/app-host/protocol";
+} from "@hitechcloud/app-host/protocol";
 import { remoteApi } from "@/lib/remoteApiClient";
 import { toolkitDisplayName } from "@/lib/toolkitDisplay";
 import { parseSerializedQuotedSkillPrompt } from "../helpers";
@@ -48,7 +48,7 @@ function extOf(path: string, table: Record<string, string>): string | null {
   return Object.keys(table).find((e) => lower.endsWith(e)) ?? null;
 }
 
-/** True when an output is a generated image/video we can attach to a HolaHub post. */
+/** True when an output is a generated image/video we can attach to a Hitechhub post. */
 export function isShareableMediaOutput(
   output: ShareableOutput
 ): boolean {
@@ -153,7 +153,7 @@ async function recompressImage(
   }
 }
 
-// Capture generated image outputs (by file extension) as base64 so the HolaHub
+// Capture generated image outputs (by file extension) as base64 so the Hitechhub
 // composer — which holds the session — can upload them on prefill.
 export async function gatherShareImages(
   outputs: ShareableOutput[],
@@ -283,7 +283,7 @@ export function isShareableOutput(output: ShareableOutput): boolean {
 }
 
 /** Capture document outputs as base64 (keeping the original file name) so the
- *  HolaHub composer can upload them — the download-card path for a session. */
+ *  Hitechhub composer can upload them — the download-card path for a session. */
 export async function gatherShareFiles(
   outputs: ShareableOutput[],
   workspaceId: string | null

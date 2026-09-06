@@ -17,5 +17,5 @@ test("billing settings panel renders a standalone billing page", async () => {
   assert.doesNotMatch(source, /Hosted credits and managed usage for this desktop account\./);
   assert.doesNotMatch(source, /Website usage & billing/);
   assert.doesNotMatch(source, /Billing overview/);
-  assert.doesNotMatch(source, /Holaboss credits apply to managed desktop usage only\./);
+  assert.doesNotMatch(source, /Hitechcloud credits apply to managed desktop usage only\./);
 });

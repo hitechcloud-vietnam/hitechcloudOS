@@ -1,7 +1,7 @@
 # Composer inline skill mentions (Tiptap)
 
 **Date:** 2026-06-28
-**Repo:** holaOS (`apps/desktop`)
+**Repo:** hitechcloudOS (`apps/desktop`)
 **Status:** Approved design — ready for implementation plan
 
 ## Problem
@@ -39,7 +39,7 @@ serialization, and queued-input logic stay largely untouched.
 Rejected:
 - **B** — editor as sole state source (rip `input`/`quotedSkillIds`/caret out of
   ChatPane): cleaner long-term but high blast radius.
-- **C** — reuse `@holaboss/editor` document editor: too heavy/opinionated
+- **C** — reuse `@hitechcloud/editor` document editor: too heavy/opinionated
   (starter-kit, tables, collaboration) for a chat input.
 
 ## Architecture & files
@@ -73,7 +73,7 @@ Changed:
   `handle.insertSkill`; derive `input` and `quotedSkillIds` from the editor's
   `onChange`.
 - **`apps/desktop/package.json`** — add lean Tiptap deps already present in the
-  monorepo lockfile via `@holaboss/editor`: `@tiptap/react`, `@tiptap/core`,
+  monorepo lockfile via `@hitechcloud/editor`: `@tiptap/react`, `@tiptap/core`,
   `@tiptap/pm`, `@tiptap/suggestion`, `@tiptap/extension-placeholder`.
 
 ## Data model & conversion

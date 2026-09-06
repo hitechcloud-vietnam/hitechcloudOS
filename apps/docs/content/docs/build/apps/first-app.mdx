@@ -56,7 +56,7 @@ mcp:
     - create_record
 
 env_contract:
-  - HOLABOSS_WORKSPACE_ID
+  - HITECHCLOUD_WORKSPACE_ID
 ```
 
 Rules that matter immediately:
@@ -121,12 +121,12 @@ If the app needs a provider, declare `integrations` in `app.runtime.yaml` and us
 
 When bindings resolve, the runtime injects:
 
-- `HOLABOSS_APP_GRANT`
-- `HOLABOSS_INTEGRATION_BROKER_URL`
+- `HITECHCLOUD_APP_GRANT`
+- `HITECHCLOUD_INTEGRATION_BROKER_URL`
 - `WORKSPACE_API_URL`
-- `HOLABOSS_WORKSPACE_ID`
+- `HITECHCLOUD_WORKSPACE_ID`
 
-The app should call providers through `@holaboss/app-builder-sdk`'s runtime-broker transport, not through direct provider tokens.
+The app should call providers through `@hitechcloud/app-builder-sdk`'s runtime-broker transport, not through direct provider tokens.
 
 ## 7. Pick the Right Launch Path
 
@@ -153,7 +153,7 @@ If you install from files or an archive instead of editing the workspace directl
 - `POST /api/v1/apps/install`
 - `POST /api/v1/apps/install-archive`
 
-For desktop dev, use the real embedded runtime port. If you want stable curl examples while iterating, launch `desktop:dev` with `export HOLABOSS_RUNTIME_API_PORT=39160` and set `RUNTIME_PORT=39160` in the examples below.
+For desktop dev, use the real embedded runtime port. If you want stable curl examples while iterating, launch `desktop:dev` with `export HITECHCLOUD_RUNTIME_API_PORT=39160` and set `RUNTIME_PORT=39160` in the examples below.
 
 `install-archive` extracts into `apps/my_app/`, requires `app.runtime.yaml` at the archive root, appends the `workspace.yaml` application entry, and tries to reconcile the MCP registry after startup. It now serializes installs per `(workspace_id, app_id)` and returns `409` if another install for that app is already in progress.
 

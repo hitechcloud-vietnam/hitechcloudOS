@@ -24,22 +24,22 @@ export default defineConfig({
     "build:done": () => {
       // 1. Ship the raw tokens next to the JS output so a consumer that
       //    wants CSS variables without the baked-in utility set can
-      //    `import "@holaboss/ui/tokens.css"` (or `/themes/holaos.css`)
+      //    `import "@hitechcloud/ui/tokens.css"` (or `/themes/hitechcloudos.css`)
       //    directly. This is the escape hatch — the recommended path is
-      //    the single `@holaboss/ui/styles.css` import below.
+      //    the single `@hitechcloud/ui/styles.css` import below.
       mkdirSync(path.join(here, "dist", "themes"), { recursive: true });
       cpSync(
         path.join(here, "src", "tokens", "tokens.css"),
         path.join(here, "dist", "tokens.css"),
       );
       cpSync(
-        path.join(here, "src", "tokens", "themes", "holaos.css"),
-        path.join(here, "dist", "themes", "holaos.css"),
+        path.join(here, "src", "tokens", "themes", "hitechcloudos.css"),
+        path.join(here, "dist", "themes", "hitechcloudos.css"),
       );
 
       // 2. Run Tailwind on src/styles.css to emit a single dist/styles.css
       //    with every utility class the primitives + layouts use already
-      //    compiled — so consumers don't need to add @holaboss/ui to their
+      //    compiled — so consumers don't need to add @hitechcloud/ui to their
       //    own Tailwind `@source` list.
       execFileSync(
         "bunx",

@@ -10,7 +10,7 @@ type KubbConfigShape = {
   plugins?: Array<{ name: string }>;
 };
 
-describe("@holaboss/app-sdk package scaffold", () => {
+describe("@hitechcloud/app-sdk package scaffold", () => {
   it("defines the shared app sdk package with layered exports", () => {
     expect(existsSync(packageJsonPath)).toBe(true);
 
@@ -20,7 +20,7 @@ describe("@holaboss/app-sdk package scaffold", () => {
       scripts?: Record<string, string>;
     };
 
-    expect(packageJson.name).toBe("@holaboss/app-sdk");
+    expect(packageJson.name).toBe("@hitechcloud/app-sdk");
     expect(packageJson.exports).toMatchObject({
       ".": expect.any(Object),
       "./core": expect.any(Object),

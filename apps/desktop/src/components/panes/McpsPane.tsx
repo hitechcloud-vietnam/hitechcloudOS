@@ -55,10 +55,10 @@ export function McpsPane({
   onAddMcpServer?: () => void;
   /** Browse mode: open the connected view (the full installed list). */
   onSeeInstalled?: () => void;
-  /** Browse mode: a catalog id to auto-install (HolaHub install hand-off). */
+  /** Browse mode: a catalog id to auto-install (Hitechhub install hand-off). */
   installRef?: string | null;
   onInstallHandled?: () => void;
-  /** Open the HolaHub Marketplace — renders a link in the connected header. */
+  /** Open the Hitechhub Marketplace — renders a link in the connected header. */
   onBrowseMarketplace?: () => void;
 }) {
   if (mode === "browse") {
@@ -222,7 +222,7 @@ function McpsBrowse({
     }
   };
 
-  // HolaHub "Install" hand-off: auto-trigger install of a specific catalog MCP
+  // Hitechhub "Install" hand-off: auto-trigger install of a specific catalog MCP
   // once the catalog has loaded (keyless attaches directly; keyed opens the key
   // dialog; unverified opens the consent gate — same as clicking its card).
   // Skips an already-installed server so we never toggle it back off.
@@ -320,7 +320,7 @@ function McpsBrowse({
       {consentEntry ? (
         <ConfirmDialog
           confirmLabel="Install anyway"
-          description={`${consentEntry.name} is community-contributed and hasn't been vetted by holaOS — its tools run inside your agent. Only install servers you trust.`}
+          description={`${consentEntry.name} is community-contributed and hasn't been vetted by hitechcloudOS — its tools run inside your agent. Only install servers you trust.`}
           destructive
           onConfirm={() => void toggle(consentEntry, true)}
           onOpenChange={(next) => {

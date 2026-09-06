@@ -214,7 +214,7 @@
   }
 }
 
-@keyframes holaboss-splash-halo {
+@keyframes hitechcloud-splash-halo {
   0%,
   100% {
     opacity: 0.35;
@@ -226,7 +226,7 @@
   }
 }
 
-@keyframes holaboss-splash-dot {
+@keyframes hitechcloud-splash-dot {
   0%,
   100% {
     opacity: 0.2;
@@ -272,7 +272,7 @@
 }
 /* Surface palette — registered so theme switches interpolate the
    whole canvas instead of hard-cutting on most surfaces. Initial
-   values mirror the holaos-light defaults. */
+   values mirror the hitechcloudos-light defaults. */
 @property --card {
   syntax: "<color>";
   inherits: true;
@@ -326,7 +326,7 @@
   --radius: 0.5rem;
 
   /* Surface + content. Quiet near-neutral grays with a subtle cool
-     undertone; mirrors holaos-light. */
+     undertone; mirrors hitechcloudos-light. */
   --background: oklch(1 0 0);
   --foreground: oklch(0.18 0.003 250);
   --card: oklch(0.985 0.002 250);

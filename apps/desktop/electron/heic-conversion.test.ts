@@ -34,7 +34,7 @@ test(
     skip: process.platform !== "darwin",
   },
   async () => {
-    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "holaboss-heic-test-"));
+    const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "hitechcloud-heic-test-"));
     const fixturePath = path.resolve(
       path.dirname(fileURLToPath(import.meta.url)),
       "../resources/icon-original.png",

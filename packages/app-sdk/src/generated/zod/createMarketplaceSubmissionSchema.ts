@@ -42,7 +42,7 @@ export const createMarketplaceSubmission500Schema = z.object({
 
 export const createMarketplaceSubmissionMutationRequestSchema = z.object({
     "workspace_id": z.string(),
-"holaboss_user_id": z.union([z.string(), z.null(), z.null()]).optional(),
+"hitechcloud_user_id": z.union([z.string(), z.null(), z.null()]).optional(),
 "name": z.string().min(1).max(100),
 "description": z.string().min(1).max(500),
 "category": z.string().default("general"),

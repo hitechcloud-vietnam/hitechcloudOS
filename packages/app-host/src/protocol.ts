@@ -1,7 +1,7 @@
-// Holaboss desktop host bridge — shared protocol.
+// Hitechcloud desktop host bridge — shared protocol.
 //
 // Imported by BOTH sides so they can never drift:
-//   - the web client (@holaboss/app-host, this package's main entry)
+//   - the web client (@hitechcloud/app-host, this package's main entry)
 //   - the desktop app-surface preload + main process (apps/desktop, via a
 //     workspace:* dep)
 //
@@ -9,13 +9,13 @@
 // docs/plans/2026-06-23-holaapp-desktop-host-bridge.md.
 
 /** Bridge protocol version. Additive ops that a page must feature-detect bump
- *  this so `window.__holabossHost.version` gates them; a hosted page checks
- *  `version >= N`. v2 adds `item.open`; v3 adds `holahub.consume-pending-share`;
+ *  this so `window.__hitechcloudHost.version` gates them; a hosted page checks
+ *  `version >= N`. v2 adds `item.open`; v3 adds `hitechhub.consume-pending-share`;
  *  v4 adds `colorScheme` / `onColorSchemeChange`. */
 export const BRIDGE_VERSION = 4 as const;
 
 /** The global the app-surface preload injects into the hosted HolaApp page. */
-export const HOST_GLOBAL_KEY = "__holabossHost" as const;
+export const HOST_GLOBAL_KEY = "__hitechcloudHost" as const;
 
 /** IPC channels between the app-surface preload and the desktop main process. */
 export const HOST_IPC = {
@@ -39,7 +39,7 @@ export const HOST_COLOR_SCHEME_CHANGED =
 export const HOST_RENDERER_EVENT = "host:openChat" as const;
 
 /** Event main → shell renderer: "install this item" (carries a requestId).
- *  Fired when a hosted page (e.g. HolaHub) invokes the `install` op. The shell
+ *  Fired when a hosted page (e.g. Hitechhub) invokes the `install` op. The shell
  *  installs it HEADLESSLY (in place — no navigation) for keyless items, or opens
  *  the native connect surface for keyed/gated ones, then replies via
  *  HOST_INSTALL_RESULT so the invoking page can reflect the outcome. */
@@ -59,7 +59,7 @@ export const HOST_INSTALL_STATUS_EVENT = "host:installStatus" as const;
 export const HOST_INSTALL_STATUS_RESULT = "host:installStatusResult" as const;
 
 /** Event main → shell renderer: "open this already-installed item". Fired when a
- *  hosted page (HolaHub) invokes `item.open` for a holaapp — the shell opens that
+ *  hosted page (Hitechhub) invokes `item.open` for a holaapp — the shell opens that
  *  app's surface. (skill/mcp/capability open a General chat instead, handled in
  *  main via the chat flow, so they don't use this event.) */
 export const HOST_OPEN_APP_EVENT = "host:openApp" as const;
@@ -77,7 +77,7 @@ export const HOST_OPS = {
   install: "install",
   installStatus: "install.status",
   itemOpen: "item.open",
-  holahubConsumePendingShare: "holahub.consume-pending-share",
+  hitechhubConsumePendingShare: "hitechhub.consume-pending-share",
   employeesChanged: "employees.changed",
 } as const;
 export type HostOp = (typeof HOST_OPS)[keyof typeof HOST_OPS];
@@ -143,7 +143,7 @@ export interface ChatStartInput {
   /** Optional session title. */
   title?: string;
   /** Open a General (workspace-wide) session instead of one owned/tool-scoped by
-   *  the calling HolaApp. Used by system surfaces like HolaHub whose hand-off
+   *  the calling HolaApp. Used by system surfaces like Hitechhub whose hand-off
    *  belongs in General, not under an app row (default false → app-bounded). */
   general?: boolean;
 }
@@ -162,7 +162,7 @@ export interface ChatStartResult {
 
 // ── op: install ───────────────────────────────────────────────────────────
 
-/** A catalog item a hosted page (HolaHub) asks the desktop to install. Keyless
+/** A catalog item a hosted page (Hitechhub) asks the desktop to install. Keyless
  *  items (skills, keyless MCPs, connect-free capabilities) install headlessly in
  *  place; keyed/gated ones open the native connect surface focused on `ref`. */
 export interface InstallInput {
@@ -198,7 +198,7 @@ export interface InstallResult {
 export interface InstallEventPayload extends InstallInput {
   /** Correlates the eventual HOST_INSTALL_RESULT back to the pending invoke. */
   requestId: string;
-  /** The app-surface id that requested the install (e.g. "holahub"). */
+  /** The app-surface id that requested the install (e.g. "hitechhub"). */
   sourceAppId: string;
 }
 
@@ -236,7 +236,7 @@ export interface InstallStatusResultMessage {
 
 // ── op: item.open ─────────────────────────────────────────────────────────
 
-/** An already-installed catalog item a hosted page (HolaHub) asks the desktop to
+/** An already-installed catalog item a hosted page (Hitechhub) asks the desktop to
  *  open. A holaapp opens its surface; a skill/mcp/capability opens a General chat
  *  where the installed capability is available. */
 export interface OpenItemInput {
@@ -259,9 +259,9 @@ export interface OpenAppEventPayload {
   ref: string;
 }
 
-// ── op: holahub.consume-pending-share ─────────────────────────────────────
+// ── op: hitechhub.consume-pending-share ─────────────────────────────────────
 
-/** One tool the shared output was made with — a catalog ref the HolaHub composer
+/** One tool the shared output was made with — a catalog ref the Hitechhub composer
  *  pre-attaches as a post item. `derived` was detected from what the sharer
  *  explicitly invoked and is not theirs to remove; `attached` is a plain
  *  recommendation they can drop. */
@@ -289,8 +289,8 @@ export interface ShareDraftRecipe {
 }
 
 /** A desktop output the shell staged for sharing. The shell (ChatPane) builds it
- *  and stages it via a trusted shell→main IPC; the HolaHub web surface pulls it
- *  once on its compose route via `holahub.consume-pending-share`, then prefills
+ *  and stages it via a trusted shell→main IPC; the Hitechhub web surface pulls it
+ *  once on its compose route via `hitechhub.consume-pending-share`, then prefills
  *  its composer. The sharer edits everything here except a `derived` item, which
  *  they may demote but not delete. */
 /** How an artifact was generated, read off the output record the runtime wrote.
@@ -354,7 +354,7 @@ export interface ShareDraft {
   /** The assistant turn's text — NOT shown as the body; carried as hidden
    *  context so the composer's "draft with AI" button can seed a caption. */
   sourceText: string;
-  /** Already uploaded to holahub_images; the composer attaches by id. */
+  /** Already uploaded to hitechhub_images; the composer attaches by id. */
   imageIds: string[];
   /** Generated images captured from the turn's outputs — the composer (which
    *  holds the session) uploads them on prefill. */
@@ -393,7 +393,7 @@ export interface HostOpMap {
   install: { input: InstallInput; result: InstallResult };
   "install.status": { input: Record<string, never>; result: InstalledList };
   "item.open": { input: OpenItemInput; result: OpenItemResult };
-  "holahub.consume-pending-share": {
+  "hitechhub.consume-pending-share": {
     input: Record<string, never>;
     result: ShareDraft | null;
   };
@@ -404,7 +404,7 @@ export interface HostOpMap {
 }
 
 /** The shape the preload exposes as `window[HOST_GLOBAL_KEY]`. */
-export interface HolabossHost {
+export interface HitechcloudHost {
   readonly version: number;
   capabilities(): Promise<HostOp[]>;
   invoke<Op extends HostOp>(

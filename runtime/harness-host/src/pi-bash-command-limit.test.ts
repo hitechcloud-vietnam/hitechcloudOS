@@ -51,8 +51,8 @@ test("a sub-limit bash command passes through unchanged", async () => {
 });
 
 test("the inline limit is env-configurable", async () => {
-  const prev = process.env.HOLABOSS_WINDOWS_BASH_INLINE_LIMIT_BYTES;
-  process.env.HOLABOSS_WINDOWS_BASH_INLINE_LIMIT_BYTES = "100";
+  const prev = process.env.HITECHCLOUD_WINDOWS_BASH_INLINE_LIMIT_BYTES;
+  process.env.HITECHCLOUD_WINDOWS_BASH_INLINE_LIMIT_BYTES = "100";
   try {
     const wrapped = wrapBashToolForWindowsCommandLimit(captureBashTool(), "win32");
     const cmd = `echo ${"a".repeat(500)}`; // over 100, under the 6KB default
@@ -60,8 +60,8 @@ test("the inline limit is env-configurable", async () => {
     assert.match(res.receivedCommand, /^bash '.+\.sh'$/);
     assert.equal(res.scriptContent, cmd);
   } finally {
-    if (prev === undefined) delete process.env.HOLABOSS_WINDOWS_BASH_INLINE_LIMIT_BYTES;
-    else process.env.HOLABOSS_WINDOWS_BASH_INLINE_LIMIT_BYTES = prev;
+    if (prev === undefined) delete process.env.HITECHCLOUD_WINDOWS_BASH_INLINE_LIMIT_BYTES;
+    else process.env.HITECHCLOUD_WINDOWS_BASH_INLINE_LIMIT_BYTES = prev;
   }
 });
 

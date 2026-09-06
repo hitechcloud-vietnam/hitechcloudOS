@@ -46,7 +46,7 @@ function needsConnectGate(entry: AppCatalogEntry): boolean {
 // replaces the center pane entirely, which detaches that native view.
 //
 // This page MANAGES installed + connected apps only. Discovering and browsing new apps
-// lives in the HolaHub Marketplace (a jump from here); the install/uninstall + connect-gate
+// lives in the Hitechhub Marketplace (a jump from here); the install/uninstall + connect-gate
 // machinery stays because HeadlessInstaller routes gated hub installs through this pane.
 //
 // `embedded` drops the standalone page title (it renders as the Apps tab inside
@@ -98,7 +98,7 @@ export function HolaAppMarketplacePane({
     void refresh();
   }, [refresh]);
 
-  // Discover / browse more apps → the HolaHub Marketplace, opened at the Apps category.
+  // Discover / browse more apps → the Hitechhub Marketplace, opened at the Apps category.
   const browseMarketplace = () => {
     if (onBrowseMarketplace) {
       onBrowseMarketplace();
@@ -185,7 +185,7 @@ export function HolaAppMarketplacePane({
       }
       return;
     }
-    // Hosted-MCP apps (jianguoyun): a Holaboss-hosted MCP that ALSO needs BYO
+    // Hosted-MCP apps (jianguoyun): a Hitechcloud-hosted MCP that ALSO needs BYO
     // credentials. Gate for the required keys (shared McpInstallDialog), then
     // attach the hosted MCP tagged app-owned so it groups under the app.
     if (!entry.installed && entry.hostedMcpInstall) {
@@ -230,7 +230,7 @@ export function HolaAppMarketplacePane({
     }
   };
 
-  // Consume a HolaHub "install" intent for a gated app (routed here by the
+  // Consume a Hitechhub "install" intent for a gated app (routed here by the
   // HeadlessInstaller for the connection / hosted-MCP flavors it can't complete
   // headlessly): open that app's own install gate, then clear the intent. Uses a
   // ref so the effect needn't depend on the re-created `toggle`.
@@ -248,7 +248,7 @@ export function HolaAppMarketplacePane({
     }
   }, [pendingHubApp, catalog, setPendingHubApp]);
 
-  // Consume a HolaHub "open" intent for a connection-tier app (its Manage jump):
+  // Consume a Hitechhub "open" intent for a connection-tier app (its Manage jump):
   // land straight on that app's detail instead of the bare installed list.
   const [pendingHubAppDetail, setPendingHubAppDetail] = useAtom(
     pendingHubAppDetailAtom,

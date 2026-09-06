@@ -16,7 +16,7 @@ export type BffFetchHandlerDeps = {
 
   /**
    * Hosts the renderer may target. Hostnames only (e.g.
-   * `api.holaboss.ai`), no scheme/port. Re-evaluated per request so config
+   * `api.hitechcloud.vn`), no scheme/port. Re-evaluated per request so config
    * reloads land without restart.
    */
   allowedHosts: () => readonly string[];

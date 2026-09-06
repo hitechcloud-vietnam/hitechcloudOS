@@ -109,7 +109,7 @@ export function EmployeeChatPane({
     stop,
   } = useEmployeeChat(employeeId, threadId, isNew);
 
-  // The employee's identity avatar (bg color + emoji, or the Holaboss brand mark for
+  // The employee's identity avatar (bg color + emoji, or the Hitechcloud brand mark for
   // the preset "Hola") — brands every assistant turn instead of the harness/workspace-
   // seeded face the local agent uses.
   const { data: roster } = useHolaEmployees();

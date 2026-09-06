@@ -2,11 +2,11 @@
 
 Date: 2026-03-30
 Status: Draft
-Owner: Holaboss desktop/runtime
+Owner: Hitechcloud desktop/runtime
 
 ## Purpose
 
-Define the product shape for a first-class Integrations management center in Holaboss.
+Define the product shape for a first-class Integrations management center in Hitechcloud.
 
 This document covers:
 
@@ -91,7 +91,7 @@ This is the connected accounts view. It is user-centric, not workspace-centric.
 Each row should show:
 
 - provider
-- account label such as `owner@holaboss.ai`
+- account label such as `owner@hitechcloud.vn`
 - scopes summary
 - last connected / refreshed time
 - health state
@@ -119,9 +119,9 @@ The view should support:
 
 Example rows:
 
-- `gmail app -> Google / owner@holaboss.ai`
-- `github app -> GitHub / holaboss-bot`
-- `default google -> Google / owner@holaboss.ai`
+- `gmail app -> Google / owner@hitechcloud.vn`
+- `github app -> GitHub / hitechcloud-bot`
+- `default google -> Google / owner@hitechcloud.vn`
 
 Actions:
 
@@ -202,7 +202,7 @@ Managed mode should add:
 
 - official hosted OAuth apps
 - one-click connection flows
-- automatic token refresh handled by Holaboss infrastructure
+- automatic token refresh handled by Hitechcloud infrastructure
 - team-shared accounts and admin controls
 - audit trails
 - centralized connection health and policy enforcement

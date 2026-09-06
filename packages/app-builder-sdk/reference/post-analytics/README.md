@@ -79,7 +79,7 @@ banning it would be dogma.
   use `var(--info)` etc.
 - The `font-weight ≤ 530` rule (the design system clamps higher weights
   to 530). Hierarchy via size + color, not weight.
-- No second component library. Everything from `@holaboss/ui` + raw SVG.
+- No second component library. Everything from `@hitechcloud/ui` + raw SVG.
   No `recharts`, no `chart.js`, no `visx` — the chart is intentionally
   hand-rolled SVG so the reference has no extra deps.
 - No `components/ui/` directory (shadcn-add copy).
@@ -99,7 +99,7 @@ Same Tailwind-compile setup as the other canonical references. The
 `src/client/routes/__root.tsx`:
 
 ```tsx
-import "@holaboss/ui/styles.css";
+import "@hitechcloud/ui/styles.css";
 import "../app.css";
 ```
 

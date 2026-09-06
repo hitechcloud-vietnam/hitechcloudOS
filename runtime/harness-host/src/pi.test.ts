@@ -339,11 +339,11 @@ test("filterPiRuntimeToolDefinitionsForHost removes host-native duplicates from 
 test("runtimeToolSelectedModelForPiRequest preserves the original selected model token", () => {
   assert.equal(
     runtimeToolSelectedModelForPiRequest({
-      selected_model: "holaboss_model_proxy/gpt-5.4",
+      selected_model: "hitechcloud_model_proxy/gpt-5.4",
       provider_id: "openai",
       model_id: "gpt-5.4",
     }),
-    "holaboss_model_proxy/gpt-5.4",
+    "hitechcloud_model_proxy/gpt-5.4",
   );
   assert.equal(
     runtimeToolSelectedModelForPiRequest({
@@ -437,7 +437,7 @@ test("mapPiSessionEvent defers run_failed for retryable assistant errors so pi's
 test("mapPiSessionEvent defers run_failed for upstream gateway stream-drop errors (499, stream closed, @earendil message_stop drop)", () => {
   const sessionFile = "/tmp/pi-session.jsonl";
 
-  // Reproduces the failure modes seen when holaboss model-proxy → OpenRouter →
+  // Reproduces the failure modes seen when hitechcloud model-proxy → OpenRouter →
   // Anthropic drops the SSE stream mid-response: a literal 499 from the gateway,
   // `{"type":"error",...,"message":"stream closed before completion"}` from
   // OpenRouter, OR — after the @earendil 0.80.2 migration — the library's own
@@ -1616,7 +1616,7 @@ test("mapPiSessionEvent maps text, thinking, tool, and completion events", () =>
 
 test("createPiTodoToolDefinitions persists phased session todo state", async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "pi-todo-"));
-  const stateDir = path.join(root, ".holaboss", "pi-agent");
+  const stateDir = path.join(root, ".hitechcloud", "pi-agent");
   const [todoRead, todoWrite] = createPiTodoToolDefinitions({
     stateDir,
     sessionId: "session-1",
@@ -1769,7 +1769,7 @@ test("createPiTodoToolDefinitions persists phased session todo state", async () 
 
 test("createPiTodoToolDefinitions applies incremental phased todo ops", async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "pi-todo-ops-"));
-  const stateDir = path.join(root, ".holaboss", "pi-agent");
+  const stateDir = path.join(root, ".hitechcloud", "pi-agent");
   const [todoRead, todoWrite] = createPiTodoToolDefinitions({
     stateDir,
     sessionId: "session-1",
@@ -1849,7 +1849,7 @@ test("createPiTodoToolDefinitions applies incremental phased todo ops", async ()
 
 test("createPiTodoToolDefinitions preserves blocked tasks without auto-promoting later pending work", async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "pi-todo-blocked-"));
-  const stateDir = path.join(root, ".holaboss", "pi-agent");
+  const stateDir = path.join(root, ".hitechcloud", "pi-agent");
   const [todoRead, todoWrite] = createPiTodoToolDefinitions({
     stateDir,
     sessionId: "session-1",
@@ -1919,7 +1919,7 @@ test("createPiTodoToolDefinitions preserves blocked tasks without auto-promoting
 
 test("createPiTodoToolDefinitions rejects blocked todo status during workflow execution", async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "pi-todo-workflow-no-blocked-"));
-  const stateDir = path.join(root, ".holaboss", "pi-agent");
+  const stateDir = path.join(root, ".hitechcloud", "pi-agent");
   const [, todoWrite] = createPiTodoToolDefinitions({
     stateDir,
     sessionId: "session-1",
@@ -1952,7 +1952,7 @@ test("createPiTodoToolDefinitions rejects blocked todo status during workflow ex
 
 test("createPiTodoToolDefinitions rejects legacy todo payload aliases", async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "pi-todo-invalid-"));
-  const stateDir = path.join(root, ".holaboss", "pi-agent");
+  const stateDir = path.join(root, ".hitechcloud", "pi-agent");
   const [, todoWrite] = createPiTodoToolDefinitions({
     stateDir,
     sessionId: "session-1",
@@ -1985,7 +1985,7 @@ test("createPiTodoToolDefinitions rejects legacy todo payload aliases", async ()
 
 test("createPiTodoToolDefinitions returns repair guidance for hallucinated todo ops", async () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "pi-todo-repair-"));
-  const stateDir = path.join(root, ".holaboss", "pi-agent");
+  const stateDir = path.join(root, ".hitechcloud", "pi-agent");
   const [, todoWrite] = createPiTodoToolDefinitions({
     stateDir,
     sessionId: "session-1",
@@ -2041,7 +2041,7 @@ test("createPiTodoToolDefinitions returns repair guidance for hallucinated todo 
 
 test("createPiTodoToolDefinitions exposes explicit todo op guidance to the model", () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "pi-todo-prompting-"));
-  const stateDir = path.join(root, ".holaboss", "pi-agent");
+  const stateDir = path.join(root, ".hitechcloud", "pi-agent");
   const [todoRead, todoWrite] = createPiTodoToolDefinitions({
     stateDir,
     sessionId: "session-1",
@@ -2133,7 +2133,7 @@ test("buildPiMcpServerBindings converts remote and local MCP payloads into mcpor
       timeoutMs: 15000,
       definition: {
         name: "remote-server",
-        description: "Holaboss MCP server remote-server",
+        description: "Hitechcloud MCP server remote-server",
         command: {
           kind: "http",
           url: new URL("http://127.0.0.1:8765/mcp"),
@@ -2146,7 +2146,7 @@ test("buildPiMcpServerBindings converts remote and local MCP payloads into mcpor
       timeoutMs: 9000,
       definition: {
         name: "local-server",
-        description: "Holaboss MCP server local-server",
+        description: "Hitechcloud MCP server local-server",
         command: {
           kind: "stdio",
           command: "node",
@@ -2166,7 +2166,7 @@ test("resolvePiSkillDirs returns existing source skill directories in order", ()
   const skillBetaDir = path.join(workspaceDir, "skills", "beta");
   fs.mkdirSync(skillAlphaDir, { recursive: true });
   fs.mkdirSync(skillBetaDir, { recursive: true });
-  const previousEmbeddedSkillsDir = process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+  const previousEmbeddedSkillsDir = process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
   const request: HarnessHostPiRequest = {
     ...baseRequest(),
     workspace_dir: workspaceDir,
@@ -2179,16 +2179,16 @@ test("resolvePiSkillDirs returns existing source skill directories in order", ()
   };
 
   try {
-    process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = emptyEmbeddedRoot;
+    process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = emptyEmbeddedRoot;
     assert.deepEqual(resolvePiSkillDirs(request), [
       fs.realpathSync(skillAlphaDir),
       fs.realpathSync(skillBetaDir),
     ]);
   } finally {
     if (previousEmbeddedSkillsDir === undefined) {
-      delete process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+      delete process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
     } else {
-      process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = previousEmbeddedSkillsDir;
+      process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = previousEmbeddedSkillsDir;
     }
     fs.rmSync(workspaceDir, { recursive: true, force: true });
     fs.rmSync(emptyEmbeddedRoot, { recursive: true, force: true });
@@ -2200,7 +2200,7 @@ test("resolvePiSkillDirs does not auto-prepend embedded skill directories when t
   const embeddedRoot = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-embedded-skills-"));
   const skillAlphaDir = path.join(workspaceDir, "skills", "alpha");
   fs.mkdirSync(skillAlphaDir, { recursive: true });
-  const previousEmbeddedSkillsDir = process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+  const previousEmbeddedSkillsDir = process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
   const request: HarnessHostPiRequest = {
     ...baseRequest(),
     workspace_dir: workspaceDir,
@@ -2220,16 +2220,16 @@ test("resolvePiSkillDirs does not auto-prepend embedded skill directories when t
       "---\nname: skill-installer\ndescription: Skill installer\n---\n# Skill Installer\n",
       "utf8",
     );
-    process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedRoot;
+    process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedRoot;
     assert.deepEqual(
       resolvePiSkillDirs(request).map((skillDir) => path.basename(skillDir)),
       ["alpha"],
     );
   } finally {
     if (previousEmbeddedSkillsDir === undefined) {
-      delete process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+      delete process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
     } else {
-      process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = previousEmbeddedSkillsDir;
+      process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = previousEmbeddedSkillsDir;
     }
     fs.rmSync(workspaceDir, { recursive: true, force: true });
     fs.rmSync(embeddedRoot, { recursive: true, force: true });
@@ -2253,7 +2253,7 @@ test("resolvePiSkillDirs discovers workspace skill directories created after the
     "---\nname: beta\ndescription: Beta skill\n---\n# Beta\n",
     "utf8",
   );
-  const previousEmbeddedSkillsDir = process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+  const previousEmbeddedSkillsDir = process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
   const request: HarnessHostPiRequest = {
     ...baseRequest(),
     workspace_dir: workspaceDir,
@@ -2261,16 +2261,16 @@ test("resolvePiSkillDirs discovers workspace skill directories created after the
   };
 
   try {
-    process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = emptyEmbeddedRoot;
+    process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = emptyEmbeddedRoot;
     assert.deepEqual(
       resolvePiSkillDirs(request).map((skillDir) => path.basename(skillDir)),
       ["alpha", "beta"],
     );
   } finally {
     if (previousEmbeddedSkillsDir === undefined) {
-      delete process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+      delete process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
     } else {
-      process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = previousEmbeddedSkillsDir;
+      process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = previousEmbeddedSkillsDir;
     }
     fs.rmSync(workspaceDir, { recursive: true, force: true });
     fs.rmSync(emptyEmbeddedRoot, { recursive: true, force: true });
@@ -2279,7 +2279,7 @@ test("resolvePiSkillDirs discovers workspace skill directories created after the
 
 test("buildPiPromptPayload resolves quoted embedded skills only when the request explicitly grants the skill dir", async () => {
   const embeddedRoot = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-embedded-quoted-skills-"));
-  const previousEmbeddedSkillsDir = process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+  const previousEmbeddedSkillsDir = process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
   const skillCreatorDir = path.join(embeddedRoot, "skill-creator");
 
   try {
@@ -2289,7 +2289,7 @@ test("buildPiPromptPayload resolves quoted embedded skills only when the request
       "---\nname: skill-creator\ndescription: Skill creator\n---\n# Skill Creator\nUse the canonical skill format.\n",
       "utf8",
     );
-    process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = embeddedRoot;
+    process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = embeddedRoot;
 
     const prompt = await buildPiPromptPayload({
       ...baseRequest(),
@@ -2303,9 +2303,9 @@ test("buildPiPromptPayload resolves quoted embedded skills only when the request
     assert.match(prompt.text, /Use it to define the new skill\./);
   } finally {
     if (previousEmbeddedSkillsDir === undefined) {
-      delete process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+      delete process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
     } else {
-      process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = previousEmbeddedSkillsDir;
+      process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = previousEmbeddedSkillsDir;
     }
     fs.rmSync(embeddedRoot, { recursive: true, force: true });
   }
@@ -2328,10 +2328,10 @@ test("createPiSkillToolDefinition refreshes the skill catalog before invocation"
     ["bash", "read", "skill"],
     [],
   );
-  const previousEmbeddedSkillsDir = process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+  const previousEmbeddedSkillsDir = process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
 
   try {
-    process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = emptyEmbeddedRoot;
+    process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = emptyEmbeddedRoot;
     const tool = createPiSkillToolDefinition(
       skillMetadataByAlias,
       skillWideningState,
@@ -2356,7 +2356,7 @@ test("createPiSkillToolDefinition refreshes the skill catalog before invocation"
         "---",
         "name: joke-making",
         "description: Generate jokes.",
-        "holaboss_granted_tools: [bash]",
+        "hitechcloud_granted_tools: [bash]",
         "---",
         "# Joke Making",
         "",
@@ -2395,9 +2395,9 @@ test("createPiSkillToolDefinition refreshes the skill catalog before invocation"
     assert.deepEqual(details.policy_widening?.active_granted_tools, ["bash"]);
   } finally {
     if (previousEmbeddedSkillsDir === undefined) {
-      delete process.env.HOLABOSS_EMBEDDED_SKILLS_DIR;
+      delete process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR;
     } else {
-      process.env.HOLABOSS_EMBEDDED_SKILLS_DIR = previousEmbeddedSkillsDir;
+      process.env.HITECHCLOUD_EMBEDDED_SKILLS_DIR = previousEmbeddedSkillsDir;
     }
     fs.rmSync(workspaceDir, { recursive: true, force: true });
     fs.rmSync(emptyEmbeddedRoot, { recursive: true, force: true });
@@ -2459,13 +2459,13 @@ test("buildPiProviderConfig registers runtime-configured ollama models for the P
 test("buildPiProviderConfig uses runtime-config context windows for managed proxy Anthropic models", () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-runtime-catalog-"));
   const configPath = path.join(root, "runtime-config.json");
-  const previousConfigPath = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+  const previousConfigPath = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   fs.writeFileSync(
     configPath,
     JSON.stringify({
       models: {
-        "holaboss_model_proxy/claude-opus-4-7": {
-          provider_id: "holaboss_model_proxy",
+        "hitechcloud_model_proxy/claude-opus-4-7": {
+          provider_id: "hitechcloud_model_proxy",
           model_id: "claude-opus-4-7",
           context_window: 1_000_000,
           max_tokens: 128_000,
@@ -2474,12 +2474,12 @@ test("buildPiProviderConfig uses runtime-config context windows for managed prox
     }),
     "utf8",
   );
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
 
   try {
     const providerConfig = buildPiProviderConfig({
       ...baseRequest(),
-      selected_model: "holaboss_model_proxy/claude-opus-4-7",
+      selected_model: "hitechcloud_model_proxy/claude-opus-4-7",
       provider_id: "anthropic",
       model_id: "claude-opus-4-7",
       model_client: {
@@ -2494,9 +2494,9 @@ test("buildPiProviderConfig uses runtime-config context windows for managed prox
     assert.equal(providerConfig.models[0]?.maxTokens, 128_000);
   } finally {
     if (previousConfigPath === undefined) {
-      delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+      delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
     } else {
-      process.env.HOLABOSS_RUNTIME_CONFIG_PATH = previousConfigPath;
+      process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = previousConfigPath;
     }
     fs.rmSync(root, { recursive: true, force: true });
   }
@@ -2512,8 +2512,8 @@ test("buildPiProviderConfig preserves direct OpenRouter endpoints and headers", 
       api_key: "sk-or-test",
       base_url: "https://openrouter.ai/api/v1",
       default_headers: {
-        "HTTP-Referer": "https://holaboss.ai",
-        "X-OpenRouter-Title": "holaOS",
+        "HTTP-Referer": "https://hitechcloud.vn",
+        "X-OpenRouter-Title": "hitechcloudOS",
         "X-OpenRouter-Categories": "personal-agent,general-chat",
       },
     },
@@ -2525,8 +2525,8 @@ test("buildPiProviderConfig preserves direct OpenRouter endpoints and headers", 
   assert.equal(providerConfig.apiKey, "sk-or-test");
   assert.equal(providerConfig.api, "openai-completions");
   assert.deepEqual(providerConfig.headers, {
-    "HTTP-Referer": "https://holaboss.ai",
-    "X-OpenRouter-Title": "holaOS",
+    "HTTP-Referer": "https://hitechcloud.vn",
+    "X-OpenRouter-Title": "hitechcloudOS",
     "X-OpenRouter-Categories": "personal-agent,general-chat",
   });
   assert.equal(providerConfig.authHeader, true);
@@ -2589,17 +2589,17 @@ test("buildPiProviderConfig keeps legacy Codex provider ids on the generic OpenA
   assert.equal(providerConfig.models[0]?.maxTokens, 128_000);
 });
 
-test("buildPiProviderConfig uses OpenAI Responses API for managed Holaboss GPT-5 models", () => {
+test("buildPiProviderConfig uses OpenAI Responses API for managed Hitechcloud GPT-5 models", () => {
   const providerConfig = buildPiProviderConfig({
     ...baseRequest(),
-    provider_id: "holaboss_model_proxy",
+    provider_id: "hitechcloud_model_proxy",
     model_id: "gpt-5.4",
     model_client: {
       model_proxy_provider: "openai_compatible",
       api_key: "hbmk-test",
       base_url: "http://127.0.0.1:3060/api/v1/model-proxy/openai/v1",
       default_headers: {
-        "X-Holaboss-User-Id": "user-1",
+        "X-Hitechcloud-User-Id": "user-1",
       },
     },
   });
@@ -2607,7 +2607,7 @@ test("buildPiProviderConfig uses OpenAI Responses API for managed Holaboss GPT-5
   assert.equal(providerConfig.api, "openai-responses");
   assert.equal(providerConfig.models[0]?.api, "openai-responses");
   assert.deepEqual(providerConfig.headers, {
-    "X-Holaboss-User-Id": "user-1",
+    "X-Hitechcloud-User-Id": "user-1",
   });
   assert.deepEqual(providerConfig.models[0]?.cost, {
     input: 2.5,
@@ -2633,7 +2633,7 @@ test("buildPiProviderConfig preserves catalog pricing after runtime provider reg
   try {
     const request: HarnessHostPiRequest = {
       ...baseRequest(),
-      provider_id: "holaboss_model_proxy",
+      provider_id: "hitechcloud_model_proxy",
       model_id: "gpt-5.4",
       model_client: {
         model_proxy_provider: "openai_compatible",
@@ -2649,7 +2649,7 @@ test("buildPiProviderConfig preserves catalog pricing after runtime provider reg
     );
     modelRegistry.registerProvider(request.provider_id, buildPiProviderConfig(request));
 
-    const model = modelRegistry.find("holaboss_model_proxy", "gpt-5.4");
+    const model = modelRegistry.find("hitechcloud_model_proxy", "gpt-5.4");
     assert.ok(model);
     assert.deepEqual(model.cost, {
       input: 2.5,
@@ -2688,17 +2688,17 @@ test("configurePiPromptCacheRetention enables PI_CACHE_RETENTION=long for openai
   }
 });
 
-test("buildPiProviderConfig uses Anthropic Messages API for managed Holaboss Claude models", () => {
+test("buildPiProviderConfig uses Anthropic Messages API for managed Hitechcloud Claude models", () => {
   const providerConfig = buildPiProviderConfig({
     ...baseRequest(),
-    provider_id: "holaboss_model_proxy",
+    provider_id: "hitechcloud_model_proxy",
     model_id: "claude-sonnet-4-6",
     model_client: {
       model_proxy_provider: "anthropic_native",
       api_key: "hbmk-test",
       base_url: "http://127.0.0.1:3060/api/v1/model-proxy/anthropic/v1",
       default_headers: {
-        "X-Holaboss-User-Id": "user-1",
+        "X-Hitechcloud-User-Id": "user-1",
       },
     },
   });
@@ -2707,7 +2707,7 @@ test("buildPiProviderConfig uses Anthropic Messages API for managed Holaboss Cla
   assert.equal(providerConfig.baseUrl, "http://127.0.0.1:3060/api/v1/model-proxy/anthropic");
   assert.equal(providerConfig.models[0]?.api, "anthropic-messages");
   assert.deepEqual(providerConfig.headers, {
-    "X-Holaboss-User-Id": "user-1",
+    "X-Hitechcloud-User-Id": "user-1",
   });
   assert.equal(providerConfig.models[0]?.contextWindow, 1_000_000);
   assert.equal(providerConfig.models[0]?.maxTokens, 128_000);
@@ -3176,7 +3176,7 @@ test("runPi emits run_started and terminal success when the session completes", 
           role: "assistant",
           content: [{ type: "text", text: "Done" }],
           api: "openai-responses",
-          provider: "holaboss_model_proxy",
+          provider: "hitechcloud_model_proxy",
           model: "gpt-5.4",
           usage: {
             input: 120,
@@ -3649,7 +3649,7 @@ test("runPi end-of-turn compaction is best-effort — a compaction failure does 
 
 test("runPi emits waiting_user and blocks the active todo when the ask_user_question tool completes", { concurrency: false }, async () => {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-run-waiting-user-"));
-  const stateDir = path.join(workspaceDir, ".holaboss", "pi-agent");
+  const stateDir = path.join(workspaceDir, ".hitechcloud", "pi-agent");
   const [, todoWrite] = createPiTodoToolDefinitions({
     stateDir,
     sessionId: "session-1",
@@ -3758,7 +3758,7 @@ test("runPi emits waiting_user and blocks the active todo when the ask_user_ques
 
 test("runPi emits waiting_user when a persisted todo is still blocked at run completion", { concurrency: false }, async () => {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-run-blocked-todo-"));
-  const stateDir = path.join(workspaceDir, ".holaboss", "pi-agent");
+  const stateDir = path.join(workspaceDir, ".hitechcloud", "pi-agent");
   const [, todoWrite] = createPiTodoToolDefinitions({
     stateDir,
     sessionId: "session-1",
@@ -3842,7 +3842,7 @@ test("runPi emits waiting_user when a persisted todo is still blocked at run com
 
 test("runPi ignores blocked persisted todo state for workflow-owned subagents", { concurrency: false }, async () => {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-run-workflow-blocked-todo-"));
-  const stateDir = path.join(workspaceDir, ".holaboss", "pi-agent");
+  const stateDir = path.join(workspaceDir, ".hitechcloud", "pi-agent");
   const [, todoWrite] = createPiTodoToolDefinitions({
     stateDir,
     sessionId: "session-1",
@@ -4292,7 +4292,7 @@ test("compactPiSession returns structured error diagnostics for snapshot compact
 
 test("buildPiPromptPayload inlines native images, extracts common document formats, and falls back for binary files", async () => {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-attachments-"));
-  const attachmentsDir = path.join(workspaceDir, ".holaboss", "input-attachments", "batch-1");
+  const attachmentsDir = path.join(workspaceDir, ".hitechcloud", "input-attachments", "batch-1");
   const imagePath = path.join(attachmentsDir, "diagram.png");
   const textPath = path.join(attachmentsDir, "notes.txt");
   const docxPath = path.join(attachmentsDir, "notes.docx");
@@ -4332,7 +4332,7 @@ test("buildPiPromptPayload inlines native images, extracts common document forma
           name: "diagram.png",
           mime_type: "image/png",
           size_bytes: imageBytes.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/diagram.png",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/diagram.png",
         },
         {
           id: "attachment-text",
@@ -4340,7 +4340,7 @@ test("buildPiPromptPayload inlines native images, extracts common document forma
           name: "notes.txt",
           mime_type: "text/plain",
           size_bytes: 11,
-          workspace_path: ".holaboss/input-attachments/batch-1/notes.txt",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/notes.txt",
         },
         {
           id: "attachment-docx",
@@ -4348,7 +4348,7 @@ test("buildPiPromptPayload inlines native images, extracts common document forma
           name: "notes.docx",
           mime_type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           size_bytes: docxBytes.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/notes.docx",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/notes.docx",
         },
         {
           id: "attachment-pptx",
@@ -4356,7 +4356,7 @@ test("buildPiPromptPayload inlines native images, extracts common document forma
           name: "slides.pptx",
           mime_type: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
           size_bytes: pptxBytes.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/slides.pptx",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/slides.pptx",
         },
         {
           id: "attachment-xlsx",
@@ -4364,7 +4364,7 @@ test("buildPiPromptPayload inlines native images, extracts common document forma
           name: "sheet.xlsx",
           mime_type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
           size_bytes: xlsxBytes.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/sheet.xlsx",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/sheet.xlsx",
         },
         {
           id: "attachment-pdf",
@@ -4372,7 +4372,7 @@ test("buildPiPromptPayload inlines native images, extracts common document forma
           name: "summary.pdf",
           mime_type: "application/pdf",
           size_bytes: pdfBytes.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/summary.pdf",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/summary.pdf",
         },
         {
           id: "attachment-binary",
@@ -4380,7 +4380,7 @@ test("buildPiPromptPayload inlines native images, extracts common document forma
           name: "archive.bin",
           mime_type: "application/octet-stream",
           size_bytes: 4,
-          workspace_path: ".holaboss/input-attachments/batch-1/archive.bin",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/archive.bin",
         },
         {
           id: "attachment-folder",
@@ -4394,7 +4394,7 @@ test("buildPiPromptPayload inlines native images, extracts common document forma
     });
 
     assert.match(prompt.text, /Attached images:/);
-    assert.match(prompt.text, /diagram\.png \(image\/png\) at \.\/\.holaboss\/input-attachments\/batch-1\/diagram\.png/);
+    assert.match(prompt.text, /diagram\.png \(image\/png\) at \.\/\.hitechcloud\/input-attachments\/batch-1\/diagram\.png/);
     assert.match(prompt.text, /\[Document: notes\.txt\]/);
     assert.match(prompt.text, /alpha\nbeta/);
     assert.match(prompt.text, /\[Document: summary\.pdf\]/);
@@ -4419,7 +4419,7 @@ test("buildPiPromptPayload inlines native images, extracts common document forma
     assert.match(prompt.text, /Treat attached folders as scoped workspace context\./);
     assert.doesNotMatch(prompt.text, /scoped folder/);
     assert.match(prompt.text, /Other attachments are staged in the workspace and should be inspected from these paths:/);
-    assert.match(prompt.text, /archive\.bin \(file, application\/octet-stream\) at \.\/\.holaboss\/input-attachments\/batch-1\/archive\.bin/);
+    assert.match(prompt.text, /archive\.bin \(file, application\/octet-stream\) at \.\/\.hitechcloud\/input-attachments\/batch-1\/archive\.bin/);
     assert.deepEqual(prompt.images, [
       {
         type: "image",
@@ -4439,7 +4439,7 @@ test("buildPiPromptPayload resolves staged attachments under workspace_dir when 
   const agentCwd = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-home-"));
   const attachmentsDir = path.join(
     workspaceDir,
-    ".holaboss",
+    ".hitechcloud",
     "input-attachments",
     "batch-1",
   );
@@ -4461,7 +4461,7 @@ test("buildPiPromptPayload resolves staged attachments under workspace_dir when 
           name: "diagram.png",
           mime_type: "image/png",
           size_bytes: imageBytes.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/diagram.png",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/diagram.png",
         },
       ],
     });
@@ -4484,7 +4484,7 @@ test("buildPiPromptPayload resolves staged attachments under workspace_dir when 
 
 test("buildPiPromptPayload corrects mislabeled staged image attachment mime types", async () => {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-prompt-image-mime-"));
-  const attachmentsDir = path.join(workspaceDir, ".holaboss", "input-attachments", "batch-1");
+  const attachmentsDir = path.join(workspaceDir, ".hitechcloud", "input-attachments", "batch-1");
   const imagePath = path.join(attachmentsDir, "diagram.png");
   const jpegBytes = Buffer.from([0xff, 0xd8, 0xff, 0xd9]);
 
@@ -4502,13 +4502,13 @@ test("buildPiPromptPayload corrects mislabeled staged image attachment mime type
           name: "diagram.png",
           mime_type: "image/png",
           size_bytes: jpegBytes.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/diagram.png",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/diagram.png",
         },
       ],
     });
 
     assert.match(prompt.text, /Attached images:/);
-    assert.match(prompt.text, /diagram\.png \(image\/jpeg\) at \.\/\.holaboss\/input-attachments\/batch-1\/diagram\.png/);
+    assert.match(prompt.text, /diagram\.png \(image\/jpeg\) at \.\/\.hitechcloud\/input-attachments\/batch-1\/diagram\.png/);
     assert.deepEqual(prompt.images, [
       {
         type: "image",
@@ -4523,7 +4523,7 @@ test("buildPiPromptPayload corrects mislabeled staged image attachment mime type
 
 test("buildPiPromptPayload skips unsupported staged image attachment bytes", async () => {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-prompt-image-heic-"));
-  const attachmentsDir = path.join(workspaceDir, ".holaboss", "input-attachments", "batch-1");
+  const attachmentsDir = path.join(workspaceDir, ".hitechcloud", "input-attachments", "batch-1");
   const imagePath = path.join(attachmentsDir, "phone-export.png");
   const heicBytes = Buffer.from([
     0x00, 0x00, 0x00, 0x18,
@@ -4546,14 +4546,14 @@ test("buildPiPromptPayload skips unsupported staged image attachment bytes", asy
           name: "phone-export.png",
           mime_type: "image/png",
           size_bytes: heicBytes.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/phone-export.png",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/phone-export.png",
         },
       ],
     });
 
     assert.ok(!prompt.text.includes("Attached images:"));
     assert.match(prompt.text, /Other attachments are staged in the workspace and should be inspected from these paths:/);
-    assert.match(prompt.text, /phone-export\.png \(image, image\/png\) at \.\/\.holaboss\/input-attachments\/batch-1\/phone-export\.png/);
+    assert.match(prompt.text, /phone-export\.png \(image, image\/png\) at \.\/\.hitechcloud\/input-attachments\/batch-1\/phone-export\.png/);
     assert.deepEqual(prompt.images, []);
   } finally {
     fs.rmSync(workspaceDir, { recursive: true, force: true });
@@ -4562,7 +4562,7 @@ test("buildPiPromptPayload skips unsupported staged image attachment bytes", asy
 
 test("buildPiPromptPayload shares a capped inline text budget across document attachments", async () => {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-prompt-text-budget-"));
-  const attachmentsDir = path.join(workspaceDir, ".holaboss", "input-attachments", "batch-1");
+  const attachmentsDir = path.join(workspaceDir, ".hitechcloud", "input-attachments", "batch-1");
   const alphaText = "A".repeat(20_000);
   const betaText = "B".repeat(20_000);
   const gammaText = "C".repeat(20_000);
@@ -4583,7 +4583,7 @@ test("buildPiPromptPayload shares a capped inline text budget across document at
           name: "alpha.md",
           mime_type: "text/markdown",
           size_bytes: alphaText.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/alpha.md",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/alpha.md",
         },
         {
           id: "attachment-beta",
@@ -4591,7 +4591,7 @@ test("buildPiPromptPayload shares a capped inline text budget across document at
           name: "beta.md",
           mime_type: "text/markdown",
           size_bytes: betaText.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/beta.md",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/beta.md",
         },
         {
           id: "attachment-gamma",
@@ -4599,7 +4599,7 @@ test("buildPiPromptPayload shares a capped inline text budget across document at
           name: "gamma.md",
           mime_type: "text/markdown",
           size_bytes: gammaText.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/gamma.md",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/gamma.md",
         },
       ],
     });
@@ -4610,7 +4610,7 @@ test("buildPiPromptPayload shares a capped inline text budget across document at
     assert.match(prompt.text, /Excerpt Policy:/);
     assert.match(
       prompt.text,
-      /Use the read tool on \.\/\.holaboss\/input-attachments\/batch-1\/alpha\.md with line selectors or offset\/limit to inspect the remainder\./,
+      /Use the read tool on \.\/\.hitechcloud\/input-attachments\/batch-1\/alpha\.md with line selectors or offset\/limit to inspect the remainder\./,
     );
     assert.ok(prompt.text.length < 28_000);
     assert.ok(prompt.text.includes("A".repeat(7_000)));
@@ -4626,7 +4626,7 @@ test("buildPiPromptPayload shares a capped inline text budget across document at
 
 test("buildPiPromptPayload falls back to text references when the selected model does not support image inputs", async () => {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-prompt-text-only-model-"));
-  const attachmentsDir = path.join(workspaceDir, ".holaboss", "input-attachments", "batch-1");
+  const attachmentsDir = path.join(workspaceDir, ".hitechcloud", "input-attachments", "batch-1");
   const imagePath = path.join(attachmentsDir, "diagram.png");
   const imageBytes = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
@@ -4646,7 +4646,7 @@ test("buildPiPromptPayload falls back to text references when the selected model
           name: "diagram.png",
           mime_type: "image/png",
           size_bytes: imageBytes.length,
-          workspace_path: ".holaboss/input-attachments/batch-1/diagram.png",
+          workspace_path: ".hitechcloud/input-attachments/batch-1/diagram.png",
         },
       ],
       image_urls: ["https://example.com/reference.png"],
@@ -4658,7 +4658,7 @@ test("buildPiPromptPayload falls back to text references when the selected model
       /Selected model only accepts text inputs for this run\. Image attachments and image URLs are referenced as staged files or URLs instead of inline vision inputs\./,
     );
     assert.match(prompt.text, /Other attachments are staged in the workspace and should be inspected from these paths:/);
-    assert.match(prompt.text, /diagram\.png \(image, image\/png\) at \.\/\.holaboss\/input-attachments\/batch-1\/diagram\.png/);
+    assert.match(prompt.text, /diagram\.png \(image, image\/png\) at \.\/\.hitechcloud\/input-attachments\/batch-1\/diagram\.png/);
     assert.match(prompt.text, /Image URLs not inlined as image inputs:/);
     assert.match(prompt.text, /\[Image URL 1\] https:\/\/example\.com\/reference\.png/);
     assert.deepEqual(prompt.images, []);
@@ -4762,8 +4762,8 @@ test("buildPiPromptPayload keeps runtime context in a separate prompt section", 
 
 test("buildPiPromptPayload frames reused live sessions around the newest user turn", async () => {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-live-session-"));
-  fs.mkdirSync(path.join(workspaceDir, ".holaboss", "pi-sessions"), { recursive: true });
-  const sessionPath = path.join(workspaceDir, ".holaboss", "pi-sessions", "session-1.jsonl");
+  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud", "pi-sessions"), { recursive: true });
+  const sessionPath = path.join(workspaceDir, ".hitechcloud", "pi-sessions", "session-1.jsonl");
   fs.writeFileSync(sessionPath, "", "utf8");
 
   try {
@@ -4790,9 +4790,9 @@ test("buildPiPromptPayload frames reused live sessions around the newest user tu
 
 test("buildPiPromptPayload frames persisted todo state as advisory continuity when resuming", async () => {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-resume-todo-"));
-  const stateDir = path.join(workspaceDir, ".holaboss", "pi-agent");
-  fs.mkdirSync(path.join(workspaceDir, ".holaboss", "pi-sessions"), { recursive: true });
-  const persistedSessionPath = path.join(workspaceDir, ".holaboss", "pi-sessions", "session-1.jsonl");
+  const stateDir = path.join(workspaceDir, ".hitechcloud", "pi-agent");
+  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud", "pi-sessions"), { recursive: true });
+  const persistedSessionPath = path.join(workspaceDir, ".hitechcloud", "pi-sessions", "session-1.jsonl");
   fs.writeFileSync(persistedSessionPath, "", "utf8");
 
   const [, todoWrite] = createPiTodoToolDefinitions({
@@ -4847,9 +4847,9 @@ test("buildPiPromptPayload frames persisted todo state as advisory continuity wh
 
 test("buildPiPromptPayload does not fall back to persisted session file when requested id is stale", async () => {
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-pi-stale-requested-session-"));
-  const stateDir = path.join(workspaceDir, ".holaboss", "pi-agent");
-  fs.mkdirSync(path.join(workspaceDir, ".holaboss", "pi-sessions"), { recursive: true });
-  const persistedSessionPath = path.join(workspaceDir, ".holaboss", "pi-sessions", "session-1.jsonl");
+  const stateDir = path.join(workspaceDir, ".hitechcloud", "pi-agent");
+  fs.mkdirSync(path.join(workspaceDir, ".hitechcloud", "pi-sessions"), { recursive: true });
+  const persistedSessionPath = path.join(workspaceDir, ".hitechcloud", "pi-sessions", "session-1.jsonl");
   fs.writeFileSync(persistedSessionPath, "", "utf8");
 
   const [, todoWrite] = createPiTodoToolDefinitions({
@@ -4980,8 +4980,8 @@ test("wrapToolWithOutputCap passes small tool results through unchanged", async 
 });
 
 test("wrapToolWithOutputCap writes oversized results to tmp/.tool-results and replaces inline content with a stub", async () => {
-  const previousMax = process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES;
-  process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES = "1024";
+  const previousMax = process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES;
+  process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES = "1024";
   const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), "hb-tool-cap-trunc-"));
   try {
     const largeText = "x".repeat(8 * 1024); // 8KB, well above the 1KB cap
@@ -5012,9 +5012,9 @@ test("wrapToolWithOutputCap writes oversized results to tmp/.tool-results and re
     assert.equal(persisted, `${largeText}\ntrailing fragment`);
   } finally {
     if (previousMax === undefined) {
-      delete process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES;
+      delete process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES;
     } else {
-      process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES = previousMax;
+      process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES = previousMax;
     }
     fs.rmSync(workspaceDir, { recursive: true, force: true });
   }
@@ -5086,22 +5086,22 @@ test("wrapToolWithTimeout is a passthrough when the resolved timeout is 0 (no si
 });
 
 test("toolCallTimeoutMs bounds bash by default and leaves other tools unbounded", () => {
-  const prevBash = process.env.HOLABOSS_BASH_TOOL_TIMEOUT_S;
-  const prevAll = process.env.HOLABOSS_TOOL_CALL_TIMEOUT_S;
-  delete process.env.HOLABOSS_BASH_TOOL_TIMEOUT_S;
-  delete process.env.HOLABOSS_TOOL_CALL_TIMEOUT_S;
+  const prevBash = process.env.HITECHCLOUD_BASH_TOOL_TIMEOUT_S;
+  const prevAll = process.env.HITECHCLOUD_TOOL_CALL_TIMEOUT_S;
+  delete process.env.HITECHCLOUD_BASH_TOOL_TIMEOUT_S;
+  delete process.env.HITECHCLOUD_TOOL_CALL_TIMEOUT_S;
   try {
     assert.equal(toolCallTimeoutMs("bash"), 10 * 60 * 1000);
     assert.equal(toolCallTimeoutMs("web_search"), 0);
     // Env overrides (seconds → ms); 0 disables bash's bound too.
-    process.env.HOLABOSS_BASH_TOOL_TIMEOUT_S = "120";
+    process.env.HITECHCLOUD_BASH_TOOL_TIMEOUT_S = "120";
     assert.equal(toolCallTimeoutMs("bash"), 120_000);
-    process.env.HOLABOSS_TOOL_CALL_TIMEOUT_S = "300";
+    process.env.HITECHCLOUD_TOOL_CALL_TIMEOUT_S = "300";
     assert.equal(toolCallTimeoutMs("web_search"), 300_000);
   } finally {
-    if (prevBash === undefined) delete process.env.HOLABOSS_BASH_TOOL_TIMEOUT_S;
-    else process.env.HOLABOSS_BASH_TOOL_TIMEOUT_S = prevBash;
-    if (prevAll === undefined) delete process.env.HOLABOSS_TOOL_CALL_TIMEOUT_S;
-    else process.env.HOLABOSS_TOOL_CALL_TIMEOUT_S = prevAll;
+    if (prevBash === undefined) delete process.env.HITECHCLOUD_BASH_TOOL_TIMEOUT_S;
+    else process.env.HITECHCLOUD_BASH_TOOL_TIMEOUT_S = prevBash;
+    if (prevAll === undefined) delete process.env.HITECHCLOUD_TOOL_CALL_TIMEOUT_S;
+    else process.env.HITECHCLOUD_TOOL_CALL_TIMEOUT_S = prevAll;
   }
 });

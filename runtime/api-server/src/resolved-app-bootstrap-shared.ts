@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import type { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import type { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 
 import {
   AppLifecycleExecutorError,
@@ -15,7 +15,7 @@ type StringMap = Record<string, unknown>;
 
 export type ResolvedApplicationsBootstrapRequestPayload = {
   workspace_dir?: string;
-  holaboss_user_id?: string;
+  hitechcloud_user_id?: string;
   resolved_applications?: unknown;
 };
 
@@ -189,7 +189,7 @@ async function waitForInFlightAppBuild(params: {
 
 export async function bootstrapResolvedApplications(params: {
   workspaceDir: string;
-  holabossUserId?: string;
+  hitechcloudUserId?: string;
   resolvedApplications?: unknown;
   store?: RuntimeStateStore;
   workspaceId?: string;
@@ -199,7 +199,7 @@ export async function bootstrapResolvedApplications(params: {
   if (!fs.existsSync(resolvedWorkspaceDir) || !fs.statSync(resolvedWorkspaceDir).isDirectory()) {
     throw new AppLifecycleExecutorError(404, `workspace_dir not found: '${params.workspaceDir}'`);
   }
-  const holabossUserId = optionalString(params.holabossUserId);
+  const hitechcloudUserId = optionalString(params.hitechcloudUserId);
   const rawResolvedApps = Array.isArray(params.resolvedApplications) ? params.resolvedApplications : null;
   if (!rawResolvedApps) {
     throw new AppLifecycleExecutorError(400, "resolved_applications must be an array");
@@ -264,7 +264,7 @@ export async function bootstrapResolvedApplications(params: {
       appDir: preparedStart.appDir,
       httpPort: preparedStart.ports.http,
       mcpPort: preparedStart.ports.mcp,
-      holabossUserId,
+      hitechcloudUserId,
       workspaceId: params.workspaceId,
       resolvedApp: preparedStart.resolvedApp,
       skipSetup: appBuildHasCompletedSetup(build?.status)
@@ -299,7 +299,7 @@ export async function startResolvedApplications(params: {
   }
   return await bootstrapResolvedApplications({
     workspaceDir: resolvedWorkspaceDir,
-    holabossUserId: params.body.holaboss_user_id,
+    hitechcloudUserId: params.body.hitechcloud_user_id,
     resolvedApplications: params.body.resolved_applications,
     store: params.store,
     workspaceId: params.workspaceId,

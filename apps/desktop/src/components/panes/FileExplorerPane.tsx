@@ -179,7 +179,7 @@ const HTML_PREVIEW_EXTENSIONS = new Set([".html", ".htm"]);
 // shorter and are indented to suggest nested content.
 const FILE_SKELETON_ROW_WIDTHS = [68, 52, 64, 44, 58, 40, 50, 46];
 const EXPLORER_INTERNAL_MOVE_DRAG_TYPE =
-  "application/x-holaboss-file-explorer-move";
+  "application/x-hitechcloud-file-explorer-move";
 let explorerClipboardEntry: ExplorerClipboardEntry | null = null;
 
 type TextPreviewMode = "edit" | "preview";

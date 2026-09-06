@@ -3,7 +3,7 @@ const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 
 function resolveRuntimePlatform() {
-  const explicitPlatform = (process.env.HOLABOSS_RUNTIME_PLATFORM || "").trim().toLowerCase();
+  const explicitPlatform = (process.env.HITECHCLOUD_RUNTIME_PLATFORM || "").trim().toLowerCase();
   if (explicitPlatform) {
     switch (explicitPlatform) {
       case "macos":
@@ -11,7 +11,7 @@ function resolveRuntimePlatform() {
       case "windows":
         return explicitPlatform;
       default:
-        throw new Error(`Unsupported HOLABOSS_RUNTIME_PLATFORM: ${explicitPlatform}`);
+        throw new Error(`Unsupported HITECHCLOUD_RUNTIME_PLATFORM: ${explicitPlatform}`);
     }
   }
 
@@ -33,7 +33,7 @@ const runtimeBundlePath = path.join(__dirname, "out", runtimeBundleDir);
 // Windows-only: ship the runtime as ONE archive the app extracts on first
 // launch, instead of ~41k loose files NSIS writes (and Defender scans)
 // individually — the cause of the multi-minute install. macOS/Linux copy the
-// app bundle wholesale, so they keep the loose tree. HOLABOSS_RUNTIME_NO_ARCHIVE
+// app bundle wholesale, so they keep the loose tree. HITECHCLOUD_RUNTIME_NO_ARCHIVE
 // reverts Windows to the tree too (escape hatch). Kept in sync with
 // scripts/archive-runtime-bundle.mjs + electron/runtime-archive.ts.
 const runtimeArchiveBasename = "runtime-windows.tar.gz";
@@ -41,10 +41,10 @@ const runtimeArchivePath = path.join(__dirname, "out", runtimeArchiveBasename);
 const runtimeArchiveEnabled =
   runtimePlatform === "windows" &&
   !["1", "true", "yes", "on"].includes(
-    (process.env.HOLABOSS_RUNTIME_NO_ARCHIVE || "").trim().toLowerCase(),
+    (process.env.HITECHCLOUD_RUNTIME_NO_ARCHIVE || "").trim().toLowerCase(),
   );
-const githubReleasesOwner = "holaboss-ai";
-const githubReleasesRepo = "holaOS-releases";
+const githubReleasesOwner = "hitechcloud-vietnam";
+const githubReleasesRepo = "hitechcloudOS-releases";
 
 function readEnv(name) {
   return (process.env[name] || "").trim();
@@ -87,9 +87,9 @@ if (windowsAzureSigningConfigured && windowsCertificateSigningConfigured) {
 const windowsSigningConfigured =
   windowsAzureSigningConfigured || windowsCertificateSigningConfigured;
 const configuredReleaseChannel = (
-  process.env.HOLABOSS_RELEASE_CHANNEL || ""
+  process.env.HITECHCLOUD_RELEASE_CHANNEL || ""
 ).trim().toLowerCase();
-const configuredAppUpdatesEnabled = readEnv("HOLABOSS_ENABLE_APP_UPDATES").toLowerCase();
+const configuredAppUpdatesEnabled = readEnv("HITECHCLOUD_ENABLE_APP_UPDATES").toLowerCase();
 
 function resolveReleaseChannel() {
   if (!configuredReleaseChannel || configuredReleaseChannel === "latest") {
@@ -99,7 +99,7 @@ function resolveReleaseChannel() {
     return "beta";
   }
   throw new Error(
-    `Unsupported HOLABOSS_RELEASE_CHANNEL: ${configuredReleaseChannel}`,
+    `Unsupported HITECHCLOUD_RELEASE_CHANNEL: ${configuredReleaseChannel}`,
   );
 }
 
@@ -117,7 +117,7 @@ function shouldEnableAppUpdates() {
 
 const appUpdatesEnabled = shouldEnableAppUpdates();
 const configuredAppUpdateConfigBehavior = (
-  process.env.HOLABOSS_WRITE_APP_UPDATE_CONFIG || ""
+  process.env.HITECHCLOUD_WRITE_APP_UPDATE_CONFIG || ""
 ).trim().toLowerCase();
 function shouldWriteAppUpdateConfig() {
   if (!configuredAppUpdateConfigBehavior) {
@@ -130,11 +130,11 @@ function shouldWriteAppUpdateConfig() {
     return false;
   }
   throw new Error(
-    `Unsupported HOLABOSS_WRITE_APP_UPDATE_CONFIG: ${configuredAppUpdateConfigBehavior}`,
+    `Unsupported HITECHCLOUD_WRITE_APP_UPDATE_CONFIG: ${configuredAppUpdateConfigBehavior}`,
   );
 }
 const writeAppUpdateConfigEnabled = shouldWriteAppUpdateConfig();
-const macIdentity = (process.env.HOLABOSS_MAC_IDENTITY || "").trim();
+const macIdentity = (process.env.HITECHCLOUD_MAC_IDENTITY || "").trim();
 const extraResources = [
   {
     from: "resources/icon.png",
@@ -142,7 +142,7 @@ const extraResources = [
   },
   {
     // Handed to the fingerprint engine to re-icon the Camoufox.app bundle so a
-    // launched profile shows the holaOS icon (see fingerprintBrandIconPath).
+    // launched profile shows the hitechcloudOS icon (see fingerprintBrandIconPath).
     from: "resources/icon.icns",
     to: "icon.icns"
   },
@@ -163,8 +163,8 @@ const extraResources = [
     to: "holaStatusTemplate@2x.png"
   },
   {
-    from: "out/holaboss-config.json",
-    to: "holaboss-config.json"
+    from: "out/hitechcloud-config.json",
+    to: "hitechcloud-config.json"
   },
   runtimeArchiveEnabled
     ? {
@@ -185,8 +185,8 @@ const extraResources = [
 ];
 
 module.exports = {
-  appId: "com.holaboss.workspace",
-  productName: "holaOS",
+  appId: "com.hitechcloud.workspace",
+  productName: "hitechcloudOS",
   ...(appUpdatesEnabled ? { generateUpdatesFilesForAllChannels: true } : {}),
   directories: {
     output: "out/release"
@@ -200,9 +200,9 @@ module.exports = {
   asar: true,
   protocols: [
     {
-      name: "Holaboss Auth Callback",
+      name: "Hitechcloud Auth Callback",
       schemes: [
-        "ai.holaboss.app"
+        "ai.hitechcloud.app"
       ]
     }
   ],
@@ -218,7 +218,7 @@ module.exports = {
     ...(macIdentity ? { identity: macIdentity } : {})
   },
   dmg: {
-    artifactName: "holaOS-macos-${arch}.dmg",
+    artifactName: "hitechcloudOS-macos-${arch}.dmg",
     // electron-builder delegates DMG packing to a vendored Python `dmgbuild`,
     // which sizes the image itself: 128MB base + sum(roundup(fileSize, 4096)),
     // then `str(total / 1000) + "K"` — bytes divided by 1000 but labelled K
@@ -226,8 +226,8 @@ module.exports = {
     // journal, xattrs that lstat never counted) eats that, and the copy is
     // `subprocess.call(["/usr/bin/ditto", ...])` with the exit code DISCARDED
     // — so an ENOSPC mid-copy silently yields a DMG missing files while
-    // electron-builder still reports success. That shipped holaOS-2026.608.2
-    // and blocked holaOS-2026.815.1, both times dropping the ~200MB
+    // electron-builder still reports success. That shipped hitechcloudOS-2026.608.2
+    // and blocked hitechcloudOS-2026.815.1, both times dropping the ~200MB
     // `Electron Framework` binary (Intel first: the x64 payload runs ~15%
     // larger than arm64, so it crosses the line first).
     // `shrink` defaults to true and dmgbuild resizes to minimum after copying,
@@ -275,7 +275,7 @@ module.exports = {
     }
     if (runtimeArchiveEnabled && !fs.existsSync(runtimeArchivePath)) {
       throw new Error(
-        `Missing runtime archive at ${runtimeArchivePath}. prepare:runtime:windows builds it; set HOLABOSS_RUNTIME_NO_ARCHIVE=1 to ship the loose tree instead.`
+        `Missing runtime archive at ${runtimeArchivePath}. prepare:runtime:windows builds it; set HITECHCLOUD_RUNTIME_NO_ARCHIVE=1 to ship the loose tree instead.`
       );
     }
   },

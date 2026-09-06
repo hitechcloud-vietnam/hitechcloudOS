@@ -32,7 +32,7 @@ card was never rendered. The SKILL.md instructs the agent to end on
 
 ## Fix
 
-Two changes, both in `holaOS/runtime/api-server/src/`:
+Two changes, both in `hitechcloudOS/runtime/api-server/src/`:
 
 1. **`claimed-input-executor.ts:3266`** — extend the emitting set with five
    completion-type tools:
@@ -69,7 +69,7 @@ assistant turn renders the card.
 
 1. Rebuild runtime + redeploy bundled `.pyc` into desktop:
    ```bash
-   cd holaOS
+   cd hitechcloudOS
    npm run desktop:prepare-runtime:local
    ```
 2. Restart the desktop app.

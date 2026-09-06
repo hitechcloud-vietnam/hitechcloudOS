@@ -113,7 +113,7 @@ export type MaterializeMarketplaceTemplateMutationRequest = {
     /**
      * @type string
     */
-    holaboss_user_id: string;
+    hitechcloud_user_id: string;
     /**
      * @type string
     */

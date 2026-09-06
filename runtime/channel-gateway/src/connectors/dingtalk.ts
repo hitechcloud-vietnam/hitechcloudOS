@@ -172,7 +172,7 @@ export class DingTalkConnector implements ChannelConnector {
     const client = new sdk.DWClient({
       clientId: this.#clientId,
       clientSecret: this.#clientSecret,
-      ua: "holaos",
+      ua: "hitechcloudos",
     });
     client.registerCallbackListener(sdk.TOPIC_ROBOT ?? TOPIC_ROBOT, (v) => this.#onFrame(v));
     await client.connect();

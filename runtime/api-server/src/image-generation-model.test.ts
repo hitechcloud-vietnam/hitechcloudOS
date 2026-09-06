@@ -12,7 +12,7 @@ import {
 const tempDirs: string[] = [];
 const ORIGINAL_ENV = {
   HB_SANDBOX_ROOT: process.env.HB_SANDBOX_ROOT,
-  HOLABOSS_RUNTIME_CONFIG_PATH: process.env.HOLABOSS_RUNTIME_CONFIG_PATH,
+  HITECHCLOUD_RUNTIME_CONFIG_PATH: process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH,
 };
 
 afterEach(() => {
@@ -24,10 +24,10 @@ afterEach(() => {
   } else {
     process.env.HB_SANDBOX_ROOT = ORIGINAL_ENV.HB_SANDBOX_ROOT;
   }
-  if (ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH === undefined) {
-    delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+  if (ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH === undefined) {
+    delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   } else {
-    process.env.HOLABOSS_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH;
+    process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   }
 });
 
@@ -42,7 +42,7 @@ function writeRuntimeConfig(root: string, document: Record<string, unknown>): vo
   fs.mkdirSync(path.dirname(configPath), { recursive: true });
   fs.writeFileSync(configPath, `${JSON.stringify(document, null, 2)}\n`, "utf8");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
 }
 
 test("image generation model selection honors explicit selected image models over runtime.image_generation", () => {
@@ -243,8 +243,8 @@ test("image generation model client resolves OpenRouter image providers with Ope
     baseUrl: "https://openrouter.ai/api/v1",
     apiKey: "sk-or-test",
     defaultHeaders: {
-      "HTTP-Referer": "https://holaboss.ai",
-      "X-OpenRouter-Title": "holaOS",
+      "HTTP-Referer": "https://hitechcloud.vn",
+      "X-OpenRouter-Title": "hitechcloudOS",
       "X-OpenRouter-Categories": "personal-agent,general-chat",
     },
     modelId: "google/gemini-3.1-flash-image",
@@ -252,22 +252,22 @@ test("image generation model client resolves OpenRouter image providers with Ope
   });
 });
 
-test("image generation model client routes managed Holaboss Gemini image models to the Google proxy path", () => {
-  const root = makeTempDir("hb-image-model-holaboss-google-");
+test("image generation model client routes managed Hitechcloud Gemini image models to the Google proxy path", () => {
+  const root = makeTempDir("hb-image-model-hitechcloud-google-");
   writeRuntimeConfig(root, {
     // A resolved user is required on the proxy path (see the fail-closed test
     // below); include one so this routing test exercises a valid client.
     user_id: "user-xyz",
     providers: {
-      holaboss_model_proxy: {
-        kind: "holaboss_proxy",
+      hitechcloud_model_proxy: {
+        kind: "hitechcloud_proxy",
         base_url: "https://runtime.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
     },
     models: {
-      "holaboss_model_proxy/gemini-3.1-flash-image": {
-        provider_id: "holaboss_model_proxy",
+      "hitechcloud_model_proxy/gemini-3.1-flash-image": {
+        provider_id: "hitechcloud_model_proxy",
         model_id: "gemini-3.1-flash-image",
         capabilities: ["image_generation"],
       },
@@ -278,39 +278,39 @@ test("image generation model client routes managed Holaboss Gemini image models 
     workspaceId: "workspace-1",
     sessionId: "session-1",
     inputId: "input-1",
-    selectedModel: "holaboss_model_proxy/gemini-3.1-flash-image",
-    defaultProviderId: "holaboss_model_proxy",
+    selectedModel: "hitechcloud_model_proxy/gemini-3.1-flash-image",
+    defaultProviderId: "hitechcloud_model_proxy",
   });
 
   assert.deepEqual(client, {
     baseUrl: "https://runtime.example/api/v1/model-proxy/google/v1",
     apiKey: "hb-token",
     defaultHeaders: {
-      "X-Holaboss-User-Id": "user-xyz",
+      "X-Hitechcloud-User-Id": "user-xyz",
       // Added so desktop image spend is attributed in the usage log's Entity
       // column; without it that column is blank.
-      "X-Holaboss-Requester-Id": "desktop:user-xyz",
+      "X-Hitechcloud-Requester-Id": "desktop:user-xyz",
     },
     modelId: "gemini-3.1-flash-image",
     apiStyle: "openai_compatible",
   });
 });
 
-test("image generation model client attaches metering identity headers for the Holaboss proxy", () => {
-  const root = makeTempDir("hb-image-model-holaboss-metering-");
+test("image generation model client attaches metering identity headers for the Hitechcloud proxy", () => {
+  const root = makeTempDir("hb-image-model-hitechcloud-metering-");
   writeRuntimeConfig(root, {
     user_id: "user-xyz",
     sandbox_id: "sbx-1",
     providers: {
-      holaboss_model_proxy: {
-        kind: "holaboss_proxy",
+      hitechcloud_model_proxy: {
+        kind: "hitechcloud_proxy",
         base_url: "https://runtime.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
     },
     models: {
-      "holaboss_model_proxy/gemini-3.1-flash-image": {
-        provider_id: "holaboss_model_proxy",
+      "hitechcloud_model_proxy/gemini-3.1-flash-image": {
+        provider_id: "hitechcloud_model_proxy",
         model_id: "gemini-3.1-flash-image",
         capabilities: ["image_generation"],
       },
@@ -321,32 +321,32 @@ test("image generation model client attaches metering identity headers for the H
     workspaceId: "workspace-1",
     sessionId: "session-1",
     inputId: "input-1",
-    selectedModel: "holaboss_model_proxy/gemini-3.1-flash-image",
-    defaultProviderId: "holaboss_model_proxy",
+    selectedModel: "hitechcloud_model_proxy/gemini-3.1-flash-image",
+    defaultProviderId: "hitechcloud_model_proxy",
   });
 
   // Without these the backend meters nothing (submit_usage no-ops on an empty user id).
-  assert.equal(client?.defaultHeaders?.["X-Holaboss-User-Id"], "user-xyz");
-  assert.equal(client?.defaultHeaders?.["X-Holaboss-Sandbox-Id"], "sbx-1");
+  assert.equal(client?.defaultHeaders?.["X-Hitechcloud-User-Id"], "user-xyz");
+  assert.equal(client?.defaultHeaders?.["X-Hitechcloud-Sandbox-Id"], "sbx-1");
 });
 
-test("image generation model client fails closed for the Holaboss proxy when no user is resolved", () => {
-  const root = makeTempDir("hb-image-model-holaboss-no-user-");
+test("image generation model client fails closed for the Hitechcloud proxy when no user is resolved", () => {
+  const root = makeTempDir("hb-image-model-hitechcloud-no-user-");
   // Same as the metering config above, but with no user_id. The backend now rejects
-  // OpenRouter-bound proxy calls without X-Holaboss-User-Id (unattributed + unmetered),
+  // OpenRouter-bound proxy calls without X-Hitechcloud-User-Id (unattributed + unmetered),
   // so we must skip image generation rather than build a doomed request.
   writeRuntimeConfig(root, {
     sandbox_id: "sbx-1",
     providers: {
-      holaboss_model_proxy: {
-        kind: "holaboss_proxy",
+      hitechcloud_model_proxy: {
+        kind: "hitechcloud_proxy",
         base_url: "https://runtime.example/api/v1/model-proxy",
         api_key: "hb-token",
       },
     },
     models: {
-      "holaboss_model_proxy/gemini-3.1-flash-image": {
-        provider_id: "holaboss_model_proxy",
+      "hitechcloud_model_proxy/gemini-3.1-flash-image": {
+        provider_id: "hitechcloud_model_proxy",
         model_id: "gemini-3.1-flash-image",
         capabilities: ["image_generation"],
       },
@@ -357,8 +357,8 @@ test("image generation model client fails closed for the Holaboss proxy when no 
     workspaceId: "workspace-1",
     sessionId: "session-1",
     inputId: "input-1",
-    selectedModel: "holaboss_model_proxy/gemini-3.1-flash-image",
-    defaultProviderId: "holaboss_model_proxy",
+    selectedModel: "hitechcloud_model_proxy/gemini-3.1-flash-image",
+    defaultProviderId: "hitechcloud_model_proxy",
   });
 
   assert.equal(client, null);

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import type { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import type { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 
 import {
   type CapabilityInstallResult,

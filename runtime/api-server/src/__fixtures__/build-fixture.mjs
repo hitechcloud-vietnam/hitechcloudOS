@@ -6,7 +6,7 @@ import * as os from "node:os";
 import * as tar from "tar";
 
 const here = path.dirname(new URL(import.meta.url).pathname);
-const stage = fs.mkdtempSync(path.join(os.tmpdir(), "holaboss-fixture-"));
+const stage = fs.mkdtempSync(path.join(os.tmpdir(), "hitechcloud-fixture-"));
 
 fs.writeFileSync(
   path.join(stage, "app.runtime.yaml"),

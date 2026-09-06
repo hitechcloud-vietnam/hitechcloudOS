@@ -1,7 +1,7 @@
 import {
   createRemoteApiClient,
   type RemoteApiClient,
-} from "@holaboss/remote-api/client";
+} from "@hitechcloud/remote-api/client";
 
 // The embedded runtime boots asynchronously and its port can change across
 // restarts, so renderer-direct calls must tolerate a "not listening yet"

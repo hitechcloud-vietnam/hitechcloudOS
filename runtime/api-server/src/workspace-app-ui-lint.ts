@@ -2,9 +2,9 @@
 // for any app that ships a `src/client/` directory.
 //
 // Two failure modes observed in the field, both bypassing the
-// @holaboss/ui design system without obvious symptom:
+// @hitechcloud/ui design system without obvious symptom:
 //
-//   1. Agent imports `@holaboss/ui/styles.css` (to get tokens + the
+//   1. Agent imports `@hitechcloud/ui/styles.css` (to get tokens + the
 //      pre-baked Tailwind layer), then hand-rolls every component
 //      from scratch with ad-hoc class names (e.g. `count-tile`,
 //      `state-pill`, `command-rail`, `skeleton-block`). Zero named
@@ -14,14 +14,14 @@
 //      ad-hoc CSS one-off.
 //
 //   2. Agent ships a local `src/client/src/styles.css` next to
-//      `@holaboss/ui/styles.css` containing a parallel design
+//      `@hitechcloud/ui/styles.css` containing a parallel design
 //      system: hand-rolled CSS custom properties (`--git-open:
 //      #1f883d`), hardcoded hex colors, custom radii. The library
 //      tokens get overridden by the local stylesheet's variables and
 //      the design system becomes purely advisory.
 //
 // Both are bypasses — the library is imported (so the register-time
-// check "is @holaboss/ui in the dep graph?" passes), but no library
+// check "is @hitechcloud/ui in the dep graph?" passes), but no library
 // primitives actually compose the UI. The result is the same look
 // the user keeps rejecting.
 //
@@ -34,12 +34,12 @@
 // `*.css` files outright. A legitimate pattern is a small local file
 // containing just `@import "tailwindcss"` so the app's compose-time
 // classNames (e.g. `grid grid-cols-4 gap-3` around library primitives)
-// have utilities available — `@holaboss/ui/styles.css` only ships the
+// have utilities available — `@hitechcloud/ui/styles.css` only ships the
 // utilities its OWN primitives use, not every Tailwind class an app
 // might compose. What gets rejected is content patterns that signal a
 // parallel design system: hex color literals, oklch/hsl/rgb literals
-// outside @holaboss/ui, and `--custom-var:` definitions other than
-// passthrough `var(--holaOS-token)` forwards.
+// outside @hitechcloud/ui, and `--custom-var:` definitions other than
+// passthrough `var(--hitechcloudOS-token)` forwards.
 
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
@@ -63,11 +63,11 @@ const SKIPPED_DIR_NAMES = new Set([
 ]);
 
 // Threshold: a dashboard whose entire src/client/ uses fewer than
-// this many distinct named imports from @holaboss/ui is almost
+// this many distinct named imports from @hitechcloud/ui is almost
 // certainly bypassing the library. Picked low (3) so apps with a
 // genuinely sparse UI (e.g. a single full-bleed Chart) still pass,
 // but high enough to catch the "0 imports" bypass cleanly.
-const MIN_HOLABOSS_UI_NAMED_IMPORTS = 3;
+const MIN_HITECHCLOUD_UI_NAMED_IMPORTS = 3;
 
 // Hex literals + standalone color functions in app-local CSS are the
 // canonical "parallel design system" signal. The library's stylesheet
@@ -76,7 +76,7 @@ const MIN_HOLABOSS_UI_NAMED_IMPORTS = 3;
 const HEX_COLOR_LITERAL = /#[0-9a-fA-F]{3,8}\b/;
 const COLOR_FUNCTION_LITERAL = /\b(?:rgb|rgba|hsl|hsla|oklch|oklab|lab|lch)\(/i;
 // Any CSS custom-property *definition* (`--foo: <value>;`) in app-local
-// CSS that doesn't forward an existing holaOS token. The library's
+// CSS that doesn't forward an existing hitechcloudOS token. The library's
 // own tokens live behind `var(--<name>)` references; legitimate app
 // passthroughs look like `--my-thing: var(--background);`.
 const CUSTOM_VAR_DEFINITION = /^\s*--[a-zA-Z][\w-]*\s*:/m;
@@ -127,12 +127,12 @@ function walkSourceFiles(rootDir: string, extensions: ReadonlySet<string>): stri
 }
 
 // Extract distinct named imports `{ X, Y as Z }` from any `from
-// "@holaboss/ui"` (with optional /subpath) statement in `contents`.
-// The `import "@holaboss/ui/styles.css"` side-effect import is NOT
+// "@hitechcloud/ui"` (with optional /subpath) statement in `contents`.
+// The `import "@hitechcloud/ui/styles.css"` side-effect import is NOT
 // a named import and does NOT count toward the threshold.
-function holabossUiNamedImports(contents: string): Set<string> {
+function hitechcloudUiNamedImports(contents: string): Set<string> {
   const out = new Set<string>();
-  const re = /import\s+(?:type\s+)?\{([^}]+)\}\s+from\s+["']@holaboss\/ui(?:\/[^"']*)?["']/g;
+  const re = /import\s+(?:type\s+)?\{([^}]+)\}\s+from\s+["']@hitechcloud\/ui(?:\/[^"']*)?["']/g;
   let match: RegExpExecArray | null;
   re.lastIndex = 0;
   while ((match = re.exec(contents)) !== null) {
@@ -232,10 +232,10 @@ function findParallelDesignSystemMarkers(
 
 export interface DashboardUiLintResult {
   hasClientDir: boolean;
-  /** Number of distinct named imports from @holaboss/ui across src/client/. */
-  uniqueHolabossUiNamedImports: number;
+  /** Number of distinct named imports from @hitechcloud/ui across src/client/. */
+  uniqueHitechcloudUiNamedImports: number;
   /** The actual names imported (sorted), useful for the error message. */
-  holabossUiNamedImportNames: string[];
+  hitechcloudUiNamedImportNames: string[];
   /** Lines in app-local CSS that signal a parallel design system. */
   parallelDesignSystemMarkers: Array<{
     file: string;
@@ -244,7 +244,7 @@ export interface DashboardUiLintResult {
     reason: CssParallelSystemFinding["reason"];
   }>;
   /** True when at least one app-local `.css` file under `src/client/`
-   *  contains `@import "tailwindcss"`. Required because `@holaboss/ui`'s
+   *  contains `@import "tailwindcss"`. Required because `@hitechcloud/ui`'s
    *  pre-built stylesheet only bakes in utilities used INSIDE the library
    *  — every Tailwind utility the app itself writes (e.g. `max-w-3xl`,
    *  `grid-cols-4`, `text-fg-48`) needs an app-side Tailwind compile pass
@@ -300,8 +300,8 @@ export function inspectDashboardUiUsage(appDir: string): DashboardUiLintResult {
   if (!existsSync(clientDir)) {
     return {
       hasClientDir: false,
-      uniqueHolabossUiNamedImports: 0,
-      holabossUiNamedImportNames: [],
+      uniqueHitechcloudUiNamedImports: 0,
+      hitechcloudUiNamedImportNames: [],
       parallelDesignSystemMarkers: [],
       hasAppLocalTailwindImport: false,
       scannedFiles: 0,
@@ -316,7 +316,7 @@ export function inspectDashboardUiUsage(appDir: string): DashboardUiLintResult {
     } catch {
       continue;
     }
-    for (const name of holabossUiNamedImports(contents)) {
+    for (const name of hitechcloudUiNamedImports(contents)) {
       allImports.add(name);
     }
   }
@@ -328,8 +328,8 @@ export function inspectDashboardUiUsage(appDir: string): DashboardUiLintResult {
   }));
   return {
     hasClientDir: true,
-    uniqueHolabossUiNamedImports: allImports.size,
-    holabossUiNamedImportNames: [...allImports].sort(),
+    uniqueHitechcloudUiNamedImports: allImports.size,
+    hitechcloudUiNamedImportNames: [...allImports].sort(),
     parallelDesignSystemMarkers: cssMarkers,
     hasAppLocalTailwindImport: hasTailwindImportSomewhere(clientDir),
     scannedFiles: sourceFiles.length,
@@ -338,7 +338,7 @@ export function inspectDashboardUiUsage(appDir: string): DashboardUiLintResult {
 
 export interface DashboardUiLintViolation {
   code:
-    | "workspace_app_holaboss_ui_named_imports_too_few"
+    | "workspace_app_hitechcloud_ui_named_imports_too_few"
     | "workspace_app_parallel_design_system"
     | "workspace_app_missing_tailwind_compile";
   message: string;
@@ -358,15 +358,15 @@ export function dashboardUiLintViolations(
   if (!result.hasClientDir) return [];
   const out: DashboardUiLintViolation[] = [];
 
-  if (result.uniqueHolabossUiNamedImports < MIN_HOLABOSS_UI_NAMED_IMPORTS) {
+  if (result.uniqueHitechcloudUiNamedImports < MIN_HITECHCLOUD_UI_NAMED_IMPORTS) {
     out.push({
-      code: "workspace_app_holaboss_ui_named_imports_too_few",
+      code: "workspace_app_hitechcloud_ui_named_imports_too_few",
       message: [
-        `Dashboard app has \`src/client/\` but only ${result.uniqueHolabossUiNamedImports} distinct named import(s) from \`@holaboss/ui\` across ${result.scannedFiles} client file(s).`,
-        `Minimum is ${MIN_HOLABOSS_UI_NAMED_IMPORTS}. Importing only \`@holaboss/ui/styles.css\` (the stylesheet) does NOT count — the library exists to provide composable components, not just tokens.`,
-        "Replace your hand-rolled className-based components with primitives from `@holaboss/ui`. The everyday building blocks are exported as:",
+        `Dashboard app has \`src/client/\` but only ${result.uniqueHitechcloudUiNamedImports} distinct named import(s) from \`@hitechcloud/ui\` across ${result.scannedFiles} client file(s).`,
+        `Minimum is ${MIN_HITECHCLOUD_UI_NAMED_IMPORTS}. Importing only \`@hitechcloud/ui/styles.css\` (the stylesheet) does NOT count — the library exists to provide composable components, not just tokens.`,
+        "Replace your hand-rolled className-based components with primitives from `@hitechcloud/ui`. The everyday building blocks are exported as:",
         SUGGESTED_PRIMITIVES.map((entry) => `  - ${entry}`).join("\n"),
-        `Currently imported names: ${result.holabossUiNamedImportNames.length > 0 ? result.holabossUiNamedImportNames.join(", ") : "(none)"}.`,
+        `Currently imported names: ${result.hitechcloudUiNamedImportNames.length > 0 ? result.hitechcloudUiNamedImportNames.join(", ") : "(none)"}.`,
         "If the library is genuinely missing a primitive, surface to the SDK team — do not redefine one locally.",
       ].join("\n"),
     });
@@ -377,12 +377,12 @@ export function dashboardUiLintViolations(
       code: "workspace_app_missing_tailwind_compile",
       message: [
         "Dashboard app has `src/client/` but no `.css` file under it contains `@import \"tailwindcss\"`.",
-        "Without it, every Tailwind utility class the app itself writes (e.g. `max-w-3xl`, `grid-cols-4`, `text-fg-48`, `text-foreground`, `bg-card`) silently drops out of the bundle. `@holaboss/ui/styles.css` only bakes in the utilities used INSIDE the library — not the ones your `src/client/` composes.",
+        "Without it, every Tailwind utility class the app itself writes (e.g. `max-w-3xl`, `grid-cols-4`, `text-fg-48`, `text-foreground`, `bg-card`) silently drops out of the bundle. `@hitechcloud/ui/styles.css` only bakes in the utilities used INSIDE the library — not the ones your `src/client/` composes.",
         "The visible symptom is that the page renders with most className utilities unstyled: text falls to browser defaults, spacing collapses, the layout looks broken even though the JSX is correct.",
         "Fix: create `src/client/app.css` (or any name) containing exactly:",
         "  @import \"tailwindcss\";",
         "  @source \"../client\";   /* path relative to this file — point at your src/client/ tree */",
-        "and import it once at the dashboard root (alongside `import \"@holaboss/ui/styles.css\";`).",
+        "and import it once at the dashboard root (alongside `import \"@hitechcloud/ui/styles.css\";`).",
         "If you use TanStack Start or Vite, also add `@tailwindcss/vite` to your plugins so the @import + @source actually compile.",
       ].join("\n"),
     });
@@ -402,12 +402,12 @@ export function dashboardUiLintViolations(
       message: [
         `Dashboard app's \`src/client/\` CSS contains a parallel design system. The following lines are not allowed:`,
         violations + trailer,
-        "Reason: hex color literals, raw color function calls (rgb / hsl / oklch / lab / lch), and `--custom-var:` definitions that don't forward an existing holaOS token all indicate the app is layering its own theme on top of `@holaboss/ui`'s tokens. This consistently produces dashboards that look nothing like the rest of the workspace and bypass the font-weight cap, the OKLch palette, and the workspace theme system entirely.",
+        "Reason: hex color literals, raw color function calls (rgb / hsl / oklch / lab / lch), and `--custom-var:` definitions that don't forward an existing hitechcloudOS token all indicate the app is layering its own theme on top of `@hitechcloud/ui`'s tokens. This consistently produces dashboards that look nothing like the rest of the workspace and bypass the font-weight cap, the OKLch palette, and the workspace theme system entirely.",
         "What's allowed in app-local CSS:",
         "  - `@import \"tailwindcss\"` (so app-side composed Tailwind classes work)",
         "  - empty `@layer base {}` / `@layer components {}` / `@layer utilities {}` blocks",
-        "  - `--my-thing: var(--background);` style passthrough forwards of existing holaOS tokens",
-        "Use Tailwind utilities + `@holaboss/ui` primitives + theme tokens (`bg-background`, `text-foreground`, `text-muted-foreground`, `border-border`, etc.) for everything visual. If a value is genuinely missing from the token palette, surface to the SDK team — do not patch it locally.",
+        "  - `--my-thing: var(--background);` style passthrough forwards of existing hitechcloudOS tokens",
+        "Use Tailwind utilities + `@hitechcloud/ui` primitives + theme tokens (`bg-background`, `text-foreground`, `text-muted-foreground`, `border-border`, etc.) for everything visual. If a value is genuinely missing from the token palette, surface to the SDK team — do not patch it locally.",
       ].join("\n"),
     });
   }

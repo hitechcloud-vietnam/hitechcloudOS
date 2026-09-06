@@ -23,27 +23,27 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export const meta: Route.MetaFunction = () => [
-  { title: 'holaOS Docs' },
+  { title: 'hitechcloudOS Docs' },
   {
     name: 'description',
     content:
-      'Guides, references, and platform internals for building and running long-horizon agents on holaOS.',
+      'Guides, references, and platform internals for building and running long-horizon agents on hitechcloudOS.',
   },
-  { property: 'og:title', content: 'holaOS Docs' },
+  { property: 'og:title', content: 'hitechcloudOS Docs' },
   {
     property: 'og:description',
     content:
-      'Guides, references, and platform internals for building and running long-horizon agents on holaOS.',
+      'Guides, references, and platform internals for building and running long-horizon agents on hitechcloudOS.',
   },
   { property: 'og:type', content: 'website' },
-  { property: 'og:site_name', content: 'holaOS' },
+  { property: 'og:site_name', content: 'hitechcloudOS' },
   { property: 'og:image', content: '/docs/logo.svg' },
   { name: 'twitter:card', content: 'summary_large_image' },
-  { name: 'twitter:title', content: 'holaOS Docs' },
+  { name: 'twitter:title', content: 'hitechcloudOS Docs' },
   {
     name: 'twitter:description',
     content:
-      'Guides, references, and platform internals for building and running long-horizon agents on holaOS.',
+      'Guides, references, and platform internals for building and running long-horizon agents on hitechcloudOS.',
   },
   { name: 'twitter:image', content: '/docs/logo.svg' },
   { name: 'theme-color', content: '#F58419' },

@@ -2,7 +2,7 @@
 //
 // Used by default in tests and dev. Production runtime should inject
 // SqliteStateBackend (see state-backend-sqlite.ts) which persists to
-// workspace.db + Holaboss runtime state-store.
+// workspace.db + Hitechcloud runtime state-store.
 
 import type {
   AppState,

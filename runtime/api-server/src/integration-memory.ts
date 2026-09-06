@@ -10,7 +10,7 @@ import {
   type InteractionTreeChildKind,
   type RuntimeStateStore,
   utcNowIso,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 import type { AgentRecalledMemoryContext } from "./memory-retrieval-pack.js";
 import { queryMemoryModelEmbedding, queryMemoryModelJson, type MemoryModelClientConfig } from "./memory-model-client.js";

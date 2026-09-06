@@ -41,7 +41,7 @@ function releaseVersion(date, releaseNumber) {
 }
 
 function desktopReleaseTag(version) {
-  return `holaOS-${version}`;
+  return `hitechcloudOS-${version}`;
 }
 
 let releaseNumber = 1;

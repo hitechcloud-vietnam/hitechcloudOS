@@ -1,7 +1,7 @@
 {
-  "name": "@holaboss/app-sdk",
+  "name": "@hitechcloud/app-sdk",
   "version": "0.1.1",
-  "description": "Holaboss App SDK — generated TypeScript client, TanStack Query hooks, and Zod schemas for the Holaboss product API",
+  "description": "Hitechcloud App SDK — generated TypeScript client, TanStack Query hooks, and Zod schemas for the Hitechcloud product API",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -71,7 +71,7 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [
-    "holaboss",
+    "hitechcloud",
     "app-sdk",
     "sdk",
     "marketplace",
@@ -82,12 +82,12 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/holaboss-ai/holaOS.git",
+    "url": "git+https://github.com/hitechcloud-vietnam/hitechcloudOS.git",
     "directory": "packages/app-sdk"
   },
-  "homepage": "https://github.com/holaboss-ai/holaOS/tree/main/packages/app-sdk",
+  "homepage": "https://github.com/hitechcloud-vietnam/hitechcloudOS/tree/main/packages/app-sdk",
   "bugs": {
-    "url": "https://github.com/holaboss-ai/holaOS/issues"
+    "url": "https://github.com/hitechcloud-vietnam/hitechcloudOS/issues"
   },
   "engines": {
     "node": ">=20"

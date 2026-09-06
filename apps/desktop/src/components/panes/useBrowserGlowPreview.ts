@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-const BROWSER_GLOW_PREVIEW_EVENT = "holaboss:browser-glow-preview-change";
+const BROWSER_GLOW_PREVIEW_EVENT = "hitechcloud:browser-glow-preview-change";
 
 declare global {
   interface Window {
-    __holabossBrowserGlowPreviewEnabled?: boolean;
-    __holabossDevBrowserGlowPreview?: {
+    __hitechcloudBrowserGlowPreviewEnabled?: boolean;
+    __hitechcloudDevBrowserGlowPreview?: {
       on: () => void;
       off: () => void;
       toggle: () => void;
@@ -16,7 +16,7 @@ declare global {
 }
 
 function setBrowserGlowPreviewEnabled(next: boolean) {
-  window.__holabossBrowserGlowPreviewEnabled = next;
+  window.__hitechcloudBrowserGlowPreviewEnabled = next;
   window.dispatchEvent(
     new CustomEvent(BROWSER_GLOW_PREVIEW_EVENT, {
       detail: next,
@@ -26,12 +26,12 @@ function setBrowserGlowPreviewEnabled(next: boolean) {
 
 export function useBrowserGlowPreview() {
   const [enabled, setEnabled] = useState(
-    () => window.__holabossBrowserGlowPreviewEnabled === true,
+    () => window.__hitechcloudBrowserGlowPreviewEnabled === true,
   );
 
   useEffect(() => {
     const applyCurrentState = () => {
-      setEnabled(window.__holabossBrowserGlowPreviewEnabled === true);
+      setEnabled(window.__hitechcloudBrowserGlowPreviewEnabled === true);
     };
 
     const handlePreviewChange = () => {
@@ -43,15 +43,15 @@ export function useBrowserGlowPreview() {
       BROWSER_GLOW_PREVIEW_EVENT,
       handlePreviewChange as EventListener,
     );
-    window.__holabossDevBrowserGlowPreview = {
+    window.__hitechcloudDevBrowserGlowPreview = {
       on: () => setBrowserGlowPreviewEnabled(true),
       off: () => setBrowserGlowPreviewEnabled(false),
       toggle: () =>
         setBrowserGlowPreviewEnabled(
-          window.__holabossBrowserGlowPreviewEnabled !== true,
+          window.__hitechcloudBrowserGlowPreviewEnabled !== true,
         ),
       set: (next: boolean) => setBrowserGlowPreviewEnabled(next),
-      get: () => window.__holabossBrowserGlowPreviewEnabled === true,
+      get: () => window.__hitechcloudBrowserGlowPreviewEnabled === true,
     };
 
     return () => {

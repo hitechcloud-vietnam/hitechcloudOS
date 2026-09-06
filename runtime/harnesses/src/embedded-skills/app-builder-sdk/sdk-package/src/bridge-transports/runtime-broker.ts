@@ -1,12 +1,12 @@
-// Runtime-broker transport — production path inside the Holaboss runtime.
+// Runtime-broker transport — production path inside the Hitechcloud runtime.
 //
 // Uses the same `/broker/proxy` endpoint + grant-based auth as the legacy
-// `@holaboss/bridge` SDK, so this SDK's apps slot into existing sandbox
+// `@hitechcloud/bridge` SDK, so this SDK's apps slot into existing sandbox
 // integration infrastructure with no runtime-side changes.
 //
 // The runtime injects two env vars when launching an SDK app:
-//   - HOLABOSS_INTEGRATION_BROKER_URL   in-sandbox runtime URL
-//   - HOLABOSS_APP_GRANT                grant:<workspaceId>:<appId>:<nonce>
+//   - HITECHCLOUD_INTEGRATION_BROKER_URL   in-sandbox runtime URL
+//   - HITECHCLOUD_APP_GRANT                grant:<workspaceId>:<appId>:<nonce>
 //
 // On broker-level errors (grant invalid, binding missing, connection inactive,
 // token unavailable) the transport returns the HTTP status as-is, so
@@ -26,26 +26,26 @@ export interface RuntimeBrokerOpts {
   /** Provider id (e.g. "slack", "twitter"). Required — broker uses it to
    *  look up the integration binding for the grant's workspace+app. */
   provider: string
-  /** Broker URL. Defaults to HOLABOSS_INTEGRATION_BROKER_URL env. */
+  /** Broker URL. Defaults to HITECHCLOUD_INTEGRATION_BROKER_URL env. */
   brokerUrl?: string
-  /** App grant token. Defaults to HOLABOSS_APP_GRANT env. */
+  /** App grant token. Defaults to HITECHCLOUD_APP_GRANT env. */
   grant?: string
   fetchImpl?: FetchLike
 }
 
 export function createRuntimeBrokerTransport(opts: RuntimeBrokerOpts): TransportFn {
-  const brokerUrl = (opts.brokerUrl ?? process.env.HOLABOSS_INTEGRATION_BROKER_URL ?? "")
+  const brokerUrl = (opts.brokerUrl ?? process.env.HITECHCLOUD_INTEGRATION_BROKER_URL ?? "")
     .replace(/\/+$/, "")
-  const grant = opts.grant ?? process.env.HOLABOSS_APP_GRANT ?? ""
+  const grant = opts.grant ?? process.env.HITECHCLOUD_APP_GRANT ?? ""
 
   if (!brokerUrl) {
     throw new Error(
-      "runtime-broker transport: HOLABOSS_INTEGRATION_BROKER_URL not set and no brokerUrl override provided",
+      "runtime-broker transport: HITECHCLOUD_INTEGRATION_BROKER_URL not set and no brokerUrl override provided",
     )
   }
   if (!grant) {
     throw new Error(
-      "runtime-broker transport: HOLABOSS_APP_GRANT not set and no grant override provided",
+      "runtime-broker transport: HITECHCLOUD_APP_GRANT not set and no grant override provided",
     )
   }
   if (!opts.provider) {
@@ -82,7 +82,7 @@ export function createRuntimeBrokerTransport(opts: RuntimeBrokerOpts): Transport
       try { parsed = text ? JSON.parse(text) : null } catch { parsed = { _raw: text } }
 
       // Recast Hono-upstream auth failures to 401 so bridge.ts maps them to
-      // `not_connected` and the agent surfaces "please re-login to Holaboss"
+      // `not_connected` and the agent surfaces "please re-login to Hitechcloud"
       // instead of a generic upstream 5xx. The cookie-crash signature is a 5xx
       // from runtime's ComposioService wrapping Hono's response — the error
       // string "Composio proxy via Hono failed: ..." is stable across the
@@ -92,9 +92,9 @@ export function createRuntimeBrokerTransport(opts: RuntimeBrokerOpts): Transport
         return {
           status: 401,
           body: {
-            error: "holaboss_session_invalid",
+            error: "hitechcloud_session_invalid",
             message:
-              "Holaboss session is invalid or expired. Log in to Holaboss in the desktop app, " +
+              "Hitechcloud session is invalid or expired. Log in to Hitechcloud in the desktop app, " +
               "then restart desktop so the runtime picks up a fresh auth cookie.",
             broker_status: r.status,
             broker_body: parsed,

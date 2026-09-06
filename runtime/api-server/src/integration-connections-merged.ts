@@ -1,7 +1,7 @@
 import type {
   IntegrationConnectionRecord,
   RuntimeStateStore,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 import { getRemoteComposioSource } from "./composio-remote-source.js";
 import type { RemoteComposioConnection } from "./composio-toolkit-resolver.js";

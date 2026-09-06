@@ -2,7 +2,7 @@
 
 > **Execution Note:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Build the first end-to-end integrations layer for Holaboss, including runtime parsing of integration requirements, persisted connections and bindings, a compatibility broker/API, app lifecycle injection, and a desktop management surface.
+**Goal:** Build the first end-to-end integrations layer for Hitechcloud, including runtime parsing of integration requirements, persisted connections and bindings, a compatibility broker/API, app lifecycle injection, and a desktop management surface.
 
 **Architecture:** Phase 1 is a compatibility bridge. It introduces structured integration metadata and binding resolution without forcing every existing module to immediately abandon `PLATFORM_INTEGRATION_TOKEN`. The runtime becomes the source of truth for connections and bindings, the desktop gets a first-class Integrations UI, and app lifecycle execution injects resolved integration data into app processes.
 
@@ -57,7 +57,7 @@ assert.deepEqual(result.integrations, [
     scopes: ["gmail.send", "gmail.readonly"],
     required: true,
     credentialSource: "platform",
-    holabossUserIdRequired: true,
+    hitechcloudUserIdRequired: true,
   },
 ]);
 ```
@@ -94,7 +94,7 @@ export interface ResolvedIntegrationRequirement {
   scopes: string[];
   required: boolean;
   credentialSource: "platform" | "manual" | "broker";
-  holabossUserIdRequired: boolean;
+  hitechcloudUserIdRequired: boolean;
 }
 ```
 
@@ -155,7 +155,7 @@ store.upsertIntegrationConnection({
   connectionId: "conn-1",
   providerId: "google",
   ownerUserId: "user-1",
-  accountLabel: "owner@holaboss.ai",
+  accountLabel: "owner@hitechcloud.vn",
   authMode: "oauth_app",
   grantedScopes: ["gmail.send"],
   status: "active",
@@ -335,8 +335,8 @@ Add tests for:
 
 - resolving a workspace default binding for an app integration
 - resolving an app-specific binding override
-- injecting `HOLABOSS_INTEGRATION_BROKER_URL`
-- injecting `HOLABOSS_APP_GRANT`
+- injecting `HITECHCLOUD_INTEGRATION_BROKER_URL`
+- injecting `HITECHCLOUD_APP_GRANT`
 - injecting compatibility env values for current apps:
   - `PLATFORM_INTEGRATION_TOKEN`
   - `WORKSPACE_GOOGLE_INTEGRATION_ID`
@@ -347,7 +347,7 @@ Use a fake token payload in test fixtures:
 ```ts
 assert.equal(env.PLATFORM_INTEGRATION_TOKEN, "token-google-1");
 assert.equal(env.WORKSPACE_GOOGLE_INTEGRATION_ID, "conn-google-1");
-assert.equal(env.HOLABOSS_INTEGRATION_BROKER_URL, "http://127.0.0.1:8080/api/v1/integrations");
+assert.equal(env.HITECHCLOUD_INTEGRATION_BROKER_URL, "http://127.0.0.1:8080/api/v1/integrations");
 ```
 
 **Step 2: Run tests to verify they fail**
@@ -385,7 +385,7 @@ Do not build signed auth yet.
 In `app-lifecycle-worker.ts`:
 
 - expand `buildShellLifecycleEnv`
-- preserve existing `HOLABOSS_USER_ID`
+- preserve existing `HITECHCLOUD_USER_ID`
 - add integration-derived env values when the app declares a matching integration
 
 In `app-setup-env.ts`:

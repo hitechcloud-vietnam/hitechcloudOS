@@ -5,7 +5,7 @@ import type {
   MemoryEntryRecord,
   RuntimeStateStore,
   WorkspaceRecord,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 import { syncRecallEmbeddingsForEntries } from "./memory-embedding-index.js";
 import type { MemoryServiceLike } from "./memory.js";

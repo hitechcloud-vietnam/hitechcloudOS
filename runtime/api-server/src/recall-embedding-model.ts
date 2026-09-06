@@ -5,10 +5,10 @@ import { resolveBackgroundTaskModelSelection } from "./background-task-model.js"
 import type { MemoryModelClientConfig } from "./memory-model-client.js";
 import { resolveProductRuntimeConfig } from "./runtime-config.js";
 
-const HOLABOSS_PROVIDER_ID = "holaboss_model_proxy";
+const HITECHCLOUD_PROVIDER_ID = "hitechcloud_model_proxy";
 const PROVIDER_ID_ALIASES: Record<string, string> = {
-  holaboss: HOLABOSS_PROVIDER_ID,
-  [HOLABOSS_PROVIDER_ID]: HOLABOSS_PROVIDER_ID,
+  hitechcloud: HITECHCLOUD_PROVIDER_ID,
+  [HITECHCLOUD_PROVIDER_ID]: HITECHCLOUD_PROVIDER_ID,
   openai: "openai_direct",
   openai_direct: "openai_direct",
   anthropic: "anthropic_direct",
@@ -24,7 +24,7 @@ const PROVIDER_ID_ALIASES: Record<string, string> = {
   minimax_direct: "minimax_direct",
 };
 const RECALL_EMBEDDING_MODEL_DEFAULTS: Record<string, string | null> = {
-  [HOLABOSS_PROVIDER_ID]: "text-embedding-3-small",
+  [HITECHCLOUD_PROVIDER_ID]: "text-embedding-3-small",
   openai_direct: "text-embedding-3-small",
   openrouter_direct: "openai/text-embedding-3-small",
   anthropic_direct: null,

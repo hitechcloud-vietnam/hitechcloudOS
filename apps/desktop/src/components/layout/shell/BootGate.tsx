@@ -129,7 +129,7 @@ export function BootGate({ children }: { children: ReactNode }) {
   }
 
   if (status === "running" && maintenanceBlocking && maintenance) {
-    // Unified with the plain splash — same logo + "Holaboss" + dots, just with a
+    // Unified with the plain splash — same logo + "Hitechcloud" + dots, just with a
     // progress bar attached below (no distinct "Optimizing storage…" screen).
     return (
       <BootSplash

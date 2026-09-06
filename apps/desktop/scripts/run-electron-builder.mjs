@@ -53,12 +53,12 @@ function buildLocalWindowsOutputDir() {
   return path.join("out", `release-local-${timestamp}`);
 }
 
-const explicitVersion = process.env.HOLABOSS_APP_VERSION?.trim() || "";
-const releaseTagVersion = versionFromReleaseTag(process.env.HOLABOSS_RELEASE_TAG);
+const explicitVersion = process.env.HITECHCLOUD_APP_VERSION?.trim() || "";
+const releaseTagVersion = versionFromReleaseTag(process.env.HITECHCLOUD_RELEASE_TAG);
 const buildVersion = explicitVersion || releaseTagVersion;
 const cliArgs = process.argv.slice(2);
 const builderArgs = [...cliArgs];
-const inferredRuntimePlatform = process.env.HOLABOSS_RUNTIME_PLATFORM?.trim() || inferRuntimePlatform(builderArgs);
+const inferredRuntimePlatform = process.env.HITECHCLOUD_RUNTIME_PLATFORM?.trim() || inferRuntimePlatform(builderArgs);
 
 if (!builderArgs.includes("--config") && !builderArgs.some((arg) => arg.startsWith("--config="))) {
   builderArgs.unshift("--config", electronBuilderConfigPath);
@@ -143,7 +143,7 @@ const child = spawn(command, commandArgs, {
   cwd: desktopRoot,
   env: {
     ...process.env,
-    ...(inferredRuntimePlatform ? { HOLABOSS_RUNTIME_PLATFORM: inferredRuntimePlatform } : {})
+    ...(inferredRuntimePlatform ? { HITECHCLOUD_RUNTIME_PLATFORM: inferredRuntimePlatform } : {})
   },
   stdio: "inherit"
 });

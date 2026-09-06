@@ -1348,7 +1348,7 @@ test("screenshot-first browser perception guidance is general: fires for a brows
     defaultTools: [] as string[],
     extraTools: [] as string[],
     workspaceSkillIds: [] as string[],
-    // An external antidetect-browser MCP (no Holaboss native browser tools).
+    // An external antidetect-browser MCP (no Hitechcloud native browser tools).
     resolvedMcpToolRefs: [
       { tool_id: "adspower-local-api__screenshot", tool_name: "screenshot" },
       { tool_id: "adspower-local-api__get-page-visible-text", tool_name: "get-page-visible-text" },
@@ -1430,7 +1430,7 @@ test("composeBaseAgentPrompt keeps connected MCP server routes ahead of browser 
   );
 });
 
-test("external harnesses get Holaboss MCP-tool guidance; pi does not", () => {
+test("external harnesses get Hitechcloud MCP-tool guidance; pi does not", () => {
   const baseRequest = {
     defaultTools: [] as string[],
     extraTools: [] as string[],
@@ -1444,9 +1444,9 @@ test("external harnesses get Holaboss MCP-tool guidance; pi does not", () => {
     ...baseRequest,
     harnessId: "claude-code",
   });
-  assert.match(external.systemPrompt, /Holaboss workspace tools \(MCP\):/);
+  assert.match(external.systemPrompt, /Hitechcloud workspace tools \(MCP\):/);
   assert.match(external.systemPrompt, /web_search/);
-  assert.match(external.systemPrompt, /holaboss_runtime_tools/);
+  assert.match(external.systemPrompt, /hitechcloud_runtime_tools/);
   assert.ok(
     external.promptSections.some((section) => section.id === "harness_quirks"),
     "external harness prompt should include the harness_quirks MCP guidance section",
@@ -1456,7 +1456,7 @@ test("external harnesses get Holaboss MCP-tool guidance; pi does not", () => {
     ...baseRequest,
     harnessId: "pi",
   });
-  assert.doesNotMatch(pi.systemPrompt, /Holaboss workspace tools \(MCP\):/);
+  assert.doesNotMatch(pi.systemPrompt, /Hitechcloud workspace tools \(MCP\):/);
   assert.ok(
     !pi.promptSections.some((section) => section.id === "harness_quirks"),
     "pi wires tools in-process and must not get the external MCP guidance",

@@ -50,7 +50,7 @@ const SEGMENTS: { id: CustomizeTab; label: string }[] = [
 	{ id: "mcps", label: "MCPs" },
 ];
 
-// Full browsing lives in the HolaHub Marketplace; each tab links out to its
+// Full browsing lives in the Hitechhub Marketplace; each tab links out to its
 // matching marketplace type. (Customize itself is for managing what's installed.)
 const MARKETPLACE_TYPE_BY_TAB: Record<CustomizeTab, string> = {
 	apps: "holaapp",
@@ -76,7 +76,7 @@ export function CustomizePane({ workspaceId }: { workspaceId: string | null }) {
 	const [importing, setImporting] = useState(false);
 	const [mcpsView, setMcpsView] = useState<"store" | "connected">("connected");
 	const [mcpsQuery, setMcpsQuery] = useState("");
-	// A catalog id to auto-open/install when HolaHub's "Install" op routes a
+	// A catalog id to auto-open/install when Hitechhub's "Install" op routes a
 	// KEYED/gated item here (HeadlessInstaller → pendingHubInstallAtom) so the user
 	// can complete its connect step — one per tab's native surface.
 	const [openCapabilityRef, setOpenCapabilityRef] = useState<string | null>(
@@ -103,7 +103,7 @@ export function CustomizePane({ workspaceId }: { workspaceId: string | null }) {
 	const selectedCapability =
 		installed.find((c) => c.capabilityId === selectedCapabilityId) ?? null;
 
-	// Consume a HolaHub "install" intent (routed here by HeadlessInstaller for
+	// Consume a Hitechhub "install" intent (routed here by HeadlessInstaller for
 	// keyed/gated items): open the item's tab and focus it in its native install
 	// surface so the user can connect, then clear the intent.
 	useEffect(() => {

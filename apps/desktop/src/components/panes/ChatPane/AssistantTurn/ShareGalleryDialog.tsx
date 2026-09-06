@@ -11,7 +11,7 @@ export const SHARE_GALLERY_MAX = 4;
 type Thumb = { id: string; name: string; dataUrl: string | null };
 
 /**
- * Pick which artifacts go to HolaHub, as a gallery rather than a column of
+ * Pick which artifacts go to Hitechhub, as a gallery rather than a column of
  * checkboxes — when a turn produced eight images, choosing between them is a
  * visual decision and the filenames are no help.
  */
@@ -111,7 +111,7 @@ export function ShareGalleryDialog({
         <DialogPrimitive.Backdrop className="data-open:fade-in-0 data-closed:fade-out-0 fixed inset-0 z-[90] bg-foreground/25 backdrop-blur-[2px] data-closed:animate-out data-open:animate-in" />
         <DialogPrimitive.Popup className="-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2 z-[100] flex max-h-[80vh] w-[560px] max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-border bg-popover p-5 shadow-2xl outline-none">
           <DialogPrimitive.Title className="font-semibold text-base text-foreground">
-            Share to HolaHub
+            Share to Hitechhub
           </DialogPrimitive.Title>
           <p className="mt-1 text-muted-foreground text-xs">
             Pick up to {SHARE_GALLERY_MAX} of {outputs.length}. A post holds{" "}

@@ -65,5 +65,5 @@ test("WelcomeArt exports the brand hero and feature card", async () => {
   assert.match(source, /border-primary\/8/);
   assert.match(source, /border-primary\/16/);
   assert.match(source, /border-primary\/26/);
-  assert.doesNotMatch(source, /holaboss-splash-halo/);
+  assert.doesNotMatch(source, /hitechcloud-splash-halo/);
 });

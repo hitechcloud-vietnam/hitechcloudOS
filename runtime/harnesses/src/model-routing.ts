@@ -167,7 +167,7 @@ export function runtimeConfigModelCatalog(): Record<
   string,
   Record<string, HarnessCatalogModelEntry>
 > {
-  const configPath = nonEmptyStringValue(process.env.HOLABOSS_RUNTIME_CONFIG_PATH);
+  const configPath = nonEmptyStringValue(process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH);
   if (!configPath) {
     cachedRuntimeConfigModelCatalogPath = null;
     cachedRuntimeConfigModelCatalogMtimeMs = null;
@@ -264,8 +264,8 @@ export function normalizeHarnessModelId(modelId: string): string {
   if (normalizedModelId.startsWith("openai/")) {
     return normalizedModelId.slice("openai/".length);
   }
-  if (normalizedModelId.startsWith("holaboss_model_proxy/")) {
-    return normalizedModelId.slice("holaboss_model_proxy/".length);
+  if (normalizedModelId.startsWith("hitechcloud_model_proxy/")) {
+    return normalizedModelId.slice("hitechcloud_model_proxy/".length);
   }
   return normalizedModelId;
 }
@@ -289,8 +289,8 @@ function shouldUseOpenAiResponsesProvider(request: HarnessModelRoutingRequest): 
   if (
     providerId !== "openai_direct" &&
     providerId !== "openai" &&
-    providerId !== "holaboss_model_proxy" &&
-    providerId !== "holaboss"
+    providerId !== "hitechcloud_model_proxy" &&
+    providerId !== "hitechcloud"
   ) {
     return false;
   }

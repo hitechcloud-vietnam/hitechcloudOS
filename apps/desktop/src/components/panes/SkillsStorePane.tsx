@@ -74,14 +74,14 @@ export function SkillsStorePane({
   workspaceId: string | null;
   onCreateSkill: () => void;
   onTryWithAgent: (skillId: string, title: string) => void;
-  /** A skill id to auto-open in the detail view (HolaHub install hand-off). */
+  /** A skill id to auto-open in the detail view (Hitechhub install hand-off). */
   installRef?: string | null;
   onInstallHandled?: () => void;
   /** Manage-first mode: Installed + a short Recommended shelf only; the search
    *  box, category chips and full browse grid are hidden (browsing lives in the
-   *  HolaHub Marketplace). */
+   *  Hitechhub Marketplace). */
   manageOnly?: boolean;
-  /** Open the HolaHub Marketplace — renders a link in the Recommended header. */
+  /** Open the Hitechhub Marketplace — renders a link in the Recommended header. */
   onBrowseMarketplace?: () => void;
 }) {
   const queryClient = useQueryClient();
@@ -271,7 +271,7 @@ export function SkillsStorePane({
     });
   };
 
-  // HolaHub "Install" hand-off: auto-install the target skill once the directory
+  // Hitechhub "Install" hand-off: auto-install the target skill once the directory
   // loads (skills are keyless — no second click). Skips an already-installed one.
   useEffect(() => {
     if (!installRef) {

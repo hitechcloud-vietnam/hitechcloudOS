@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import { RuntimeStateStore, type MemoryEntryRecord } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore, type MemoryEntryRecord } from "@hitechcloud/runtime-state-store";
 
 import { syncDurableMemoryEmbedding } from "./memory-embedding-index.js";
 import { FilesystemMemoryService } from "./memory.js";

@@ -973,7 +973,7 @@ export async function readChromeHistory(
   try {
     const { copiedPath, cleanup } = await copyChromeProfileDatabaseToTemp(
       historyPath,
-      "holaboss-chrome-history-",
+      "hitechcloud-chrome-history-",
     );
     try {
       const database = new Database(copiedPath, {
@@ -1115,7 +1115,7 @@ export async function importChromiumFamilyCookiesIntoWorkspaceSession(
   try {
     const copiedDatabase = await copyChromeProfileDatabaseToTemp(
       cookiesPath,
-      "holaboss-chrome-cookies-",
+      "hitechcloud-chrome-cookies-",
     );
     copiedPath = copiedDatabase.copiedPath;
     cleanup = copiedDatabase.cleanup;
@@ -1285,7 +1285,7 @@ export async function importChromiumFamilyCookiesIntoWorkspaceSession(
       }
 
       const stagedSession = session.fromPartition(
-        `holaboss-browser-import-${randomUUID()}`,
+        `hitechcloud-browser-import-${randomUUID()}`,
       );
       const stagedCookies: typeof transferableCookies = [];
       try {

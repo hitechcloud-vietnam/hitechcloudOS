@@ -36,7 +36,7 @@ export interface WorkspaceSkillInvocationResult {
   args: string | null;
 }
 
-const EMBEDDED_SKILLS_DIR_ENV = "HOLABOSS_EMBEDDED_SKILLS_DIR";
+const EMBEDDED_SKILLS_DIR_ENV = "HITECHCLOUD_EMBEDDED_SKILLS_DIR";
 const WORKSPACE_SKILLS_RELATIVE_PATH = "skills";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -58,7 +58,7 @@ function normalizeSkillId(value: unknown): string | null {
 }
 
 function runtimeRootDir(): string {
-  const configured = (process.env.HOLABOSS_RUNTIME_ROOT ?? "").trim();
+  const configured = (process.env.HITECHCLOUD_RUNTIME_ROOT ?? "").trim();
   if (configured) {
     return path.resolve(configured);
   }
@@ -159,10 +159,10 @@ function nestedRecord(value: Record<string, unknown>, key: string): Record<strin
 
 function grantedToolsFromFrontmatter(frontmatter: Record<string, unknown>): string[] {
   const directKeys = [
-    "holaboss_granted_tools",
-    "holaboss-granted-tools",
-    "holaboss_tools",
-    "holaboss-tools",
+    "hitechcloud_granted_tools",
+    "hitechcloud-granted-tools",
+    "hitechcloud_tools",
+    "hitechcloud-tools",
     "capability_grants",
     "capability-grants",
   ];
@@ -172,12 +172,12 @@ function grantedToolsFromFrontmatter(frontmatter: Record<string, unknown>): stri
       return normalized;
     }
   }
-  const holaboss = nestedRecord(frontmatter, "holaboss");
-  if (!holaboss) {
+  const hitechcloud = nestedRecord(frontmatter, "hitechcloud");
+  if (!hitechcloud) {
     return [];
   }
   for (const key of ["granted_tools", "granted-tools", "tools"]) {
-    const normalized = normalizedStringList(holaboss[key]);
+    const normalized = normalizedStringList(hitechcloud[key]);
     if (normalized.length > 0) {
       return normalized;
     }
@@ -187,10 +187,10 @@ function grantedToolsFromFrontmatter(frontmatter: Record<string, unknown>): stri
 
 function grantedCommandsFromFrontmatter(frontmatter: Record<string, unknown>): string[] {
   const directKeys = [
-    "holaboss_granted_commands",
-    "holaboss-granted-commands",
-    "holaboss_commands",
-    "holaboss-commands",
+    "hitechcloud_granted_commands",
+    "hitechcloud-granted-commands",
+    "hitechcloud_commands",
+    "hitechcloud-commands",
     "command_grants",
     "command-grants",
   ];
@@ -200,12 +200,12 @@ function grantedCommandsFromFrontmatter(frontmatter: Record<string, unknown>): s
       return normalized;
     }
   }
-  const holaboss = nestedRecord(frontmatter, "holaboss");
-  if (!holaboss) {
+  const hitechcloud = nestedRecord(frontmatter, "hitechcloud");
+  if (!hitechcloud) {
     return [];
   }
   for (const key of ["granted_commands", "granted-commands", "commands"]) {
-    const normalized = normalizedStringList(holaboss[key]);
+    const normalized = normalizedStringList(hitechcloud[key]);
     if (normalized.length > 0) {
       return normalized;
     }

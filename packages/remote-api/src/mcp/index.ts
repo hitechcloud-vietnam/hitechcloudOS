@@ -30,7 +30,7 @@ export function createRemoteApiMcpServer(
     typeof options.context === "function" ? options.context() : options.context;
 
   const server = new McpServer({
-    name: options.name ?? "holaboss-remote-api",
+    name: options.name ?? "hitechcloud-remote-api",
     version: options.version ?? "0.1.0",
   });
 

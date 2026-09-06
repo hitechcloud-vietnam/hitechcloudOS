@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
-import type { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import type { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 
 import {
   forceCompactSessionWithSnapshotMerge,

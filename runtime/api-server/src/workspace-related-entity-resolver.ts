@@ -1,4 +1,4 @@
-import type { InteractionEntityRecord, InteractionEntityType } from "@holaboss/runtime-state-store";
+import type { InteractionEntityRecord, InteractionEntityType } from "@hitechcloud/runtime-state-store";
 
 import type { DurableMemoryRelatedEntityType } from "./memory-related-entities.js";
 import {

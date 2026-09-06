@@ -19,7 +19,7 @@ async function runGit(workspaceDir, args) {
 
 test("ensureWorkspaceGitRepo initializes a workspace repo with an initial agent commit", async () => {
   const workspaceDir = await fs.mkdtemp(
-    path.join(os.tmpdir(), "holaboss-workspace-git-"),
+    path.join(os.tmpdir(), "hitechcloud-workspace-git-"),
   );
 
   await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "# Workspace\n", "utf8");
@@ -28,10 +28,10 @@ test("ensureWorkspaceGitRepo initializes a workspace repo with an initial agent 
     "agent:\n  model: gpt-5.4\n",
     "utf8",
   );
-  await fs.mkdir(path.join(workspaceDir, ".holaboss"), { recursive: true });
-  await fs.mkdir(path.join(workspaceDir, ".holaboss", "state"), { recursive: true });
+  await fs.mkdir(path.join(workspaceDir, ".hitechcloud"), { recursive: true });
+  await fs.mkdir(path.join(workspaceDir, ".hitechcloud", "state"), { recursive: true });
   await fs.writeFile(
-    path.join(workspaceDir, ".holaboss", "state", "workspace_id"),
+    path.join(workspaceDir, ".hitechcloud", "state", "workspace_id"),
     "workspace-1\n",
     "utf8",
   );
@@ -56,20 +56,20 @@ test("ensureWorkspaceGitRepo initializes a workspace repo with an initial agent 
   const trackedFiles = await runGit(workspaceDir, ["ls-files"]);
   assert.match(trackedFiles, /AGENTS\.md/);
   assert.match(trackedFiles, /workspace\.yaml/);
-  assert.doesNotMatch(trackedFiles, /\.holaboss/);
+  assert.doesNotMatch(trackedFiles, /\.hitechcloud/);
   assert.doesNotMatch(trackedFiles, /node_modules/);
 
   const excludeContent = await fs.readFile(
     path.join(workspaceDir, ".git", "info", "exclude"),
     "utf8",
   );
-  assert.match(excludeContent, /\.holaboss\//);
+  assert.match(excludeContent, /\.hitechcloud\//);
   assert.match(excludeContent, /node_modules\//);
 });
 
 test("ensureWorkspaceGitRepo is idempotent when the workspace is already initialized", async () => {
   const workspaceDir = await fs.mkdtemp(
-    path.join(os.tmpdir(), "holaboss-workspace-git-"),
+    path.join(os.tmpdir(), "hitechcloud-workspace-git-"),
   );
 
   await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "# Workspace\n", "utf8");
@@ -86,7 +86,7 @@ test("ensureWorkspaceGitRepo is idempotent when the workspace is already initial
 
 test("ensureWorkspaceGitRepo skips initialization when system git is unavailable", async () => {
   const workspaceDir = await fs.mkdtemp(
-    path.join(os.tmpdir(), "holaboss-workspace-git-"),
+    path.join(os.tmpdir(), "hitechcloud-workspace-git-"),
   );
 
   await fs.writeFile(path.join(workspaceDir, "AGENTS.md"), "# Workspace\n", "utf8");

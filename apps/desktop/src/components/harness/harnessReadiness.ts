@@ -26,7 +26,7 @@ export interface HarnessReadinessRecord {
 }
 
 const harnessReadinessAtom = atomWithStorage<Record<string, HarnessReadinessRecord>>(
-  "holaboss.harnessReadiness.v1",
+  "hitechcloud.harnessReadiness.v1",
   {},
 );
 

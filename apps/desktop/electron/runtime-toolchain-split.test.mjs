@@ -18,8 +18,8 @@ test("desktop packager embeds the full bundled runtime including node and python
   assert.match(builderConfigSource, /"node-runtime\/\*\*\/\*"/);
   assert.match(builderConfigSource, /"python-runtime\/\*\*\/\*"/);
   assert.match(builderConfigSource, /"runtime\/\*\*\/\*"/);
-  assert.doesNotMatch(builderConfigSource, /HOLABOSS_BUNDLE_TOOLCHAIN_SEED/);
-  assert.doesNotMatch(builderConfigSource, /HOLABOSS_TOOLCHAIN_TARBALL/);
+  assert.doesNotMatch(builderConfigSource, /HITECHCLOUD_BUNDLE_TOOLCHAIN_SEED/);
+  assert.doesNotMatch(builderConfigSource, /HITECHCLOUD_TOOLCHAIN_TARBALL/);
 });
 
 test("packaged config records release-channel metadata and updater enablement for the desktop shell", async () => {
@@ -28,7 +28,7 @@ test("packaged config records release-channel metadata and updater enablement fo
   assert.match(source, /function resolveUpdateChannel\(\)/);
   assert.match(source, /function resolveAppUpdateEnabled\(\)/);
   assert.match(source, /process\.env\.RELEASE_TAG\?\.trim\(\) \|\|/);
-  assert.match(source, /process\.env\.HOLABOSS_RELEASE_TAG\?\.trim\(\) \|\|/);
+  assert.match(source, /process\.env\.HITECHCLOUD_RELEASE_TAG\?\.trim\(\) \|\|/);
   assert.match(source, /const appUpdateEnabled = resolveAppUpdateEnabled\(\);/);
   assert.match(source, /appUpdateEnabled,/);
   assert.match(source, /\.\.\.\(updateChannel === "beta" \? \{ updateChannel \} : \{\}\),/);
@@ -59,5 +59,5 @@ test("runtime startup resolves everything from the embedded runtime root", async
   assert.doesNotMatch(source, /TOOLCHAIN_RELEASE_ASSET_NAMES/);
   assert.doesNotMatch(source, /ensureManagedRuntimeToolchainInstalled/);
   assert.doesNotMatch(source, /managedRuntimeToolchainSyncPromise/);
-  assert.doesNotMatch(source, /HOLABOSS_RUNTIME_TOOLCHAIN_ROOT:/);
+  assert.doesNotMatch(source, /HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT:/);
 });

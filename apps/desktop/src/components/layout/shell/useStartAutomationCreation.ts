@@ -6,7 +6,7 @@ import { useStartChatDraft } from "./useStartChatDraft";
 // Hola explains how automations work, then interviews the user to shape the
 // task + schedule and sets up the cronjob.
 const AUTOMATION_CREATION_PROMPT =
-  "I want to set up a scheduled task. Briefly explain how automations work in holaOS, then ask me a few questions to figure out what I'd like to do and when it should run.";
+  "I want to set up a scheduled task. Briefly explain how automations work in hitechcloudOS, then ask me a few questions to figure out what I'd like to do and when it should run.";
 
 export function useStartAutomationCreation() {
   const startChatDraft = useStartChatDraft();

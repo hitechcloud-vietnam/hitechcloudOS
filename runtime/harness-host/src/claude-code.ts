@@ -26,7 +26,7 @@ import { resolveWindowsCliInvocation } from "./windows-cli-invocation.js";
  * Claude Code harness host runner.
  *
  * Spawns the `claude` CLI in non-interactive stream-json mode and
- * translates its JSON-line protocol into Holaboss `RunnerOutputEvent`s.
+ * translates its JSON-line protocol into Hitechcloud `RunnerOutputEvent`s.
  *
  * Wire shape: stdin and stdout both carry newline-delimited JSON.
  *   ▸ daemon → claude: a single `{type:"user", message:{role:"user",
@@ -50,7 +50,7 @@ import { resolveWindowsCliInvocation } from "./windows-cli-invocation.js";
  *
  * Still deferred (acceptable gaps):
  *   • Async-launch detection (a run_in_background guard)
- *   • Per-task custom_args (only the HOLABOSS_CLAUDE_ARGS host default is
+ *   • Per-task custom_args (only the HITECHCLOUD_CLAUDE_ARGS host default is
  *     honored today)
  *
  * The runner is parameterized over the binary + env-var namespace
@@ -65,11 +65,11 @@ export interface ClaudeStreamHarnessOptions {
   label: string;
   /** PATH-resolved binary name when the *_PATH override is unset. */
   defaultBinary: string;
-  /** Env var that pins a non-PATH binary, e.g. "HOLABOSS_CLAUDE_PATH". */
+  /** Env var that pins a non-PATH binary, e.g. "HITECHCLOUD_CLAUDE_PATH". */
   binaryEnv: string;
-  /** Env var for a per-host default model, e.g. "HOLABOSS_CLAUDE_MODEL". */
+  /** Env var for a per-host default model, e.g. "HITECHCLOUD_CLAUDE_MODEL". */
   modelEnv: string;
-  /** Env var for shell-split default args, e.g. "HOLABOSS_CLAUDE_ARGS". */
+  /** Env var for shell-split default args, e.g. "HITECHCLOUD_CLAUDE_ARGS". */
   argsEnv: string;
 }
 
@@ -77,9 +77,9 @@ const CLAUDE_STREAM_OPTIONS: ClaudeStreamHarnessOptions = {
   id: "claude-code",
   label: "claude",
   defaultBinary: "claude",
-  binaryEnv: "HOLABOSS_CLAUDE_PATH",
-  modelEnv: "HOLABOSS_CLAUDE_MODEL",
-  argsEnv: "HOLABOSS_CLAUDE_ARGS",
+  binaryEnv: "HITECHCLOUD_CLAUDE_PATH",
+  modelEnv: "HITECHCLOUD_CLAUDE_MODEL",
+  argsEnv: "HITECHCLOUD_CLAUDE_ARGS",
 };
 
 export async function runClaudeCode(request: HarnessHostClaudeCodeRequest): Promise<number> {
@@ -95,7 +95,7 @@ export async function runClaudeStreamHarness(
   // Claude Code starts with zero MCP servers and the user sees a
   // "no MCP" surface even when Hola has working integrations on the
   // same workspace — the harness adapter carries `mcp_servers` on the
-  // request, but the Holaboss shape differs from Claude's, so we have
+  // request, but the Hitechcloud shape differs from Claude's, so we have
   // to translate before writing the file.
   const mcpMaterialization = materializeClaudeMcpConfig(request.mcp_servers);
   // Stage workspace skills into a throwaway dir and expose it with
@@ -231,7 +231,7 @@ export async function runClaudeStreamHarness(
   // the emitter) if a CLI build ignores the flag, so streaming degrades safely.
   let streamedPartialContent = false;
   // Tool-use blocks carry `name`, but tool_result blocks only carry
-  // `tool_use_id`. The Holaboss chat UI wants `tool_name` on the
+  // `tool_use_id`. The Hitechcloud chat UI wants `tool_name` on the
   // completion event too (it's how the trace card is labeled). Track
   // call_id → name as the assistant emits tool_use, then look it up
   // when the user-role tool_result lands.
@@ -412,7 +412,7 @@ export async function runClaudeStreamHarness(
 
   function handleControlRequest(msg: ClaudeSDKMessage): void {
     // Auto-approve in daemon mode. Force `run_in_background:false` if the
-    // tool would otherwise launch async — Holaboss-managed runs need
+    // tool would otherwise launch async — Hitechcloud-managed runs need
     // foreground completion semantics.
     const requestId = msg.request_id ?? "";
     let updatedInput: Record<string, unknown> = {};
@@ -570,7 +570,7 @@ function buildClaudeArgs(
     // empty answer.
     "--disallowedTools", "AskUserQuestion",
   ];
-  // Session model first, then a per-host default (HOLABOSS_<X>_MODEL),
+  // Session model first, then a per-host default (HITECHCLOUD_<X>_MODEL),
   // else the CLI's own default.
   const model =
     request.selected_model?.trim() ||
@@ -608,7 +608,7 @@ function buildClaudeArgs(
     // user's real cwd.
     args.push("--add-dir", skillsDir);
   }
-  // Per-host default args, shell-word split (e.g. HOLABOSS_CLAUDE_ARGS=
+  // Per-host default args, shell-word split (e.g. HITECHCLOUD_CLAUDE_ARGS=
   // '--add-dir /opt/shared --model claude-opus-4-8'). Applied last so a
   // deployment can layer flags on.
   for (const extra of splitShellWords(process.env[opts.argsEnv])) {
@@ -623,7 +623,7 @@ interface ClaudeMcpMaterialization {
 }
 
 /**
- * Translate the Holaboss `mcp_servers` payload (an array of
+ * Translate the Hitechcloud `mcp_servers` payload (an array of
  * `{name, config: {type, command, environment, url, headers, enabled, timeout}}`)
  * into Claude Code's `--mcp-config` JSON shape and write it to a temp
  * file. Returns the file path + a cleanup hook the runner calls on
@@ -676,7 +676,7 @@ function materializeClaudeMcpConfig(
   if (Object.keys(mcpServers).length === 0) {
     return null;
   }
-  const dir = mkdtempSync(join(tmpdir(), "holaboss-claude-mcp-"));
+  const dir = mkdtempSync(join(tmpdir(), "hitechcloud-claude-mcp-"));
   const filePath = join(dir, "mcp.json");
   writeFileSync(filePath, JSON.stringify({ mcpServers }, null, 2), {
     encoding: "utf8",
@@ -717,7 +717,7 @@ export function materializeClaudeSkills(
   if (dirs.length === 0) {
     return null;
   }
-  const root = mkdtempSync(join(tmpdir(), "holaboss-claude-skills-"));
+  const root = mkdtempSync(join(tmpdir(), "hitechcloud-claude-skills-"));
   const skillsRoot = join(root, ".claude", "skills");
   let staged = 0;
   for (const dir of dirs) {
@@ -751,7 +751,7 @@ export function materializeClaudeSkills(
 }
 
 /**
- * Minimal POSIX-ish shell-word splitter for HOLABOSS_CLAUDE_ARGS. Handles
+ * Minimal POSIX-ish shell-word splitter for HITECHCLOUD_CLAUDE_ARGS. Handles
  * single/double quotes and backslash escapes — good enough for the flag
  * strings operators actually write. Returns [] for empty/unset input.
  */

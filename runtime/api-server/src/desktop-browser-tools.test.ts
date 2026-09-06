@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 
-import { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import {
@@ -41,7 +41,7 @@ test("desktop browser tool service reports unavailable when runtime lacks browse
       defaultModel: "openai/gpt-5.4",
       runtimeMode: "oss",
       defaultProvider: "",
-      holabossEnabled: false,
+      hitechcloudEnabled: false,
       desktopBrowserEnabled: false,
       desktopBrowserUrl: "",
       desktopBrowserAuthToken: "",
@@ -71,9 +71,9 @@ test("desktop browser tool service forwards workspace and session context to the
     const body = Buffer.concat(chunks).toString("utf8");
     requests.push({
       path: request.url ?? "",
-      token: String(request.headers["x-holaboss-desktop-token"] ?? ""),
-      workspaceId: String(request.headers["x-holaboss-workspace-id"] ?? ""),
-      sessionId: String(request.headers["x-holaboss-session-id"] ?? ""),
+      token: String(request.headers["x-hitechcloud-desktop-token"] ?? ""),
+      workspaceId: String(request.headers["x-hitechcloud-workspace-id"] ?? ""),
+      sessionId: String(request.headers["x-hitechcloud-session-id"] ?? ""),
       body
     });
     response.setHeader("content-type", "application/json; charset=utf-8");
@@ -138,7 +138,7 @@ test("desktop browser tool service forwards workspace and session context to the
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -267,7 +267,7 @@ test("desktop browser tool service stores screenshots as output artifacts when a
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -437,7 +437,7 @@ test("desktop browser tool service retries browser_get_state when the first snap
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -536,7 +536,7 @@ test("desktop browser tool service opens a native context menu for media targets
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -621,7 +621,7 @@ test("desktop browser tool service includes page text only when explicitly reque
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -705,7 +705,7 @@ test("desktop browser tool service accepts scoped browser_get_state controls", a
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -809,7 +809,7 @@ test("desktop browser tool service supports revision-aware browser_get_state del
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -1041,7 +1041,7 @@ test("desktop browser tool service exposes general find, act, wait, evaluate, an
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -1210,7 +1210,7 @@ test("desktop browser tool service supports load_state and function browser_wait
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -1302,7 +1302,7 @@ test("desktop browser tool service waits for browser downloads to start and comp
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -1460,7 +1460,7 @@ test("desktop browser tool service supports inline wait_for and post_state on br
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -1560,7 +1560,7 @@ test("desktop browser tool service avoids refetching page summaries for browser_
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -1618,9 +1618,9 @@ test("desktop browser tool service executes browser_open_tab against the desktop
     const body = Buffer.concat(chunks).toString("utf8");
     requests.push({
       path: request.url ?? "",
-      token: String(request.headers["x-holaboss-desktop-token"] ?? ""),
-      workspaceId: String(request.headers["x-holaboss-workspace-id"] ?? ""),
-      sessionId: String(request.headers["x-holaboss-session-id"] ?? ""),
+      token: String(request.headers["x-hitechcloud-desktop-token"] ?? ""),
+      workspaceId: String(request.headers["x-hitechcloud-workspace-id"] ?? ""),
+      sessionId: String(request.headers["x-hitechcloud-session-id"] ?? ""),
       body
     });
     response.setHeader("content-type", "application/json; charset=utf-8");
@@ -1650,7 +1650,7 @@ test("desktop browser tool service executes browser_open_tab against the desktop
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -1707,10 +1707,10 @@ test("desktop browser tool service executes browser_select_tab and browser_close
     const body = Buffer.concat(chunks).toString("utf8");
     requests.push({
       path: request.url ?? "",
-      token: String(request.headers["x-holaboss-desktop-token"] ?? ""),
-      workspaceId: String(request.headers["x-holaboss-workspace-id"] ?? ""),
-      sessionId: String(request.headers["x-holaboss-session-id"] ?? ""),
-      browserSpace: String(request.headers["x-holaboss-browser-space"] ?? ""),
+      token: String(request.headers["x-hitechcloud-desktop-token"] ?? ""),
+      workspaceId: String(request.headers["x-hitechcloud-workspace-id"] ?? ""),
+      sessionId: String(request.headers["x-hitechcloud-session-id"] ?? ""),
+      browserSpace: String(request.headers["x-hitechcloud-browser-space"] ?? ""),
       body,
     });
     response.setHeader("content-type", "application/json; charset=utf-8");
@@ -1749,7 +1749,7 @@ test("desktop browser tool service executes browser_select_tab and browser_close
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -1831,10 +1831,10 @@ test("desktop browser tool service executes browser_list_downloads against the d
   const browserServer = await startBrowserServer(async (request, response) => {
     requests.push({
       path: request.url ?? "",
-      token: String(request.headers["x-holaboss-desktop-token"] ?? ""),
-      workspaceId: String(request.headers["x-holaboss-workspace-id"] ?? ""),
-      sessionId: String(request.headers["x-holaboss-session-id"] ?? ""),
-      browserSpace: String(request.headers["x-holaboss-browser-space"] ?? ""),
+      token: String(request.headers["x-hitechcloud-desktop-token"] ?? ""),
+      workspaceId: String(request.headers["x-hitechcloud-workspace-id"] ?? ""),
+      sessionId: String(request.headers["x-hitechcloud-session-id"] ?? ""),
+      browserSpace: String(request.headers["x-hitechcloud-browser-space"] ?? ""),
     });
     response.setHeader("content-type", "application/json; charset=utf-8");
     if (request.url === "/api/v1/browser/downloads") {
@@ -1871,7 +1871,7 @@ test("desktop browser tool service executes browser_list_downloads against the d
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -2051,7 +2051,7 @@ test("desktop browser tool service supports compact console, error, and request 
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -2236,7 +2236,7 @@ test("desktop browser tool service supports browser storage and cookie helpers",
         defaultModel: "openai/gpt-5.4",
         runtimeMode: "oss",
         defaultProvider: "",
-        holabossEnabled: false,
+        hitechcloudEnabled: false,
         desktopBrowserEnabled: true,
         desktopBrowserUrl: browserServer.url,
         desktopBrowserAuthToken: "browser-token",
@@ -2363,7 +2363,7 @@ test("desktop browser tool service rejects unknown tools", async () => {
       defaultModel: "openai/gpt-5.4",
       runtimeMode: "oss",
       defaultProvider: "",
-      holabossEnabled: false,
+      hitechcloudEnabled: false,
       desktopBrowserEnabled: true,
       desktopBrowserUrl: "http://127.0.0.1:9/api/v1/browser",
       desktopBrowserAuthToken: "browser-token",

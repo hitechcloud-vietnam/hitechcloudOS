@@ -17,8 +17,8 @@ const LABELS: Record<WorkspaceOverlay, string> = {
   members: "Members",
   holaemployee: "HolaEmployee",
   rewards: "Rewards",
-  holahub: "Discover",
-  "holahub-share": "Share to HolaHub",
+  hitechhub: "Discover",
+  "hitechhub-share": "Share to Hitechhub",
 };
 
 /**

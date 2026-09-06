@@ -43,7 +43,7 @@ function relativeTimeShort(value?: string | null): string {
 
 /**
  * Selecting an employee is a primary destination — it must take over the whole
- * main area. The other primary surfaces (a workspace overlay like HolaHub/Home,
+ * main area. The other primary surfaces (a workspace overlay like Hitechhub/Home,
  * a project view, an open HolaApp surface) early-return in ShellMainArea BEFORE
  * the employee chat mounts, so clear them here. ShellMainArea then symmetrically
  * clears the selected employee when one of those surfaces re-opens.

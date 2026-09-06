@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * holaboss-runtime — debug CLI for host-state.db inside a sandbox.
+ * hitechcloud-runtime — debug CLI for host-state.db inside a sandbox.
  *
  * Use this instead of curling the api-server when you need to:
  *   - Inspect schema version / pending migrations
@@ -13,7 +13,7 @@
  * this CLI is for humans tailing logs.
  *
  * Usage:
- *   holaboss-runtime [--db-path <path>] <command> [args]
+ *   hitechcloud-runtime [--db-path <path>] <command> [args]
  *
  *   migrations              Show current user_version + registered migrations
  *   tables                  List tables with row counts
@@ -75,7 +75,7 @@ function openDb(dbPath: string): Database.Database {
 }
 
 function workspaceRuntimeDbPathForWorkspacePath(workspacePath: string): string {
-  return path.join(workspacePath, ".holaboss", "state", "runtime.db");
+  return path.join(workspacePath, ".hitechcloud", "state", "runtime.db");
 }
 
 function readUserVersion(db: Database.Database): number {
@@ -400,10 +400,10 @@ function safeAll(
   }
 }
 
-const USAGE = `holaboss-runtime — debug CLI for host-state.db
+const USAGE = `hitechcloud-runtime — debug CLI for host-state.db
 
 Usage:
-  holaboss-runtime [--db-path <path>] <command> [args]
+  hitechcloud-runtime [--db-path <path>] <command> [args]
 
 Commands:
   migrations              Schema version + registered/pending migrations

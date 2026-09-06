@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import type { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import type { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 
 import { readableInteractionSemanticCategory } from "./interaction-memory.js";
 

@@ -1,13 +1,13 @@
 ---
 title: Contribute
-description: Contribute to the holaOS codebase — desktop, runtime, and harness internals.
+description: Contribute to the hitechcloudOS codebase — desktop, runtime, and harness internals.
 ---
 
 import { Cards, Card } from 'fumadocs-ui/components/card';
 
 <p className="eyebrow">For contributors</p>
 
-This section is for people working on **holaOS itself** — the Electron desktop shell, the Fastify runtime, and the agent harness that powers workspace execution.
+This section is for people working on **hitechcloudOS itself** — the Electron desktop shell, the Fastify runtime, and the agent harness that powers workspace execution.
 
 If you are building on top of the platform (a workspace App, a Template, a Skill), you probably don't need this section:
 
@@ -20,7 +20,7 @@ This section exists for people who want to change how the platform *itself* work
 
 Use Contribute when you are:
 
-- developing inside the `holaOS` OSS codebase
+- developing inside the `hitechcloudOS` OSS codebase
 - changing desktop shell, Electron main, or workspace bootstrap behavior
 - changing runtime API routes, run compilation, or state-store behavior
 - changing the agent harness, run adapter, or model routing seams
@@ -32,10 +32,10 @@ The source of truth for this section is the code, not a conceptual product story
 
 Use the docs split deliberately:
 
-- **holaOS** explains the system model, boundaries, and why the layers exist.
+- **hitechcloudOS** explains the system model, boundaries, and why the layers exist.
 - **Contribute** explains the code seams, request shapes, scripts, ports, and validation paths that contributors change in practice.
 
-If a page needs exact commands, routes, payload fields, or source-file ownership, it belongs here rather than in the conceptual holaOS section.
+If a page needs exact commands, routes, payload fields, or source-file ownership, it belongs here rather than in the conceptual hitechcloudOS section.
 
 ## How to use this section
 
@@ -68,7 +68,7 @@ npm run docs:typecheck
 npm run docs:build
 npm run desktop:typecheck
 npm run runtime:test
-bun --filter=@holaboss/app-builder-sdk run test
+bun --filter=@hitechcloud/app-builder-sdk run test
 ```
 
 ## Read by subsystem

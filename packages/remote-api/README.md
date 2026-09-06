@@ -1,26 +1,26 @@
-# @holaboss/remote-api
+# @hitechcloud/remote-api
 
-The public, transport-agnostic contract between the Holaboss desktop UI and the
+The public, transport-agnostic contract between the Hitechcloud desktop UI and the
 runtime, built on [oRPC](https://orpc.dev). One canonical zod contract set, with
 a server binding (mounted on the runtime's Fastify instance) and a typed client
 (used directly from the desktop renderer and main process).
 
-This supersedes the hand-maintained `@holaboss/runtime-client` — types are
+This supersedes the hand-maintained `@hitechcloud/runtime-client` — types are
 derived from the contract, not synchronised by hand.
 
 ## Layout
 
 | Export | Depends on | Use from |
 |---|---|---|
-| `@holaboss/remote-api/contract` | `@orpc/contract`, `zod` | anywhere (agents, MCP, forks) |
-| `@holaboss/remote-api/server` | `@orpc/server` (+ `fastify` peer) | the runtime |
-| `@holaboss/remote-api/client` | `@orpc/client` | desktop renderer / main |
-| `@holaboss/remote-api` (root) | client + contract types | desktop |
+| `@hitechcloud/remote-api/contract` | `@orpc/contract`, `zod` | anywhere (agents, MCP, forks) |
+| `@hitechcloud/remote-api/server` | `@orpc/server` (+ `fastify` peer) | the runtime |
+| `@hitechcloud/remote-api/client` | `@orpc/client` | desktop renderer / main |
+| `@hitechcloud/remote-api` (root) | client + contract types | desktop |
 
 ## Server (runtime)
 
 ```ts
-import { mountRemoteApi, type WorkspacesService } from "@holaboss/remote-api/server";
+import { mountRemoteApi, type WorkspacesService } from "@hitechcloud/remote-api/server";
 
 const workspaces: WorkspacesService = { list, get, update };
 mountRemoteApi(app, { prefix: "/rpc", context: () => ({ workspaces }) });
@@ -33,7 +33,7 @@ oRPC errors.
 ## Client (desktop)
 
 ```ts
-import { createRemoteApiClient } from "@holaboss/remote-api/client";
+import { createRemoteApiClient } from "@hitechcloud/remote-api/client";
 
 const client = createRemoteApiClient({
   url: async () => `${(await window.electronAPI.runtime.getStatus()).url}/rpc`,

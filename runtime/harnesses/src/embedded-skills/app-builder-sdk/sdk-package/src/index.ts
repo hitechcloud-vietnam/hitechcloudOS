@@ -1,4 +1,4 @@
-// Public API surface for @holaboss/app-builder-sdk.
+// Public API surface for @hitechcloud/app-builder-sdk.
 
 // Core
 export { createApp } from "./app.ts"

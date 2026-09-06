@@ -1,4 +1,4 @@
-import { holabossLogoUrl } from "@/lib/assetPaths";
+import { hitechcloudLogoUrl } from "@/lib/assetPaths";
 
 interface BootSplashProps {
   /** Primary status line under the wordmark, e.g. "Optimizing storage…". */
@@ -13,7 +13,7 @@ interface BootSplashProps {
  * Pinned to the viewport because the macOS body is translucent for vibrancy —
  * a non-fixed pane would leave a thin desktop-coloured frame around the splash.
  *
- * The look is unified: it's ALWAYS the plain logo + "Holaboss" + dots. A
+ * The look is unified: it's ALWAYS the plain logo + "Hitechcloud" + dots. A
  * `message` adds a status line (runtime boot, org switch); a `progress` attaches
  * a thin determinate bar BELOW the dots (the first-run DB storage sweep) — the
  * same splash, just with progress, never a distinct-looking maintenance screen.
@@ -39,11 +39,11 @@ export function BootSplash({ message, submessage, progress }: BootSplashProps = 
       >
         <div className="relative flex h-16 w-16 items-center justify-center">
           <img
-            alt="holaOS"
+            alt="hitechcloudOS"
             className="relative h-14 w-14 rounded-2xl select-none"
             draggable={false}
             height={56}
-            src={holabossLogoUrl}
+            src={hitechcloudLogoUrl}
             width={56}
           />
         </div>
@@ -51,7 +51,7 @@ export function BootSplash({ message, submessage, progress }: BootSplashProps = 
           className="mt-6 text-[17px] font-semibold tracking-tight text-foreground"
           style={{ letterSpacing: "-0.01em" }}
         >
-          holaOS
+          hitechcloudOS
         </h1>
 
         {message ? (
@@ -76,7 +76,7 @@ export function BootSplash({ message, submessage, progress }: BootSplashProps = 
               className="block h-1 w-1 rounded-full bg-muted-foreground/70"
               key={i}
               style={{
-                animation: "holaboss-splash-dot 1.2s ease-in-out infinite",
+                animation: "hitechcloud-splash-dot 1.2s ease-in-out infinite",
                 animationDelay: `${i * 160}ms`,
               }}
             />

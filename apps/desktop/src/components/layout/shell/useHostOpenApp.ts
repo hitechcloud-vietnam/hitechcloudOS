@@ -11,12 +11,12 @@ import { useHolaAppCatalog } from "./useHolaAppCatalog";
 import { useOpenHolaApp } from "./useOpenHolaApp";
 
 /**
- * Bridges the host op `window.__holabossHost.item.open` (for a holaapp) into the
+ * Bridges the host op `window.__hitechcloudHost.item.open` (for a holaapp) into the
  * shell. Main emits `host:openApp` with the item's catalog ref; here we resolve
  * the full app definition from the catalog by `holaAppId` and open it. A normal
  * app opens its web surface; a connection-tier App has no surface, so it opens
  * its native manage detail (the store's ConnectionAppDetail) instead — that's the
- * "Manage" jump from HolaHub. (skill/mcp/capability opens are handled in main via
+ * "Manage" jump from Hitechhub. (skill/mcp/capability opens are handled in main via
  * the chat flow and never reach here.) Mount once at the shell root.
  */
 export function useHostOpenApp(): void {

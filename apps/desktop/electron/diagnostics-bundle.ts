@@ -194,7 +194,7 @@ export async function exportDiagnosticsBundle(
   params: DiagnosticsBundleExportParams,
 ): Promise<DiagnosticsBundleExportResult> {
   const stagingRoot = await fs.mkdtemp(
-    path.join(os.tmpdir(), "holaboss-diagnostics-"),
+    path.join(os.tmpdir(), "hitechcloud-diagnostics-"),
   );
   const includedFiles: string[] = [];
 

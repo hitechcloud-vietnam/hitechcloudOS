@@ -8,7 +8,7 @@ import type {
   MemoryVerificationPolicy,
   RuntimeStateStore,
   TurnResultRecord,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 import type { MemoryServiceLike } from "./memory.js";
 import {

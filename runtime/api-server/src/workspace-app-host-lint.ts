@@ -181,7 +181,7 @@ export function formatHostLintError(violations: HostLintViolation[]): string {
     lines.push(`  …and ${violations.length - 5} more.`);
   }
   lines.push(
-    "Fix: import { createRuntimeBrokerTransport } from \"@holaboss/app-builder-sdk\" and call upstream APIs through it. The broker uses the provider slug from your app.runtime.yaml integration block; no host belongs in your code.",
+    "Fix: import { createRuntimeBrokerTransport } from \"@hitechcloud/app-builder-sdk\" and call upstream APIs through it. The broker uses the provider slug from your app.runtime.yaml integration block; no host belongs in your code.",
   );
   return lines.join("\n");
 }

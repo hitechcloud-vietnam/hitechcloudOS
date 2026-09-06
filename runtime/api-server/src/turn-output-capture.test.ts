@@ -86,9 +86,9 @@ test("never captures runtime-managed workspace control files", () => {
 
   // The runtime rewrites these itself during a turn (e.g. MCP registry sync
   // rewrites workspace.yaml); they must not surface as deliverable outputs.
-  fs.writeFileSync(path.join(workspaceDir, "workspace.yaml"), "agents:\n  id: holaboss\n");
+  fs.writeFileSync(path.join(workspaceDir, "workspace.yaml"), "agents:\n  id: hitechcloud\n");
   fs.writeFileSync(path.join(workspaceDir, "workspace.json"), "{}");
-  fs.writeFileSync(path.join(workspaceDir, "AGENTS.md"), "# Holaboss\n");
+  fs.writeFileSync(path.join(workspaceDir, "AGENTS.md"), "# Hitechcloud\n");
   fs.mkdirSync(path.join(workspaceDir, "apps", "twitter"), { recursive: true });
   fs.writeFileSync(path.join(workspaceDir, "apps", "twitter", "app.runtime.yaml"), "lifecycle: {}\n");
   fs.writeFileSync(path.join(workspaceDir, "brief.docx"), "deliverable");

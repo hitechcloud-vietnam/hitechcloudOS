@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import {
@@ -16,15 +16,15 @@ import {
 import { globalMemoryDirForWorkspaceRoot } from "./workspace-bundle-paths.js";
 
 const ORIGINAL_FETCH = globalThis.fetch;
-const ORIGINAL_RUNTIME_CONFIG_PATH = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+const ORIGINAL_RUNTIME_CONFIG_PATH = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
 const tempDirs: string[] = [];
 
 afterEach(() => {
   globalThis.fetch = ORIGINAL_FETCH;
   if (ORIGINAL_RUNTIME_CONFIG_PATH === undefined) {
-    delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+    delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   } else {
-    process.env.HOLABOSS_RUNTIME_CONFIG_PATH = ORIGINAL_RUNTIME_CONFIG_PATH;
+    process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = ORIGINAL_RUNTIME_CONFIG_PATH;
   }
   for (const dir of tempDirs.splice(0)) {
     fs.rmSync(dir, { recursive: true, force: true });
@@ -54,13 +54,13 @@ function writeRecallEmbeddingRuntimeConfig(root: string): string {
           },
         },
         integrations: {
-          holaboss: {
+          hitechcloud: {
             auth_token: "hbmk.test-token",
             sandbox_id: "sandbox-test",
             user_id: "user-1",
           },
         },
-        holaboss: {
+        hitechcloud: {
           auth_token: "hbmk.test-token",
           sandbox_id: "sandbox-test",
           user_id: "user-1",
@@ -71,7 +71,7 @@ function writeRecallEmbeddingRuntimeConfig(root: string): string {
     ),
     "utf8",
   );
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
   return configPath;
 }
 
@@ -106,9 +106,9 @@ test("rebuildIntegrationTree writes deterministic semantic summaries for integra
       workspaceId: "workspace-1",
       leafId,
       treeId: "integration:github:acct-1",
-      subjectKey: `repo:holaboss-ai/release:pr:${index}`,
-      entityKey: "repo:holaboss-ai/release",
-      entityLabel: "holaboss-ai/release",
+      subjectKey: `repo:hitechcloud-vietnam/release:pr:${index}`,
+      entityKey: "repo:hitechcloud-vietnam/release",
+      entityLabel: "hitechcloud-vietnam/release",
       branchKey: "pull_requests",
       branchLabel: "Pull requests",
       path: `integration/accounts/github-release-acct-1/leaves/${leafId}.md`,
@@ -401,9 +401,9 @@ test("retrieveIntegrationMemory recalls deep-body integration leaf terms through
       workspaceId: "workspace-1",
       leafId,
       treeId: "integration:github:acct-fts",
-      subjectKey: "repo:holaboss-ai/release:pr:fts",
-      entityKey: "repo:holaboss-ai/release",
-      entityLabel: "holaboss-ai/release",
+      subjectKey: "repo:hitechcloud-vietnam/release:pr:fts",
+      entityKey: "repo:hitechcloud-vietnam/release",
+      entityLabel: "hitechcloud-vietnam/release",
       branchKey: "pull_requests",
       branchLabel: "Pull requests",
       path: `integration/accounts/github-release-fts/leaves/${leafId}.md`,
@@ -519,9 +519,9 @@ test("retrieveIntegrationMemory falls back to leaf summaries without reading mar
       workspaceId: "workspace-1",
       leafId: "leaf-summary-fallback",
       treeId: "integration:github:acct-fallback",
-      subjectKey: "repo:holaboss-ai/release:issue:summary-fallback",
-      entityKey: "repo:holaboss-ai/release",
-      entityLabel: "holaboss-ai/release",
+      subjectKey: "repo:hitechcloud-vietnam/release:issue:summary-fallback",
+      entityKey: "repo:hitechcloud-vietnam/release",
+      entityLabel: "hitechcloud-vietnam/release",
       branchKey: "issues",
       branchLabel: "Issues",
       path: "integration/accounts/github-release-fallback/leaves/leaf-summary-fallback.md",
@@ -1044,7 +1044,7 @@ test("rebuildIntegrationTree writes the Slack semantic memory hierarchy", async 
     workspaceRoot,
   });
   const treeId = "integration:slack:acct-1";
-  const treeSlug = "slack-holaboss-acct-1";
+  const treeSlug = "slack-hitechcloud-acct-1";
 
   const writeLeafFile = (relativePath: string, content: string): void => {
     const absolutePath = path.join(globalMemoryDirForWorkspaceRoot(workspaceRoot), relativePath);
@@ -1080,8 +1080,8 @@ test("rebuildIntegrationTree writes the Slack semantic memory hierarchy", async 
       connectionId: "slack-1",
       providerId: "slack",
       ownerUserId: "user-1",
-      accountLabel: "Holaboss",
-      accountHandle: "holaboss",
+      accountLabel: "Hitechcloud",
+      accountHandle: "hitechcloud",
       accountExternalId: "T123",
       authMode: "composio",
       grantedScopes: [],
@@ -1093,7 +1093,7 @@ test("rebuildIntegrationTree writes the Slack semantic memory hierarchy", async 
       provider: "slack",
       ownerUserId: "user-1",
       accountKey: "T123",
-      accountLabel: "Holaboss",
+      accountLabel: "Hitechcloud",
       slug: treeSlug,
       summary: "Slack workspace memory.",
       status: "active",
@@ -1107,9 +1107,9 @@ test("rebuildIntegrationTree writes the Slack semantic memory hierarchy", async 
         entityLabel: null,
         branchKey: "profile",
         branchLabel: "Profile",
-        title: "Slack workspace Holaboss",
+        title: "Slack workspace Hitechcloud",
         summary: "Slack workspace for product and operations coordination.",
-        path: "integration/accounts/slack-holaboss-acct-1/leaves/leaf-profile.md",
+        path: "integration/accounts/slack-hitechcloud-acct-1/leaves/leaf-profile.md",
         sourceType: "slack.profile",
         externalObjectId: "T123",
         externalObjectType: "slack_workspace",
@@ -1124,7 +1124,7 @@ test("rebuildIntegrationTree writes the Slack semantic memory hierarchy", async 
         branchLabel: "Overview",
         title: "general",
         summary: "Primary workspace coordination channel.",
-        path: "integration/accounts/slack-holaboss-acct-1/leaves/leaf-channel.md",
+        path: "integration/accounts/slack-hitechcloud-acct-1/leaves/leaf-channel.md",
         sourceType: "slack.channel",
         externalObjectId: "C111",
         externalObjectType: "slack_channel",
@@ -1139,7 +1139,7 @@ test("rebuildIntegrationTree writes the Slack semantic memory hierarchy", async 
         branchLabel: "Messages",
         title: "Captured the latest memory tree screenshots.",
         summary: "Captured the latest memory tree screenshots.",
-        path: "integration/accounts/slack-holaboss-acct-1/leaves/leaf-message.md",
+        path: "integration/accounts/slack-hitechcloud-acct-1/leaves/leaf-message.md",
         sourceType: "slack.message",
         externalObjectId: "1716412800.000100",
         externalObjectType: "slack_message",
@@ -1154,7 +1154,7 @@ test("rebuildIntegrationTree writes the Slack semantic memory hierarchy", async 
         branchLabel: "Threads",
         title: "Shared the follow-up note in the thread.",
         summary: "Shared the follow-up note in the thread.",
-        path: "integration/accounts/slack-holaboss-acct-1/leaves/leaf-thread.md",
+        path: "integration/accounts/slack-hitechcloud-acct-1/leaves/leaf-thread.md",
         sourceType: "slack.thread-reply",
         externalObjectId: "1716412810.000300",
         externalObjectType: "slack_thread_reply",
@@ -1169,7 +1169,7 @@ test("rebuildIntegrationTree writes the Slack semantic memory hierarchy", async 
         branchLabel: "Directory",
         title: "Ada Lovelace",
         summary: "Slack workspace member ada@example.com.",
-        path: "integration/accounts/slack-holaboss-acct-1/leaves/leaf-user.md",
+        path: "integration/accounts/slack-hitechcloud-acct-1/leaves/leaf-user.md",
         sourceType: "slack.user",
         externalObjectId: "U456",
         externalObjectType: "slack_user",
@@ -1207,7 +1207,7 @@ test("rebuildIntegrationTree writes the Slack semantic memory hierarchy", async 
       path: `semantic/workspace/systems/integrations/${treeSlug}/content.md`,
     });
     assert.ok(rootNode);
-    assert.equal(rootNode.title, "Holaboss Slack connection");
+    assert.equal(rootNode.title, "Hitechcloud Slack connection");
 
     const rootChildren = childNodes(rootNode.nodeId);
     assert.deepEqual(rootChildren.map((node) => node.nodeKind), ["profile", "channels", "directory"]);
@@ -1327,73 +1327,73 @@ test("rebuildIntegrationTree writes the GitHub semantic memory hierarchy", async
       },
       {
         leafId: "leaf-overview",
-        subjectKey: "repository:holaboss-ai/holaOS",
-        entityKey: "repo:holaboss-ai/holaOS",
-        entityLabel: "holaboss-ai/holaOS",
+        subjectKey: "repository:hitechcloud-vietnam/hitechcloudOS",
+        entityKey: "repo:hitechcloud-vietnam/hitechcloudOS",
+        entityLabel: "hitechcloud-vietnam/hitechcloudOS",
         branchKey: "overview",
         branchLabel: "Overview",
-        title: "holaboss-ai/holaOS",
+        title: "hitechcloud-vietnam/hitechcloudOS",
         summary: "Desktop runtime for agentic workflows.",
         path: "integration/accounts/github-octocat-acct-1/leaves/leaf-overview.md",
         sourceType: "github.repository",
-        externalObjectId: "holaboss-ai/holaOS",
+        externalObjectId: "hitechcloud-vietnam/hitechcloudOS",
         externalObjectType: "github_repository",
         observedAt: "2026-05-24T00:01:00.000Z",
       },
       {
         leafId: "leaf-readme",
-        subjectKey: "readme:holaboss-ai/holaOS",
-        entityKey: "repo:holaboss-ai/holaOS",
-        entityLabel: "holaboss-ai/holaOS",
+        subjectKey: "readme:hitechcloud-vietnam/hitechcloudOS",
+        entityKey: "repo:hitechcloud-vietnam/hitechcloudOS",
+        entityLabel: "hitechcloud-vietnam/hitechcloudOS",
         branchKey: "readme",
         branchLabel: "README",
-        title: "holaboss-ai/holaOS README",
-        summary: "README for holaboss-ai/holaOS: agent runtime and desktop shell.",
+        title: "hitechcloud-vietnam/hitechcloudOS README",
+        summary: "README for hitechcloud-vietnam/hitechcloudOS: agent runtime and desktop shell.",
         path: "integration/accounts/github-octocat-acct-1/leaves/leaf-readme.md",
         sourceType: "github.readme",
-        externalObjectId: "holaboss-ai/holaOS",
+        externalObjectId: "hitechcloud-vietnam/hitechcloudOS",
         externalObjectType: "github_readme",
         observedAt: "2026-05-24T00:02:00.000Z",
       },
       {
         leafId: "leaf-issue",
-        subjectKey: "issue:holaboss-ai/holaOS:128",
-        entityKey: "repo:holaboss-ai/holaOS",
-        entityLabel: "holaboss-ai/holaOS",
+        subjectKey: "issue:hitechcloud-vietnam/hitechcloudOS:128",
+        entityKey: "repo:hitechcloud-vietnam/hitechcloudOS",
+        entityLabel: "hitechcloud-vietnam/hitechcloudOS",
         branchKey: "issues",
         branchLabel: "Issues",
-        title: "holaboss-ai/holaOS #128: Stabilize memory retrieval routing",
-        summary: "Issue in holaboss-ai/holaOS #128 Stabilize memory retrieval routing",
+        title: "hitechcloud-vietnam/hitechcloudOS #128: Stabilize memory retrieval routing",
+        summary: "Issue in hitechcloud-vietnam/hitechcloudOS #128 Stabilize memory retrieval routing",
         path: "integration/accounts/github-octocat-acct-1/leaves/leaf-issue.md",
         sourceType: "github.issue",
-        externalObjectId: "holaboss-ai/holaOS#128",
+        externalObjectId: "hitechcloud-vietnam/hitechcloudOS#128",
         externalObjectType: "github_issue",
         observedAt: "2026-05-24T00:03:00.000Z",
       },
       {
         leafId: "leaf-pr",
-        subjectKey: "pull:holaboss-ai/holaOS:412",
-        entityKey: "repo:holaboss-ai/holaOS",
-        entityLabel: "holaboss-ai/holaOS",
+        subjectKey: "pull:hitechcloud-vietnam/hitechcloudOS:412",
+        entityKey: "repo:hitechcloud-vietnam/hitechcloudOS",
+        entityLabel: "hitechcloud-vietnam/hitechcloudOS",
         branchKey: "pull_requests",
         branchLabel: "Pull requests",
-        title: "holaboss-ai/holaOS #412: Expand integration context fetch",
-        summary: "Pull request in holaboss-ai/holaOS #412 Expand integration context fetch",
+        title: "hitechcloud-vietnam/hitechcloudOS #412: Expand integration context fetch",
+        summary: "Pull request in hitechcloud-vietnam/hitechcloudOS #412 Expand integration context fetch",
         path: "integration/accounts/github-octocat-acct-1/leaves/leaf-pr.md",
         sourceType: "github.pull_request",
-        externalObjectId: "holaboss-ai/holaOS#412",
+        externalObjectId: "hitechcloud-vietnam/hitechcloudOS#412",
         externalObjectType: "github_pull_request",
         observedAt: "2026-05-24T00:04:00.000Z",
       },
       {
         leafId: "leaf-notification",
         subjectKey: "notification:notif-1",
-        entityKey: "repo:holaboss-ai/holaOS",
-        entityLabel: "holaboss-ai/holaOS",
+        entityKey: "repo:hitechcloud-vietnam/hitechcloudOS",
+        entityLabel: "hitechcloud-vietnam/hitechcloudOS",
         branchKey: "notifications",
         branchLabel: "Notifications",
         title: "Review rollout checklist",
-        summary: "Notification in holaboss-ai/holaOS Review rollout checklist because mention",
+        summary: "Notification in hitechcloud-vietnam/hitechcloudOS Review rollout checklist because mention",
         path: "integration/accounts/github-octocat-acct-1/leaves/leaf-notification.md",
         sourceType: "github.notification",
         externalObjectId: "notif-1",
@@ -1440,7 +1440,7 @@ test("rebuildIntegrationTree writes the GitHub semantic memory hierarchy", async
     const repositoriesNode = rootChildren[1]!;
     const repoNode = childNodes(repositoriesNode.nodeId)[0]!;
     assert.equal(repoNode.nodeKind, "repo");
-    assert.equal(repoNode.title, "holaboss-ai/holaOS");
+    assert.equal(repoNode.title, "hitechcloud-vietnam/hitechcloudOS");
 
     const repoChildren = childNodes(repoNode.nodeId);
     assert.deepEqual(
@@ -2056,7 +2056,7 @@ test("rebuildIntegrationTree writes the Twitter semantic memory hierarchy", asyn
     workspaceRoot,
   });
   const treeId = "integration:twitter:acct-1";
-  const treeSlug = "twitter-holabossai-acct-1";
+  const treeSlug = "twitter-hitechcloudai-acct-1";
 
   const writeLeafFile = (relativePath: string, content: string): void => {
     const absolutePath = path.join(globalMemoryDirForWorkspaceRoot(workspaceRoot), relativePath);
@@ -2094,8 +2094,8 @@ test("rebuildIntegrationTree writes the Twitter semantic memory hierarchy", asyn
       connectionId: "twitter-1",
       providerId: "twitter",
       ownerUserId: "user-1",
-      accountLabel: "HolaBoss (@holabossai)",
-      accountHandle: "holabossai",
+      accountLabel: "HitechCloud (@hitechcloudai)",
+      accountHandle: "hitechcloudai",
       authMode: "composio",
       grantedScopes: [],
       status: "active",
@@ -2105,8 +2105,8 @@ test("rebuildIntegrationTree writes the Twitter semantic memory hierarchy", asyn
       treeId,
       provider: "twitter",
       ownerUserId: "user-1",
-      accountKey: "holabossai",
-      accountLabel: "HolaBoss (@holabossai)",
+      accountKey: "hitechcloudai",
+      accountLabel: "HitechCloud (@hitechcloudai)",
       slug: treeSlug,
       summary: "Twitter account memory.",
       status: "active",
@@ -2121,9 +2121,9 @@ test("rebuildIntegrationTree writes the Twitter semantic memory hierarchy", asyn
       entityLabel: null,
       branchKey: "profile",
       branchLabel: "Profile",
-      path: "integration/accounts/twitter-holabossai-acct-1/leaves/leaf-profile.md",
-      title: "Twitter profile for HolaBoss (@holabossai)",
-      summary: "Twitter profile snapshot for HolaBoss.",
+      path: "integration/accounts/twitter-hitechcloudai-acct-1/leaves/leaf-profile.md",
+      title: "Twitter profile for HitechCloud (@hitechcloudai)",
+      summary: "Twitter profile snapshot for HitechCloud.",
       fingerprint: "fingerprint-profile",
       bodySha256: "sha-profile",
       tags: ["twitter", "profile"],
@@ -2138,8 +2138,8 @@ test("rebuildIntegrationTree writes the Twitter semantic memory hierarchy", asyn
       status: "active",
     });
     writeLeafFile(
-      "integration/accounts/twitter-holabossai-acct-1/leaves/leaf-profile.md",
-      "# Twitter profile for HolaBoss (@holabossai)\n\nProfile snapshot.\n",
+      "integration/accounts/twitter-hitechcloudai-acct-1/leaves/leaf-profile.md",
+      "# Twitter profile for HitechCloud (@hitechcloudai)\n\nProfile snapshot.\n",
     );
 
     store.upsertIntegrationLeaf({
@@ -2151,9 +2151,9 @@ test("rebuildIntegrationTree writes the Twitter semantic memory hierarchy", asyn
       entityLabel: "Shipped semantic memory trees for Gmail, GitHub, and Notion.",
       branchKey: "overview",
       branchLabel: "Overview",
-      path: "integration/accounts/twitter-holabossai-acct-1/leaves/leaf-post-1.md",
+      path: "integration/accounts/twitter-hitechcloudai-acct-1/leaves/leaf-post-1.md",
       title: "Shipped semantic memory trees for Gmail, GitHub, and Notion.",
-      summary: "@holabossai: shipped semantic memory trees for Gmail, GitHub, and Notion.",
+      summary: "@hitechcloudai: shipped semantic memory trees for Gmail, GitHub, and Notion.",
       fingerprint: "fingerprint-post-1",
       bodySha256: "sha-post-1",
       tags: ["twitter", "post"],
@@ -2168,7 +2168,7 @@ test("rebuildIntegrationTree writes the Twitter semantic memory hierarchy", asyn
       status: "active",
     });
     writeLeafFile(
-      "integration/accounts/twitter-holabossai-acct-1/leaves/leaf-post-1.md",
+      "integration/accounts/twitter-hitechcloudai-acct-1/leaves/leaf-post-1.md",
       "# Post 1\n\nShipped semantic memory trees for Gmail, GitHub, and Notion.\n",
     );
 
@@ -2181,9 +2181,9 @@ test("rebuildIntegrationTree writes the Twitter semantic memory hierarchy", asyn
       entityLabel: "Next up is wiring Google Drive and Twitter into context fetch.",
       branchKey: "overview",
       branchLabel: "Overview",
-      path: "integration/accounts/twitter-holabossai-acct-1/leaves/leaf-post-2.md",
+      path: "integration/accounts/twitter-hitechcloudai-acct-1/leaves/leaf-post-2.md",
       title: "Next up is wiring Google Drive and Twitter into context fetch.",
-      summary: "@holabossai: next up is wiring Google Drive and Twitter into context fetch.",
+      summary: "@hitechcloudai: next up is wiring Google Drive and Twitter into context fetch.",
       fingerprint: "fingerprint-post-2",
       bodySha256: "sha-post-2",
       tags: ["twitter", "post"],
@@ -2198,7 +2198,7 @@ test("rebuildIntegrationTree writes the Twitter semantic memory hierarchy", asyn
       status: "active",
     });
     writeLeafFile(
-      "integration/accounts/twitter-holabossai-acct-1/leaves/leaf-post-2.md",
+      "integration/accounts/twitter-hitechcloudai-acct-1/leaves/leaf-post-2.md",
       "# Post 2\n\nNext up is wiring Google Drive and Twitter into context fetch.\n",
     );
 
@@ -2215,7 +2215,7 @@ test("rebuildIntegrationTree writes the Twitter semantic memory hierarchy", asyn
       path: `semantic/workspace/systems/integrations/${treeSlug}/content.md`,
     });
     assert.ok(rootNode);
-    assert.equal(rootNode.title, "HolaBoss (@holabossai) Twitter connection");
+    assert.equal(rootNode.title, "HitechCloud (@hitechcloudai) Twitter connection");
 
     const rootChildren = childNodes(rootNode.nodeId);
     assert.deepEqual(rootChildren.map((node) => node.nodeKind), ["profile", "timeline"]);

@@ -2,11 +2,11 @@
 //
 // What this file does (in one place):
 //   1. Builds the Slack app with a SqliteStateBackend (persists to WORKSPACE_DB_PATH)
-//   2. Wires a runtime-broker transport (reads HOLABOSS_APP_GRANT + broker URL)
+//   2. Wires a runtime-broker transport (reads HITECHCLOUD_APP_GRANT + broker URL)
 //   3. Starts the MCP server on MCP_PORT
 //   4. Handles SIGTERM / SIGINT for clean shutdown
 //
-// When the Holaboss runtime launches this app via app.runtime.yaml lifecycle.start,
+// When the Hitechcloud runtime launches this app via app.runtime.yaml lifecycle.start,
 // it injects all required env vars. From the user's perspective:
 //   - Connect Slack via desktop OAuth flow (existing infrastructure)
 //   - Workspace gets a slack-v2 app entry, MCP tools become available to agent
@@ -29,7 +29,7 @@ if (!workspaceDbPath) {
   process.exit(1)
 }
 const mcpPort = Number(process.env.MCP_PORT ?? 3099)
-// Holaboss runtime allocates an HTTP port per app for the desktop iframe
+// Hitechcloud runtime allocates an HTTP port per app for the desktop iframe
 // surface. Headless SDK modules don't have a web UI, but the desktop still
 // tries to load the URL — startMcpServer serves a placeholder page on PORT
 // to avoid ERR_CONNECTION_REFUSED.
@@ -41,7 +41,7 @@ const backend = new SqliteStateBackend({ dbPath: workspaceDbPath, appId: "slack"
 // 2) Build the Slack app with persistent backend
 const { app } = buildSlackApp({ backend })
 
-// 3) Production transport — reads HOLABOSS_APP_GRANT + HOLABOSS_INTEGRATION_BROKER_URL from env
+// 3) Production transport — reads HITECHCLOUD_APP_GRANT + HITECHCLOUD_INTEGRATION_BROKER_URL from env
 const transport = createRuntimeBrokerTransport({ provider: "slack" })
 const bridge = createBridge({ provider: SLACK, transport })
 

@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RUNTIME_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 REPO_ROOT="$(cd "${RUNTIME_ROOT}/.." && pwd)"
 OUTPUT_ROOT="${1:-${REPO_ROOT}/out/runtime-macos}"
-STAGING_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/holaboss-runtime-macos.XXXXXX")"
+STAGING_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/hitechcloud-runtime-macos.XXXXXX")"
 
 cleanup() {
   rm -rf "${STAGING_ROOT}"
@@ -41,7 +41,7 @@ OUTPUT_ROOT="$(resolve_output_root "${OUTPUT_ROOT}")"
 # Compute a content hash over everything that influences the bundle and
 # compare against .cache-key inside the existing OUTPUT_ROOT. On hit, skip
 # the whole rebuild — the output is already current. Bypass with
-# HOLABOSS_RUNTIME_FORCE_REBUILD=1.
+# HITECHCLOUD_RUNTIME_FORCE_REBUILD=1.
 #
 # channel-gateway is bundled into the api-server (tsup noExternal) and remote-api
 # is a runtime dep, so their sources are hashed too — otherwise editing a
@@ -95,7 +95,7 @@ compute_cache_key() {
 CACHE_KEY="$(compute_cache_key)"
 CACHE_KEY_PATH="${OUTPUT_ROOT}/.cache-key"
 
-if [ "${HOLABOSS_RUNTIME_FORCE_REBUILD:-0}" != "1" ] \
+if [ "${HITECHCLOUD_RUNTIME_FORCE_REBUILD:-0}" != "1" ] \
    && [ -f "${CACHE_KEY_PATH}" ] \
    && [ "$(cat "${CACHE_KEY_PATH}" 2>/dev/null || true)" = "${CACHE_KEY}" ]; then
   echo "[package_macos_runtime] cache hit (${CACHE_KEY:0:12}…) → reusing ${OUTPUT_ROOT}"
@@ -107,7 +107,7 @@ NODE_RUNTIME_DIR="${OUTPUT_ROOT}/node-runtime"
 PYTHON_RUNTIME_DIR="${OUTPUT_ROOT}/python-runtime"
 BIN_DIR="${OUTPUT_ROOT}/bin"
 PACKAGE_METADATA_PATH="${OUTPUT_ROOT}/package-metadata.json"
-SKIP_NODE_DEPS="${HOLABOSS_SKIP_NODE_DEPS:-0}"
+SKIP_NODE_DEPS="${HITECHCLOUD_SKIP_NODE_DEPS:-0}"
 BUILD_NODE_RUNTIME_DIR="${STAGING_ROOT}/build-node-runtime"
 BUILD_NODE_BIN="${BUILD_NODE_RUNTIME_DIR}/node_modules/node/bin/node"
 LOCAL_NODE_BIN="${NODE_RUNTIME_DIR}/node_modules/node/bin/node"
@@ -115,16 +115,16 @@ LOCAL_NPM_BIN="${NODE_RUNTIME_DIR}/node_modules/.bin/npm"
 LOCAL_PYTHON_BIN="${PYTHON_RUNTIME_DIR}/bin/python"
 
 DEFAULT_RUNTIME_NODE_VERSION="24.14.1"
-NODE_VERSION="${HOLABOSS_RUNTIME_NODE_VERSION:-${DEFAULT_RUNTIME_NODE_VERSION}}"
+NODE_VERSION="${HITECHCLOUD_RUNTIME_NODE_VERSION:-${DEFAULT_RUNTIME_NODE_VERSION}}"
 
-NPM_VERSION="${HOLABOSS_RUNTIME_NPM_VERSION:-}"
+NPM_VERSION="${HITECHCLOUD_RUNTIME_NPM_VERSION:-}"
 if [ -z "${NPM_VERSION}" ]; then
   require_cmd npm
   NPM_VERSION="$(npm --version)"
 fi
 
-PYTHON_VERSION="${HOLABOSS_RUNTIME_PYTHON_VERSION:-3.12.13}"
-PYTHON_ARCH_RAW="${HOLABOSS_RUNTIME_PYTHON_ARCH:-$(uname -m)}"
+PYTHON_VERSION="${HITECHCLOUD_RUNTIME_PYTHON_VERSION:-3.12.13}"
+PYTHON_ARCH_RAW="${HITECHCLOUD_RUNTIME_PYTHON_ARCH:-$(uname -m)}"
 case "${PYTHON_ARCH_RAW}" in
   x64|amd64|x86_64)
     PYTHON_TARGET="x86_64-apple-darwin"
@@ -150,7 +150,7 @@ if [ "${SKIP_NODE_DEPS}" != "1" ]; then
     cd "${BUILD_NODE_RUNTIME_DIR}"
     # bun add needs a package.json to write into; create a minimal one.
     if [ ! -f package.json ]; then
-      printf '{"name":"holaboss-runtime-node-bundle","private":true}\n' > package.json
+      printf '{"name":"hitechcloud-runtime-node-bundle","private":true}\n' > package.json
     fi
     bun add "node@${NODE_VERSION}" "npm@${NPM_VERSION}"
   )
@@ -161,7 +161,7 @@ fi
 # `file:../state-store` workspace deps end up as symlinks with absolute paths
 # pointing back at STAGING_ROOT. The EXIT trap then deletes STAGING_ROOT and
 # every symlink in OUTPUT_ROOT becomes dangling → runtime fails to import
-# @holaboss/runtime-state-store with ERR_MODULE_NOT_FOUND.
+# @hitechcloud/runtime-state-store with ERR_MODULE_NOT_FOUND.
 rm -rf "${OUTPUT_ROOT}"
 mkdir -p "${OUTPUT_ROOT}"
 mkdir -p "${BIN_DIR}"
@@ -190,15 +190,15 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUNDLE_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-TOOLCHAIN_ROOT="${HOLABOSS_RUNTIME_TOOLCHAIN_ROOT:-${BUNDLE_ROOT}}"
+TOOLCHAIN_ROOT="${HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT:-${BUNDLE_ROOT}}"
 BUNDLED_NODE_BIN="${TOOLCHAIN_ROOT}/node-runtime/node_modules/node/bin/node"
 
-export HOLABOSS_RUNTIME_APP_ROOT="${BUNDLE_ROOT}/runtime"
-export HOLABOSS_RUNTIME_ROOT="${BUNDLE_ROOT}/runtime"
-export HOLABOSS_RUNTIME_TOOLCHAIN_ROOT="${TOOLCHAIN_ROOT}"
+export HITECHCLOUD_RUNTIME_APP_ROOT="${BUNDLE_ROOT}/runtime"
+export HITECHCLOUD_RUNTIME_ROOT="${BUNDLE_ROOT}/runtime"
+export HITECHCLOUD_RUNTIME_TOOLCHAIN_ROOT="${TOOLCHAIN_ROOT}"
 export PATH="${TOOLCHAIN_ROOT}/python-runtime/bin:${TOOLCHAIN_ROOT}/python-runtime/python/bin:${TOOLCHAIN_ROOT}/node-runtime/node_modules/node/bin:${TOOLCHAIN_ROOT}/node-runtime/node_modules/.bin:${PATH}"
 if [ -x "${BUNDLED_NODE_BIN}" ]; then
-  export HOLABOSS_RUNTIME_NODE_BIN="${BUNDLED_NODE_BIN}"
+  export HITECHCLOUD_RUNTIME_NODE_BIN="${BUNDLED_NODE_BIN}"
 fi
 
 exec "${BUNDLE_ROOT}/runtime/bootstrap/macos.sh" "$@"

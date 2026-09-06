@@ -1,4 +1,4 @@
-import type { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import type { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 
 /**
  * Single-tenant pin — workspace-removal Piece 1.
@@ -7,7 +7,7 @@ import type { RuntimeStateStore } from "@holaboss/runtime-state-store";
  * control-plane registry so the *server* decides which workspace every request
  * targets — the client no longer does. It is the single source of truth behind
  * both ingress doorways:
- *   1. the REST capability surface (the `x-holaboss-workspace-id` header), and
+ *   1. the REST capability surface (the `x-hitechcloud-workspace-id` header), and
  *   2. the oRPC / MCP surface (the `workspaceId` field on every input).
  *
  * Resolution:

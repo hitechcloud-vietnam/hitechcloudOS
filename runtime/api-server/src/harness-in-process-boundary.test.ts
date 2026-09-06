@@ -33,9 +33,9 @@ test("api-server must not depend on harness-host", () => {
 
   for (const field of ["dependencies", "devDependencies", "peerDependencies"]) {
     assert.equal(
-      manifest[field]?.["@holaboss/runtime-harness-host"],
+      manifest[field]?.["@hitechcloud/runtime-harness-host"],
       undefined,
-      `@holaboss/runtime-harness-host must not be in ${field} — it is staged as a sibling and duplicating it broke the macOS release with EMFILE`,
+      `@hitechcloud/runtime-harness-host must not be in ${field} — it is staged as a sibling and duplicating it broke the macOS release with EMFILE`,
     );
   }
 });
@@ -53,7 +53,7 @@ test("the staging rewrite table does not reintroduce the duplicate", () => {
     staging.indexOf("WORKSPACE_SIBLING_REWRITES") + 2000,
   );
   assert.ok(
-    !rewrites.includes("@holaboss/runtime-harness-host"),
+    !rewrites.includes("@hitechcloud/runtime-harness-host"),
     "harness-host must not be rewritten into api-server's install",
   );
 });

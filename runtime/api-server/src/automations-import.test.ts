@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import { buildRuntimeApiServer, type BuildRuntimeApiServerOptions } from "./app.js";

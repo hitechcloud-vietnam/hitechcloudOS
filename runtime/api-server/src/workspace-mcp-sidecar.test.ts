@@ -38,7 +38,7 @@ function makeRequest(workspaceDir: string) {
 test("startWorkspaceMcpSidecar reuses a ready persisted sidecar", async () => {
   const { root, workspaceDir } = makeTempWorkspaceRoot("hb-workspace-mcp-reuse-");
   const request = makeRequest(workspaceDir);
-  const stateDir = path.join(root, ".holaboss");
+  const stateDir = path.join(root, ".hitechcloud");
   fs.mkdirSync(stateDir, { recursive: true });
   fs.writeFileSync(
     path.join(stateDir, "workspace-mcp-sidecar-state.json"),
@@ -88,7 +88,7 @@ test("startWorkspaceMcpSidecar reuses a ready persisted sidecar", async () => {
 test("startWorkspaceMcpSidecar terminates stale state, spawns, and persists the new sidecar", async () => {
   const { root, workspaceDir } = makeTempWorkspaceRoot("hb-workspace-mcp-spawn-");
   const request = makeRequest(workspaceDir);
-  const legacyStateDir = path.join(root, ".holaboss");
+  const legacyStateDir = path.join(root, ".hitechcloud");
   fs.mkdirSync(legacyStateDir, { recursive: true });
   fs.writeFileSync(
     path.join(legacyStateDir, "workspace-mcp-sidecar-state.json"),
@@ -196,7 +196,7 @@ test("startWorkspaceMcpSidecar migrates only the matching legacy sidecar entry f
   fs.mkdirSync(workspaceADir, { recursive: true });
   fs.mkdirSync(workspaceBDir, { recursive: true });
   const request = makeRequest(workspaceADir);
-  const legacyStateDir = path.join(root, ".holaboss");
+  const legacyStateDir = path.join(root, ".hitechcloud");
   fs.mkdirSync(legacyStateDir, { recursive: true });
   fs.writeFileSync(
     path.join(legacyStateDir, "workspace-mcp-sidecar-state.json"),

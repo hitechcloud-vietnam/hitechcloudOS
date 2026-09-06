@@ -775,7 +775,7 @@ function runtimeToolParameters(toolId: RuntimeAgentToolId): Record<string, unkno
         required: ["path"],
         additionalProperties: false,
       };
-    case "holahub_upload_image":
+    case "hitechhub_upload_image":
       return {
         type: "object",
         properties: {
@@ -1319,7 +1319,7 @@ function runtimeToolParameters(toolId: RuntimeAgentToolId): Record<string, unkno
         required: ["app_id"],
         additionalProperties: false,
       };
-    case "holaboss_workspace_integrations_propose_connect":
+    case "hitechcloud_workspace_integrations_propose_connect":
       return {
         type: "object",
         properties: {
@@ -1337,7 +1337,7 @@ function runtimeToolParameters(toolId: RuntimeAgentToolId): Record<string, unkno
         required: ["toolkit_slug"],
         additionalProperties: false,
       };
-    case "holaboss_workspace_integrations_set_default_account":
+    case "hitechcloud_workspace_integrations_set_default_account":
       return {
         type: "object",
         properties: {
@@ -1589,7 +1589,7 @@ function runtimeToolPromptGuidelines(toolId: RuntimeAgentToolId): string[] {
       "When a background terminal is no longer needed, stop it with `terminal_session_signal` or `terminal_session_close` instead of leaving it running indefinitely.",
     ];
   }
-  if (toolId === "holaboss_workspace_integrations_propose_connect") {
+  if (toolId === "hitechcloud_workspace_integrations_propose_connect") {
     return [
       "When the user wants to USE a third-party service directly via chat (Gmail, Slack, Notion, Linear, GitHub, …) and there is NO matching `<toolkit>_<verb>` tool already in your tool list, call this tool. Connecting an integration is one OAuth click for the user, not an engineering task.",
       "DO NOT call this tool to satisfy a 'build me an app that uses X' request. App-building has its own connect+bind flow: scaffold the app first, declare the required `integration` in `app.runtime.yaml`, and let `workspace_apps_register` / `workspace_apps_ensure_running` surface `pending_integrations`. The chat UI auto-renders the per-app binding card from that response — that card both opens OAuth (if no accounts exist) AND binds the chosen account to the specific app. Calling propose_connect up-front creates a workspace-level connection without binding it to anything, the user clicks Connect once and thinks they're done, then the freshly-built app reports `integration_not_bound` because the per-app binding step was skipped. The screenshot the user takes is of an empty 'Connect X' state, polish has nothing meaningful to compare against, the dashboard ships broken.",
@@ -1615,7 +1615,7 @@ function runtimeToolPromptGuidelines(toolId: RuntimeAgentToolId): string[] {
     return [
       ...appBuilderToolGuidance,
       "This tool builds a brand-new user-facing app (TanStack Start project, dashboard, vibe-coded internal tool). It is NOT how a user connects an integration.",
-      "If the user wants to connect, authorize, or otherwise gain OAuth access to a known third-party service, call `holaboss_workspace_integrations_propose_connect` instead — building an app for that is a category error.",
+      "If the user wants to connect, authorize, or otherwise gain OAuth access to a known third-party service, call `hitechcloud_workspace_integrations_propose_connect` instead — building an app for that is a category error.",
       "Use this only when the user actually asked for a new app, dashboard, tool, surface, internal product, or other UI/persistence/schedule-bearing capability.",
       "MANDATORY PRECONDITION: invoke `skill({ name: \"app-builder-sdk\" })` ONCE before calling this tool, and read its full output. The skill contains the SDK contract (5 primitives, provider id rules, package.json shape, density rules, anti-patterns, install protocol). Building from training-data priors alone produces apps that consistently miss the SDK shape, the npm semver pin, and the density/aesthetic rules — i.e. the failure mode users keep flagging. The 1-line catalog description is NOT enough; load the full SKILL.md.",
       "DELEGATE OR YOU'RE IN THE WRONG SESSION. This tool is the entry point of a ~50+ tool-call pipeline (scaffold → bun install → register → build → ensure_running → polish). If you are running in the main chat session (not a delegated subagent), STOP and call `delegate_task` with the full build brief instead — the delegated shared executor will run this pipeline in the background while the user's chat stays responsive. Calling this tool directly from main session is the symptom of a wrong control-flow choice; the user has explicitly flagged this as a poor experience. The only acceptable callers of this tool are delegated executor sessions spawned by `delegate_task`.",
@@ -1628,7 +1628,7 @@ function runtimeToolPromptGuidelines(toolId: RuntimeAgentToolId): string[] {
   ) {
     return [
       ...appBuilderToolGuidance,
-      "If the response includes a `pending_integrations` array, the app declares providers (Gmail / Twitter / Linear / etc.) that the user has not yet connected. You MUST call `holaboss_workspace_integrations_propose_connect` once per unique `provider_id` in that array — same turn is correct — before you can claim the app is ready.",
+      "If the response includes a `pending_integrations` array, the app declares providers (Gmail / Twitter / Linear / etc.) that the user has not yet connected. You MUST call `hitechcloud_workspace_integrations_propose_connect` once per unique `provider_id` in that array — same turn is correct — before you can claim the app is ready.",
       "Do NOT interpret a `pending_integrations` non-empty response as 'the API is unavailable' or 'this provider doesn't expose what I need'. It means exactly one thing: the user hasn't completed OAuth for that toolkit yet. Propose connect and wait for the gate to re-dispatch your input.",
       "Do NOT report the app as 'done', 'in safe mode', 'manual mode', 'logging-only', 'preview mode', or any variant that means the app does not actually do what the user asked for. If a provider is still unconnected, the correct outcome is a Connect card in chat, not a shipped non-functional app.",
       "After you propose connects, stop. Do not retry the tool, do not call MCP tools that need those connections, do not poll. The runtime parks the input and re-dispatches it the moment every required connection is active.",

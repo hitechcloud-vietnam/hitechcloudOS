@@ -1,4 +1,4 @@
-import { Button } from "@holaboss/ui"
+import { Button } from "@hitechcloud/ui"
 import {
   AtSign,
   Check,

@@ -3,13 +3,13 @@ import { useCallback } from "react";
 
 import {
   focusModeAtom,
-  holahubPendingPathAtom,
+  hitechhubPendingPathAtom,
   projectViewAtom,
   workspaceOverlayAtom,
 } from "./state/ui";
 
 /**
- * Open the HolaHub workspace overlay, optionally navigated to a specific path
+ * Open the Hitechhub workspace overlay, optionally navigated to a specific path
  * (e.g. `/threads/<postId>` to jump to a post an agent just published, or
  * `/marketplace?type=holaapp` for install). A bare open lands on the feed.
  */
@@ -17,13 +17,13 @@ export function useOpenDiscover() {
   const setProjectView = useSetAtom(projectViewAtom);
   const setWorkspaceOverlay = useSetAtom(workspaceOverlayAtom);
   const setFocusMode = useSetAtom(focusModeAtom);
-  const setHolahubPath = useSetAtom(holahubPendingPathAtom);
+  const setHolahubPath = useSetAtom(hitechhubPendingPathAtom);
   return useCallback(
     (path?: string) => {
       setProjectView(null);
       setFocusMode(false);
       setHolahubPath(path ?? null);
-      setWorkspaceOverlay("holahub");
+      setWorkspaceOverlay("hitechhub");
     },
     [setProjectView, setFocusMode, setHolahubPath, setWorkspaceOverlay]
   );

@@ -22,7 +22,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { type ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { OnboardingStageLayout } from "./OnboardingStageLayout";
 
-// Curated first-touch integrations — the four that almost every holaOS
+// Curated first-touch integrations — the four that almost every hitechcloudOS
 // user benefits from immediately. Keep this list short; the whole point
 // of this stage is to NOT be a marketplace.
 const HERO_INTEGRATIONS: Array<{
@@ -146,7 +146,7 @@ export function IntegrationsOnboardingStage({
               Connect your tools
             </h2>
             <p className="max-w-[440px] text-[13.5px] text-muted-foreground leading-[1.55]">
-              holaOS works best when it can read and act on the tools you
+              hitechcloudOS works best when it can read and act on the tools you
               already use. Connect the ones you use — or continue and add them
               from the Marketplace any time.
             </p>

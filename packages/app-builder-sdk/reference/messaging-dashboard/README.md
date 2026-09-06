@@ -45,7 +45,7 @@ sets a quality floor.
 - The 3-col `[64px_16px_1fr_auto]` row grid. The 16px middle column hosts the rail markers.
 - Token-only colors. No hex / `rgb()` / `oklch()` literals (the register-time lint rejects these).
 - No `font-bold` / `font-semibold` / inline `style={{ fontWeight: ... }}` (clamped to 500 anyway).
-- No second component library. Everything from `@holaboss/ui`.
+- No second component library. Everything from `@hitechcloud/ui`.
 - No `components/ui/` directory (shadcn-add copy).
 
 ## Required setup (lint-enforced)
@@ -65,7 +65,7 @@ silently dropped from the bundle. The register-time lint
 `src/client/routes/__root.tsx`:
 
 ```tsx
-import "@holaboss/ui/styles.css";
+import "@hitechcloud/ui/styles.css";
 import "../app.css";
 ```
 

@@ -9,7 +9,7 @@ import {
 
 export type ExaWebSearchLivecrawlMode = "fallback" | "preferred";
 export type ExaWebSearchType = "auto" | "fast" | "deep";
-export type NativeWebSearchProviderKind = "exa_hosted_mcp" | "holaboss_search";
+export type NativeWebSearchProviderKind = "exa_hosted_mcp" | "hitechcloud_search";
 
 export interface NativeWebSearchProviderOptions {
   providerId?: string | null;
@@ -87,16 +87,16 @@ interface ResolvedWebSearchProvider {
 export const EXA_WEB_SEARCH_BASE_URL = "https://mcp.exa.ai";
 export const EXA_WEB_SEARCH_ENDPOINT = "/mcp";
 export const EXA_WEB_SEARCH_ENDPOINT_URL = `${EXA_WEB_SEARCH_BASE_URL}${EXA_WEB_SEARCH_ENDPOINT}`;
-export const HOLABOSS_WEB_SEARCH_ENDPOINT_URL =
-  "https://api.holaboss.ai/api/v1/search/web";
+export const HITECHCLOUD_WEB_SEARCH_ENDPOINT_URL =
+  "https://api.hitechcloud.vn/api/v1/search/web";
 export const DEFAULT_WEB_SEARCH_NUM_RESULTS = 8;
 export const MAX_WEB_SEARCH_NUM_RESULTS = 10;
 export const DEFAULT_WEB_SEARCH_TIMEOUT_MS = 25_000;
 export const EXA_WEB_SEARCH_PROVIDER_ID = "exa_hosted_mcp";
-export const HOLABOSS_WEB_SEARCH_PROVIDER_ID = "holaboss_search";
+export const HITECHCLOUD_WEB_SEARCH_PROVIDER_ID = "hitechcloud_search";
 
 const WEB_SEARCH_CONFIG_KEYS = ["web_search", "webSearch", "search"];
-const RUNTIME_CONFIG_PATH_ENV = "HOLABOSS_RUNTIME_CONFIG_PATH";
+const RUNTIME_CONFIG_PATH_ENV = "HITECHCLOUD_RUNTIME_CONFIG_PATH";
 const SANDBOX_ROOT_ENV = "HB_SANDBOX_ROOT";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -128,7 +128,7 @@ function runtimeConfigPath(): string {
   if (explicit) {
     return path.resolve(explicit);
   }
-  const sandboxRoot = (process.env[SANDBOX_ROOT_ENV] ?? "").trim() || "/holaboss";
+  const sandboxRoot = (process.env[SANDBOX_ROOT_ENV] ?? "").trim() || "/hitechcloud";
   return path.join(sandboxRoot, "state", "runtime-config.json");
 }
 
@@ -169,11 +169,11 @@ function providerAliases(providerId: string): string[] {
   if (normalized === EXA_WEB_SEARCH_PROVIDER_ID) {
     aliases.push("exa");
   }
-  if (normalized === "holaboss") {
-    aliases.push(HOLABOSS_WEB_SEARCH_PROVIDER_ID);
+  if (normalized === "hitechcloud") {
+    aliases.push(HITECHCLOUD_WEB_SEARCH_PROVIDER_ID);
   }
-  if (normalized === HOLABOSS_WEB_SEARCH_PROVIDER_ID) {
-    aliases.push("holaboss");
+  if (normalized === HITECHCLOUD_WEB_SEARCH_PROVIDER_ID) {
+    aliases.push("hitechcloud");
   }
   return aliases;
 }
@@ -185,45 +185,45 @@ function normalizeProviderKind(
   const normalized = firstNonEmptyString(kind, providerId)
     .toLowerCase()
     .replace(/[-\s]+/g, "_");
-  if (normalized.includes("holaboss")) {
-    return "holaboss_search";
+  if (normalized.includes("hitechcloud")) {
+    return "hitechcloud_search";
   }
   return "exa_hosted_mcp";
 }
 
 function providerIdForKind(kind: NativeWebSearchProviderKind): string {
-  return kind === "holaboss_search"
-    ? HOLABOSS_WEB_SEARCH_PROVIDER_ID
+  return kind === "hitechcloud_search"
+    ? HITECHCLOUD_WEB_SEARCH_PROVIDER_ID
     : EXA_WEB_SEARCH_PROVIDER_ID;
 }
 
-function hasManagedHolabossSearchBinding(document: Record<string, unknown>): boolean {
+function hasManagedHitechcloudSearchBinding(document: Record<string, unknown>): boolean {
   const integrations = asRecord(document.integrations);
-  const holabossIntegration = asRecord(integrations.holaboss);
+  const hitechcloudIntegration = asRecord(integrations.hitechcloud);
   const providers = asRecord(document.providers);
-  const holabossProvider = asRecord(
-    providers.holaboss_model_proxy ?? providers.holaboss,
+  const hitechcloudProvider = asRecord(
+    providers.hitechcloud_model_proxy ?? providers.hitechcloud,
   );
   const runtimePayload = asRecord(document.runtime);
-  const holabossAuthToken = firstNonEmptyString(
-    holabossIntegration.auth_token as string | undefined,
-    holabossProvider.api_key as string | undefined,
+  const hitechcloudAuthToken = firstNonEmptyString(
+    hitechcloudIntegration.auth_token as string | undefined,
+    hitechcloudProvider.api_key as string | undefined,
     document.auth_token as string | undefined,
     document.model_proxy_api_key as string | undefined,
   );
-  const holabossUserId = firstNonEmptyString(
-    holabossIntegration.user_id as string | undefined,
+  const hitechcloudUserId = firstNonEmptyString(
+    hitechcloudIntegration.user_id as string | undefined,
     document.user_id as string | undefined,
   );
-  const holabossSandboxId = firstNonEmptyString(
-    holabossIntegration.sandbox_id as string | undefined,
+  const hitechcloudSandboxId = firstNonEmptyString(
+    hitechcloudIntegration.sandbox_id as string | undefined,
     runtimePayload.sandbox_id as string | undefined,
     document.sandbox_id as string | undefined,
   );
-  return Boolean(holabossAuthToken && holabossUserId && holabossSandboxId);
+  return Boolean(hitechcloudAuthToken && hitechcloudUserId && hitechcloudSandboxId);
 }
 
-function holabossSearchEndpointFromDocument(
+function hitechcloudSearchEndpointFromDocument(
   document: Record<string, unknown>,
 ): string {
   const explicitSearchBaseUrl = firstNonEmptyString(
@@ -233,7 +233,7 @@ function holabossSearchEndpointFromDocument(
     document.searchServiceUrl,
   );
   if (explicitSearchBaseUrl) {
-    return holabossSearchEndpointFromBaseUrl(explicitSearchBaseUrl);
+    return hitechcloudSearchEndpointFromBaseUrl(explicitSearchBaseUrl);
   }
 
   const controlPlaneBaseUrl = firstNonEmptyString(
@@ -241,35 +241,35 @@ function holabossSearchEndpointFromDocument(
     document.controlPlaneBaseUrl,
   );
   if (controlPlaneBaseUrl) {
-    return holabossSearchEndpointFromBaseUrl(controlPlaneBaseUrl, {
+    return hitechcloudSearchEndpointFromBaseUrl(controlPlaneBaseUrl, {
       useSearchServicePort: true,
     });
   }
 
   const providers = asRecord(document.providers);
-  const holabossProvider = asRecord(
-    providers.holaboss_model_proxy ?? providers.holaboss,
+  const hitechcloudProvider = asRecord(
+    providers.hitechcloud_model_proxy ?? providers.hitechcloud,
   );
   const modelProxyBaseUrl = firstNonEmptyString(
-    holabossProvider.base_url,
-    holabossProvider.baseURL,
+    hitechcloudProvider.base_url,
+    hitechcloudProvider.baseURL,
     document.model_proxy_base_url,
     document.modelProxyBaseUrl,
   );
   if (modelProxyBaseUrl) {
-    return holabossSearchEndpointFromModelProxyUrl(modelProxyBaseUrl);
+    return hitechcloudSearchEndpointFromModelProxyUrl(modelProxyBaseUrl);
   }
 
-  return HOLABOSS_WEB_SEARCH_ENDPOINT_URL;
+  return HITECHCLOUD_WEB_SEARCH_ENDPOINT_URL;
 }
 
-function holabossSearchEndpointFromBaseUrl(
+function hitechcloudSearchEndpointFromBaseUrl(
   baseUrl: string,
   _options: { useSearchServicePort?: boolean } = {},
 ): string {
   const normalized = baseUrl.trim().replace(/\/+$/, "");
   if (!normalized) {
-    return HOLABOSS_WEB_SEARCH_ENDPOINT_URL;
+    return HITECHCLOUD_WEB_SEARCH_ENDPOINT_URL;
   }
   if (normalized.endsWith("/api/v1/search/web")) {
     return normalized;
@@ -292,10 +292,10 @@ function holabossSearchEndpointFromBaseUrl(
   }
 }
 
-function holabossSearchEndpointFromModelProxyUrl(modelProxyBaseUrl: string): string {
+function hitechcloudSearchEndpointFromModelProxyUrl(modelProxyBaseUrl: string): string {
   const normalized = modelProxyBaseUrl.trim().replace(/\/+$/, "");
   if (!normalized) {
-    return HOLABOSS_WEB_SEARCH_ENDPOINT_URL;
+    return HITECHCLOUD_WEB_SEARCH_ENDPOINT_URL;
   }
   try {
     const url = new URL(normalized);
@@ -333,28 +333,28 @@ function resolveProviderFromRuntimeConfig(): Partial<ResolvedWebSearchProvider> 
   const document = readRuntimeConfigDocument();
   const config = runtimeWebSearchConfig(document);
   const integrations = asRecord(document.integrations);
-  const holabossIntegration = asRecord(integrations.holaboss);
+  const hitechcloudIntegration = asRecord(integrations.hitechcloud);
   const providers = asRecord(document.providers);
-  const holabossProvider = asRecord(
-    providers.holaboss_model_proxy ?? providers.holaboss,
+  const hitechcloudProvider = asRecord(
+    providers.hitechcloud_model_proxy ?? providers.hitechcloud,
   );
   const runtimePayload = asRecord(document.runtime);
-  const holabossAuthToken = firstNonEmptyString(
-    holabossIntegration.auth_token as string | undefined,
-    holabossProvider.api_key as string | undefined,
+  const hitechcloudAuthToken = firstNonEmptyString(
+    hitechcloudIntegration.auth_token as string | undefined,
+    hitechcloudProvider.api_key as string | undefined,
     document.auth_token as string | undefined,
     document.model_proxy_api_key as string | undefined,
   );
-  const holabossUserId = firstNonEmptyString(
-    holabossIntegration.user_id as string | undefined,
+  const hitechcloudUserId = firstNonEmptyString(
+    hitechcloudIntegration.user_id as string | undefined,
     document.user_id as string | undefined,
   );
-  const holabossOrgId = firstNonEmptyString(
-    holabossIntegration.org_id as string | undefined,
+  const hitechcloudOrgId = firstNonEmptyString(
+    hitechcloudIntegration.org_id as string | undefined,
     document.org_id as string | undefined,
   );
-  const holabossSandboxId = firstNonEmptyString(
-    holabossIntegration.sandbox_id as string | undefined,
+  const hitechcloudSandboxId = firstNonEmptyString(
+    hitechcloudIntegration.sandbox_id as string | undefined,
     runtimePayload.sandbox_id as string | undefined,
     document.sandbox_id as string | undefined,
   );
@@ -364,15 +364,15 @@ function resolveProviderFromRuntimeConfig(): Partial<ResolvedWebSearchProvider> 
     config.providerId as string | undefined,
     config.default_provider as string | undefined,
   );
-  const managedHolabossSearchBinding = hasManagedHolabossSearchBinding(document);
+  const managedHitechcloudSearchBinding = hasManagedHitechcloudSearchBinding(document);
   const selectedProviderId =
-    configuredProviderId === HOLABOSS_WEB_SEARCH_PROVIDER_ID
-      ? managedHolabossSearchBinding
-        ? HOLABOSS_WEB_SEARCH_PROVIDER_ID
+    configuredProviderId === HITECHCLOUD_WEB_SEARCH_PROVIDER_ID
+      ? managedHitechcloudSearchBinding
+        ? HITECHCLOUD_WEB_SEARCH_PROVIDER_ID
         : EXA_WEB_SEARCH_PROVIDER_ID
       : configuredProviderId ||
-        (managedHolabossSearchBinding
-          ? HOLABOSS_WEB_SEARCH_PROVIDER_ID
+        (managedHitechcloudSearchBinding
+          ? HITECHCLOUD_WEB_SEARCH_PROVIDER_ID
           : EXA_WEB_SEARCH_PROVIDER_ID);
   const providerPayload = configuredProviderPayload(config, selectedProviderId);
   const providerKind = normalizeProviderKind(
@@ -393,8 +393,8 @@ function resolveProviderFromRuntimeConfig(): Partial<ResolvedWebSearchProvider> 
       config.base_url as string | undefined,
       config.baseURL as string | undefined,
       config.url as string | undefined,
-      providerKind === "holaboss_search"
-        ? holabossSearchEndpointFromDocument(document)
+      providerKind === "hitechcloud_search"
+        ? hitechcloudSearchEndpointFromDocument(document)
         : "",
     ),
     apiKey: firstNonEmptyString(
@@ -404,16 +404,16 @@ function resolveProviderFromRuntimeConfig(): Partial<ResolvedWebSearchProvider> 
       providerPayload.authToken as string | undefined,
       config.api_key as string | undefined,
       config.apiKey as string | undefined,
-      providerKind === "holaboss_search"
-        ? (holabossIntegration.auth_token as string | undefined)
+      providerKind === "hitechcloud_search"
+        ? (hitechcloudIntegration.auth_token as string | undefined)
         : "",
-      providerKind === "holaboss_search"
-        ? (holabossProvider.api_key as string | undefined)
+      providerKind === "hitechcloud_search"
+        ? (hitechcloudProvider.api_key as string | undefined)
         : "",
     ),
-    userId: providerKind === "holaboss_search" ? holabossUserId : "",
-    orgId: providerKind === "holaboss_search" ? holabossOrgId : "",
-    sandboxId: providerKind === "holaboss_search" ? holabossSandboxId : "",
+    userId: providerKind === "hitechcloud_search" ? hitechcloudUserId : "",
+    orgId: providerKind === "hitechcloud_search" ? hitechcloudOrgId : "",
+    sandboxId: providerKind === "hitechcloud_search" ? hitechcloudSandboxId : "",
   };
 }
 
@@ -442,8 +442,8 @@ function resolveWebSearchProvider(
         options.baseUrl,
         shouldUseRuntimeProvider ? runtimeProvider.baseUrl : "",
       ) ||
-      (kind === "holaboss_search"
-        ? HOLABOSS_WEB_SEARCH_ENDPOINT_URL
+      (kind === "hitechcloud_search"
+        ? HITECHCLOUD_WEB_SEARCH_ENDPOINT_URL
         : EXA_WEB_SEARCH_ENDPOINT_URL),
     apiKey: firstNonEmptyString(
       options.apiKey,
@@ -517,8 +517,8 @@ export function webSearchDescription(
   const currentYear = new Date().getFullYear();
   const provider = resolveWebSearchProvider(options);
   const providerLabel =
-    provider.kind === "holaboss_search"
-      ? "configured Holaboss Search"
+    provider.kind === "hitechcloud_search"
+      ? "configured Hitechcloud Search"
       : provider.apiKey
         ? "configured Exa web search"
         : "hosted Exa web search without authentication";
@@ -722,7 +722,7 @@ async function searchExaHostedMcp(params: {
   };
 }
 
-async function searchHolaboss(params: {
+async function searchHitechcloud(params: {
   provider: ResolvedWebSearchProvider;
   query: string;
   numResults: number;
@@ -734,14 +734,14 @@ async function searchHolaboss(params: {
   requestTimeoutMs: number;
   toolCallId?: string | null;
 }): Promise<{ text: string; providerId: string }> {
-  // Fail closed: the Holaboss search service meters per user, and its downstream
-  // model-proxy call now REQUIRES X-Holaboss-User-Id (the backend rejects
+  // Fail closed: the Hitechcloud search service meters per user, and its downstream
+  // model-proxy call now REQUIRES X-Hitechcloud-User-Id (the backend rejects
   // unattributed OpenRouter-bound calls). Surface a clear tool error instead of
   // firing a request that would be rejected downstream / go unmetered. (Exa/BYO
   // web search uses searchExa and is unaffected.)
   if (!params.provider.userId) {
     throw new Error(
-      "web_search via Holaboss Search requires a signed-in Holaboss account (no user id resolved)",
+      "web_search via Hitechcloud Search requires a signed-in Hitechcloud account (no user id resolved)",
     );
   }
   const headers: Record<string, string> = {
@@ -752,15 +752,15 @@ async function searchHolaboss(params: {
     headers.authorization = `Bearer ${params.provider.apiKey}`;
     headers["x-api-key"] = params.provider.apiKey;
   }
-  headers["X-Holaboss-User-Id"] = params.provider.userId;
+  headers["X-Hitechcloud-User-Id"] = params.provider.userId;
   if (params.provider.orgId) {
-    headers["X-Holaboss-Org-Id"] = params.provider.orgId;
+    headers["X-Hitechcloud-Org-Id"] = params.provider.orgId;
   }
   if (params.provider.sandboxId) {
-    headers["X-Holaboss-Sandbox-Id"] = params.provider.sandboxId;
+    headers["X-Hitechcloud-Sandbox-Id"] = params.provider.sandboxId;
   }
   if (params.toolCallId?.trim()) {
-    headers["X-Holaboss-Tool-Call-Id"] = params.toolCallId.trim();
+    headers["X-Hitechcloud-Tool-Call-Id"] = params.toolCallId.trim();
   }
   const response = await params.fetchImpl(params.provider.baseUrl, {
     method: "POST",
@@ -790,7 +790,7 @@ async function searchHolaboss(params: {
       ? parseJsonSearchText(await response.json())
       : (await response.text()).trim();
   return {
-    providerId: HOLABOSS_WEB_SEARCH_PROVIDER_ID,
+    providerId: HITECHCLOUD_WEB_SEARCH_PROVIDER_ID,
     text: text || "No search results found. Please try a different query.",
   };
 }
@@ -824,8 +824,8 @@ export async function searchPublicWeb(
     requestTimeoutMs,
     toolCallId: params.toolCallId,
   };
-  if (provider.kind === "holaboss_search") {
-    return searchHolaboss(commonParams);
+  if (provider.kind === "hitechcloud_search") {
+    return searchHitechcloud(commonParams);
   }
   return searchExaHostedMcp(commonParams);
 }

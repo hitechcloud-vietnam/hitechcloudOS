@@ -249,7 +249,7 @@
   }
 }
 
-@keyframes holaboss-splash-halo {
+@keyframes hitechcloud-splash-halo {
 
   0%,
   100% {
@@ -263,7 +263,7 @@
   }
 }
 
-@keyframes holaboss-splash-dot {
+@keyframes hitechcloud-splash-dot {
 
   0%,
   100% {
@@ -317,7 +317,7 @@
 
 /* Surface palette — registered so theme switches interpolate the
    whole canvas instead of hard-cutting on most surfaces. Initial
-   values mirror the holaos-light defaults. */
+   values mirror the hitechcloudos-light defaults. */
 @property --card {
   syntax: "<color>";
   inherits: true;
@@ -378,7 +378,7 @@
 :root {
   --radius: 0.625rem;
 
-  /* Surface + content. Warm stone grays (hue ~50-70); mirrors holaos-light.
+  /* Surface + content. Warm stone grays (hue ~50-70); mirrors hitechcloudos-light.
      Soft gray canvas, white cards lift off it. */
   --background: oklch(0.97 0.0015 70);
   --foreground: oklch(0.26 0.004 50);

@@ -1,4 +1,4 @@
-import "@holaboss/ui/styles.css"
+import "@hitechcloud/ui/styles.css"
 import "./app.css"
 
 import { StrictMode } from "react"

@@ -28,7 +28,7 @@ import {
   type TerminalSessionRecord,
   type TerminalSessionStatus,
   type WorkspaceRecord,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 import { listConnectionsMerged } from "./integration-connections-merged.js";
 
@@ -447,7 +447,7 @@ const SUBAGENT_CANCEL_SETTLE_TIMEOUT_MS = 8_000;
 const SUBAGENT_CANCEL_SETTLE_POLL_INTERVAL_MS = 50;
 const WORKSPACE_APP_BUILD_TIMEOUT_MS = 180_000;
 const WORKSPACE_APP_PROBE_TIMEOUT_MS = 5_000;
-const DEFAULT_LOCAL_APP_ACTION_API_PATH = "/__holaboss/actions/run";
+const DEFAULT_LOCAL_APP_ACTION_API_PATH = "/__hitechcloud/actions/run";
 const WORKSPACE_APP_ENDPOINT_PROBE_CHECKS = [
   "ui",
   "mcp_health",
@@ -514,7 +514,7 @@ export interface RuntimeAgentToolsCreateCronjobParams {
     to?: unknown;
   };
   metadata?: Record<string, unknown> | null;
-  holabossUserId?: string | null;
+  hitechcloudUserId?: string | null;
   projectId?: string | null;
 }
 
@@ -908,7 +908,7 @@ function scaffoldWorkspaceAppManifest(params: { appId: string; name: string }): 
         path: "/mcp/sse",
         tools: [],
       },
-      env_contract: ["HOLABOSS_WORKSPACE_ID"],
+      env_contract: ["HITECHCLOUD_WORKSPACE_ID"],
     },
     { sortKeys: false, noRefs: true, lineWidth: 0 },
   );
@@ -1053,7 +1053,7 @@ uiApp.get("/", (_req, res) => {
   </head>
   <body>
     <main>
-      <span class="eyebrow">holaOS app scaffold</span>
+      <span class="eyebrow">hitechcloudOS app scaffold</span>
       <h1>\${appName}</h1>
       <p>This runtime-managed starter is registered with the current workspace. Replace this placeholder with the first useful UI for the user request.</p>
       <section class="card">
@@ -1196,7 +1196,7 @@ process.on("SIGTERM", () => shutdown("SIGTERM"));
 
 const HOLAHUB_MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 
-function holahubImageContentType(filePath: string): string | null {
+function hitechhubImageContentType(filePath: string): string | null {
   switch (path.extname(filePath).toLowerCase()) {
     case ".png":
       return "image/png";
@@ -1212,18 +1212,18 @@ function holahubImageContentType(filePath: string): string | null {
   }
 }
 
-// The HolaHub MCP server (url + Authorization bearer) the desktop writes into
+// The Hitechhub MCP server (url + Authorization bearer) the desktop writes into
 // workspace.yaml. Its upload endpoint is the /images sibling of the /sse MCP url.
-function holahubUploadTarget(workspaceDir: string): {
+function hitechhubUploadTarget(workspaceDir: string): {
   uploadUrl: string;
   authorization: string;
 } {
   const document = readWorkspaceYamlDocument(workspaceDir);
   const registry = isRecord(document.mcp_registry) ? document.mcp_registry : {};
   const appServers = isRecord(registry.app_servers) ? registry.app_servers : {};
-  const holahub = isRecord(appServers.holahub) ? appServers.holahub : {};
-  const url = typeof holahub.url === "string" ? holahub.url : "";
-  const headers = isRecord(holahub.headers) ? holahub.headers : {};
+  const hitechhub = isRecord(appServers.hitechhub) ? appServers.hitechhub : {};
+  const url = typeof hitechhub.url === "string" ? hitechhub.url : "";
+  const headers = isRecord(hitechhub.headers) ? hitechhub.headers : {};
   const authorization =
     typeof headers.Authorization === "string" ? headers.Authorization : "";
   const uploadUrl = url ? url.replace(/\/sse(\?.*)?$/, "/images") : "";
@@ -1330,9 +1330,9 @@ export const ALLOWED_DELIVERY_CHANNELS = new Set(["system_notification", "sessio
 const DEFAULT_DOWNLOAD_TIMEOUT_MS = 120_000;
 const MAX_DOWNLOAD_BYTES = 50 * 1024 * 1024;
 const WORKSPACE_INSTRUCTIONS_FILE_PATH = "AGENTS.md";
-const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_START = "<!-- holaboss-managed-workspace-instructions:start -->";
-const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_END = "<!-- holaboss-managed-workspace-instructions:end -->";
-const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_HEADING = "## Holaboss Managed Workspace Instructions";
+const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_START = "<!-- hitechcloud-managed-workspace-instructions:start -->";
+const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_END = "<!-- hitechcloud-managed-workspace-instructions:end -->";
+const WORKSPACE_INSTRUCTIONS_MANAGED_SECTION_HEADING = "## Hitechcloud Managed Workspace Instructions";
 
 function runtimeToolBaseDefinition(id: string) {
   const definition = RUNTIME_AGENT_TOOL_BASE_DEFINITIONS.find((tool) => tool.id === id);
@@ -1440,10 +1440,10 @@ export const RUNTIME_AGENT_TOOL_DEFINITIONS: RuntimeAgentToolDefinition[] = [
     description: runtimeToolBaseDefinition("send_file").description
   },
   {
-    id: runtimeToolBaseDefinition("holahub_upload_image").id,
+    id: runtimeToolBaseDefinition("hitechhub_upload_image").id,
     method: "POST",
-    path: "/api/v1/capabilities/runtime-tools/holahub-upload-image",
-    description: runtimeToolBaseDefinition("holahub_upload_image").description
+    path: "/api/v1/capabilities/runtime-tools/hitechhub-upload-image",
+    description: runtimeToolBaseDefinition("hitechhub_upload_image").description
   },
   {
     id: runtimeToolBaseDefinition("open_macos_settings").id,
@@ -1767,7 +1767,7 @@ async function probeMcpEndpoint(url: string, timeoutMs = 5000): Promise<McpEndpo
         params: {
           protocolVersion: "2025-06-18",
           capabilities: {},
-          clientInfo: { name: "holaboss-mcp-probe", version: "1" },
+          clientInfo: { name: "hitechcloud-mcp-probe", version: "1" },
         },
       }),
       signal: controller.signal,
@@ -2885,7 +2885,7 @@ async function reportOutputFilePath(params: {
 
 function metadataWithCronjobDefaults(params: {
   metadata: Record<string, unknown> | null | undefined;
-  holabossUserId: string | null | undefined;
+  hitechcloudUserId: string | null | undefined;
   selectedModel?: string | null | undefined;
   sourceSessionId?: string | null | undefined;
   fallbackTimezone?: string | null | undefined;
@@ -2893,9 +2893,9 @@ function metadataWithCronjobDefaults(params: {
 ): JsonObject {
   const nextMetadata: JsonObject = { ...((params.metadata ?? {}) as JsonObject) };
   delete nextMetadata.model;
-  const userId = normalizedString(params.holabossUserId);
-  if (userId && typeof nextMetadata.holaboss_user_id !== "string") {
-    nextMetadata.holaboss_user_id = userId;
+  const userId = normalizedString(params.hitechcloudUserId);
+  if (userId && typeof nextMetadata.hitechcloud_user_id !== "string") {
+    nextMetadata.hitechcloud_user_id = userId;
   }
   const sourceSessionId = normalizedString(params.sourceSessionId);
   if (sourceSessionId && typeof nextMetadata.source_session_id !== "string") {
@@ -4168,7 +4168,7 @@ export class RuntimeAgentToolsService {
         };
       }),
       requirement:
-        "Use the exact canonical provider_id from this catalog in app.runtime.yaml integrations and createIntegrationClient(...). E.g. use 'twitter' for X. When a provider has multiple `connected_accounts` and no `workspace_default_connection_id`, ask the user which account namespace this workspace should default to, then call `holaboss_workspace_integrations_set_default_account` to persist the choice.",
+        "Use the exact canonical provider_id from this catalog in app.runtime.yaml integrations and createIntegrationClient(...). E.g. use 'twitter' for X. When a provider has multiple `connected_accounts` and no `workspace_default_connection_id`, ask the user which account namespace this workspace should default to, then call `hitechcloud_workspace_integrations_set_default_account` to persist the choice.",
     };
   }
 
@@ -4330,7 +4330,7 @@ export class RuntimeAgentToolsService {
     const effectiveEnabled = params.enabled !== false;
     const metadata = metadataWithCronjobDefaults({
       metadata: params.metadata,
-      holabossUserId: params.holabossUserId,
+      hitechcloudUserId: params.hitechcloudUserId,
       selectedModel: params.selectedModel,
       sourceSessionId: params.sessionId,
       fallbackTimezone: effectiveTimezone,
@@ -4417,7 +4417,7 @@ export class RuntimeAgentToolsService {
           ) as JsonObject)
         : metadataWithCronjobDefaults({
             metadata: params.metadata,
-            holabossUserId: null,
+            hitechcloudUserId: null,
             fallbackTimezone: effectiveTimezone,
           });
     const requestedProjectId =
@@ -6035,10 +6035,10 @@ export class RuntimeAgentToolsService {
   async openMacosSettings(params: { pane?: string | null }): Promise<JsonObject> {
     const requestedPane = normalizedString(params.pane ?? "") || "privacy";
 
-    // Prefer the desktop bridge: the Electron main process can REGISTER Holaboss
+    // Prefer the desktop bridge: the Electron main process can REGISTER Hitechcloud
     // with macOS (desktopCapturer / askForMediaAccess / accessibility prompt) so
     // it shows up in the relevant Settings list — opening a pane alone can't do
-    // that (that's why screencapture's failure never adds Holaboss). Falls back
+    // that (that's why screencapture's failure never adds Hitechcloud). Falls back
     // to opening the pane via the host `open` when the bridge is unavailable.
     const bridge = this.resolveDesktopPermissionBridge();
     if (bridge) {
@@ -6047,7 +6047,7 @@ export class RuntimeAgentToolsService {
           method: "POST",
           headers: {
             "content-type": "application/json",
-            "x-holaboss-desktop-token": bridge.authToken,
+            "x-hitechcloud-desktop-token": bridge.authToken,
           },
           body: JSON.stringify({ kind: requestedPane }),
         });
@@ -6057,9 +6057,9 @@ export class RuntimeAgentToolsService {
             ...result,
             via: "desktop",
             message:
-              `Requested the macOS '${requestedPane.replace(/_/g, " ")}' permission for Holaboss — ` +
+              `Requested the macOS '${requestedPane.replace(/_/g, " ")}' permission for Hitechcloud — ` +
               "registered it where the OS supports a prompt and opened the relevant Settings pane. " +
-              "Ask the user to enable Holaboss there if it isn't already, then retry the original operation.",
+              "Ask the user to enable Hitechcloud there if it isn't already, then retry the original operation.",
           };
         }
       } catch {
@@ -6115,7 +6115,7 @@ export class RuntimeAgentToolsService {
       url: settingsUrl,
       message:
         `Opened macOS System Settings → Privacy & Security (${requestedPane.replace(/_/g, " ")}). ` +
-        "Ask the user to enable Holaboss there (toggle it on, re-launch if prompted), then retry the original operation.",
+        "Ask the user to enable Hitechcloud there (toggle it on, re-launch if prompted), then retry the original operation.",
     };
   }
 
@@ -6515,7 +6515,7 @@ export class RuntimeAgentToolsService {
     };
   }
 
-  async holahubUploadImage(params: {
+  async hitechhubUploadImage(params: {
     workspaceId: string;
     path: string;
   }): Promise<JsonObject> {
@@ -6524,7 +6524,7 @@ export class RuntimeAgentToolsService {
     if (!rawPath) {
       throw new RuntimeAgentToolsServiceError(
         400,
-        "holahub_image_path_required",
+        "hitechhub_image_path_required",
         "path is required",
       );
     }
@@ -6541,33 +6541,33 @@ export class RuntimeAgentToolsService {
     if (!stats?.isFile()) {
       throw new RuntimeAgentToolsServiceError(
         404,
-        "holahub_image_not_found",
+        "hitechhub_image_not_found",
         `file not found: ${rawPath}`,
       );
     }
     if (stats.size > HOLAHUB_MAX_IMAGE_BYTES) {
       throw new RuntimeAgentToolsServiceError(
         413,
-        "holahub_image_too_large",
+        "hitechhub_image_too_large",
         "image exceeds 4 MB",
       );
     }
-    const contentType = holahubImageContentType(absolutePath);
+    const contentType = hitechhubImageContentType(absolutePath);
     if (!contentType) {
       throw new RuntimeAgentToolsServiceError(
         415,
-        "holahub_image_unsupported_type",
+        "hitechhub_image_unsupported_type",
         "image must be png, jpeg, webp, or gif",
       );
     }
-    // The HolaHub MCP url + bearer the desktop wrote into workspace.yaml; the
+    // The Hitechhub MCP url + bearer the desktop wrote into workspace.yaml; the
     // upload endpoint is its /images sibling (see registerHolahubMcp).
-    const target = holahubUploadTarget(workspaceDir);
+    const target = hitechhubUploadTarget(workspaceDir);
     if (!target.uploadUrl) {
       throw new RuntimeAgentToolsServiceError(
         400,
-        "holahub_not_connected",
-        "HolaHub is not connected for this workspace",
+        "hitechhub_not_connected",
+        "Hitechhub is not connected for this workspace",
       );
     }
     const bytes = await fs.readFile(absolutePath);
@@ -6590,14 +6590,14 @@ export class RuntimeAgentToolsService {
     } catch (error) {
       throw new RuntimeAgentToolsServiceError(
         502,
-        "holahub_image_upload_failed",
+        "hitechhub_image_upload_failed",
         timeoutErrorMessage(error),
       );
     }
     if (!res.ok) {
       throw new RuntimeAgentToolsServiceError(
         502,
-        "holahub_image_upload_failed",
+        "hitechhub_image_upload_failed",
         `upload failed with status ${res.status}`,
       );
     }
@@ -6608,7 +6608,7 @@ export class RuntimeAgentToolsService {
     if (!imageId) {
       throw new RuntimeAgentToolsServiceError(
         502,
-        "holahub_image_upload_failed",
+        "hitechhub_image_upload_failed",
         "upload returned no image id",
       );
     }
@@ -8536,7 +8536,7 @@ export class RuntimeAgentToolsService {
     // is in the dep graph but no library primitives actually compose
     // the UI. Source-of-truth + rationale live in workspace-app-ui-lint.ts.
     //
-    //   1. Minimum named imports from @holaboss/ui — catches the
+    //   1. Minimum named imports from @hitechcloud/ui — catches the
     //      "import styles.css only, hand-roll every component" pattern.
     //   2. CSS import allowlist — catches the parallel-stylesheet
     //      pattern where the agent ships its own custom CSS file with

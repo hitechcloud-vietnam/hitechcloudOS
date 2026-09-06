@@ -43,10 +43,10 @@ export class CompositeChannelConfigClient implements ChannelConfigClient {
 
 /**
  * v1 quick-connect: reads a single Telegram connection from environment variables.
- *   HOLABOSS_TELEGRAM_BOT_TOKEN   (required to enable)
- *   HOLABOSS_TELEGRAM_WORKSPACE_ID(optional; default = sole workspace)
- *   HOLABOSS_TELEGRAM_ALLOW_FROM  (optional, comma-separated ids/@usernames)
- *   HOLABOSS_TELEGRAM_CONNECTION_ID(optional, default "default")
+ *   HITECHCLOUD_TELEGRAM_BOT_TOKEN   (required to enable)
+ *   HITECHCLOUD_TELEGRAM_WORKSPACE_ID(optional; default = sole workspace)
+ *   HITECHCLOUD_TELEGRAM_ALLOW_FROM  (optional, comma-separated ids/@usernames)
+ *   HITECHCLOUD_TELEGRAM_CONNECTION_ID(optional, default "default")
  * A store-backed client (with a desktop UI) can replace this later without
  * touching the manager.
  */
@@ -59,20 +59,20 @@ export class EnvChannelConfigClient implements ChannelConfigClient {
 
   async listConfigs(): Promise<ChannelConnectionConfig[]> {
     const configs: ChannelConnectionConfig[] = [];
-    const token = this.#env.HOLABOSS_TELEGRAM_BOT_TOKEN?.trim();
+    const token = this.#env.HITECHCLOUD_TELEGRAM_BOT_TOKEN?.trim();
     if (token) {
       configs.push({
         platform: "telegram",
-        connectionId: this.#env.HOLABOSS_TELEGRAM_CONNECTION_ID?.trim() || "default",
+        connectionId: this.#env.HITECHCLOUD_TELEGRAM_CONNECTION_ID?.trim() || "default",
         enabled: true,
-        workspaceId: this.#env.HOLABOSS_TELEGRAM_WORKSPACE_ID?.trim() || null,
+        workspaceId: this.#env.HITECHCLOUD_TELEGRAM_WORKSPACE_ID?.trim() || null,
         token,
-        allowFrom: (this.#env.HOLABOSS_TELEGRAM_ALLOW_FROM ?? "")
+        allowFrom: (this.#env.HITECHCLOUD_TELEGRAM_ALLOW_FROM ?? "")
           .split(",")
           .map((value) => value.trim())
           .filter(Boolean),
         requireMention: false,
-        apiBaseUrl: this.#env.HOLABOSS_TELEGRAM_API_BASE_URL?.trim() || undefined,
+        apiBaseUrl: this.#env.HITECHCLOUD_TELEGRAM_API_BASE_URL?.trim() || undefined,
       });
     }
     return configs;

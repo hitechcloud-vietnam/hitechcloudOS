@@ -98,7 +98,7 @@ import {
   customizeTabAtom,
   focusModeAtom,
   orgSwitchingAtom,
-  holahubPendingPathAtom,
+  hitechhubPendingPathAtom,
   projectViewAtom,
   searchOpenAtom,
   selectedSessionIdAtom,
@@ -311,7 +311,7 @@ function SidebarExpanded() {
 
 // DataTransfer MIME carrying a dragged pinned item's id so dropping it on
 // another pinned row reorders the flat list.
-const PINNED_MOVE_DRAG_TYPE = "application/x-holaboss-pinned-move";
+const PINNED_MOVE_DRAG_TYPE = "application/x-hitechcloud-pinned-move";
 
 function FavoriteRow({ item }: { item: FavoriteItem }) {
   const toggleFavorite = useSetAtom(toggleFavoriteAtom);
@@ -554,7 +554,7 @@ function FavoriteRow({ item }: { item: FavoriteItem }) {
   );
 }
 
-const ENTERPRISE_URL = "https://www.holaos.ai/enterprise";
+const ENTERPRISE_URL = "https://www.hitechcloud.vn/enterprise";
 
 // A distinct, card-styled call to action — deliberately NOT a plain nav item —
 // sitting just above Settings. Opens the marketing Enterprise page in the user's
@@ -974,7 +974,7 @@ function SidebarWorkspaceSection() {
   const [workspaceOverlay, setWorkspaceOverlay] = useAtom(workspaceOverlayAtom);
   const projectsActive = projectView !== null;
 
-  const setHolahubPath = useSetAtom(holahubPendingPathAtom);
+  const setHolahubPath = useSetAtom(hitechhubPendingPathAtom);
   const enterWorkspaceOverlay = useCallback(
     (kind: WorkspaceOverlay) => {
       // Workspace-scoped overlays are mutually exclusive with Projects and
@@ -982,7 +982,7 @@ function SidebarWorkspaceSection() {
       setProjectView(null);
       // A plain open lands on the community's home feed — never a stale
       // deep-link.
-      if (kind === "holahub") {
+      if (kind === "hitechhub") {
         setHolahubPath(null);
       }
       setWorkspaceOverlay(kind);
@@ -996,8 +996,8 @@ function SidebarWorkspaceSection() {
       <TeamNavRow
         icon={<CompassFilled />}
         label="Discover"
-        active={workspaceOverlay === "holahub"}
-        onClick={() => enterWorkspaceOverlay("holahub")}
+        active={workspaceOverlay === "hitechhub"}
+        onClick={() => enterWorkspaceOverlay("hitechhub")}
       />
       <TeamNavRow
         icon={<FolderFilled />}
@@ -1040,7 +1040,7 @@ function SidebarWorkspaceSection() {
 // The profile selector = the active org (Better-Auth `setActiveOrganization`).
 // "Personal" is the user's team-of-one org (today's experience, unchanged);
 // picking a real org re-scopes the desktop to that org — every backend call
-// re-scopes because the gateway injects `x-holaboss-org-id` from the session.
+// re-scopes because the gateway injects `x-hitechcloud-org-id` from the session.
 
 function OrgProfileSelector() {
   const { organizations, activeOrg, switching, switchOrg } = useOrganizations();

@@ -35,13 +35,13 @@ export interface ChatMessage {
   outputs?: WorkspaceOutputRecordPayload[];
   backgroundTaskReferences?: ChatBackgroundTaskReference[];
   pendingIntegrations?: ChatPendingIntegration[];
-  // Proposals emitted by `holaboss_workspace_integrations_propose_connect`. Same
+  // Proposals emitted by `hitechcloud_workspace_integrations_propose_connect`. Same
   // visual treatment as pendingIntegrations but no app_id (the agent is
   // asking to add to the account-level integration pool so it can call
   // the toolkit's tools directly — no app wrapping).
   proposedIntegrations?: ChatProposedIntegration[];
-  // HolaHub posts the agent published this turn (via the holahub create_post
-  // tool). Surfaced as a "View on HolaHub" card that deep-links into Discover.
+  // Hitechhub posts the agent published this turn (via the hitechhub create_post
+  // tool). Surfaced as a "View on Hitechhub" card that deep-links into Discover.
   publishedPosts?: ChatPublishedHubPost[];
   // Remote MCP servers that reported `auth_required` during discovery this turn
   // (an mcp_server_unavailable event). Surfaced as an inline "Authorize" card so
@@ -58,7 +58,7 @@ export interface ChatMcpAuthorization {
   reauthorize?: boolean;
 }
 
-// A HolaHub post an agent published — enough to link into `/threads/<postId>`.
+// A Hitechhub post an agent published — enough to link into `/threads/<postId>`.
 export interface ChatPublishedHubPost {
   postId: string;
   title: string;
@@ -117,8 +117,8 @@ export interface PendingOptimisticUserMessage {
 
 declare global {
   interface Window {
-    __holabossQueuedMessagesPreviewState?: QueuedSessionInputPreviewDescriptor[];
-    __holabossDevQueuedMessagesPreview?: {
+    __hitechcloudQueuedMessagesPreviewState?: QueuedSessionInputPreviewDescriptor[];
+    __hitechcloudDevQueuedMessagesPreview?: {
       single: (text?: string) => void;
       multiple: () => void;
       clear: () => void;

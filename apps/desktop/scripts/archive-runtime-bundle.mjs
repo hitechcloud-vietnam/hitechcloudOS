@@ -13,7 +13,7 @@ import { resolveRuntimePlatform, runtimeBundleDirName } from "./runtime-bundle.m
 //
 // Windows-only by design: macOS/Linux installers copy the app bundle wholesale
 // and don't suffer the per-file NSIS extraction cost, so they keep the loose
-// tree. Set HOLABOSS_RUNTIME_NO_ARCHIVE=1 to skip archiving (escape hatch: the
+// tree. Set HITECHCLOUD_RUNTIME_NO_ARCHIVE=1 to skip archiving (escape hatch: the
 // electron-builder config then ships the tree on Windows too).
 
 export const RUNTIME_ARCHIVE_BASENAME = "runtime-windows.tar.gz";
@@ -46,9 +46,9 @@ export function archiveRuntimeBundle() {
     return null;
   }
   if (["1", "true", "yes", "on"].includes(
-    (process.env.HOLABOSS_RUNTIME_NO_ARCHIVE || "").trim().toLowerCase(),
+    (process.env.HITECHCLOUD_RUNTIME_NO_ARCHIVE || "").trim().toLowerCase(),
   )) {
-    log("HOLABOSS_RUNTIME_NO_ARCHIVE set — skipping archive (installer ships the tree)");
+    log("HITECHCLOUD_RUNTIME_NO_ARCHIVE set — skipping archive (installer ships the tree)");
     return null;
   }
 

@@ -8,24 +8,24 @@ import { resolveProductRuntimeConfig } from "./runtime-config.js";
 
 /**
  * Video generation model resolution — the video analogue of
- * image-generation-model.ts. v1 routes through the Holaboss model proxy
+ * image-generation-model.ts. v1 routes through the Hitechcloud model proxy
  * (OpenAI-compatible), defaulting to `bytedance/seedance-2.0`. A model is
  * eligible if its runtime-config entry declares the `video_generation`
  * capability, or it looks like a known text-to-video model.
  */
-const HOLABOSS_PROVIDER_ID = "holaboss_model_proxy";
+const HITECHCLOUD_PROVIDER_ID = "hitechcloud_model_proxy";
 const VIDEO_GENERATION_ALLOWED_PROVIDER_IDS = new Set([
-  HOLABOSS_PROVIDER_ID,
+  HITECHCLOUD_PROVIDER_ID,
   "openai_direct",
 ]);
 const PROVIDER_ID_ALIASES: Record<string, string> = {
-  holaboss: HOLABOSS_PROVIDER_ID,
-  [HOLABOSS_PROVIDER_ID]: HOLABOSS_PROVIDER_ID,
+  hitechcloud: HITECHCLOUD_PROVIDER_ID,
+  [HITECHCLOUD_PROVIDER_ID]: HITECHCLOUD_PROVIDER_ID,
   openai: "openai_direct",
   openai_direct: "openai_direct",
 };
 const VIDEO_GENERATION_MODEL_DEFAULTS: Record<string, string | null> = {
-  [HOLABOSS_PROVIDER_ID]: "bytedance/seedance-2.0",
+  [HITECHCLOUD_PROVIDER_ID]: "bytedance/seedance-2.0",
   openai_direct: "sora-2",
 };
 const OPENAI_COMPATIBLE_MODEL_PROXY_PROVIDERS = new Set(["openai_compatible"]);
@@ -104,8 +104,8 @@ function providerPayloadForId(
   providerId: string,
 ): Record<string, unknown> {
   const providersPayload = asRecord(document.providers);
-  if (providerId === HOLABOSS_PROVIDER_ID) {
-    return asRecord(providersPayload[HOLABOSS_PROVIDER_ID] ?? providersPayload.holaboss);
+  if (providerId === HITECHCLOUD_PROVIDER_ID) {
+    return asRecord(providersPayload[HITECHCLOUD_PROVIDER_ID] ?? providersPayload.hitechcloud);
   }
   return asRecord(providersPayload[providerId]);
 }
@@ -257,7 +257,7 @@ function videoGenerationProviderIsAvailable(
   if (!normalizedProviderId) {
     return false;
   }
-  if (normalizedProviderId === HOLABOSS_PROVIDER_ID) {
+  if (normalizedProviderId === HITECHCLOUD_PROVIDER_ID) {
     return Boolean(
       runtimeConfig.authToken.trim() ||
         runtimeConfig.modelProxyBaseUrl.trim() ||
@@ -312,7 +312,7 @@ export function resolveVideoGenerationModelSelection(params: {
   // default (seedance) when the model proxy is available.
   let providerId = normalizeVideoGenerationProviderId(params.explicitProviderId);
   if (!providerId && runtimeConfig.modelProxyBaseUrl.trim()) {
-    providerId = HOLABOSS_PROVIDER_ID;
+    providerId = HITECHCLOUD_PROVIDER_ID;
   }
   if (!providerId || !videoGenerationProviderIsAvailable(document, providerId, runtimeConfig)) {
     return { providerId, modelId: null, source: "disabled" };

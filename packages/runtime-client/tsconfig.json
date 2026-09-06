@@ -1,5 +1,5 @@
 {
-  "extends": "@holaboss/tsconfig/dom.json",
+  "extends": "@hitechcloud/tsconfig/dom.json",
   "compilerOptions": {
     "outDir": "dist",
     "types": ["node"]

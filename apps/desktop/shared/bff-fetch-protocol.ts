@@ -4,7 +4,7 @@
  * The renderer cannot fetch the BFF directly: Chromium 138+ blocks
  * third-party cookies even with `SameSite=None; Secure`, and a thick-client
  * Electron app (renderer at file:// or http://localhost:5173) is third-party
- * to api.holaos.ai / api.imerchstaging.com. Going through main process side-
+ * to api.hitechcloud.vn / api.imerchstaging.com. Going through main process side-
  * steps that entirely (main fetch is server-side, not subject to browser
  * cookie policy) and keeps the auth cookie out of renderer memory.
  *

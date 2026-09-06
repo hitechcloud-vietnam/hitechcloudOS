@@ -2,7 +2,7 @@ import type { IncomingMessage } from "./connector.js";
 
 /**
  * The runtime surface the gateway needs, injected so the channel-gateway package
- * stays decoupled from `@holaboss/runtime-state-store`/api-server. The api-server
+ * stays decoupled from `@hitechcloud/runtime-state-store`/api-server. The api-server
  * provides the concrete implementation backed by the SQLite state store. This
  * mirrors how the connectors take repository protocols.
  */

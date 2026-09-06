@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import { persistInteractionCandidate, rebuildInteractionEntityTree, retrieveInteractionMemory } from "./interaction-memory.js";
@@ -16,15 +16,15 @@ import {
 import { workspaceMemoryDir } from "./workspace-bundle-paths.js";
 
 const ORIGINAL_FETCH = globalThis.fetch;
-const ORIGINAL_RUNTIME_CONFIG_PATH = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+const ORIGINAL_RUNTIME_CONFIG_PATH = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
 const tempDirs: string[] = [];
 
 afterEach(() => {
   globalThis.fetch = ORIGINAL_FETCH;
   if (ORIGINAL_RUNTIME_CONFIG_PATH === undefined) {
-    delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+    delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   } else {
-    process.env.HOLABOSS_RUNTIME_CONFIG_PATH = ORIGINAL_RUNTIME_CONFIG_PATH;
+    process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = ORIGINAL_RUNTIME_CONFIG_PATH;
   }
   for (const dir of tempDirs.splice(0)) {
     fs.rmSync(dir, { recursive: true, force: true });
@@ -54,13 +54,13 @@ function writeRecallEmbeddingRuntimeConfig(root: string): string {
           },
         },
         integrations: {
-          holaboss: {
+          hitechcloud: {
             auth_token: "hbmk.test-token",
             sandbox_id: "sandbox-test",
             user_id: "user-1",
           },
         },
-        holaboss: {
+        hitechcloud: {
           auth_token: "hbmk.test-token",
           sandbox_id: "sandbox-test",
           user_id: "user-1",
@@ -71,7 +71,7 @@ function writeRecallEmbeddingRuntimeConfig(root: string): string {
     ),
     "utf8",
   );
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
   return configPath;
 }
 
@@ -1983,13 +1983,13 @@ test("persistInteractionCandidate files durable reference topics under a named t
       workspaceId: "workspace-1",
       candidate: {
         subjectKey:
-          "holaboss_personal_outreach_external_contacts:individuals-have-emailed-the-user-personally",
+          "hitechcloud_personal_outreach_external_contacts:individuals-have-emailed-the-user-personally",
         title:
-          "External individuals have emailed the user personally about holaboss",
+          "External individuals have emailed the user personally about hitechcloud",
         summary:
-          "At least two external individuals reached out to the user specifically about holaboss as a direct personal contact.",
+          "At least two external individuals reached out to the user specifically about hitechcloud as a direct personal contact.",
         content:
-          "# External individuals have emailed the user personally about holaboss\n\nAt least two external individuals reached out to the user specifically about holaboss as a direct personal contact.\n",
+          "# External individuals have emailed the user personally about hitechcloud\n\nAt least two external individuals reached out to the user specifically about hitechcloud as a direct personal contact.\n",
         tags: ["outreach", "contacts"],
         memoryType: "reference",
         confidence: 0.92,
@@ -2001,11 +2001,11 @@ test("persistInteractionCandidate files durable reference topics under a named t
     assert.equal(result.entity.entityType, "topic");
     assert.equal(
       result.entity.canonicalName,
-      "External individuals have emailed the user personally about holaboss",
+      "External individuals have emailed the user personally about hitechcloud",
     );
     assert.equal(
       result.entity.entityId,
-      "interaction:topic:external-individuals-have-emailed-the-user-personally-about-holaboss",
+      "interaction:topic:external-individuals-have-emailed-the-user-personally-about-hitechcloud",
     );
     assert.equal(result.outcome, "created");
   } finally {
@@ -2267,11 +2267,11 @@ test("rebuildInteractionEntityTree reclassifies uncategorized topic-like leaves 
     leafId: "leaf-outreach",
     entityId: "interaction:uncategorized",
     subjectKey:
-      "holaboss_personal_outreach_external_contacts:individuals-have-emailed-the-user-personally",
+      "hitechcloud_personal_outreach_external_contacts:individuals-have-emailed-the-user-personally",
     path: "workspace/workspace-1/interaction/entities/uncategorized/leaves/leaf-outreach.md",
-    title: "External individuals have emailed the user personally about holaboss",
+    title: "External individuals have emailed the user personally about hitechcloud",
     summary:
-      "At least two external individuals reached out to the user specifically about holaboss as a direct personal contact.",
+      "At least two external individuals reached out to the user specifically about hitechcloud as a direct personal contact.",
     fingerprint: "fingerprint-leaf-outreach",
     bodySha256: "sha-leaf-outreach",
     tags: ["outreach", "contacts"],
@@ -2297,7 +2297,7 @@ test("rebuildInteractionEntityTree reclassifies uncategorized topic-like leaves 
   fs.mkdirSync(path.dirname(originalLeafPath), { recursive: true });
   fs.writeFileSync(
     originalLeafPath,
-    "# External individuals have emailed the user personally about holaboss\n\nAt least two external individuals reached out to the user specifically about holaboss as a direct personal contact.\n",
+    "# External individuals have emailed the user personally about hitechcloud\n\nAt least two external individuals reached out to the user specifically about hitechcloud as a direct personal contact.\n",
     "utf8",
   );
 
@@ -2316,14 +2316,14 @@ test("rebuildInteractionEntityTree reclassifies uncategorized topic-like leaves 
     const topicEntity = store.getInteractionEntity({
       workspaceId: "workspace-1",
       entityId:
-        "interaction:topic:external-individuals-have-emailed-the-user-personally-about-holaboss",
+        "interaction:topic:external-individuals-have-emailed-the-user-personally-about-hitechcloud",
     });
 
     assert.ok(leaf);
     assert.equal(leaf?.entityId, topicEntity?.entityId);
     assert.match(
       leaf?.path ?? "",
-      /interaction\/entities\/topic-external-individuals-have-emailed-the-user-personally-about-holaboss\/leaves\/leaf-outreach\.md$/,
+      /interaction\/entities\/topic-external-individuals-have-emailed-the-user-personally-about-hitechcloud\/leaves\/leaf-outreach\.md$/,
     );
     assert.ok(topicEntity);
     assert.equal(topicEntity?.entityType, "topic");

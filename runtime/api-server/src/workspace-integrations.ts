@@ -1,4 +1,4 @@
-import type { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import type { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 
 import { invalidateComposioInlineToolCache } from "./composio-cache-invalidation.js";
 import { resolveConnectionMerged } from "./integration-connections-merged.js";

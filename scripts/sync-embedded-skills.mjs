@@ -8,8 +8,8 @@
 // can wire `git diff --exit-code` after this script to enforce snapshot
 // freshness.
 //
-// `@holaboss/ui` is NOT snapshotted here — it ships to npm and agents install
-// it the normal way (`bun add @holaboss/ui`). Only the app-builder SDK gets
+// `@hitechcloud/ui` is NOT snapshotted here — it ships to npm and agents install
+// it the normal way (`bun add @hitechcloud/ui`). Only the app-builder SDK gets
 // the file:-snapshot treatment because it's lockstep-versioned with the
 // runtime.
 
@@ -36,7 +36,7 @@ const skillRoot = path.join(
   "app-builder-sdk",
 );
 
-// sdk-package: installable @holaboss/app-builder-sdk snapshot agents `bun add
+// sdk-package: installable @hitechcloud/app-builder-sdk snapshot agents `bun add
 // file:` against. Mirrors sdk/app-builder-sdk/.
 const sdkSource = path.join(repoRoot, "packages", "app-builder-sdk");
 const sdkSnapshot = path.join(skillRoot, "sdk-package");

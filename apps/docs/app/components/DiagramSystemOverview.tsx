@@ -4,7 +4,7 @@ export function DiagramSystemOverview() {
       <div className="hb-diagram-system__shell">
         <section className="hb-diagram-system__surface">
           <div className="hb-diagram-system__eyebrow">Product Surface</div>
-          <div className="hb-diagram-system__title">holaOS Desktop</div>
+          <div className="hb-diagram-system__title">hitechcloudOS Desktop</div>
           <p className="hb-diagram-system__copy">
             Operator shell for opening workspaces, configuring models, inspecting
             state, and launching the runtime.
@@ -17,7 +17,7 @@ export function DiagramSystemOverview() {
 
         <section className="hb-diagram-system__os">
           <div className="hb-diagram-system__os-header">
-            <span className="hb-diagram-system__badge">holaOS</span>
+            <span className="hb-diagram-system__badge">hitechcloudOS</span>
             <p className="hb-diagram-system__os-copy">
               Environment layer = workspace contract + runtime services +
               harness boundary

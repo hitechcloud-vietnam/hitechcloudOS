@@ -21,8 +21,8 @@ import {
 /**
  * Runtime-tools MCP bridge for CLI harnesses (claude-code / codex).
  *
- * `pi` wires the Holaboss runtime tools in-process; every other harness only
- * reaches Holaboss over MCP. The oRPC `/mcp` mount exposes a read-only sliver
+ * `pi` wires the Hitechcloud runtime tools in-process; every other harness only
+ * reaches Hitechcloud over MCP. The oRPC `/mcp` mount exposes a read-only sliver
  * (`outputs_list`). This mount exposes the same runtime-tool surface pi uses —
  * built by the shared `createHarnessRuntimeToolDefinition` factory, so schemas
  * and handlers are one source of truth — as MCP tools. Each tool's handler
@@ -44,7 +44,7 @@ const CURATED_RUNTIME_TOOL_IDS = [
   "video_generate",
   "download_url",
   "send_file",
-  "holahub_upload_image",
+  "hitechhub_upload_image",
   "write_report",
   "memory_retrieve",
   "remember",
@@ -65,8 +65,8 @@ const CURATED_RUNTIME_TOOL_IDS = [
   // next input, and re-dispatches when the OAuth connection goes active. So it
   // works for external harnesses too, not just pi. set_default_account is a
   // plain synchronous mutate whose new tools apply on the next turn.
-  "holaboss_workspace_integrations_propose_connect",
-  "holaboss_workspace_integrations_set_default_account",
+  "hitechcloud_workspace_integrations_propose_connect",
+  "hitechcloud_workspace_integrations_set_default_account",
   // Connect an MCP server (remote URL or local command) to the workspace — the
   // agent's self-service "connect this MCP" path. Writes workspace.yaml; the new
   // server's tools apply on the next turn.
@@ -118,21 +118,21 @@ function selfBaseUrl(request: FastifyRequest): string {
 function readBrowserSpaceHeader(
   request: FastifyRequest,
 ): "agent" | null {
-  const raw = headerValue(request.headers, "x-holaboss-browser-space");
+  const raw = headerValue(request.headers, "x-hitechcloud-browser-space");
   return raw === "agent" ? raw : null;
 }
 
 function readRuntimeToolMcpContext(request: FastifyRequest): RuntimeToolMcpContext {
   return {
     runtimeApiBaseUrl: selfBaseUrl(request),
-    workspaceId: headerValue(request.headers, "x-holaboss-workspace-id"),
-    sessionId: headerValue(request.headers, "x-holaboss-session-id"),
-    inputId: headerValue(request.headers, "x-holaboss-input-id"),
-    selectedModel: headerValue(request.headers, "x-holaboss-selected-model"),
+    workspaceId: headerValue(request.headers, "x-hitechcloud-workspace-id"),
+    sessionId: headerValue(request.headers, "x-hitechcloud-session-id"),
+    inputId: headerValue(request.headers, "x-hitechcloud-input-id"),
+    selectedModel: headerValue(request.headers, "x-hitechcloud-selected-model"),
     // The harness injects this only when browser tools are enabled for the run
     // (mirrors pi's session-kind gate — see harness-mcp.ts). Absent → disabled.
     browserToolsEnabled:
-      headerValue(request.headers, "x-holaboss-browser-tools-enabled") === "true",
+      headerValue(request.headers, "x-hitechcloud-browser-tools-enabled") === "true",
     browserSpace: readBrowserSpaceHeader(request),
   };
 }
@@ -159,7 +159,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 // Mirror pi's per-call tool-output cap (wrapToolWithOutputCap, harness-host).
 const RUNTIME_TOOL_RESULT_MAX_BYTES = (() => {
-  const raw = process.env.HOLABOSS_MAX_TOOL_OUTPUT_BYTES?.trim();
+  const raw = process.env.HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES?.trim();
   const parsed = raw ? Number.parseInt(raw, 10) : Number.NaN;
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 50 * 1024;
 })();
@@ -215,7 +215,7 @@ function createRuntimeToolsMcpServer(ctx: RuntimeToolMcpContext): Server {
   // Composio integration tools (Gmail, Slack, …) are dynamic — one per tool of
   // each ACTIVE connected toolkit for this workspace — so they can't live in the
   // static curated list. `pi` resolves them in-process via the same helper and
-  // folds them into its toolset; CLI harnesses only reach Holaboss over MCP, so
+  // folds them into its toolset; CLI harnesses only reach Hitechcloud over MCP, so
   // resolve them here too and expose them on this server. Without this the
   // capability manifest advertises the connected tools to the model but there's
   // no callable surface, so the agent reports it "can't use" them. Resolved once
@@ -250,8 +250,8 @@ function createRuntimeToolsMcpServer(ctx: RuntimeToolMcpContext): Server {
   // Browser tools (browser_navigate, browser_click, …) are a third family —
   // not curated runtime tools, not Composio. pi resolves them in-process via
   // this same resolver when its per-run `browser_tools_enabled` flag is set;
-  // CLI harnesses reach Holaboss only over MCP, so honor the same gate here.
-  // The harness injects `x-holaboss-browser-tools-enabled` (mirroring pi's
+  // CLI harnesses reach Hitechcloud only over MCP, so honor the same gate here.
+  // The harness injects `x-hitechcloud-browser-tools-enabled` (mirroring pi's
   // session-kind gate); when it's off we skip the resolver entirely. When it's
   // on, the resolver still self-gates on the desktop browser capability being
   // reachable, so a run without a live browser yields an empty set — matching
@@ -286,7 +286,7 @@ function createRuntimeToolsMcpServer(ctx: RuntimeToolMcpContext): Server {
   };
 
   const server = new Server(
-    { name: "holaboss-runtime-tools", version: "0.1.0" },
+    { name: "hitechcloud-runtime-tools", version: "0.1.0" },
     { capabilities: { tools: {} } },
   );
 
@@ -344,7 +344,7 @@ function mcpSessionHeader(request: FastifyRequest): string | undefined {
 }
 
 /**
- * Path CLI harnesses point their injected `holaboss_runtime_tools` MCP server
+ * Path CLI harnesses point their injected `hitechcloud_runtime_tools` MCP server
  * at. Kept distinct from the oRPC `/mcp` mount so the two surfaces stay
  * decoupled.
  */

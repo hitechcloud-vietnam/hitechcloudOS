@@ -669,19 +669,19 @@ export function runtimeToolHeaders(params: {
   const headers: Record<string, string> = {};
   const normalizedWorkspaceId = typeof params.workspaceId === "string" ? params.workspaceId.trim() : "";
   if (normalizedWorkspaceId) {
-    headers["x-holaboss-workspace-id"] = normalizedWorkspaceId;
+    headers["x-hitechcloud-workspace-id"] = normalizedWorkspaceId;
   }
   const normalizedSessionId = typeof params.sessionId === "string" ? params.sessionId.trim() : "";
   if (normalizedSessionId) {
-    headers["x-holaboss-session-id"] = normalizedSessionId;
+    headers["x-hitechcloud-session-id"] = normalizedSessionId;
   }
   const normalizedInputId = typeof params.inputId === "string" ? params.inputId.trim() : "";
   if (normalizedInputId) {
-    headers["x-holaboss-input-id"] = normalizedInputId;
+    headers["x-hitechcloud-input-id"] = normalizedInputId;
   }
   const normalizedSelectedModel = typeof params.selectedModel === "string" ? params.selectedModel.trim() : "";
   if (normalizedSelectedModel) {
-    headers["x-holaboss-selected-model"] = normalizedSelectedModel;
+    headers["x-hitechcloud-selected-model"] = normalizedSelectedModel;
   }
   return headers;
 }
@@ -997,13 +997,13 @@ function requestPlan(
         requestPath: `${workspaceAppPath(isRecord(toolParams) ? toolParams.app_id : undefined)}/probe-endpoints`,
         body: createWorkspaceAppProbeEndpointsBody(toolParams),
       };
-    case "holaboss_workspace_integrations_propose_connect":
+    case "hitechcloud_workspace_integrations_propose_connect":
       return {
         method: "POST",
         requestPath: RUNTIME_TOOLS_WORKSPACE_INTEGRATIONS_PROPOSE_CONNECT_PATH,
         body: createWorkspaceIntegrationsProposeConnectBody(toolParams),
       };
-    case "holaboss_workspace_integrations_set_default_account":
+    case "hitechcloud_workspace_integrations_set_default_account":
       return {
         method: "POST",
         requestPath: RUNTIME_TOOLS_WORKSPACE_INTEGRATIONS_SET_DEFAULT_ACCOUNT_PATH,
@@ -1050,7 +1050,7 @@ export async function executeRuntimeToolCapability(params: RuntimeToolCapability
     method: plan.method,
     headers: {
       "content-type": "application/json; charset=utf-8",
-      "x-holaboss-tool-result-mode": "preview",
+      "x-hitechcloud-tool-result-mode": "preview",
       ...runtimeToolHeaders({
         workspaceId: params.workspaceId,
         sessionId: params.sessionId,
@@ -1067,8 +1067,8 @@ export async function executeRuntimeToolCapability(params: RuntimeToolCapability
 
   if (!response.ok) {
     const message = isRecord(response.payload)
-      ? String(response.payload.detail ?? response.payload.error ?? `Holaboss runtime tool '${params.toolId}' failed.`)
-      : `Holaboss runtime tool '${params.toolId}' failed.`;
+      ? String(response.payload.detail ?? response.payload.error ?? `Hitechcloud runtime tool '${params.toolId}' failed.`)
+      : `Hitechcloud runtime tool '${params.toolId}' failed.`;
     throw new Error(message);
   }
 

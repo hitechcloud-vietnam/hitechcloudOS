@@ -9,7 +9,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   RuntimeStateStore,
   type SessionRuntimeStateRecord,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import {
@@ -58,8 +58,8 @@ const ORIGINAL_ENV = {
   SANDBOX_AGENT_RUN_IDLE_TIMEOUT_S:
     process.env.SANDBOX_AGENT_RUN_IDLE_TIMEOUT_S,
   HB_SANDBOX_ROOT: process.env.HB_SANDBOX_ROOT,
-  HOLABOSS_RUNTIME_CONFIG_PATH: process.env.HOLABOSS_RUNTIME_CONFIG_PATH,
-  HOLABOSS_HARNESS_RUN_TIMEOUT_S: process.env.HOLABOSS_HARNESS_RUN_TIMEOUT_S,
+  HITECHCLOUD_RUNTIME_CONFIG_PATH: process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH,
+  HITECHCLOUD_HARNESS_RUN_TIMEOUT_S: process.env.HITECHCLOUD_HARNESS_RUN_TIMEOUT_S,
 };
 const PI_PACKAGE_ENTRY_PATH = fileURLToPath(
   import.meta.resolve("@earendil-works/pi-coding-agent"),
@@ -112,17 +112,17 @@ afterEach(() => {
   } else {
     process.env.HB_SANDBOX_ROOT = ORIGINAL_ENV.HB_SANDBOX_ROOT;
   }
-  if (ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH === undefined) {
-    delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+  if (ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH === undefined) {
+    delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   } else {
-    process.env.HOLABOSS_RUNTIME_CONFIG_PATH =
-      ORIGINAL_ENV.HOLABOSS_RUNTIME_CONFIG_PATH;
+    process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH =
+      ORIGINAL_ENV.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   }
-  if (ORIGINAL_ENV.HOLABOSS_HARNESS_RUN_TIMEOUT_S === undefined) {
-    delete process.env.HOLABOSS_HARNESS_RUN_TIMEOUT_S;
+  if (ORIGINAL_ENV.HITECHCLOUD_HARNESS_RUN_TIMEOUT_S === undefined) {
+    delete process.env.HITECHCLOUD_HARNESS_RUN_TIMEOUT_S;
   } else {
-    process.env.HOLABOSS_HARNESS_RUN_TIMEOUT_S =
-      ORIGINAL_ENV.HOLABOSS_HARNESS_RUN_TIMEOUT_S;
+    process.env.HITECHCLOUD_HARNESS_RUN_TIMEOUT_S =
+      ORIGINAL_ENV.HITECHCLOUD_HARNESS_RUN_TIMEOUT_S;
   }
 });
 
@@ -594,13 +594,13 @@ function createSubagentRunFixture(params: {
 }
 
 test("claimed input persists runner events, assistant text, and idle state on success", async () => {
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument({
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = writeRuntimeConfigDocument({
     runtime: {
       sandbox_id: "sandbox-1",
       default_model: "openai_codex/gpt-5.4",
     },
     integrations: {
-      holaboss: {
+      hitechcloud: {
         auth_token: "token-1",
         user_id: "user-1",
         sandbox_id: "sandbox-1",
@@ -791,7 +791,7 @@ test("claimed input persists user attachment metadata on the session message", a
     status: "active",
   });
   const workspaceDir = store.workspaceDir(workspace.id);
-  const attachmentRelativePath = ".holaboss/input-attachments/batch-1/report.html";
+  const attachmentRelativePath = ".hitechcloud/input-attachments/batch-1/report.html";
   const attachmentAbsolutePath = path.join(workspaceDir, attachmentRelativePath);
   fs.mkdirSync(path.dirname(attachmentAbsolutePath), { recursive: true });
   fs.writeFileSync(attachmentAbsolutePath, "<html><body>report</body></html>", "utf8");
@@ -2476,7 +2476,7 @@ test("claimed input delivers materialized main-session event batches without ins
     workspaceId: workspace.id,
     sessionId: "session-main",
     payload: {
-      text: "[Holaboss Main Session Event Batch v1]\nSummarize the queued event.",
+      text: "[Hitechcloud Main Session Event Batch v1]\nSummarize the queued event.",
       context: {
         source: "main_session_event_batch",
         main_session_event_ids: [event.eventId],
@@ -2541,7 +2541,7 @@ test("claimed input delivers materialized main-session event batches without ins
     "The research is done and the report is ready.",
   );
   assert.doesNotMatch(capturedInstruction, /Pending Background Updates/);
-  assert.match(capturedInstruction, /\[Holaboss Main Session Event Batch v1\]/);
+  assert.match(capturedInstruction, /\[Hitechcloud Main Session Event Batch v1\]/);
   assert.equal(updatedEvent?.status, "delivered");
   assert.ok(updatedEvent?.deliveredAt);
 
@@ -2577,7 +2577,7 @@ test("claimed input requeues materialized main-session event batches when the re
     workspaceId: workspace.id,
     sessionId: "session-main",
     payload: {
-      text: "[Holaboss Main Session Event Batch v1]\nSummarize the queued event.",
+      text: "[Hitechcloud Main Session Event Batch v1]\nSummarize the queued event.",
       context: {
         source: "main_session_event_batch",
         main_session_event_ids: [event.eventId],
@@ -2645,7 +2645,7 @@ test("claimed input requeues paused materialized main-session event batches with
     workspaceId: workspace.id,
     sessionId: "session-main",
     payload: {
-      text: "[Holaboss Main Session Event Batch v1]\nSummarize the queued event.",
+      text: "[Hitechcloud Main Session Event Batch v1]\nSummarize the queued event.",
       context: {
         source: "main_session_event_batch",
         main_session_event_ids: [event.eventId],
@@ -2741,7 +2741,7 @@ test("claimed input requeues completed materialized main-session event batches w
     workspaceId: workspace.id,
     sessionId: "session-main",
     payload: {
-      text: "[Holaboss Main Session Event Batch v1]\nSummarize the queued event.",
+      text: "[Hitechcloud Main Session Event Batch v1]\nSummarize the queued event.",
       context: {
         source: "main_session_event_batch",
         main_session_event_ids: [event.eventId],
@@ -2824,7 +2824,7 @@ test("claimed input runs main-session followups on the bound session snapshot ev
   const workspaceDir = store.workspaceDir(workspace.id);
   const { sessionManager, sessionFile: liveSessionFile } = createPiSessionFile({
     workspaceDir,
-    sessionDir: path.join(workspaceDir, ".holaboss", "pi-sessions"),
+    sessionDir: path.join(workspaceDir, ".hitechcloud", "pi-sessions"),
   });
   sessionManager.appendMessage(
     piUserMessage("Tell me when the background task finishes."),
@@ -2844,7 +2844,7 @@ test("claimed input runs main-session followups on the bound session snapshot ev
   const { sessionManager: otherSessionManager, sessionFile: otherSessionFile } =
     createPiSessionFile({
       workspaceDir,
-      sessionDir: path.join(workspaceDir, ".holaboss", "pi-sessions"),
+      sessionDir: path.join(workspaceDir, ".hitechcloud", "pi-sessions"),
     });
   otherSessionManager.appendMessage(
     piUserMessage("This is a subagent-only pi session."),
@@ -2874,7 +2874,7 @@ test("claimed input runs main-session followups on the bound session snapshot ev
     workspaceId: workspace.id,
     sessionId: "session-main",
     payload: {
-      text: "[Holaboss Main Session Event Batch v1]\nSummarize the queued event.",
+      text: "[Hitechcloud Main Session Event Batch v1]\nSummarize the queued event.",
       context: {
         source: "main_session_event_batch",
         main_session_event_ids: [event.eventId],
@@ -3560,7 +3560,7 @@ test("delegated subagent flow keeps subagent tool artifacts, forwarded deliverab
     [
       "# Delegated Outreach Report",
       "",
-      "Ben Book at anyIP reached out to the user personally about holaboss.",
+      "Ben Book at anyIP reached out to the user personally about hitechcloud.",
       "Keep this subagent deliverable attached to the durable outreach memory.",
     ].join("\n"),
     "utf8",
@@ -3570,7 +3570,7 @@ test("delegated subagent flow keeps subagent tool artifacts, forwarded deliverab
     workspaceId: workspace.id,
     sessionId: "session-subagent",
     payload: {
-      text: "Investigate the external holaboss outreach thread.",
+      text: "Investigate the external hitechcloud outreach thread.",
     },
   });
   store.createSubagentRun({
@@ -3585,7 +3585,7 @@ test("delegated subagent flow keeps subagent tool artifacts, forwarded deliverab
     currentChildInputId: subagentInput.inputId,
     latestChildInputId: subagentInput.inputId,
     title: "Delegated outreach review",
-    goal: "Investigate the external holaboss outreach thread.",
+    goal: "Investigate the external hitechcloud outreach thread.",
     status: "completed",
   });
   const subagentTurnResult = store.upsertTurnResult({
@@ -3601,8 +3601,8 @@ test("delegated subagent flow keeps subagent tool artifacts, forwarded deliverab
       total_calls: 1,
       completed_calls: 1,
       failed_calls: 0,
-      tool_names: ["holaboss_composio.gmail_fetch_emails"],
-      tool_ids: ["holaboss_composio.gmail_fetch_emails"],
+      tool_names: ["hitechcloud_composio.gmail_fetch_emails"],
+      tool_ids: ["hitechcloud_composio.gmail_fetch_emails"],
     },
   });
   store.appendOutputEvent({
@@ -3613,21 +3613,21 @@ test("delegated subagent flow keeps subagent tool artifacts, forwarded deliverab
     eventType: "tool_call",
     payload: {
       phase: "completed",
-      tool_name: "holaboss_composio.gmail_fetch_emails",
-      tool_id: "holaboss_composio.gmail_fetch_emails",
+      tool_name: "hitechcloud_composio.gmail_fetch_emails",
+      tool_id: "hitechcloud_composio.gmail_fetch_emails",
       call_id: "call-gmail-subagent-1",
       error: false,
       result: {
         content: [
           {
             type: "text",
-            text: "Ben Book at anyIP reached out to the user personally about holaboss and followed up on the same Gmail thread.",
+            text: "Ben Book at anyIP reached out to the user personally about hitechcloud and followed up on the same Gmail thread.",
           },
         ],
         details: {
           raw: {
             _meta: {
-              holaboss_integration_account: {
+              hitechcloud_integration_account: {
                 provider_id: "gmail",
                 connected_account_id: "ca_gmail_primary",
                 account_namespace: "ops@example.com",
@@ -3780,11 +3780,11 @@ test("delegated subagent flow keeps subagent tool artifacts, forwarded deliverab
                       {
                         scope: "workspace",
                         memory_type: "reference",
-                        subject_key: "holaboss-personal-outreach-delegated",
-                        title: "External individuals contacted the user personally about holaboss",
-                        summary: "A small set of external individuals reached out to the user personally about holaboss and those outreach details should stay discoverable.",
-                        tags: ["holaboss", "outreach", "reference"],
-                        evidence: "The forwarded subagent report says Ben Book at anyIP reached out to the user personally about holaboss.",
+                        subject_key: "hitechcloud-personal-outreach-delegated",
+                        title: "External individuals contacted the user personally about hitechcloud",
+                        summary: "A small set of external individuals reached out to the user personally about hitechcloud and those outreach details should stay discoverable.",
+                        tags: ["hitechcloud", "outreach", "reference"],
+                        evidence: "The forwarded subagent report says Ben Book at anyIP reached out to the user personally about hitechcloud.",
                         confidence: 0.97,
                       },
                     ],
@@ -3806,13 +3806,13 @@ test("delegated subagent flow keeps subagent tool artifacts, forwarded deliverab
                     related_entities: [
                       { entity_type: "person", label: "Ben Book" },
                       { entity_type: "organization", label: "anyIP" },
-                      { entity_type: "topic", label: "holaboss" },
+                      { entity_type: "topic", label: "hitechcloud" },
                       { entity_type: "artifact", label: "outreach-delegated.md" },
                     ],
                     relations: [
                       { relation_type: "contacted_by", entity_type: "person", entity_label: "Ben Book" },
                       { relation_type: "works_at", entity_type: "organization", entity_label: "anyIP" },
-                      { relation_type: "about", entity_type: "topic", entity_label: "holaboss" },
+                      { relation_type: "about", entity_type: "topic", entity_label: "hitechcloud" },
                       { relation_type: "mentions", entity_type: "artifact", entity_label: "outreach-delegated.md" },
                     ],
                   }),
@@ -3833,7 +3833,7 @@ test("delegated subagent flow keeps subagent tool artifacts, forwarded deliverab
                     action: "create_new",
                     existing_entity_id: null,
                     new_entity_type: "topic",
-                    new_entity_name: "holaboss personal outreach",
+                    new_entity_name: "hitechcloud personal outreach",
                     secondary_entity_ids: [],
                     confidence: 0.96,
                     rationale: "This memory is a durable outreach topic rather than a single person or workflow.",
@@ -3852,7 +3852,7 @@ test("delegated subagent flow keeps subagent tool artifacts, forwarded deliverab
               {
                 message: {
                   content: JSON.stringify({
-                    summary: "This topic captures durable personal outreach contacts and delegated subagent artifacts related to holaboss.",
+                    summary: "This topic captures durable personal outreach contacts and delegated subagent artifacts related to hitechcloud.",
                   }),
                 },
               },
@@ -3983,7 +3983,7 @@ test("claimed input renews its claim lease while the runner is still healthy", a
 });
 
 test("claimed input passes the harness timeout through to the outer runner watchdog", async () => {
-  process.env.HOLABOSS_HARNESS_RUN_TIMEOUT_S = "45";
+  process.env.HITECHCLOUD_HARNESS_RUN_TIMEOUT_S = "45";
 
   const store = makeStore("hb-claimed-input-harness-timeout-payload-");
   const workspace = seedWorkspaceRecord(store, {
@@ -5117,13 +5117,13 @@ test("run-start registration strips the model-proxy path before calling the back
   );
   assert.equal(
     (requests[0]?.init?.headers as Record<string, string>)[
-      "X-Holaboss-User-Id"
+      "X-Hitechcloud-User-Id"
     ],
     "user-1",
   );
   assert.equal(
     (requests[0]?.init?.headers as Record<string, string>)[
-      "X-Holaboss-Sandbox-Id"
+      "X-Hitechcloud-Sandbox-Id"
     ],
     "sandbox-1",
   );
@@ -5182,13 +5182,13 @@ test("run-event registration strips the model-proxy path before calling the back
   );
   assert.equal(
     (requests[0]?.init?.headers as Record<string, string>)[
-      "X-Holaboss-User-Id"
+      "X-Hitechcloud-User-Id"
     ],
     "user-1",
   );
   assert.equal(
     (requests[0]?.init?.headers as Record<string, string>)[
-      "X-Holaboss-Sandbox-Id"
+      "X-Hitechcloud-Sandbox-Id"
     ],
     "sandbox-1",
   );
@@ -5630,7 +5630,7 @@ test("claimed input retries long-running terminated PI subagent runs after snaps
   const workspaceDir = store.workspaceDir(workspace.id);
   const { sessionManager, sessionFile } = createPiSessionFile({
     workspaceDir,
-    sessionDir: path.join(workspaceDir, ".holaboss", "pi-sessions"),
+    sessionDir: path.join(workspaceDir, ".hitechcloud", "pi-sessions"),
   });
   sessionManager.appendMessage(piUserMessage("previous task"));
   const assistantEntryId = sessionManager.appendMessage(
@@ -5736,7 +5736,7 @@ test("claimed input retries long-running terminated PI subagent runs after snaps
         assert.ok(latestPiCompactionEntry(sessionFile));
       }
       assert.equal(
-        String(payload.instruction).includes("[Holaboss Retry Continuation v1]"),
+        String(payload.instruction).includes("[Hitechcloud Retry Continuation v1]"),
         runnerCalls === 2,
       );
       await options.onEvent?.({
@@ -5838,7 +5838,7 @@ test("claimed input retries long-running terminated PI main-session runs after s
   const workspaceDir = store.workspaceDir(workspace.id);
   const { sessionManager, sessionFile } = createPiSessionFile({
     workspaceDir,
-    sessionDir: path.join(workspaceDir, ".holaboss", "pi-sessions"),
+    sessionDir: path.join(workspaceDir, ".hitechcloud", "pi-sessions"),
   });
   sessionManager.appendMessage(piUserMessage("previous task"));
   sessionManager.appendMessage(piAssistantMessage("previous response"));
@@ -5931,7 +5931,7 @@ test("claimed input retries long-running terminated PI main-session runs after s
         assert.ok(latestPiCompactionEntry(sessionFile));
       }
       assert.equal(
-        String(payload.instruction).includes("[Holaboss Retry Continuation v1]"),
+        String(payload.instruction).includes("[Hitechcloud Retry Continuation v1]"),
         runnerCalls === 2,
       );
       await options.onEvent?.({
@@ -6023,7 +6023,7 @@ test("claimed input does not retry short terminated PI provider errors", async (
   const workspaceDir = store.workspaceDir(workspace.id);
   const { sessionManager, sessionFile } = createPiSessionFile({
     workspaceDir,
-    sessionDir: path.join(workspaceDir, ".holaboss", "pi-sessions"),
+    sessionDir: path.join(workspaceDir, ".hitechcloud", "pi-sessions"),
   });
   sessionManager.appendMessage(piUserMessage("previous task"));
   sessionManager.appendMessage(piAssistantMessage("previous response"));
@@ -6084,7 +6084,7 @@ test("claimed input does not retry short terminated PI provider errors", async (
     executeRunnerRequestFn: async (payload, options = {}) => {
       runnerCalls += 1;
       assert.equal(
-        String(payload.instruction).includes("[Holaboss Retry Continuation v1]"),
+        String(payload.instruction).includes("[Hitechcloud Retry Continuation v1]"),
         false,
       );
       await options.onEvent?.({

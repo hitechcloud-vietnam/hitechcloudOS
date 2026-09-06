@@ -60,7 +60,7 @@ import {
   collapseSidebarForAppSurfaceAtom,
   cloudSectionAtom,
   focusModeAtom,
-  holahubPendingPathAtom,
+  hitechhubPendingPathAtom,
   LEGACY_WORKSPACE_MAIN_VIEW_MODE_MAP_STORAGE_KEY,
   orgSwitchingAtom,
   projectViewAtom,
@@ -155,16 +155,16 @@ function AppShellContent() {
   const sidebarMode = useAtomValue(effectiveSidebarModeAtom);
   const setWorkspaceOverlay = useSetAtom(workspaceOverlayAtom);
   // The sidebar mode persists across launches but the workspace overlay always
-  // defaults to Home = "holahub" (Local's Home). If we relaunched into Employee
+  // defaults to Home = "hitechhub" (Local's Home). If we relaunched into Employee
   // mode, that leaves the sidebar on Employee while the main area shows Local's
-  // HolaHub Home. "holahub" is never a valid overlay in Employee mode, so point
+  // Hitechhub Home. "hitechhub" is never a valid overlay in Employee mode, so point
   // Home at the employee surface whenever we observe that mismatch (also covers
   // async mode-atom hydration). Cleared to null the moment a chat/session opens,
   // so this only fixes the initial screen.
   useEffect(() => {
     if (sidebarMode === "employee") {
       setWorkspaceOverlay((current) =>
-        current === "holahub" ? "holaemployee" : current,
+        current === "hitechhub" ? "holaemployee" : current,
       );
     }
   }, [sidebarMode, setWorkspaceOverlay]);
@@ -497,7 +497,7 @@ function AppShellContent() {
         </div>
       ) : null}
       <WorkspaceDataWarmers workspaceId={selectedWorkspaceId || null} />
-      {/* Smooth HolaHub install: install keyless items in place, route keyed
+      {/* Smooth Hitechhub install: install keyless items in place, route keyed
           ones to the native connect surface, reply to the invoking hub page. */}
       <HeadlessInstaller workspaceId={selectedWorkspaceId || null} />
       {/* Answers the host `install.status` op so hub pages can show "Installed". */}
@@ -561,7 +561,7 @@ function ShellMainArea({
 }) {
   const projectView = useAtomValue(projectViewAtom);
   const [workspaceOverlay, setWorkspaceOverlay] = useAtom(workspaceOverlayAtom);
-  const holahubPendingPath = useAtomValue(holahubPendingPathAtom);
+  const hitechhubPendingPath = useAtomValue(hitechhubPendingPathAtom);
   const cloudSection = useAtomValue(cloudSectionAtom);
   const activeWebAppSurface = useAtomValue(activeWebAppSurfaceAtom);
   const closeHolaApp = useOpenHolaAppClose();
@@ -652,26 +652,26 @@ function ShellMainArea({
           />
         ) : workspaceOverlay === "rewards" ? (
           <RewardsPane />
-        ) : workspaceOverlay === "holahub" ? (
-          // HolaHub is a hosted web surface on its own subdomain (hub.holaos.ai /
-          // hub.imerchstaging.com — the main process routes the "holahub" surface
+        ) : workspaceOverlay === "hitechhub" ? (
+          // Hitechhub is a hosted web surface on its own subdomain (hub.hitechcloud.vn /
+          // hub.imerchstaging.com — the main process routes the "hitechhub" surface
           // to HUB_APP_BASE_URL). As a workspace overlay it takes the whole main
           // area (sidebar kept, no chat panel) — like Customize/Browsers —
           // hosting the same native BrowserView web HolaApps use, so the
           // Better-Auth session carries in.
           <WebAppSurfacePane
             chromeless
-            holaAppId="holahub"
+            holaAppId="hitechhub"
             onClose={() => setWorkspaceOverlay(null)}
-            path={holahubPendingPath ?? undefined}
-            // HolaHub is a single SPA: navigate its routes (a share → /compose,
+            path={hitechhubPendingPath ?? undefined}
+            // Hitechhub is a single SPA: navigate its routes (a share → /compose,
             // an agent deep-link → /threads/:id) client-side instead of cold-
             // reloading the BrowserView, so re-shares don't flash "Opening…".
             queryDriven
             suspendNativeView={browserViewSuspended}
             title="Discover"
           />
-        ) : workspaceOverlay === "holahub-share" ? (
+        ) : workspaceOverlay === "hitechhub-share" ? (
           <SharePreviewPane />
         ) : null}
       </div>

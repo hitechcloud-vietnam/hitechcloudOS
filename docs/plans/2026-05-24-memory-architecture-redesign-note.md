@@ -182,7 +182,7 @@ That means the first pass does not need dynamic fanout-management layers for mos
 
 ```text
 github connection
-- repo: holaboss-ai/holaOS
+- repo: hitechcloud-vietnam/hitechcloudOS
   - overview
     - leaf: repository overview
   - readme

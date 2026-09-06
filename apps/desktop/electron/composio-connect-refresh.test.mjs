@@ -31,7 +31,7 @@ async function functionBody(name) {
  * The post-connect hook has to target a capability the runtime actually serves.
  *
  * `/api/v1/composio-mcp/ensure-running` was removed when Composio tools moved
- * inline (the runtime now deletes the legacy `holaboss_composio` registry
+ * inline (the runtime now deletes the legacy `hitechcloud_composio` registry
  * entry), but the desktop kept POSTing to it. Every call 404'd into the callers'
  * `catch {}`, so the only step that made a just-connected integration's tools
  * reachable silently did nothing — the runtime went on serving its cached tool

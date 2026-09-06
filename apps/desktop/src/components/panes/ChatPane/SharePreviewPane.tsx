@@ -1,4 +1,4 @@
-import type { ShareDraftSessionTurn } from "@holaboss/app-host/protocol";
+import type { ShareDraftSessionTurn } from "@hitechcloud/app-host/protocol";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useMemo, useState } from "react";
 import { fileNameFromPath } from "@/components/layout/shell/state/internalTabs";
@@ -63,7 +63,7 @@ function ToggleBadge({ checked }: { checked: boolean }) {
 }
 
 /**
- * Full-page "Share to HolaHub" composer. Two ways to share, chosen by a header
+ * Full-page "Share to Hitechhub" composer. Two ways to share, chosen by a header
  * toggle: **Conversation** renders the transcript with the real chat components
  * (pick turns → a "session" post), and **Outputs** lets the user pick just the
  * artifacts the assistant produced (→ a media "post", no transcript). Either way
@@ -271,7 +271,7 @@ export function SharePreviewPane() {
           <X className="size-4" />
         </button>
         <span className="font-semibold text-foreground text-sm">
-          Share to HolaHub
+          Share to Hitechhub
         </span>
         {shareableOutputs.length > 0 ? (
           <div className="flex items-center gap-0.5 rounded-lg bg-fg-6 p-0.5">

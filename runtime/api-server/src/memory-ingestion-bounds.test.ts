@@ -40,7 +40,7 @@ const WIN_TOOL_RESULT_DIR = [
   "x",
   "AppData",
   "Roaming",
-  "holaboss-local",
+  "hitechcloud-local",
   "sandbox-host",
   "workspace",
   "outputs",
@@ -50,7 +50,7 @@ const WIN_TOOL_RESULT_DIR = [
 function toolResultOutput(name: string, sep: "win" | "posix"): Record<string, unknown> {
   const filePath = sep === "win"
     ? `${WIN_TOOL_RESULT_DIR}\\${name}`
-    : `/holaboss/workspace/tmp/.tool-results/${name}`;
+    : `/hitechcloud/workspace/tmp/.tool-results/${name}`;
   return { id: name, title: name, status: "active", filePath };
 }
 

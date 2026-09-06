@@ -650,7 +650,7 @@ Risk:
 
 Mitigation:
 
-- prefer Holaboss `connectionId` when available
+- prefer Hitechcloud `connectionId` when available
 - also preserve stable account identity such as handle or email
 
 ### Migration parity risk

@@ -143,11 +143,11 @@ function timeoutSecondsFromEnv(envName: string, defaultValue: number): number {
 }
 
 function defaultHarnessTimeoutSeconds(sessionKind: string | null | undefined): number {
-  const baseTimeoutSeconds = timeoutSecondsFromEnv("HOLABOSS_HARNESS_RUN_TIMEOUT_S", 1800);
+  const baseTimeoutSeconds = timeoutSecondsFromEnv("HITECHCLOUD_HARNESS_RUN_TIMEOUT_S", 1800);
   const normalizedSessionKind = normalizeSessionKind(sessionKind);
   if (normalizedSessionKind === "subagent") {
     return timeoutSecondsFromEnv(
-      "HOLABOSS_SUBAGENT_HARNESS_RUN_TIMEOUT_S",
+      "HITECHCLOUD_SUBAGENT_HARNESS_RUN_TIMEOUT_S",
       Math.max(baseTimeoutSeconds, 7200)
     );
   }

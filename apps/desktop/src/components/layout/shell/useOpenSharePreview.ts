@@ -12,7 +12,7 @@ import {
 } from "./state/ui";
 
 /**
- * Open the full-page "Share to HolaHub" composer for a conversation. Stages the
+ * Open the full-page "Share to Hitechhub" composer for a conversation. Stages the
  * messages (+ workspace + active model) so the overlay pane can render a WYSIWYG
  * preview, then flips the workspace overlay. `mode` sets which tab it opens on
  * (whole conversation vs just the outputs). Mirrors `useOpenDiscover`.
@@ -29,7 +29,7 @@ export function useOpenSharePreview() {
       setMode(mode);
       setProjectView(null);
       setFocusMode(false);
-      setWorkspaceOverlay("holahub-share");
+      setWorkspaceOverlay("hitechhub-share");
     },
     [setPayload, setMode, setProjectView, setFocusMode, setWorkspaceOverlay]
   );

@@ -32,7 +32,7 @@ describe("findProviderEffectManifestViolations", () => {
   test("flags providerEffectAction providers that are missing from integrations", () => {
     const appDir = makeAppDir({
       "src/send.ts": [
-        "import { providerEffectAction } from \"@holaboss/app-builder-sdk\";",
+        "import { providerEffectAction } from \"@hitechcloud/app-builder-sdk\";",
         "",
         "export const send = providerEffectAction({",
         "  provider: \"gmail\",",
@@ -64,7 +64,7 @@ describe("findProviderEffectManifestViolations", () => {
   test("accepts providerEffectAction providers that are declared in integrations", () => {
     const appDir = makeAppDir({
       "src/send.ts": [
-        "import { providerEffectAction } from \"@holaboss/app-builder-sdk\";",
+        "import { providerEffectAction } from \"@hitechcloud/app-builder-sdk\";",
         "",
         "export const send = providerEffectAction({",
         "  provider: \"gmail\",",

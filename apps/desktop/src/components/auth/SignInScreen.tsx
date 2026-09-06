@@ -12,7 +12,7 @@ import { trackUmamiEvent } from "@/lib/analytics/umami";
 import { useDesktopAuthSession } from "@/lib/auth/authClient";
 
 const BROWSER_SIGN_IN_HINT =
-	"Sign-in opened in the browser. Complete the flow on the holaOS page to continue.";
+	"Sign-in opened in the browser. Complete the flow on the hitechcloudOS page to continue.";
 
 const WAIT_TIMEOUT_HINT =
 	"Still waiting on the browser. Finish sign-in there if it's open, or start over.";
@@ -85,7 +85,7 @@ export function SignInScreen() {
 
 	const buttonLabel = isWaiting
 		? "Waiting for sign-in…"
-		: "Sign in to holaOS";
+		: "Sign in to hitechcloudOS";
 
 	return (
 		<div className="fixed inset-0 z-30 flex min-h-0 flex-col">
@@ -95,7 +95,7 @@ export function SignInScreen() {
 						<div className="flex flex-col items-center text-center">
 							<WelcomeHero />
 							<h1 className="mt-6 text-2xl font-semibold tracking-tight text-foreground">
-								Welcome to holaOS
+								Welcome to hitechcloudOS
 							</h1>
 							<p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
 								Sign in to continue. Workspace files stay local on this machine

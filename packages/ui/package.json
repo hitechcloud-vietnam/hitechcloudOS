@@ -1,10 +1,10 @@
 {
-  "name": "@holaboss/ui",
+  "name": "@hitechcloud/ui",
   "version": "0.3.2",
   "license": "Apache-2.0",
-  "description": "Shared UI library for holaOS — primitives, layouts, and tokens used by app-builder-sdk dashboards.",
+  "description": "Shared UI library for hitechcloudOS — primitives, layouts, and tokens used by app-builder-sdk dashboards.",
   "keywords": [
-    "holaboss",
+    "hitechcloud",
     "ui",
     "design-system",
     "react",
@@ -14,11 +14,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/holaboss-ai/holaOS.git",
+    "url": "https://github.com/hitechcloud-vietnam/hitechcloudOS.git",
     "directory": "packages/ui"
   },
-  "homepage": "https://github.com/holaboss-ai/holaOS/tree/main/packages/ui",
-  "bugs": "https://github.com/holaboss-ai/holaOS/issues",
+  "homepage": "https://github.com/hitechcloud-vietnam/hitechcloudOS/tree/main/packages/ui",
+  "bugs": "https://github.com/hitechcloud-vietnam/hitechcloudOS/issues",
   "publishConfig": {
     "access": "public"
   },
@@ -39,7 +39,7 @@
     },
     "./styles.css": "./dist/styles.css",
     "./tokens.css": "./dist/tokens.css",
-    "./themes/holaos.css": "./dist/themes/holaos.css"
+    "./themes/hitechcloudos.css": "./dist/themes/hitechcloudos.css"
   },
   "files": [
     "dist",

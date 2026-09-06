@@ -98,19 +98,19 @@ const ABOUT_LINKS = [
     id: "home",
     label: "Homepage",
     icon: Globe,
-    href: "https://www.holaos.ai",
+    href: "https://www.hitechcloud.vn",
   },
   {
     id: "docs",
     label: "Docs",
     icon: Info,
-    href: "https://github.com/holaboss-ai/holaOS",
+    href: "https://github.com/hitechcloud-vietnam/hitechcloudOS",
   },
   {
     id: "help",
     label: "Get help",
     icon: CircleHelp,
-    href: "https://github.com/holaboss-ai/holaOS/issues",
+    href: "https://github.com/hitechcloud-vietnam/hitechcloudOS/issues",
   },
 ] as const;
 
@@ -547,7 +547,7 @@ export function SettingsScreenRoot({
 
             <SettingsSection title="App">
               <SettingsCard>
-                <SettingsRow label="holaOS Desktop" description="Version">
+                <SettingsRow label="hitechcloudOS Desktop" description="Version">
                   <Badge
                     variant="outline"
                     className="border-border bg-fg-2 font-mono text-[11px] text-foreground"

@@ -306,9 +306,9 @@ type PiRequestedThinkingLevel = HarnessRequestedThinkingLevel;
 type PiThinkingBudgetLevel = HarnessThinkingBudgetLevel;
 type PiThinkingSelection = HarnessThinkingSelection;
 
-const PI_AGENT_STATE_DIR = ".holaboss/pi-agent";
-const PI_SESSION_DIR = ".holaboss/pi-sessions";
-const PI_HARNESS_CLIENT_NAME = "holaboss-pi-harness";
+const PI_AGENT_STATE_DIR = ".hitechcloud/pi-agent";
+const PI_SESSION_DIR = ".hitechcloud/pi-sessions";
+const PI_HARNESS_CLIENT_NAME = "hitechcloud-pi-harness";
 const PI_HARNESS_CLIENT_VERSION = "0.1.0";
 const PI_REQUEST_TOOL_NAME_ALIASES: Record<string, string[]> = {
   ls: ["list"],
@@ -439,7 +439,7 @@ function createRequestAttachmentBoundaryPolicy(request: HarnessHostPiRequest) {
 
 function resolveAttachmentAbsolutePath(request: HarnessHostPiRequest, attachment: PiAttachment): string {
   // Staged attachments (screenshots, dropped files, records) are written
-  // relative to workspace_dir (under <workspace_dir>/.holaboss/input-attachments/),
+  // relative to workspace_dir (under <workspace_dir>/.hitechcloud/input-attachments/),
   // whereas @-mention attachments may live under the agent cwd (the project
   // folder, or HOME for General chats). For a General session those roots
   // differ — workspace_dir is the sandbox dir, agent cwd is HOME — so resolving
@@ -539,7 +539,7 @@ function imageUrlPromptLabel(imageUrl: string, index: number, request: HarnessHo
       if (resolvedPath) {
         // Display path is relative to the AGENT's cwd, not the workspace
         // metadata root: a file under the project should render as
-        // `./poem.txt`, not `../../../Holaboss/Projects/test8/poem.txt`.
+        // `./poem.txt`, not `../../../Hitechcloud/Projects/test8/poem.txt`.
         const relativeRoot = resolveRequestAgentCwd(request);
         const relativePath = path
           .relative(relativeRoot, resolvedPath)
@@ -1500,7 +1500,7 @@ const PI_SKILL_CATALOG_DESCRIPTION_MAX_CHARS = 180;
  *
  * pi emits `<name>/<description>/<location>` per skill plus a preamble telling
  * the model to `read` the skill file. Measured on a real workspace that was
- * ~4,860 tokens for 41 skills, ~1,312 of it absolute SKILL.md paths. holaOS
+ * ~4,860 tokens for 41 skills, ~1,312 of it absolute SKILL.md paths. hitechcloudOS
  * loads skills BY NAME via its own `skill` tool — which supplies the base dir
  * when it renders the block — so the path is never needed, and pointing the
  * model at `read` competes with the tool it should actually use.
@@ -1536,7 +1536,7 @@ function loadPiSkills(skillDirs: readonly string[]): LoadSkillsResult {
     loadSkillsFromDir: (dir) =>
       loadSkillsFromDir({
         dir,
-        source: "holaboss",
+        source: "hitechcloud",
       }),
   });
 }
@@ -1551,7 +1551,7 @@ function resolveQuotedSkillSections(
     loadSkillsFromDir: (dir) =>
       loadSkillsFromDir({
         dir,
-        source: "holaboss",
+        source: "hitechcloud",
       }),
   });
 }
@@ -1785,7 +1785,7 @@ function envBytes(name: string, fallback: number): number {
 }
 
 function maxToolOutputBytes(): number {
-  return envBytes("HOLABOSS_MAX_TOOL_OUTPUT_BYTES", DEFAULT_MAX_TOOL_OUTPUT_BYTES);
+  return envBytes("HITECHCLOUD_MAX_TOOL_OUTPUT_BYTES", DEFAULT_MAX_TOOL_OUTPUT_BYTES);
 }
 
 /**
@@ -1811,14 +1811,14 @@ export function createToolOutputCapState(): ToolOutputCapState {
 function effectiveMaxToolOutputBytes(state: ToolOutputCapState): number {
   const perCall = maxToolOutputBytes();
   const sessionBudget = envBytes(
-    "HOLABOSS_SESSION_TOOL_OUTPUT_BUDGET_BYTES",
+    "HITECHCLOUD_SESSION_TOOL_OUTPUT_BUDGET_BYTES",
     DEFAULT_SESSION_TOOL_OUTPUT_BUDGET_BYTES,
   );
   if (state.inlinedBytes < sessionBudget) {
     return perCall;
   }
   const tightened = envBytes(
-    "HOLABOSS_TOOL_OUTPUT_TIGHTENED_BYTES",
+    "HITECHCLOUD_TOOL_OUTPUT_TIGHTENED_BYTES",
     DEFAULT_TIGHTENED_TOOL_OUTPUT_BYTES,
   );
   return Math.min(perCall, tightened);
@@ -1856,7 +1856,7 @@ const DEFAULT_SESSION_IMAGE_CONTEXT_BUDGET_BYTES = 16 * 1024 * 1024;
 export function capSessionImageContext(
   session: unknown,
   budgetBytes: number = envBytes(
-    "HOLABOSS_SESSION_IMAGE_CONTEXT_BUDGET_BYTES",
+    "HITECHCLOUD_SESSION_IMAGE_CONTEXT_BUDGET_BYTES",
     DEFAULT_SESSION_IMAGE_CONTEXT_BUDGET_BYTES,
   ),
 ): number {
@@ -2112,7 +2112,7 @@ const DEFAULT_WINDOWS_BASH_INLINE_LIMIT_BYTES = 6 * 1024;
 
 function windowsBashInlineLimitBytes(): number {
   return envBytes(
-    "HOLABOSS_WINDOWS_BASH_INLINE_LIMIT_BYTES",
+    "HITECHCLOUD_WINDOWS_BASH_INLINE_LIMIT_BYTES",
     DEFAULT_WINDOWS_BASH_INLINE_LIMIT_BYTES,
   );
 }
@@ -2161,7 +2161,7 @@ export function wrapBashToolForWindowsCommandLimit<
       }
       let scriptPath: string;
       try {
-        const dir = path.join(os.tmpdir(), "holaboss-bash");
+        const dir = path.join(os.tmpdir(), "hitechcloud-bash");
         fs.mkdirSync(dir, { recursive: true });
         scriptPath = path.join(dir, `cmd-${randomBytes(8).toString("hex")}.sh`);
         // LF only: Git bash reads the file directly, and a stray \r on a heredoc
@@ -2222,9 +2222,9 @@ function envSecondsAsMs(name: string, fallbackMs: number): number {
 // operator sets a global backstop. 0 means "no timeout".
 export function toolCallTimeoutMs(toolName: string): number {
   if (toolName === "bash") {
-    return envSecondsAsMs("HOLABOSS_BASH_TOOL_TIMEOUT_S", DEFAULT_BASH_TOOL_TIMEOUT_MS);
+    return envSecondsAsMs("HITECHCLOUD_BASH_TOOL_TIMEOUT_S", DEFAULT_BASH_TOOL_TIMEOUT_MS);
   }
-  return envSecondsAsMs("HOLABOSS_TOOL_CALL_TIMEOUT_S", 0);
+  return envSecondsAsMs("HITECHCLOUD_TOOL_CALL_TIMEOUT_S", 0);
 }
 
 const TOOL_TIMEOUT_SENTINEL = Symbol("tool-call-timeout");
@@ -2558,7 +2558,7 @@ export async function createPiMcpToolset(request: HarnessHostPiRequest): Promise
     // every server. Transports (incl. remote ones) then connect lazily on the
     // first `callTool` — mcporter memoizes per server — so a turn no longer
     // blocks startup on remote MCP round-trips. Bypassed on
-    // `_holaboss_force_refresh` (a restarted app sidecar may have changed its
+    // `_hitechcloud_force_refresh` (a restarted app sidecar may have changed its
     // tool set).
     const cacheKey = piMcpToolCacheKey(
       request.mcp_servers,
@@ -2894,7 +2894,7 @@ export function piCompactionReserveTokens(contextWindow: number): number {
   );
 }
 
-const AGENT_ROLE_HEADER_NAME = "X-Holaboss-Agent-Role";
+const AGENT_ROLE_HEADER_NAME = "X-Hitechcloud-Agent-Role";
 
 function mergeAgentRoleHeader(
   headers: Record<string, string> | undefined,
@@ -3056,7 +3056,7 @@ async function defaultCreateSession(request: HarnessHostPiRequest): Promise<PiSe
     // catalogue instead (see renderPiSkillCatalog). pi's block cost ~4,860 tokens
     // for 41 skills — over half of them the absolute `<location>` SKILL.md path
     // of every skill, plus a preamble telling the model to `read` that file.
-    // holaOS resolves skills BY NAME through its own `skill` tool (which already
+    // hitechcloudOS resolves skills BY NAME through its own `skill` tool (which already
     // states the skill's base dir when it renders the block), so the paths are
     // dead weight and the `read` instruction actively competes with that tool.
     //
@@ -3187,7 +3187,7 @@ async function defaultCreateSession(request: HarnessHostPiRequest): Promise<PiSe
   // ("Tool not found", then two steps rediscovering it via describe_tool).
   //
   // Also NOT here, for the same reason one step further along the same chain:
-  // holaboss_workspace_integrations_propose_connect. It is the ACTION at the end
+  // hitechcloud_workspace_integrations_propose_connect. It is the ACTION at the end
   // of that discovery path — "can you use my notion?" runs list_catalog (native)
   // -> composio_search_tools (native) -> propose_connect — and deferring only the
   // last hop is what makes the sequence expensive. Observed live: with no schema
@@ -3210,7 +3210,7 @@ async function defaultCreateSession(request: HarnessHostPiRequest): Promise<PiSe
     capability_install: "workspace_admin",
     open_macos_settings: "workspace_admin",
     update_workspace_instructions: "workspace_admin",
-    holaboss_workspace_integrations_set_default_account: "integration_setup",
+    hitechcloud_workspace_integrations_set_default_account: "integration_setup",
     cronjobs: "scheduling",
     terminal_session: "terminal",
   };
@@ -4182,10 +4182,10 @@ export async function runPi(request: HarnessHostPiRequest, deps: PiDeps = defaul
         workspaceId: request.workspace_id,
         sessionId: request.session_id,
         inputId: request.input_id,
-        userId: requestDefaultHeaderValue(request, "x-holaboss-user-id"),
+        userId: requestDefaultHeaderValue(request, "x-hitechcloud-user-id"),
         sandboxId: requestDefaultHeaderValue(
           request,
-          "x-holaboss-sandbox-id",
+          "x-hitechcloud-sandbox-id",
         ),
         agentName: "PI Agent",
         thinkingValue: request.thinking_value ?? null,
@@ -4281,7 +4281,7 @@ export async function runPi(request: HarnessHostPiRequest, deps: PiDeps = defaul
         }
         applyHarnessGenAiUsageMetrics(span, aggregatedUsage);
         if (state.terminalState === "failed") {
-          span.setAttribute("holaboss.run_status", "failed");
+          span.setAttribute("hitechcloud.run_status", "failed");
           span.setStatus({ code: 2, message: "internal_error" });
         } else {
           const runStatus = resolveHarnessRunStatus({
@@ -4290,7 +4290,7 @@ export async function runPi(request: HarnessHostPiRequest, deps: PiDeps = defaul
               blockedTodoShouldPause &&
               hasBlockedPersistedHarnessTodoState(stateDir, request.session_id),
           });
-          span.setAttribute("holaboss.run_status", runStatus);
+          span.setAttribute("hitechcloud.run_status", runStatus);
           span.setStatus({ code: 1, message: "ok" });
         }
         if (state.terminalState !== "failed") {
@@ -4322,7 +4322,7 @@ export async function runPi(request: HarnessHostPiRequest, deps: PiDeps = defaul
           });
         }
         applyHarnessGenAiUsageMetrics(span, aggregatedUsage);
-        span.setAttribute("holaboss.run_status", "failed");
+        span.setAttribute("hitechcloud.run_status", "failed");
         span.setStatus({
           code: 2,
           message: timedOut
@@ -4406,10 +4406,10 @@ export async function compactPiSession(
         workspaceId: request.workspace_id,
         sessionId: request.session_id,
         inputId: request.input_id,
-        userId: requestDefaultHeaderValue(request, "x-holaboss-user-id"),
+        userId: requestDefaultHeaderValue(request, "x-hitechcloud-user-id"),
         sandboxId: requestDefaultHeaderValue(
           request,
-          "x-holaboss-sandbox-id",
+          "x-hitechcloud-sandbox-id",
         ),
         agentName: "PI Compaction",
       }),
@@ -4421,7 +4421,7 @@ export async function compactPiSession(
             await runSnapshotPostRunMaintenanceCompaction(session);
           applyHarnessGenAiUsageMetrics(span, aggregatedUsage);
           if (maintenanceResult.kind === "compacted") {
-            span.setAttribute("holaboss.compaction_result", "compacted");
+            span.setAttribute("hitechcloud.compaction_result", "compacted");
             span.setStatus({ code: 1, message: "ok" });
             return {
               compacted: true,
@@ -4443,7 +4443,7 @@ export async function compactPiSession(
             if (compactionErrorMessage) {
               const error = new Error(compactionErrorMessage);
               error.name = "PiSnapshotCompactionError";
-              span.setAttribute("holaboss.compaction_result", "error");
+              span.setAttribute("hitechcloud.compaction_result", "error");
               span.setStatus({ code: 2, message: error.name });
               return {
                 compacted: false,
@@ -4459,7 +4459,7 @@ export async function compactPiSession(
               };
             }
             span.setAttribute(
-              "holaboss.compaction_result",
+              "hitechcloud.compaction_result",
               maintenanceResult.reason ?? "not_compacted",
             );
             span.setStatus({ code: 1, message: "ok" });
@@ -4477,7 +4477,7 @@ export async function compactPiSession(
             };
           }
           if (maintenanceResult.kind === "error") {
-            span.setAttribute("holaboss.compaction_result", "error");
+            span.setAttribute("hitechcloud.compaction_result", "error");
             span.setStatus({ code: 2, message: "internal_error" });
             return {
               compacted: false,
@@ -4498,7 +4498,7 @@ export async function compactPiSession(
         }
         const result = await handle.session.compact();
         applyHarnessGenAiUsageMetrics(span, aggregatedUsage);
-        span.setAttribute("holaboss.compaction_result", "compacted");
+        span.setAttribute("hitechcloud.compaction_result", "compacted");
         span.setStatus({ code: 1, message: "ok" });
         return {
           compacted: true,
@@ -4516,7 +4516,7 @@ export async function compactPiSession(
         applyHarnessGenAiUsageMetrics(span, aggregatedUsage);
         const reason = compactionNoOpReason(error);
         if (reason) {
-          span.setAttribute("holaboss.compaction_result", reason);
+          span.setAttribute("hitechcloud.compaction_result", reason);
           span.setStatus({ code: 1, message: "ok" });
           return {
             compacted: false,
@@ -4531,7 +4531,7 @@ export async function compactPiSession(
             error: null,
           };
         }
-        span.setAttribute("holaboss.compaction_result", "error");
+        span.setAttribute("hitechcloud.compaction_result", "error");
         span.setStatus({
           code: 2,
           message: error instanceof Error && error.name ? error.name : "internal_error",

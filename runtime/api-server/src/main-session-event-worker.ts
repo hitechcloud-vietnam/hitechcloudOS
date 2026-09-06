@@ -7,7 +7,7 @@ import {
   type RuntimeStateStore,
   type WorkspaceRecord,
   utcNowIso,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 import type { QueueWorkerLike } from "./queue-worker.js";
 import { queuedMainSessionEventPromptEntry } from "./main-session-event-prompt.js";
@@ -20,7 +20,7 @@ import {
 const DEFAULT_POLL_INTERVAL_MS = 1_000;
 const MAIN_SESSION_EVENT_INPUT_PRIORITY = -100;
 const MAIN_SESSION_EVENT_BATCH_HEADER =
-  "[Holaboss Main Session Event Batch v1]";
+  "[Hitechcloud Main Session Event Batch v1]";
 
 type LoggerLike = {
   info: (message: string, ...args: unknown[]) => void;

@@ -19,12 +19,12 @@ export default defineConfig({
       // HMR works on every save in sdk/editor/src/. The dist/ is only
       // for non-Vite consumers (tests, packaging) and is built via tsup.
       {
-        find: /^@holaboss\/editor$/,
+        find: /^@hitechcloud\/editor$/,
         replacement: path.resolve(__dirname, "../../packages/editor/src/index.ts")
       },
       // Stylesheet subpath — same reason: load source so CSS edits HMR.
       {
-        find: /^@holaboss\/editor\/styles\.css$/,
+        find: /^@hitechcloud\/editor\/styles\.css$/,
         replacement: path.resolve(__dirname, "../../packages/editor/src/styles.css")
       },
       { find: "@", replacement: path.resolve(__dirname, "src") }

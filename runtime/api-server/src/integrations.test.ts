@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import { IntegrationServiceError, RuntimeIntegrationService } from "./integrations.js";
@@ -56,7 +56,7 @@ test("upserts workspace-scoped bindings and rejects invalid target types", () =>
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active"
@@ -122,7 +122,7 @@ test("fires onBindingCreated for new bindings and not for rebinding the same tar
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "first@holaboss.ai",
+    accountLabel: "first@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active"
@@ -131,7 +131,7 @@ test("fires onBindingCreated for new bindings and not for rebinding the same tar
     connectionId: "conn-google-2",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "second@holaboss.ai",
+    accountLabel: "second@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active"
@@ -185,7 +185,7 @@ test("rejects missing connections and cross-provider bindings; unknown workspace
     connectionId: "conn-github-1",
     providerId: "github",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["repo"],
     status: "active"
@@ -251,7 +251,7 @@ test("rejects delete binding requests without workspace scoping or with the wron
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active"
@@ -307,14 +307,14 @@ test("creates a connection via manual token import and lists it", () => {
   const connection = service.createConnection({
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "manual_token",
     grantedScopes: ["gmail.send", "gmail.readonly"],
     secretRef: "gya_manual-token-value"
   });
 
   assert.equal(connection.provider_id, "google");
-  assert.equal(connection.account_label, "owner@holaboss.ai");
+  assert.equal(connection.account_label, "owner@hitechcloud.vn");
   assert.equal(connection.auth_mode, "manual_token");
   assert.equal(connection.status, "active");
   assert.ok(connection.connection_id);
@@ -358,7 +358,7 @@ test("updates connection status and secret_ref", () => {
   const connection = service.createConnection({
     providerId: "github",
     ownerUserId: "user-1",
-    accountLabel: "holaboss-bot",
+    accountLabel: "hitechcloud-bot",
     authMode: "manual_token",
     grantedScopes: ["repo"],
     secretRef: "ghp_old-token"
@@ -400,7 +400,7 @@ test("deleting a connection cascades through every workspace binding", () => {
   const connection = service.createConnection({
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "manual_token",
     grantedScopes: ["gmail.send"],
     secretRef: "gya_token"

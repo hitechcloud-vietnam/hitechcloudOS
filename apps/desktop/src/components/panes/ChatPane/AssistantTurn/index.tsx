@@ -72,7 +72,7 @@ function executionItemsHaveFileEdits(
   });
 }
 
-// "View on HolaHub" cards for posts the agent published this turn — clicking
+// "View on Hitechhub" cards for posts the agent published this turn — clicking
 // opens our own Discover surface deep-linked to the thread.
 function PublishedHubPostCards({ posts }: { posts: ChatPublishedHubPost[] }) {
   const openDiscover = useOpenDiscover();
@@ -93,10 +93,10 @@ function PublishedHubPostCards({ posts }: { posts: ChatPublishedHubPost[] }) {
           </span>
           <span className="min-w-0 flex-1">
             <span className="block truncate font-medium text-sm leading-tight">
-              {post.title || "Your HolaHub post"}
+              {post.title || "Your Hitechhub post"}
             </span>
             <span className="mt-0.5 block truncate text-muted-foreground text-xs">
-              Published to HolaHub · View on Discover
+              Published to Hitechhub · View on Discover
             </span>
           </span>
           <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" />

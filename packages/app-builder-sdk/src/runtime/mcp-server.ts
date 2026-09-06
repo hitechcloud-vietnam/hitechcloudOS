@@ -35,7 +35,7 @@ export interface StartMcpServerOpts {
   serverName?: string
   /** Optional MCP server version. */
   serverVersion?: string
-  /** Optional web-surface port. Holaboss desktop renders an iframe at this URL
+  /** Optional web-surface port. Hitechcloud desktop renders an iframe at this URL
    *  for module apps with a web surface. SDK apps are headless, but the desktop
    *  still tries to load the URL — this option binds a tiny HTTP server that
    *  serves a placeholder page so the iframe gets a 200 instead of
@@ -149,7 +149,7 @@ function createWebStub(appId: string, mcpPort: number): HttpServer {
 </head>
 <body>
   <h1>${escapeHtml(appId)}</h1>
-  <p>This module was built with <code>@holaboss/app-builder-sdk</code> and is headless — it exposes only an MCP server, no web UI.</p>
+  <p>This module was built with <code>@hitechcloud/app-builder-sdk</code> and is headless — it exposes only an MCP server, no web UI.</p>
   <p>Drive it from agent chat. The MCP server is on <code>:${mcpPort}/mcp/sse</code>.</p>
 </body>
 </html>`

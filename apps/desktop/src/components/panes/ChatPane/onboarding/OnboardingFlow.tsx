@@ -1,7 +1,7 @@
 import { useAtom, useSetAtom } from "jotai";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useState } from "react";
-import { holabossLogoUrl } from "@/lib/assetPaths";
+import { hitechcloudLogoUrl } from "@/lib/assetPaths";
 import { useDesktopAuthSession } from "@/lib/auth/authClient";
 import { useWorkspaceSelection } from "@/lib/workspaceSelection";
 import { BrowserOnboardingStage } from "./BrowserOnboardingStage";
@@ -88,7 +88,7 @@ export function OnboardingFlow() {
 			 * even when the cursor is over the brand header background. */}
 			<div className="titlebar-drag-region pointer-events-none fixed top-0 right-0 left-0 z-10 h-[38px]" />
 
-			{/* Brand header: holaboss logo + label on the left, sign-out on
+			{/* Brand header: hitechcloud logo + label on the left, sign-out on
 			 * the right. Mirrors the existing OnboardingShell rhythm so this
 			 * surface feels continuous with sign-in / first-workspace flows. */}
 			<header className="window-drag relative z-20 flex shrink-0 items-center justify-between px-7 pt-[44px] pb-4 sm:px-9">
@@ -97,10 +97,10 @@ export function OnboardingFlow() {
 						alt=""
 						aria-hidden
 						className="size-7 shrink-0 object-contain"
-						src={holabossLogoUrl}
+						src={hitechcloudLogoUrl}
 					/>
 					<span className="truncate text-base font-semibold tracking-tight text-foreground">
-						holaOS
+						hitechcloudOS
 					</span>
 				</div>
 				<button

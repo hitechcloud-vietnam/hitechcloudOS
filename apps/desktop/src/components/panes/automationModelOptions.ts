@@ -116,7 +116,7 @@ export function automationThinkingChoiceForModel(params: {
     };
   }
   const fallback = catalogMetadataForProviderModel(
-    "holaboss_model_proxy",
+    "hitechcloud_model_proxy",
     token,
   );
   if (fallback) {

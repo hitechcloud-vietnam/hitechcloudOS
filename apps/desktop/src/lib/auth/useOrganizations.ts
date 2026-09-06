@@ -3,7 +3,7 @@ import { useCallback } from "react";
 
 // Organization (tenant) context for the desktop. The active org lives on the
 // Better-Auth session (`session.activeOrganizationId`); the frontend gateway
-// reads it to inject `x-holaboss-org-id` on every proxied backend call — so
+// reads it to inject `x-hitechcloud-org-id` on every proxied backend call — so
 // switching the active org here silently re-scopes the whole app. All three
 // operations go through the main-process auth IPC bridge (see
 // electron/main.ts `auth:listOrganizations` / `auth:getActiveOrganization` /

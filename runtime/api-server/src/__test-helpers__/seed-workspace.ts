@@ -7,7 +7,7 @@ import {
   type RuntimeStateStore,
   utcNowIso,
   type WorkspaceRecord,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 // Workspace-removal (single-tenant synthetic root): the store no longer exposes
 // createWorkspace/updateWorkspace/deleteWorkspace/relocateWorkspace, and
@@ -69,7 +69,7 @@ export function seedWorkspaceRecord(
   const workspaceId = params.workspaceId ?? `ws-${Math.random().toString(36).slice(2)}`;
   const now = utcNowIso();
   const workspacePath = params.workspacePath ?? path.join(store.workspaceRoot, workspaceId);
-  const stateDir = path.join(workspacePath, ".holaboss", "state");
+  const stateDir = path.join(workspacePath, ".hitechcloud", "state");
   fs.mkdirSync(stateDir, { recursive: true });
   fs.writeFileSync(path.join(stateDir, "workspace_id"), `${workspaceId}\n`, "utf-8");
   for (const file of new Set([store.controlPlaneDbPath, store.dbPath])) {

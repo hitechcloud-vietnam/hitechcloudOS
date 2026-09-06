@@ -3,16 +3,16 @@ title: App Builder SDK
 description: TypeScript SDK for building workspace apps — five primitives, typed integration calls, automatic MCP surfacing.
 ---
 
-`@holaboss/app-builder-sdk` is the package new Holaboss workspace apps build against. It centers on five orthogonal primitives that compose into any app shape — publishing, messaging, workflow, event-driven, sync-mirror — with no `as any` in app code and no ad-hoc retry or scheduling logic leaking out of the SDK.
+`@hitechcloud/app-builder-sdk` is the package new Hitechcloud workspace apps build against. It centers on five orthogonal primitives that compose into any app shape — publishing, messaging, workflow, event-driven, sync-mirror — with no `as any` in app code and no ad-hoc retry or scheduling logic leaking out of the SDK.
 
 The canonical source lives at `sdk/app-builder-sdk/src/`.
 
 ## Install
 
 ```bash
-bun install @holaboss/app-builder-sdk
+bun install @hitechcloud/app-builder-sdk
 # or
-npm install @holaboss/app-builder-sdk
+npm install @hitechcloud/app-builder-sdk
 ```
 
 The package targets Node.js 20+ and is authored in TypeScript.
@@ -34,7 +34,7 @@ app.start()                   // validate config; the runtime drives execution
 | `connection()` | Tells the runtime which provider binding the app needs |
 | `resource()` | Defines a typed row — Zod schema + state alphabet + emit rules |
 | `action()` | A state transition; receives `{ bridge, row }`, calls upstream APIs |
-| `sync()` | Periodic fetch + upsert; **scheduling lives in the Holaboss automations layer, not in the SDK** |
+| `sync()` | Periodic fetch + upsert; **scheduling lives in the Hitechcloud automations layer, not in the SDK** |
 | `start()` | Boot; validates the registered config |
 
 Full type contract: `sdk/app-builder-sdk/src/types.ts`. Public exports: `sdk/app-builder-sdk/src/index.ts`.
@@ -47,7 +47,7 @@ The SDK never assumes a specific provider auth flow. `BridgeClient` delegates ne
 | --- | --- | --- |
 | `createBearerTokenTransport` | Self-host OAuth — you manage tokens (Auth0, Clerk, your own auth server) | `accessToken: string \| () => Promise<string>` |
 | `createComposioDirectTransport` | Direct to Composio, no broker hop — local dev, E2E, single-tenant | `COMPOSIO_API_KEY` + `connectedAccountId` |
-| `createRuntimeBrokerTransport` | **Production** — app running inside a Holaboss workspace runtime | `provider` slug; runtime injects `HOLABOSS_INTEGRATION_BROKER_URL` + `HOLABOSS_APP_GRANT` |
+| `createRuntimeBrokerTransport` | **Production** — app running inside a Hitechcloud workspace runtime | `provider` slug; runtime injects `HITECHCLOUD_INTEGRATION_BROKER_URL` + `HITECHCLOUD_APP_GRANT` |
 
 Roll your own with ~20 lines of `fetch` returning `{ status, body, headers }` for custom auth (Vault, mTLS, internal gateway).
 
@@ -100,7 +100,7 @@ Anti-pattern:
 ```ts title="src/server/send-approved-email.ts"
 import {
   providerEffectAction,
-} from "@holaboss/app-builder-sdk"
+} from "@hitechcloud/app-builder-sdk"
 
 app.action(draft, "send", providerEffectAction({
   provider: "gmail",
@@ -126,7 +126,7 @@ app.action(draft, "send", providerEffectAction({
 ```
 
 ```ts title="src/server/news-report.ts"
-import { createTeammateClient } from "@holaboss/app-builder-sdk"
+import { createTeammateClient } from "@hitechcloud/app-builder-sdk"
 
 const teammateClient = createTeammateClient()
 
@@ -195,7 +195,7 @@ For app-owned agent flows, prefer the SDK's higher-level delegation helpers over
 import {
   createLocalAppActionApi,
   delegatedTaskAction,
-} from "@holaboss/app-builder-sdk"
+} from "@hitechcloud/app-builder-sdk"
 
 app.action(reportRequest, "delegate_latest_news", delegatedTaskAction({
   fromStates: ["ready"],
@@ -244,8 +244,8 @@ app.action(reportRequest, "delegate_dashboard_ui", delegatedTaskAction({
 
 Expose these standard local endpoints from the app's HTTP server:
 
-- `GET /__holaboss/actions/health`
-- `POST /__holaboss/actions/run`
+- `GET /__hitechcloud/actions/health`
+- `POST /__hitechcloud/actions/run`
 
 If the app uses teammate-triggering UI, also declare a `smoke_tests:` entry in `app.runtime.yaml`. `workspace_apps_ensure_running` executes these probes after startup and fails if the delegated task path is broken or returns invalid runtime metadata.
 
@@ -270,7 +270,7 @@ smoke_tests:
 ## A minimal app
 
 ```ts title="src/app.ts"
-import { createApp, z } from "@holaboss/app-builder-sdk"
+import { createApp, z } from "@hitechcloud/app-builder-sdk"
 import { SLACK } from "./provider.ts"
 
 const app = createApp({ id: "slack", provider: SLACK })
@@ -312,9 +312,9 @@ app.start()
 
 ## What's deliberately out of scope
 
-- **Scheduling and retry.** Those live in the Holaboss automations layer. `sync.schedule` strings are descriptive, not executed by the SDK.
+- **Scheduling and retry.** Those live in the Hitechcloud automations layer. `sync.schedule` strings are descriptive, not executed by the SDK.
 - **A scaffolder.** New apps copy a reference app, or get built end-to-end via the `app_builder` agent skill — see [Build Your First App](/docs/build/apps/first-app).
-- **Per-app SKILL.md.** Holaboss's skill system is system-wide (`runtime/harnesses/.../embedded-skills/`) or workspace-local (`<workspace>/skills/`). App-local markdown is not a skill.
+- **Per-app SKILL.md.** Hitechcloud's skill system is system-wide (`runtime/harnesses/.../embedded-skills/`) or workspace-local (`<workspace>/skills/`). App-local markdown is not a skill.
 
 ## Reference apps
 
@@ -331,6 +331,6 @@ Each reference app has unit tests plus a real-API E2E script. Copy a reference a
 ## Validation
 
 ```bash
-bun --filter=@holaboss/app-builder-sdk run typecheck
-bun --filter=@holaboss/app-builder-sdk run test
+bun --filter=@hitechcloud/app-builder-sdk run typecheck
+bun --filter=@hitechcloud/app-builder-sdk run test
 ```

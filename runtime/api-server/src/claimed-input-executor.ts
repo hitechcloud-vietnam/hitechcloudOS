@@ -12,8 +12,8 @@ import type {
   SubagentRunRecord,
   TurnResultRecord,
   WorkspaceRecord,
-} from "@holaboss/runtime-state-store";
-import { utcNowIso } from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
+import { utcNowIso } from "@hitechcloud/runtime-state-store";
 
 import {
   buildRunCompletedEvent,
@@ -66,7 +66,7 @@ import {
 } from "./workspace-skills.js";
 import { RuntimeAgentToolsService } from "./runtime-agent-tools.js";
 
-const RETRY_CONTINUATION_PROMPT_HEADER = "[Holaboss Retry Continuation v1]";
+const RETRY_CONTINUATION_PROMPT_HEADER = "[Hitechcloud Retry Continuation v1]";
 const RUNTIME_EXEC_CONTEXT_KEY = "_sandbox_runtime_exec_v1";
 const RUNTIME_EXEC_MODEL_PROXY_API_KEY_KEY = "model_proxy_api_key";
 const RUNTIME_EXEC_SANDBOX_ID_KEY = "sandbox_id";
@@ -99,7 +99,7 @@ const PI_SESSION_MANAGER_MODULE_PATH = path.join(
   "core",
   "session-manager.js",
 );
-const PI_SESSION_DIR_RELATIVE = path.join(".holaboss", "pi-sessions");
+const PI_SESSION_DIR_RELATIVE = path.join(".hitechcloud", "pi-sessions");
 /**
  * Ceiling on relay POSTs queued but not yet sent. Each has its own 2s abort
  * budget and they are serialized to preserve ordering, so an unreachable
@@ -721,11 +721,11 @@ async function postWorkspaceAgentRunRequest(params: {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     "X-API-Key": authToken,
-    "X-Holaboss-User-Id": userId,
+    "X-Hitechcloud-User-Id": userId,
   };
   const sandboxId = params.runtimeBinding.sandboxId.trim();
   if (sandboxId) {
-    headers["X-Holaboss-Sandbox-Id"] = sandboxId;
+    headers["X-Hitechcloud-Sandbox-Id"] = sandboxId;
   }
 
   const controller = new AbortController();
@@ -1428,7 +1428,7 @@ function instructionWithIssueAssignmentContext(params: {
 const IM_SURFACE_LIMITS =
   "This chat cannot show UI cards or buttons and cannot run browser sign-in/OAuth flows. " +
   "When something requires one — like connecting an integration — say so directly and ask the user " +
-  "to do it in the Holaboss desktop app (Settings → Integrations), then continue once it's done. " +
+  "to do it in the Hitechcloud desktop app (Settings → Integrations), then continue once it's done. " +
   "Never promise to complete such a step from this chat.";
 
 const IM_PLAIN_TEXT_NOTE =
@@ -1440,7 +1440,7 @@ const IM_MARKDOWN_LIGHT_NOTE =
 
 function imPlatformHint(surfaceName: string, formattingNote: string): string {
   return (
-    `You are replying inside ${surfaceName}, a messaging app — not the Holaboss desktop app. ` +
+    `You are replying inside ${surfaceName}, a messaging app — not the Hitechcloud desktop app. ` +
     `Keep replies short and conversational. ${formattingNote} ${IM_SURFACE_LIMITS}`
   );
 }
@@ -4107,7 +4107,7 @@ export async function processClaimedInput(params: {
     }
     // Org-owned sessions: the session's org (stamped at creation) bills every run
     // in it — NOT the live runtime-config org. Threaded into the exec context so
-    // resolveModelClientConfig sets X-Holaboss-Org-Id from the session, so a
+    // resolveModelClientConfig sets X-Hitechcloud-Org-Id from the session, so a
     // mid-work org switch (or a second session in another org) attributes
     // correctly. Null org → resolveModelClientConfig falls back to the config.
     const sessionOrgId = optionalString(ownerSessionRecord?.orgId);

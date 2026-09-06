@@ -167,7 +167,7 @@ function ChatContextSections({
               <TooltipTrigger
                 render={
                   <button
-                    aria-label="Share outputs to HolaHub"
+                    aria-label="Share outputs to Hitechhub"
                     className="grid size-5 place-items-center rounded text-muted-foreground transition-colors hover:bg-fg-6 hover:text-foreground"
                     onClick={onShare}
                     type="button"
@@ -177,7 +177,7 @@ function ChatContextSections({
                 <Upload className="size-3.5" strokeWidth={1.75} />
               </TooltipTrigger>
               <TooltipContent className="py-1" side="bottom">
-                Share to HolaHub
+                Share to Hitechhub
               </TooltipContent>
             </Tooltip>
           ) : null

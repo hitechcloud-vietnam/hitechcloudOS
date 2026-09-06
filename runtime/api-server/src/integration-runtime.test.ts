@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { afterEach, test } from "node:test";
 
-import { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 import { seedWorkspaceRecord } from "./__test-helpers__/seed-workspace.js";
 
 import { checkIntegrationReadiness, resolveIntegrationRuntime } from "./integration-runtime.js";
@@ -29,7 +29,7 @@ function createResolvedApp() {
     mcp: { transport: "http-sse", port: 3099, path: "/mcp" },
     mcpTools: [],
     healthCheck: { path: "/mcp/health", timeoutS: 30, intervalS: 1 },
-    envContract: ["HOLABOSS_USER_ID", "PLATFORM_INTEGRATION_TOKEN", "WORKSPACE_GOOGLE_INTEGRATION_ID", "WORKSPACE_GITHUB_INTEGRATION_ID"],
+    envContract: ["HITECHCLOUD_USER_ID", "PLATFORM_INTEGRATION_TOKEN", "WORKSPACE_GOOGLE_INTEGRATION_ID", "WORKSPACE_GITHUB_INTEGRATION_ID"],
     integrations: [
       {
         key: "google",
@@ -38,7 +38,7 @@ function createResolvedApp() {
         scopes: ["gmail.send", "gmail.readonly"],
         required: true,
         credentialSource: "platform" as const,
-        holabossUserIdRequired: true
+        hitechcloudUserIdRequired: true
       },
       {
         key: "github",
@@ -47,7 +47,7 @@ function createResolvedApp() {
         scopes: ["repo"],
         required: false,
         credentialSource: "platform" as const,
-        holabossUserIdRequired: false
+        hitechcloudUserIdRequired: false
       }
     ],
     startCommand: "",
@@ -62,7 +62,7 @@ function createSingleIntegrationResolvedApp() {
     mcp: { transport: "http-sse", port: 3099, path: "/mcp" },
     mcpTools: [],
     healthCheck: { path: "/mcp/health", timeoutS: 30, intervalS: 1 },
-    envContract: ["HOLABOSS_USER_ID", "PLATFORM_INTEGRATION_TOKEN", "WORKSPACE_GOOGLE_INTEGRATION_ID", "WORKSPACE_API_URL"],
+    envContract: ["HITECHCLOUD_USER_ID", "PLATFORM_INTEGRATION_TOKEN", "WORKSPACE_GOOGLE_INTEGRATION_ID", "WORKSPACE_API_URL"],
     integrations: [
       {
         key: "google",
@@ -71,7 +71,7 @@ function createSingleIntegrationResolvedApp() {
         scopes: ["gmail.send", "gmail.readonly"],
         required: true,
         credentialSource: "platform" as const,
-        holabossUserIdRequired: true
+        hitechcloudUserIdRequired: true
       }
     ],
     startCommand: "",
@@ -91,7 +91,7 @@ function createSingleIntegrationResolvedAppWithAliasKey() {
         scopes: ["gmail.send", "gmail.readonly"],
         required: true,
         credentialSource: "platform" as const,
-        holabossUserIdRequired: true
+        hitechcloudUserIdRequired: true
       }
     ]
   };
@@ -113,7 +113,7 @@ test("injects workspace api url and legacy token for a single active binding", a
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send", "gmail.readonly"],
     status: "active",
@@ -139,9 +139,9 @@ test("injects workspace api url and legacy token for a single active binding", a
 
   assert.equal(result.workspaceId, workspace.id);
   assert.equal(result.appId, "gmail");
-  assert.equal(result.env.HOLABOSS_INTEGRATION_BROKER_URL, "http://127.0.0.1:8080/api/v1/integrations");
+  assert.equal(result.env.HITECHCLOUD_INTEGRATION_BROKER_URL, "http://127.0.0.1:8080/api/v1/integrations");
   assert.equal(result.env.WORKSPACE_API_URL, "http://127.0.0.1:8080/api/v1");
-  assert.match(result.env.HOLABOSS_APP_GRANT ?? "", /^grant:workspace-1:gmail:/);
+  assert.match(result.env.HITECHCLOUD_APP_GRANT ?? "", /^grant:workspace-1:gmail:/);
   assert.equal(result.env.PLATFORM_INTEGRATION_TOKEN, undefined);
   assert.equal(result.env.WORKSPACE_GOOGLE_INTEGRATION_ID, googleConnection.connectionId);
   assert.equal(result.env.WORKSPACE_GITHUB_INTEGRATION_ID, undefined);
@@ -167,7 +167,7 @@ test("suppresses legacy token when multiple active platform-backed bindings reso
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send", "gmail.readonly"],
     status: "active",
@@ -177,7 +177,7 @@ test("suppresses legacy token when multiple active platform-backed bindings reso
     connectionId: "conn-github-1",
     providerId: "github",
     ownerUserId: "user-1",
-    accountLabel: "holaboss-bot",
+    accountLabel: "hitechcloud-bot",
     authMode: "oauth_app",
     grantedScopes: ["repo"],
     status: "active",
@@ -236,7 +236,7 @@ test("skips inactive connections when building compatibility env", async () => {
     connectionId: "conn-google-inactive",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "inactive@holaboss.ai",
+    accountLabel: "inactive@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "inactive",
@@ -285,7 +285,7 @@ test("prefers an app-specific binding override over a workspace default binding"
     connectionId: "conn-google-default",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "default@holaboss.ai",
+    accountLabel: "default@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -295,7 +295,7 @@ test("prefers an app-specific binding override over a workspace default binding"
     connectionId: "conn-google-app",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "app@holaboss.ai",
+    accountLabel: "app@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "active",
@@ -379,7 +379,7 @@ test("checkIntegrationReadiness returns integration_needs_reauth for inactive co
     connectionId: "conn-google-inactive",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "inactive@holaboss.ai",
+    accountLabel: "inactive@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send"],
     status: "expired",
@@ -426,7 +426,7 @@ test("checkIntegrationReadiness returns ready when all required integrations are
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send", "gmail.readonly"],
     status: "active",
@@ -471,7 +471,7 @@ test("checkIntegrationReadiness accepts provider-key bindings for legacy custom 
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send", "gmail.readonly"],
     status: "active",
@@ -516,7 +516,7 @@ test("checkIntegrationReadiness skips optional integrations", async () => {
     connectionId: "conn-google-1",
     providerId: "google",
     ownerUserId: "user-1",
-    accountLabel: "owner@holaboss.ai",
+    accountLabel: "owner@hitechcloud.vn",
     authMode: "oauth_app",
     grantedScopes: ["gmail.send", "gmail.readonly"],
     status: "active",

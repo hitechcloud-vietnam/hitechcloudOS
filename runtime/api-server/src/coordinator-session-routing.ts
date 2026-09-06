@@ -2,7 +2,7 @@ import {
   type AgentSessionRecord,
   type RuntimeStateStore,
   type WorkspaceRecord,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 const DESKTOP_MAIN_SESSION_CHANNEL = "desktop";
 const MAIN_SESSION_CONVERSATION_KEY = "main_session";

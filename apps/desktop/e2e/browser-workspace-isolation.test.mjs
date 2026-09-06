@@ -109,8 +109,8 @@ async function launchDesktopApp(userDataPath) {
     env: {
       ...process.env,
       CI: "1",
-      HOLABOSS_DISABLE_SINGLE_INSTANCE_LOCK: "1",
-      HOLABOSS_DESKTOP_USER_DATA_PATH: userDataPath
+      HITECHCLOUD_DISABLE_SINGLE_INSTANCE_LOCK: "1",
+      HITECHCLOUD_DESKTOP_USER_DATA_PATH: userDataPath
     }
   });
 
@@ -134,7 +134,7 @@ async function agentBrowserTool(browserConfig, workspaceId, toolId, args = {}) {
     defaultModel: "openai/gpt-5.4",
     runtimeMode: "oss",
     defaultProvider: "",
-    holabossEnabled: false,
+    hitechcloudEnabled: false,
     desktopBrowserEnabled: true,
     desktopBrowserUrl: browserConfig.url,
     desktopBrowserAuthToken: browserConfig.authToken,
@@ -171,10 +171,10 @@ async function browserServiceRequest(browserConfig, requestPath, options = {}) {
   const method = options.method || "GET";
   const headers = {
     "content-type": "application/json; charset=utf-8",
-    "x-holaboss-desktop-token": browserConfig.authToken
+    "x-hitechcloud-desktop-token": browserConfig.authToken
   };
   if (options.workspaceId) {
-    headers["x-holaboss-workspace-id"] = options.workspaceId;
+    headers["x-hitechcloud-workspace-id"] = options.workspaceId;
   }
 
   const response = await fetch(`${browserConfig.url}${requestPath}`, {
@@ -244,7 +244,7 @@ test(
   "desktop browser keeps isolated workspace profiles, restores state on switch, and persists across relaunch",
   { timeout: 120000 },
   async (t) => {
-    const tempRoot = await mkdtemp(path.join(tmpdir(), "holaboss-browser-e2e-"));
+    const tempRoot = await mkdtemp(path.join(tmpdir(), "hitechcloud-browser-e2e-"));
     const userDataPath = path.join(tempRoot, "user-data");
     const fixtureServer = await startFixtureServer();
 

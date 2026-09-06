@@ -1,9 +1,9 @@
 ---
 title: Harness Overview
-description: How the agent harness fits inside the holaOS runtime boundary and what it owns.
+description: How the agent harness fits inside the hitechcloudOS runtime boundary and what it owns.
 ---
 
-A harness is the execution and control layer that turns a model or agent runtime into a usable agent. In `holaOS`, the harness is the swappable execution subsystem inside the runtime boundary. The runtime still owns the environment contract around it: workspace structure, memory and continuity, capability projection, app orchestration, and the reduced execution package passed into the harness.
+A harness is the execution and control layer that turns a model or agent runtime into a usable agent. In `hitechcloudOS`, the harness is the swappable execution subsystem inside the runtime boundary. The runtime still owns the environment contract around it: workspace structure, memory and continuity, capability projection, app orchestration, and the reduced execution package passed into the harness.
 
 This section stays at the boundary-and-responsibility level. For the current adapter contract, host request shape, event mapping, and runtime code seams, continue into [Agent Harness Internals](/docs/contribute/agent-harness/internals).
 
@@ -18,7 +18,7 @@ The harness sits inside the runtime execution boundary. It does not sit beside t
 
 ## What the harness owns
 
-Inside `holaOS`, the harness owns the parts of execution that are allowed to vary with the selected executor:
+Inside `hitechcloudOS`, the harness owns the parts of execution that are allowed to vary with the selected executor:
 
 - agent-loop behavior
 - tool-call execution semantics
@@ -40,7 +40,7 @@ The harness is not the source of truth for the whole system. It should consume a
 
 ## Why the harness is swappable
 
-`holaOS` does not hard-code one harness as the whole system contract. Instead, the runtime defines a stable boundary around the harness so different executors can fit into the same environment model.
+`hitechcloudOS` does not hard-code one harness as the whole system contract. Instead, the runtime defines a stable boundary around the harness so different executors can fit into the same environment model.
 
 The important point is not the specific harness brand. The important point is that the workspace model, memory behavior, continuity state, and capability projection do not have to be redefined every time the executor changes. If another executor can satisfy the same boundary, it can fit into the same environment model.
 
@@ -112,7 +112,7 @@ In practical terms, the shipped harness is the `pi` path, implemented by the `pi
 - app lifecycle and integration resolution
 - the desktop as a product surface above the environment
 
-Changing the harness should change the executor, not the definition of `holaOS`.
+Changing the harness should change the executor, not the definition of `hitechcloudOS`.
 
 ## Read next
 

@@ -86,18 +86,18 @@ old grant captured at module init.
 
 Runtime:
 
-- `holaOS/runtime/api-server/src/app.ts` — `/api/v1/apps` now includes
+- `hitechcloudOS/runtime/api-server/src/app.ts` — `/api/v1/apps` now includes
   `integrations[]` (with optional `whoami`) per app, parsed from yaml.
 
 Desktop:
 
-- `holaOS/desktop/src/types/electron.d.ts` —
+- `hitechcloudOS/desktop/src/types/electron.d.ts` —
   `InstalledWorkspaceAppIntegrationRequirement` interface;
   `InstalledWorkspaceAppPayload` gains optional `integrations?`.
-- `holaOS/desktop/src/lib/workspaceApps.ts` —
+- `hitechcloudOS/desktop/src/lib/workspaceApps.ts` —
   `WorkspaceInstalledAppDefinition` carries `integrations`;
   `hydrateInstalledWorkspaceApps` plumbs them through.
-- `holaOS/desktop/src/components/panes/AppSurfacePane.tsx` —
+- `hitechcloudOS/desktop/src/components/panes/AppSurfacePane.tsx` —
   `knownProviders` map deleted; provider resolved from yaml-declared
   integrations; `handleConnectAccount` runs full OAuth+bind+restart
   inline; `handleSelectBinding` also restarts.
@@ -106,7 +106,7 @@ Desktop:
 
 1. Rebuild runtime + restart desktop:
    ```
-   cd holaOS && npm run desktop:prepare-runtime:local && npm run desktop:dev
+   cd hitechcloudOS && npm run desktop:prepare-runtime:local && npm run desktop:dev
    ```
 2. From the App Surface for the Discord module (with Stage 5's
    `discordbot` toolkit slug already in yaml):

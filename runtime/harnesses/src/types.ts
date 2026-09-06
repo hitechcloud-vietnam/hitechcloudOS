@@ -139,7 +139,7 @@ export interface HarnessPreparedMcpServerPayload {
     url?: string | null;
     timeout: number;
   };
-  _holaboss_force_refresh?: boolean;
+  _hitechcloud_force_refresh?: boolean;
 }
 
 export interface HarnessHostRequestBuildParams {

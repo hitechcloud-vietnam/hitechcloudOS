@@ -28,7 +28,7 @@ export function HolaAppIcon({
   sizeClass?: string;
   /** When set and the app has a curated glyph, renders that instead of the
    * remote favicon — used for apps whose backend iconUrl is the generic
-   * Holaboss placeholder. */
+   * Hitechcloud placeholder. */
   holaAppId?: string;
   /** Render the 56px hero used by the app/connection detail pages and the
    * connect dialogs. Owns its own framing: a brand asset fills the box bare,

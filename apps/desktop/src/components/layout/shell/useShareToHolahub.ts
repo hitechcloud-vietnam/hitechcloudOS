@@ -6,11 +6,11 @@ import type {
   ShareDraftItem,
   ShareDraftRecipe,
   ShareDraftSessionTurn,
-} from "@holaboss/app-host/protocol";
+} from "@hitechcloud/app-host/protocol";
 import { useCallback } from "react";
 import { useOpenDiscover } from "./useOpenDiscover";
 
-// Each share targets a unique compose path. The HolaHub surface is a kept-alive
+// Each share targets a unique compose path. The Hitechhub surface is a kept-alive
 // BrowserView; navigating to the SAME "/compose" is a no-op (the atom doesn't
 // change and main's warm-reopen short-circuits), so a second share would never
 // re-mount the compose gate. A per-share nonce forces a fresh navigation → the
@@ -28,9 +28,9 @@ function nextShareNonce(): string {
 }
 
 /**
- * Share a desktop output (an assistant turn) to HolaHub: stage the draft with
- * main, then open the HolaHub composer (Discover surface) — it pulls the draft
- * via `holahub.consume-pending-share` and prefills. Attribution `items` are the
+ * Share a desktop output (an assistant turn) to Hitechhub: stage the draft with
+ * main, then open the Hitechhub composer (Discover surface) — it pulls the draft
+ * via `hitechhub.consume-pending-share` and prefills. Attribution `items` are the
  * apps that actually produced this turn's outputs (resolved by the caller from
  * the outputs' module ids), so viewers can install what made the content.
  * Everything stays user-editable before posting.
@@ -99,7 +99,7 @@ export function useShareToHolahub() {
         ...(sessionTurns.length > 0 ? { session: { turns: sessionTurns } } : {}),
       };
       try {
-        await window.electronAPI.holahub.stageShare(draft);
+        await window.electronAPI.hitechhub.stageShare(draft);
         openDiscover(`/compose?share=${nextShareNonce()}`);
       } catch {
         // Not running inside the desktop host — no-op.

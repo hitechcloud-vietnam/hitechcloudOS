@@ -1,15 +1,15 @@
-# @holaboss/app-sdk
+# @hitechcloud/app-sdk
 
-Generated TypeScript client for the Holaboss product API. Consumed by the Holaboss web app and the open-source [holaOS](https://github.com/holaboss-ai/holaOS) desktop.
+Generated TypeScript client for the Hitechcloud product API. Consumed by the Hitechcloud web app and the open-source [hitechcloudOS](https://github.com/hitechcloud-vietnam/hitechcloudOS) desktop.
 
-This package is a thin, type-safe wrapper over the Holaboss REST API (the Hono server that fronts the Python services). It is generated from the server's OpenAPI surface using [Kubb](https://kubb.dev/), so the types, functions, and React Query hooks stay in sync with the live contract.
+This package is a thin, type-safe wrapper over the Hitechcloud REST API (the Hono server that fronts the Python services). It is generated from the server's OpenAPI surface using [Kubb](https://kubb.dev/), so the types, functions, and React Query hooks stay in sync with the live contract.
 
 ## Install
 
 ```bash
-npm install @holaboss/app-sdk
+npm install @hitechcloud/app-sdk
 # or
-bun add @holaboss/app-sdk
+bun add @hitechcloud/app-sdk
 ```
 
 React hooks are optional; if you use them, install the peer:
@@ -22,21 +22,21 @@ npm install @tanstack/react-query
 
 | Subpath | For | Contains |
 |---|---|---|
-| `@holaboss/app-sdk/core` | Non-React consumers, main/preload code in Electron, Node scripts | Generated fetch functions + `createAppClient` |
-| `@holaboss/app-sdk/react` | React UIs | Generated TanStack Query hooks |
-| `@holaboss/app-sdk/zod` | Client-side runtime validation | Generated Zod schemas |
-| `@holaboss/app-sdk/clients/app` | Advanced: configure the underlying fetch client | Low-level `createClient` + request/response types |
-| `@holaboss/app-sdk` | Convenience re-export of `core + react + zod` | Everything |
+| `@hitechcloud/app-sdk/core` | Non-React consumers, main/preload code in Electron, Node scripts | Generated fetch functions + `createAppClient` |
+| `@hitechcloud/app-sdk/react` | React UIs | Generated TanStack Query hooks |
+| `@hitechcloud/app-sdk/zod` | Client-side runtime validation | Generated Zod schemas |
+| `@hitechcloud/app-sdk/clients/app` | Advanced: configure the underlying fetch client | Low-level `createClient` + request/response types |
+| `@hitechcloud/app-sdk` | Convenience re-export of `core + react + zod` | Everything |
 
 ## Usage
 
 ### Create a configured client
 
 ```ts
-import { createAppClient } from "@holaboss/app-sdk/core";
+import { createAppClient } from "@hitechcloud/app-sdk/core";
 
 export const appClient = createAppClient({
-  baseURL: "https://api.holaboss.ai/api/marketplace",
+  baseURL: "https://api.hitechcloud.vn/api/marketplace",
   credentials: "include",
 });
 
@@ -46,7 +46,7 @@ export const appClientOptions = { client: appClient } as const;
 ### Call a generated function (non-React)
 
 ```ts
-import { listMarketplaceTemplates } from "@holaboss/app-sdk/core";
+import { listMarketplaceTemplates } from "@hitechcloud/app-sdk/core";
 
 const templates = await listMarketplaceTemplates({
   client: appClient,
@@ -56,7 +56,7 @@ const templates = await listMarketplaceTemplates({
 ### Use a generated React Query hook
 
 ```tsx
-import { useListMarketplaceTemplates } from "@holaboss/app-sdk/react";
+import { useListMarketplaceTemplates } from "@hitechcloud/app-sdk/react";
 
 function TemplatesList() {
   const { data } = useListMarketplaceTemplates({
@@ -80,7 +80,7 @@ While on `0.x`, breaking changes are allowed on minor bumps per standard semver-
 
 ## Regenerating
 
-Code is generated from the Holaboss Hono server's OpenAPI spec at `/api/marketplace/openapi.json`. To regenerate with the server running locally:
+Code is generated from the Hitechcloud Hono server's OpenAPI spec at `/api/marketplace/openapi.json`. To regenerate with the server running locally:
 
 ```bash
 bun install

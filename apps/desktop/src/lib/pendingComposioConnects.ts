@@ -16,7 +16,7 @@
  * outage is never touched.
  */
 
-const STORAGE_KEY = "holaboss.pending-composio-connects";
+const STORAGE_KEY = "hitechcloud.pending-composio-connects";
 
 export interface PendingComposioConnect {
   /** Composio connected_account_id. */

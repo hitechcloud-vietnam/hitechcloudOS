@@ -1,10 +1,10 @@
-/* holaOS — the brand-native theme. Warm stone grays (hue ~50-70) with the
-   holaboss orange reserved for brand/CTA. Light mode runs a soft gray canvas
+/* hitechcloudOS — the brand-native theme. Warm stone grays (hue ~50-70) with the
+   hitechcloud orange reserved for brand/CTA. Light mode runs a soft gray canvas
    so white cards lift off the page; hairlines read as page rhythm, not cell
    walls. */
 
 /* Light mode */
-[data-theme="holaos-light"] {
+[data-theme="hitechcloudos-light"] {
   --background: oklch(0.97 0.0015 70);
   --foreground: oklch(0.26 0.004 50);
   --card: oklch(1 0 0);
@@ -47,7 +47,7 @@
    canvases read heavy over long sessions) and text tops out at L .93 —
    near-white on near-black over-drives contrast and halates. The surface
    ladder keeps whisper steps: sidebar < bg < muted < card < popover. */
-[data-theme="holaos-dark"] {
+[data-theme="hitechcloudos-dark"] {
   --background: oklch(0.185 0.0028 50);
   --foreground: oklch(0.93 0.0025 70);
   --card: oklch(0.245 0.004 55);

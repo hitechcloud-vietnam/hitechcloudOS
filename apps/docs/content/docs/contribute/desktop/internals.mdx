@@ -1,6 +1,6 @@
 ---
 title: Desktop Internals
-description: Implementation details of holaOS Desktop.
+description: Implementation details of hitechcloudOS Desktop.
 ---
 
 Use this page when you are changing the Electron shell, renderer-to-main contracts, BrowserView behavior, or the embedded runtime launch path.
@@ -21,7 +21,7 @@ That means desktop work is usually spread across four boundaries: React renderer
 - `apps/desktop/src/components/layout/AppShell.tsx`: the shell composition and top-level product routing. This is where the top-toolbar shell navigation, agent pane, browser panes, file explorer, applications explorer, app surfaces, operations drawer, task-proposal toasts, settings overlays, and reported non-browser operator surfaces are coordinated.
 - `apps/desktop/src/components/layout/TopTabsBar.tsx`: the shared desktop toolbar, including workspace switching and the shell-level `Space`, `Automations`, and `Marketplace` entry points.
 - `apps/desktop/src/components/onboarding/FirstWorkspacePane.tsx`, `ConfigureStep.tsx`, `BrowserProfileStep.tsx`, and `CreatingView.tsx`: first-workspace flow, including empty/template workspace creation and browser-profile bootstrap choices.
-- `apps/desktop/shared/model-catalog.ts`: shipped fallback model metadata for direct providers and holaOS Proxy model mapping, including reasoning support, allowed thinking values, and input modalities.
+- `apps/desktop/shared/model-catalog.ts`: shipped fallback model metadata for direct providers and hitechcloudOS Proxy model mapping, including reasoning support, allowed thinking values, and input modalities.
 - `apps/desktop/src/lib/workspaceDesktop.tsx` and `apps/desktop/src/lib/workspaceSelection.tsx`: renderer-side workspace state and shell coordination.
 - `apps/desktop/src/components/auth/AuthPanel.tsx`: provider settings, catalog-backed defaults, background-task selection, recall embeddings, and image-generation configuration.
 - `apps/desktop/src/components/panes/ChatPane/index.tsx`: model picker, per-model reasoning-effort selector, queued chat inputs, and stream/timeline rendering.
@@ -37,16 +37,16 @@ That means desktop work is usually spread across four boundaries: React renderer
 
 The desktop does not talk to the runtime through a vague helper. `apps/desktop/electron/main.ts` owns the launch path:
 
-1. Resolve the staged runtime bundle under `apps/desktop/out/runtime-<platform>` or an override such as `HOLABOSS_RUNTIME_ROOT`.
+1. Resolve the staged runtime bundle under `apps/desktop/out/runtime-<platform>` or an override such as `HITECHCLOUD_RUNTIME_ROOT`.
 2. Validate that the bundle includes the executable, packaged Node runtime, packaged Python runtime, `package-metadata.json`, and `runtime/api-server/dist/index.mjs`.
-3. Spawn `bin/sandbox-runtime` with desktop-owned env such as `HB_SANDBOX_ROOT`, `SANDBOX_AGENT_BIND_HOST=127.0.0.1`, `SANDBOX_AGENT_BIND_PORT=<resolved runtime port>`, `SANDBOX_AGENT_HARNESS`, `HOLABOSS_HOST_STATE_DB_PATH`, `HOLABOSS_CONTROL_PLANE_DB_PATH`, the legacy `HOLABOSS_RUNTIME_DB_PATH` alias, and the bridge settings.
+3. Spawn `bin/sandbox-runtime` with desktop-owned env such as `HB_SANDBOX_ROOT`, `SANDBOX_AGENT_BIND_HOST=127.0.0.1`, `SANDBOX_AGENT_BIND_PORT=<resolved runtime port>`, `SANDBOX_AGENT_HARNESS`, `HITECHCLOUD_HOST_STATE_DB_PATH`, `HITECHCLOUD_CONTROL_PLANE_DB_PATH`, the legacy `HITECHCLOUD_RUNTIME_DB_PATH` alias, and the bridge settings.
 4. Wait for the embedded runtime health check to pass.
 5. Stream stdout and stderr into `runtime.log` under the Electron `userData` directory.
 6. On app quit, block final Electron exit until desktop-owned cleanup tears down the embedded runtime and browser service.
 
 If you are debugging runtime startup from desktop, inspect `runtime.log` and the `sandbox-host` directory under Electron `userData` before you change UI code.
 
-The embedded runtime port is not fixed anymore. `apps/desktop/electron/main.ts` resolves it from `HOLABOSS_RUNTIME_API_PORT` or, when unset, from the resolved Electron `userData` path. Port `5060` is explicitly rejected, which is why older fixed-port assumptions are no longer reliable for diagnostics.
+The embedded runtime port is not fixed anymore. `apps/desktop/electron/main.ts` resolves it from `HITECHCLOUD_RUNTIME_API_PORT` or, when unset, from the resolved Electron `userData` path. Port `5060` is explicitly rejected, which is why older fixed-port assumptions are no longer reliable for diagnostics.
 
 Representative launch shape from `apps/desktop/electron/main.ts`:
 
@@ -58,18 +58,18 @@ const child = spawn(launchSpec.command, launchSpec.args, {
     HB_SANDBOX_ROOT: sandboxRoot,
     SANDBOX_AGENT_BIND_HOST: "127.0.0.1",
     SANDBOX_AGENT_BIND_PORT: String(RUNTIME_API_PORT),
-    HOLABOSS_EMBEDDED_RUNTIME: "1",
+    HITECHCLOUD_EMBEDDED_RUNTIME: "1",
     SANDBOX_AGENT_HARNESS: harness,
-    HOLABOSS_HOST_STATE_DB_PATH: runtimeDatabasePath(),
-    HOLABOSS_CONTROL_PLANE_DB_PATH: controlPlaneDatabasePath(),
-    HOLABOSS_RUNTIME_DB_PATH: runtimeDatabasePath(),
+    HITECHCLOUD_HOST_STATE_DB_PATH: runtimeDatabasePath(),
+    HITECHCLOUD_CONTROL_PLANE_DB_PATH: controlPlaneDatabasePath(),
+    HITECHCLOUD_RUNTIME_DB_PATH: runtimeDatabasePath(),
     PROACTIVE_ENABLE_REMOTE_BRIDGE: "1",
-    HOLABOSS_AUTH_COOKIE: authCookieHeader() ?? "",
+    HITECHCLOUD_AUTH_COOKIE: authCookieHeader() ?? "",
   },
 });
 ```
 
-`HOLABOSS_RUNTIME_ROOT` can override the staged bundle location when you need the desktop to boot a different packaged runtime tree.
+`HITECHCLOUD_RUNTIME_ROOT` can override the staged bundle location when you need the desktop to boot a different packaged runtime tree.
 
 ## Renderer-to-main contract
 
@@ -151,7 +151,7 @@ await window.electronAPI.workspace.importBrowserProfile({
 });
 ```
 
-`createWorkspace()` in `apps/desktop/electron/main.ts` now also emits structured stage logs with the `[holaboss.createWorkspace]` prefix for debugging create failures across materialization, runtime record creation, template apply, and workspace activation.
+`createWorkspace()` in `apps/desktop/electron/main.ts` now also emits structured stage logs with the `[hitechcloud.createWorkspace]` prefix for debugging create failures across materialization, runtime record creation, template apply, and workspace activation.
 
 ## Browser protocol
 
@@ -184,7 +184,7 @@ await window.electronAPI.workspace.setOperatorSurfaceContext(
 
 The desktop model path is now catalog-driven rather than a flat model string list.
 
-- `apps/desktop/electron/main.ts` refreshes a managed runtime model catalog from the control plane when a signed-in holaOS session is active, caches that catalog, and merges it with the locally persisted `runtime-config.json`.
+- `apps/desktop/electron/main.ts` refreshes a managed runtime model catalog from the control plane when a signed-in hitechcloudOS session is active, caches that catalog, and merges it with the locally persisted `runtime-config.json`.
 - The merged runtime-config snapshot exposes `providerModelGroups`, `catalogVersion`, and managed defaults for background tasks, embeddings, and image generation.
 - `AuthPanel.tsx` uses that snapshot to show the actual configured provider/model surface instead of a blind text field.
 - `ChatPane.tsx` uses the same provider groups plus the local fallback catalog to decide whether the selected model supports reasoning and which `thinking_value` choices to show.
@@ -258,7 +258,7 @@ nextModels[token] = {
 };
 ```
 
-If a holaOS-managed proxy model should inherit local fallback metadata, also update the proxy mapping rules in `mappedHolabossProxyProviderModel(...)`:
+If a hitechcloudOS-managed proxy model should inherit local fallback metadata, also update the proxy mapping rules in `mappedHitechcloudProxyProviderModel(...)`:
 
 ```ts
 if (/^gpt-5(?:[.-]|$)/i.test(normalizedModelId)) {
@@ -349,5 +349,5 @@ That routing currently lives in `AppShell.tsx` through `spaceDisplayView`. If yo
 - `npm run desktop:typecheck` is the minimum validation for every desktop change.
 - Run `npm run desktop:e2e` when the change crosses renderer, preload, main-process, or embedded-runtime boundaries.
 - Use `apps/desktop/electron/browser-operator-surface-context.test.mjs` and `apps/desktop/electron/runtime-quit-cleanup.test.mjs` as the fastest regression checks when you are touching browser-service context or app-quit cleanup.
-- Use `bash apps/desktop/scripts/check-runtime-status.sh` when the embedded runtime fails to start, a workspace looks corrupted, or app lifecycle behavior diverges from the desktop UI. The helper now follows the same `HOLABOSS_RUNTIME_API_PORT` and `userData`-path-derived port rules as the desktop itself.
+- Use `bash apps/desktop/scripts/check-runtime-status.sh` when the embedded runtime fails to start, a workspace looks corrupted, or app lifecycle behavior diverges from the desktop UI. The helper now follows the same `HITECHCLOUD_RUNTIME_API_PORT` and `userData`-path-derived port rules as the desktop itself.
 - Preserve the renderer/main boundary. Do not move file system access, BrowserView ownership, or runtime process management back into React state.

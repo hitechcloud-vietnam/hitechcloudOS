@@ -13,18 +13,18 @@ import {
 const tempDirs: string[] = [];
 const envNames = [
   "HB_SANDBOX_ROOT",
-  "HOLABOSS_RUNTIME_CONFIG_PATH",
-  "HOLABOSS_SANDBOX_AUTH_TOKEN",
-  "HOLABOSS_USER_ID",
-  "HOLABOSS_MODEL_PROXY_BASE_URL",
-  "HOLABOSS_DEFAULT_MODEL",
-  "HOLABOSS_DESKTOP_BROWSER_ENABLED",
-  "HOLABOSS_DESKTOP_BROWSER_URL",
-  "HOLABOSS_DESKTOP_BROWSER_AUTH_TOKEN",
-  "HOLABOSS_DESKTOP_BROWSER_ALLOWED_DOMAINS",
-  "HOLABOSS_DESKTOP_BROWSER_BLOCKED_ACTIONS",
-  "HOLABOSS_DESKTOP_BROWSER_CONFIRM_ACTIONS",
-  "HOLABOSS_DESKTOP_BROWSER_UNTRUSTED_BOUNDARIES",
+  "HITECHCLOUD_RUNTIME_CONFIG_PATH",
+  "HITECHCLOUD_SANDBOX_AUTH_TOKEN",
+  "HITECHCLOUD_USER_ID",
+  "HITECHCLOUD_MODEL_PROXY_BASE_URL",
+  "HITECHCLOUD_DEFAULT_MODEL",
+  "HITECHCLOUD_DESKTOP_BROWSER_ENABLED",
+  "HITECHCLOUD_DESKTOP_BROWSER_URL",
+  "HITECHCLOUD_DESKTOP_BROWSER_AUTH_TOKEN",
+  "HITECHCLOUD_DESKTOP_BROWSER_ALLOWED_DOMAINS",
+  "HITECHCLOUD_DESKTOP_BROWSER_BLOCKED_ACTIONS",
+  "HITECHCLOUD_DESKTOP_BROWSER_CONFIRM_ACTIONS",
+  "HITECHCLOUD_DESKTOP_BROWSER_UNTRUSTED_BOUNDARIES",
   "SANDBOX_AGENT_HARNESS"
 ] as const;
 
@@ -90,7 +90,7 @@ function assertHarnessesInventory(harnesses: unknown): void {
 test("file runtime config service updates runtime config without writing harness bootstrap config", async () => {
   const root = makeTempDir("hb-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
   process.env.SANDBOX_AGENT_HARNESS = "pi";
 
   let ensureCalls = 0;
@@ -121,8 +121,8 @@ test("file runtime config service updates runtime config without writing harness
     default_model: "openai/gpt-5.4",
     subagent_model: null,
     runtime_mode: "oss",
-    default_provider: "holaboss_model_proxy",
-    holaboss_enabled: true,
+    default_provider: "hitechcloud_model_proxy",
+    hitechcloud_enabled: true,
     desktop_browser_enabled: true,
     desktop_browser_url: "http://127.0.0.1:8787/api/v1/browser"
   });
@@ -131,11 +131,11 @@ test("file runtime config service updates runtime config without writing harness
   const configDocument = JSON.parse(fs.readFileSync(path.join(root, "state", "runtime-config.json"), "utf8"));
   assert.equal(configDocument.runtime.sandbox_id, "sandbox-1");
   assert.equal(configDocument.runtime.default_model, "openai/gpt-5.4");
-  assert.equal(configDocument.providers.holaboss_model_proxy.api_key, "token-1");
-  assert.equal(configDocument.providers.holaboss_model_proxy.base_url, "https://runtime.example/api/v1/model-proxy");
-  assert.equal(configDocument.integrations.holaboss.auth_token, "token-1");
-  assert.equal(configDocument.integrations.holaboss.sandbox_id, "sandbox-1");
-  assert.equal(configDocument.integrations.holaboss.user_id, "user-1");
+  assert.equal(configDocument.providers.hitechcloud_model_proxy.api_key, "token-1");
+  assert.equal(configDocument.providers.hitechcloud_model_proxy.base_url, "https://runtime.example/api/v1/model-proxy");
+  assert.equal(configDocument.integrations.hitechcloud.auth_token, "token-1");
+  assert.equal(configDocument.integrations.hitechcloud.sandbox_id, "sandbox-1");
+  assert.equal(configDocument.integrations.hitechcloud.user_id, "user-1");
   assert.equal(configDocument.capabilities.desktop_browser.url, "http://127.0.0.1:8787/api/v1/browser");
   assert.equal(configDocument.capabilities.desktop_browser.auth_token, "browser-token");
   assert.equal(fs.existsSync(path.join(root, "workspace")), false);
@@ -144,7 +144,7 @@ test("file runtime config service updates runtime config without writing harness
 test("file runtime config service returns harness and browser readiness state", async () => {
   const root = makeTempDir("hb-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
   process.env.SANDBOX_AGENT_HARNESS = "pi";
 
   fs.mkdirSync(path.join(root, "state"), { recursive: true });
@@ -154,17 +154,17 @@ test("file runtime config service returns harness and browser readiness state", 
       runtime: {
         default_model: "openai/gpt-5.4",
         sandbox_id: "sandbox-1",
-        default_provider: "holaboss_model_proxy"
+        default_provider: "hitechcloud_model_proxy"
       },
       providers: {
-        holaboss_model_proxy: {
+        hitechcloud_model_proxy: {
           kind: "openai_compatible",
           base_url: "https://runtime.example/api/v1/model-proxy",
           api_key: "token-1"
         }
       },
       integrations: {
-        holaboss: {
+        hitechcloud: {
           enabled: true,
           sandbox_id: "sandbox-1",
           user_id: "user-1",
@@ -214,7 +214,7 @@ test("file runtime config service returns harness and browser readiness state", 
 test("file runtime config service treats pi harness as ready without extra harness bootstrap", async () => {
   const root = makeTempDir("hb-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
   process.env.SANDBOX_AGENT_HARNESS = "pi";
 
   fs.mkdirSync(path.join(root, "state"), { recursive: true });
@@ -224,17 +224,17 @@ test("file runtime config service treats pi harness as ready without extra harne
       runtime: {
         default_model: "openai/gpt-5.4",
         sandbox_id: "sandbox-1",
-        default_provider: "holaboss_model_proxy"
+        default_provider: "hitechcloud_model_proxy"
       },
       providers: {
-        holaboss_model_proxy: {
+        hitechcloud_model_proxy: {
           kind: "openai_compatible",
           base_url: "https://runtime.example/api/v1/model-proxy",
           api_key: "token-1"
         }
       },
       integrations: {
-        holaboss: {
+        hitechcloud: {
           enabled: true,
           sandbox_id: "sandbox-1",
           user_id: "user-1",
@@ -268,10 +268,10 @@ test("file runtime config service treats pi harness as ready without extra harne
 test("runtime config prefers live embedded desktop browser capability env over stale file state", () => {
   const root = makeTempDir("hb-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
-  process.env.HOLABOSS_DESKTOP_BROWSER_ENABLED = "true";
-  process.env.HOLABOSS_DESKTOP_BROWSER_URL = "http://127.0.0.1:8787/api/v1/browser";
-  process.env.HOLABOSS_DESKTOP_BROWSER_AUTH_TOKEN = "browser-token";
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
+  process.env.HITECHCLOUD_DESKTOP_BROWSER_ENABLED = "true";
+  process.env.HITECHCLOUD_DESKTOP_BROWSER_URL = "http://127.0.0.1:8787/api/v1/browser";
+  process.env.HITECHCLOUD_DESKTOP_BROWSER_AUTH_TOKEN = "browser-token";
 
   fs.mkdirSync(path.join(root, "state"), { recursive: true });
   fs.writeFileSync(
@@ -300,7 +300,7 @@ test("runtime config prefers live embedded desktop browser capability env over s
 test("runtime config headers reuse the shared runtime config parser", () => {
   const root = makeTempDir("hb-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
 
   fs.mkdirSync(path.join(root, "state"), { recursive: true });
   fs.writeFileSync(
@@ -310,12 +310,12 @@ test("runtime config headers reuse the shared runtime config parser", () => {
         sandbox_id: "sandbox-1"
       },
       providers: {
-        holaboss_model_proxy: {
+        hitechcloud_model_proxy: {
           api_key: "token-1"
         }
       },
       integrations: {
-        holaboss: {
+        hitechcloud: {
           user_id: "user-1"
         }
       }
@@ -325,15 +325,15 @@ test("runtime config headers reuse the shared runtime config parser", () => {
 
   assert.deepEqual(runtimeConfigHeaders({ requireAuth: true, requireUser: false }), {
     "X-API-Key": "token-1",
-    "X-Holaboss-User-Id": "user-1",
-    "X-Holaboss-Sandbox-Id": "sandbox-1"
+    "X-Hitechcloud-User-Id": "user-1",
+    "X-Hitechcloud-Sandbox-Id": "sandbox-1"
   });
 });
 
-test("runtime config headers prefer the bound Holaboss sandbox id when runtime sandbox state is stale", () => {
+test("runtime config headers prefer the bound Hitechcloud sandbox id when runtime sandbox state is stale", () => {
   const root = makeTempDir("hb-runtime-config-");
   process.env.HB_SANDBOX_ROOT = root;
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = path.join(root, "state", "runtime-config.json");
 
   fs.mkdirSync(path.join(root, "state"), { recursive: true });
   fs.writeFileSync(
@@ -343,12 +343,12 @@ test("runtime config headers prefer the bound Holaboss sandbox id when runtime s
         sandbox_id: "sandbox-stale"
       },
       providers: {
-        holaboss_model_proxy: {
+        hitechcloud_model_proxy: {
           api_key: "token-1"
         }
       },
       integrations: {
-        holaboss: {
+        hitechcloud: {
           auth_token: "token-1",
           user_id: "user-1",
           sandbox_id: "sandbox-bound"
@@ -360,7 +360,7 @@ test("runtime config headers prefer the bound Holaboss sandbox id when runtime s
 
   assert.deepEqual(runtimeConfigHeaders({ requireAuth: true, requireUser: false }), {
     "X-API-Key": "token-1",
-    "X-Holaboss-User-Id": "user-1",
-    "X-Holaboss-Sandbox-Id": "sandbox-bound"
+    "X-Hitechcloud-User-Id": "user-1",
+    "X-Hitechcloud-Sandbox-Id": "sandbox-bound"
   });
 });

@@ -243,15 +243,15 @@ export function CapabilitiesMarketPane({
   onManage: () => void;
   onNew: () => void;
   onChanged: () => void;
-  /** A capability id to auto-open in the detail view (HolaHub install hand-off). */
+  /** A capability id to auto-open in the detail view (Hitechhub install hand-off). */
   openDetailRef?: string | null;
   onDetailOpened?: () => void;
   workspaceId: string | null;
   /** Manage-first mode: show Installed + Recommended only; full browsing lives
-   *  in the HolaHub Marketplace, so the search box, category chips and browse grid
+   *  in the Hitechhub Marketplace, so the search box, category chips and browse grid
    *  are hidden. */
   manageOnly?: boolean;
-  /** Open the HolaHub Marketplace (the full browse surface). Renders a link in the
+  /** Open the Hitechhub Marketplace (the full browse surface). Renders a link in the
    *  Recommended header. */
   onBrowseMarketplace?: () => void;
 }) {
@@ -447,7 +447,7 @@ export function CapabilitiesMarketPane({
     }
   };
 
-  // HolaHub "Install" hand-off: auto-install the target capability once the
+  // Hitechhub "Install" hand-off: auto-install the target capability once the
   // directory loads — keyless installs straight away (no second click); a
   // capability that needs a connect (required integration / keyed MCP) opens its
   // detail so the user can connect first.

@@ -152,12 +152,12 @@ without them:
 
 ## Why this design
 
-The motivating bug was macOS Spaces focus theft on fullscreen Holaboss:
+The motivating bug was macOS Spaces focus theft on fullscreen Hitechcloud:
 `webContents.sendInputEvent(...)` requires the host window to be focused,
 and our code path was calling `mainWindow.focus()` / `host.focus()` /
 `webContents.focus()` before every input event. On fullscreen the OS
 treats `focus()` as a hard Space switch — the user gets yanked back to
-Holaboss every time the agent clicks something in the page.
+Hitechcloud every time the agent clicks something in the page.
 
 The fix was to route input through CDP (`Input.dispatchMouseEvent` /
 `Input.dispatchKeyEvent` / `Input.insertText`), which goes straight to

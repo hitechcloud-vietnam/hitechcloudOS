@@ -178,14 +178,14 @@ export function slugifyFilePathForMention(relativePath: string): string {
 }
 
 /** Pre-process raw chat text so that `@<handle>` tokens become
- *  markdown links pointing at the `holaboss-mention://` scheme.
+ *  markdown links pointing at the `hitechcloud-mention://` scheme.
  *  SimpleMarkdown's link renderer (with `renderMention` configured)
  *  swaps each one for an inline `EntityMention` chip. Keeps markdown
  *  rendering otherwise untouched. */
 export function injectMentionLinks(text: string): string {
   if (!text.includes("@")) return text;
   return text.replace(MENTION_TOKEN_PATTERN, (_match, leading, handle) => {
-    return `${leading}[@${handle}](holaboss-mention://${handle})`;
+    return `${leading}[@${handle}](hitechcloud-mention://${handle})`;
   });
 }
 

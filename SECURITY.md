@@ -18,7 +18,7 @@ Do not file public GitHub issues for security vulnerabilities.
 
 Report vulnerabilities privately to:
 
-- `admin@holaboss.ai`
+- `admin@hitechcloud.vn`
 
 Include:
 

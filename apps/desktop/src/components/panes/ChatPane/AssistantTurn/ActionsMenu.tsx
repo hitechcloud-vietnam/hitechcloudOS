@@ -82,7 +82,7 @@ export function AssistantTurnActionsMenu({
           <TooltipTrigger
             render={
               <Button
-                aria-label="Share to HolaHub"
+                aria-label="Share to Hitechhub"
                 className="size-6 rounded-lg text-muted-foreground hover:bg-fg-6 hover:text-foreground"
                 onClick={onShareToHolahub}
                 size="icon-xs"
@@ -93,7 +93,7 @@ export function AssistantTurnActionsMenu({
           >
             <Upload className="size-3.5" strokeWidth={1.9} />
           </TooltipTrigger>
-          <TooltipContent>Share to HolaHub</TooltipContent>
+          <TooltipContent>Share to Hitechhub</TooltipContent>
         </Tooltip>
       ) : null}
       {hasOverflowItems ? (

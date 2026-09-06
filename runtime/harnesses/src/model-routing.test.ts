@@ -70,13 +70,13 @@ test("resolveHarnessModelBudget falls back to a 500k context window for unknown 
 test("runtime-config model catalog contributes managed proxy context windows to budget resolution", () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "hb-model-routing-config-"));
   const configPath = path.join(root, "runtime-config.json");
-  const previousConfigPath = process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+  const previousConfigPath = process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
   fs.writeFileSync(
     configPath,
     JSON.stringify({
       models: {
-        "holaboss_model_proxy/claude-opus-4-7": {
-          provider_id: "holaboss_model_proxy",
+        "hitechcloud_model_proxy/claude-opus-4-7": {
+          provider_id: "hitechcloud_model_proxy",
           model_id: "claude-opus-4-7",
           context_window: 1_000_000,
           max_tokens: 128_000,
@@ -85,12 +85,12 @@ test("runtime-config model catalog contributes managed proxy context windows to 
     }),
     "utf8",
   );
-  process.env.HOLABOSS_RUNTIME_CONFIG_PATH = configPath;
+  process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = configPath;
 
   try {
     const catalog = runtimeConfigModelCatalog();
     assert.equal(
-      catalog.holaboss_model_proxy?.["claude-opus-4-7"]?.contextWindow,
+      catalog.hitechcloud_model_proxy?.["claude-opus-4-7"]?.contextWindow,
       1_000_000,
     );
     const budget = resolveHarnessModelBudget(
@@ -111,9 +111,9 @@ test("runtime-config model catalog contributes managed proxy context windows to 
     assert.equal(budget.maxTokens, 128_000);
   } finally {
     if (previousConfigPath === undefined) {
-      delete process.env.HOLABOSS_RUNTIME_CONFIG_PATH;
+      delete process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH;
     } else {
-      process.env.HOLABOSS_RUNTIME_CONFIG_PATH = previousConfigPath;
+      process.env.HITECHCLOUD_RUNTIME_CONFIG_PATH = previousConfigPath;
     }
     fs.rmSync(root, { recursive: true, force: true });
   }

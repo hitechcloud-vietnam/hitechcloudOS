@@ -1,1 +1,1 @@
-export const holabossLogoUrl = `${import.meta.env.BASE_URL}logo.svg`;
+export const hitechcloudLogoUrl = `${import.meta.env.BASE_URL}logo.svg`;

@@ -3,7 +3,7 @@
 **Branch**: `feat/layout-redesign-shell` (off upstream/main `67a2fa51`)
 **Date**: 2026-05-14
 **Purpose**: Ground the layout redesign in current code — what exists, what migrates, what dies.
-**Companion**: `holaboss/docs/plans/2026-05-14-holaos-layout-wireframes.md` (target design)
+**Companion**: `hitechcloud/docs/plans/2026-05-14-hitechcloudos-layout-wireframes.md` (target design)
 
 ---
 

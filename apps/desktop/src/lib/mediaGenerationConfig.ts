@@ -6,15 +6,15 @@
  * "Tools" settings can live anywhere (now the Customize → Capabilities pane)
  * without pulling in the rest of AuthPanel's provider machinery.
  *
- * Only the built-in `holaboss` provider is supported, so the multi-provider
+ * Only the built-in `hitechcloud` provider is supported, so the multi-provider
  * template branches are intentionally dropped.
  */
 
 export type MediaGenerationKind = "image" | "video";
 
 export interface MediaGenerationDraft {
-  /** "holaboss" once resolved, or "" when nothing is configured. */
-  providerId: "holaboss" | "";
+  /** "hitechcloud" once resolved, or "" when nothing is configured. */
+  providerId: "hitechcloud" | "";
   model: string;
 }
 
@@ -25,7 +25,7 @@ export interface MediaGenerationDraft {
 export const VIDEO_GENERATION_DEFAULT_MODEL = "bytedance/seedance-2.0";
 
 // The runtime writes model bindings under this provider storage id.
-const PROVIDER_STORAGE_ID = "holaboss_model_proxy";
+const PROVIDER_STORAGE_ID = "hitechcloud_model_proxy";
 
 type CatalogCapability =
   | "chat"
@@ -228,8 +228,8 @@ export function deriveMediaGenerationDraft(
     payload.providerId as string | undefined,
   );
   const providerId: MediaGenerationDraft["providerId"] =
-    rawProvider === "holaboss_model_proxy" || rawProvider === "holaboss"
-      ? "holaboss"
+    rawProvider === "hitechcloud_model_proxy" || rawProvider === "hitechcloud"
+      ? "hitechcloud"
       : "";
   return {
     providerId,

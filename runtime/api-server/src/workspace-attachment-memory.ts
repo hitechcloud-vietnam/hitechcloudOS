@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import type { OutputRecord, RuntimeStateStore, TurnResultRecord } from "@holaboss/runtime-state-store";
+import type { OutputRecord, RuntimeStateStore, TurnResultRecord } from "@hitechcloud/runtime-state-store";
 import type ExcelJSNamespace from "exceljs";
 import JSZip from "jszip";
 import { extractText as extractPdfText, getDocumentProxy } from "unpdf";
@@ -1285,7 +1285,7 @@ function macOsVisionOcrBinaryPath(): string | null {
   if (process.platform !== "darwin" || !fs.existsSync("/usr/bin/swiftc")) {
     return null;
   }
-  const cacheDir = path.join(os.tmpdir(), "holaboss-memory-image-ocr");
+  const cacheDir = path.join(os.tmpdir(), "hitechcloud-memory-image-ocr");
   const version = sha256(MACOS_VISION_OCR_SWIFT_SOURCE).slice(0, 16);
   const sourcePath = path.join(cacheDir, `vision-ocr-${version}.swift`);
   const binaryPath = path.join(cacheDir, `vision-ocr-${version}`);
@@ -1335,7 +1335,7 @@ function extractImageTextContentWithMacOsVisionBytes(params: {
   if (process.platform !== "darwin") {
     return null;
   }
-  const stageDir = fs.mkdtempSync(path.join(os.tmpdir(), "holaboss-memory-image-url-ocr-"));
+  const stageDir = fs.mkdtempSync(path.join(os.tmpdir(), "hitechcloud-memory-image-url-ocr-"));
   const filePath = path.join(stageDir, `image${params.suggestedExtension || ".img"}`);
   try {
     fs.writeFileSync(filePath, params.bytes);

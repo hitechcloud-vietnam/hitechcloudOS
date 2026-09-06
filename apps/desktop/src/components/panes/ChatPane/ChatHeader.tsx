@@ -92,7 +92,7 @@ export function ChatHeader({
   );
 }
 
-/** Publishes the active chat's "share to HolaHub" action to the shell, so the
+/** Publishes the active chat's "share to Hitechhub" action to the shell, so the
  *  Share control can live in the right-side toolbar instead of the identity
  *  block. Renders nothing. `buildPayload` may be recreated each render (kept in a
  *  ref); the published action stays stable and is only (un)set as `enabled` /
@@ -125,7 +125,7 @@ export function ChatSharePublisher({
 const SHARE_BTN =
   "flex h-7 items-center gap-1.5 rounded-lg px-2 text-muted-foreground transition-colors hover:bg-fg-6 hover:text-foreground";
 
-/** Share to HolaHub — a labeled action grouped with the other header controls on
+/** Share to Hitechhub — a labeled action grouped with the other header controls on
  *  the right. Reads the action ChatPane publishes to `chatShareActionAtom`. When
  *  the conversation produced shareable outputs it's a dropdown ("Share
  *  conversation" / "Share outputs"); otherwise a plain button that shares the
@@ -140,7 +140,7 @@ function ShareSessionButton() {
           render={
             <button
               type="button"
-              aria-label="Share conversation to HolaHub"
+              aria-label="Share conversation to Hitechhub"
               onClick={() => action.open("conversation")}
               className={SHARE_BTN}
             />
@@ -149,13 +149,13 @@ function ShareSessionButton() {
           <Upload className="size-4" strokeWidth={1.75} />
           <span className="text-xs font-medium">Share</span>
         </TooltipTrigger>
-        <TooltipContent>Share conversation to HolaHub</TooltipContent>
+        <TooltipContent>Share conversation to Hitechhub</TooltipContent>
       </Tooltip>
     );
   }
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger aria-label="Share to HolaHub" className={SHARE_BTN}>
+      <DropdownMenuTrigger aria-label="Share to Hitechhub" className={SHARE_BTN}>
         <Upload className="size-4" strokeWidth={1.75} />
         <span className="text-xs font-medium">Share</span>
       </DropdownMenuTrigger>

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import type { RuntimeStateStore } from "@holaboss/runtime-state-store";
+import type { RuntimeStateStore } from "@hitechcloud/runtime-state-store";
 import yaml from "js-yaml";
 
 import {
@@ -12,7 +12,7 @@ import { validateCanonicalIntegrationProviderId } from "./integration-catalog.js
 
 const APP_HTTP_PORT_BASE = 18080;
 const APP_MCP_PORT_BASE = 13100;
-const EMBEDDED_RUNTIME_FLAG = "HOLABOSS_EMBEDDED_RUNTIME";
+const EMBEDDED_RUNTIME_FLAG = "HITECHCLOUD_EMBEDDED_RUNTIME";
 
 type StringMap = Record<string, unknown>;
 
@@ -170,7 +170,7 @@ function optionalStringList(value: unknown): string[] | null {
 
 function normalizeSmokeTestPath(value: unknown): string {
   const trimmed = normalizedText(value);
-  if (!trimmed) return "/__holaboss/actions/run";
+  if (!trimmed) return "/__hitechcloud/actions/run";
   return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
 }
 

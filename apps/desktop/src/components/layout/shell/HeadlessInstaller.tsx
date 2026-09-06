@@ -2,7 +2,7 @@ import type {
   InstalledItem,
   InstallEventPayload,
   InstallResult,
-} from "@holaboss/app-host/protocol";
+} from "@hitechcloud/app-host/protocol";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSetAtom } from "jotai";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -30,8 +30,8 @@ import {
   workspaceOverlayAtom,
 } from "./state/ui";
 
-// Smooth HolaHub install — the shell-root receiver for the desktop host `install`
-// op. A hosted page (HolaHub) invokes install → main forwards HOST_INSTALL_EVENT
+// Smooth Hitechhub install — the shell-root receiver for the desktop host `install`
+// op. A hosted page (Hitechhub) invokes install → main forwards HOST_INSTALL_EVENT
 // here → we install the item HEADLESSLY (in place, no navigation) when it's
 // keyless, or open the native connect surface when it needs credentials/an
 // integration, then reply with the outcome (sendInstallResult) so the hub button
@@ -181,7 +181,7 @@ function SkillInstallRunner({
 // embedded → capabilities.install; community → install its skills + create the
 // workspace capability. A required integration is recorded as `needs_connection`
 // and keyed MCPs are filtered out of attachment, so both connect LAZILY later.
-// A HolaHub install therefore never yanks the user out to the Marketplace — it
+// A Hitechhub install therefore never yanks the user out to the Marketplace — it
 // behaves like a skill/MCP install (in place), consistent with the rest of the
 // hub. (No `connectedSlugs` gate here, which also removes its hydration race.) ──
 function CapabilityInstallRunner({ ref, onDone }: RunnerProps) {
@@ -443,7 +443,7 @@ export function HeadlessInstaller({
 }
 
 // Always-mounted responder for the host `install.status` op: reports the skills,
-// MCPs and capabilities installed in this workspace so a hosted page (HolaHub) can
+// MCPs and capabilities installed in this workspace so a hosted page (Hitechhub) can
 // show "Installed" instead of offering "Install" again. Main augments the reply
 // with its HolaApps.
 //
@@ -471,7 +471,7 @@ export function InstallStatusResponder({
   capsRef.current = installedCaps.data;
 
   // HolaApps: report from the FULL catalog (backend-driven `installed` flags),
-  // NOT main's `installedHolaAppIds` — that set is a subset (only Holaboss-hosted
+  // NOT main's `installedHolaAppIds` — that set is a subset (only Hitechcloud-hosted
   // `/mcp/<id>` apps; external / api-key apps like OmniSocials are excluded). Keep
   // the catalog fresh on mount + focus so an install elsewhere is reflected.
   const { catalog: appCatalog, refresh: refreshApps } = useHolaAppCatalog();

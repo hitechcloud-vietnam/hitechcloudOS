@@ -1,11 +1,11 @@
 ---
 name: app-builder-sdk
-description: Build a new holaOS app using @holaboss/app-builder-sdk (5 backend primitives + optional shadcn dashboard UI). The canonical path for vibe-coded apps — integration modules AND dashboard apps both live here.
+description: Build a new hitechcloudOS app using @hitechcloud/app-builder-sdk (5 backend primitives + optional shadcn dashboard UI). The canonical path for vibe-coded apps — integration modules AND dashboard apps both live here.
 ---
 
 # App Builder (SDK)
 
-Use this skill whenever the user wants a new holaOS app. Two shapes both ship through the same SDK; pick the one the request needs:
+Use this skill whenever the user wants a new hitechcloudOS app. Two shapes both ship through the same SDK; pick the one the request needs:
 
 1. **Integration-only module** — Slack, Discord, Notion, Stripe, Linear, anything whose value is "talk to one external service via MCP tools, agent drives, no per-app dashboard". The SDK's default web stub is fine; no `src/client/` directory.
 2. **Dashboard app** — vibe-coded content planners, CRMs, kanban-style trackers, podcast-guest managers, anything where the user expects a workspace pane they can look at and click around in. **Has a real shadcn UI** authored under `src/client/` (TanStack Start). The MCP tools are still there — they're how the agent drives the same data the dashboard surfaces.
@@ -41,7 +41,7 @@ Mental model:
 - `resource` = a row in the app's SQLite (e.g. `message`, `event`, `issue`, `pin`)
 - `action` = state transition + upstream API call (e.g. `send_message: draft → sent`)
 - `sync` = periodic upstream read that upserts records keyed by external id
-- HOW (steps / states / reversal) lives in the SDK. WHEN (scheduling, retry) lives in Holaboss automations — **the SDK never schedules**.
+- HOW (steps / states / reversal) lives in the SDK. WHEN (scheduling, retry) lives in Hitechcloud automations — **the SDK never schedules**.
 
 Full type contract: `sdk-package/src/types.ts`. Public exports: `sdk-package/src/index.ts`.
 
@@ -79,11 +79,11 @@ The legacy `composioToolkit` field on `ProviderRegistry` is **deprecated**. Do n
 
 ### Connection readiness: ask the runtime, never the upstream host
 
-If your app needs to show "connected / needs connection" status in the UI, you **MUST** call `getIntegrationStatus()` from `@holaboss/app-builder-sdk` on mount (via a TanStack Start server function or loader), and re-call it after the user finishes any Connect flow. There is **no other supported way** to detect connectivity. Pinging the upstream host (`https://api.twitter.com/...`, `https://api.notion.com/...`) is not just suboptimal — it is the exact failure mode that left every previous vibe-coded dashboard stuck on "needs connection" the moment Composio rerouted the toolkit (api.twitter.com → api.x.com, Discord scope-only slug, etc.). The register-time lint rejects hardcoded upstream hosts; `getIntegrationStatus()` is the only way through.
+If your app needs to show "connected / needs connection" status in the UI, you **MUST** call `getIntegrationStatus()` from `@hitechcloud/app-builder-sdk` on mount (via a TanStack Start server function or loader), and re-call it after the user finishes any Connect flow. There is **no other supported way** to detect connectivity. Pinging the upstream host (`https://api.twitter.com/...`, `https://api.notion.com/...`) is not just suboptimal — it is the exact failure mode that left every previous vibe-coded dashboard stuck on "needs connection" the moment Composio rerouted the toolkit (api.twitter.com → api.x.com, Discord scope-only slug, etc.). The register-time lint rejects hardcoded upstream hosts; `getIntegrationStatus()` is the only way through.
 
 ```ts
 // src/client/lib/integration-status.ts (TanStack Start server function)
-import { getIntegrationStatus } from "@holaboss/app-builder-sdk"
+import { getIntegrationStatus } from "@hitechcloud/app-builder-sdk"
 
 export const integrationStatus = createServerFn().handler(async () => {
   return getIntegrationStatus()
@@ -95,7 +95,7 @@ export const twitterStatus = createServerFn().handler(async () => {
 })
 ```
 
-The helper reads `HOLABOSS_APP_GRANT` + `WORKSPACE_API_URL` (both injected by the runtime when your app starts) and calls the runtime's `/api/v1/integrations/readiness` endpoint. Response shape: `{ ready: boolean, issues: [{ provider, integrationKey, code, message }] }`. `code` is one of `ready | integration_not_bound | integration_not_connected | integration_needs_reauth` — let the UI pick the affordance from that code (e.g. show "Connect" for `integration_not_connected` and "Reconnect" for `integration_needs_reauth`).
+The helper reads `HITECHCLOUD_APP_GRANT` + `WORKSPACE_API_URL` (both injected by the runtime when your app starts) and calls the runtime's `/api/v1/integrations/readiness` endpoint. Response shape: `{ ready: boolean, issues: [{ provider, integrationKey, code, message }] }`. `code` is one of `ready | integration_not_bound | integration_not_connected | integration_needs_reauth` — let the UI pick the affordance from that code (e.g. show "Connect" for `integration_not_connected` and "Reconnect" for `integration_needs_reauth`).
 
 There is **no legitimate reason** for an SDK app to ping the upstream API host as a connectivity test. If something looks like it needs that, you want `getIntegrationStatus` instead.
 
@@ -111,7 +111,7 @@ The SDK supports one execution model: deterministic provider effects through `pr
 
 ### Deterministic provider effects: use `providerEffectAction(...)`
 
-If an action is an app-owned, deterministic provider side effect, use `providerEffectAction(...)` from `@holaboss/app-builder-sdk`.
+If an action is an app-owned, deterministic provider side effect, use `providerEffectAction(...)` from `@hitechcloud/app-builder-sdk`.
 
 What it encodes:
 
@@ -126,7 +126,7 @@ Minimal shape:
 import {
   createRuntimeBrokerTransport,
   providerEffectAction,
-} from "@holaboss/app-builder-sdk"
+} from "@hitechcloud/app-builder-sdk"
 
 const bridge = createRuntimeBrokerTransport({ provider: "gmail" })
 
@@ -159,7 +159,7 @@ If the app needs multi-step orchestration, model it as a first-class workflow. A
 
 ## Dashboard / workspace-pane UI (vibe-coded apps)
 
-The SDK's default `startMcpServer({ httpPort, ... })` ships a one-screen "headless module" placeholder on the http port. That placeholder is **only acceptable for integration-only modules** (Slack-style MCP-driven flows). The moment the user asks for a dashboard / list view / kanban / calendar / "let me see my X", you must replace the placeholder with a real dashboard built on `@holaboss/ui`.
+The SDK's default `startMcpServer({ httpPort, ... })` ships a one-screen "headless module" placeholder on the http port. That placeholder is **only acceptable for integration-only modules** (Slack-style MCP-driven flows). The moment the user asks for a dashboard / list view / kanban / calendar / "let me see my X", you must replace the placeholder with a real dashboard built on `@hitechcloud/ui`.
 
 ### Polish pass: handled by a separate auto-queued turn
 
@@ -177,7 +177,7 @@ In the auto-queued polish turn (you'll see a `text` payload starting with `[Auto
 
 Why this is a separate auto-queued turn and not part of the build turn:
 
-- Doing both in one turn consistently produced "skill invoked, 1 trivial edit, ready" — the agent's task-complete mindset and ~80-tool-call context fatigue defeated every prompt-strength escalation we tried. Forensic at `holaOS/docs/plans/2026-05-22-interface-design-skill-noop-forensic.md`.
+- Doing both in one turn consistently produced "skill invoked, 1 trivial edit, ready" — the agent's task-complete mindset and ~80-tool-call context fatigue defeated every prompt-strength escalation we tried. Forensic at `hitechcloudOS/docs/plans/2026-05-22-interface-design-skill-noop-forensic.md`.
 - A separate turn restores fresh context, narrow scope, and no build-time inertia. Empirically this matches the one observed successful polish, which the user manually triggered as a second turn.
 
 What this gate is NOT:
@@ -194,9 +194,9 @@ The reasoning is empirical: previous versions of this skill listed concrete visu
 
 If your output looks wrong, the fix lives in the polish turn (re-invoke `interface-design`, rewrite via heredoc, screenshot, iterate). It does not live in this SKILL.md.
 
-### The rule: import `@holaboss/ui`, do not redefine primitives
+### The rule: import `@hitechcloud/ui`, do not redefine primitives
 
-`@holaboss/ui` is a public npm package. It provides every primitive and CSS token your dashboard needs. **Do not generate shadcn primitives, copy a `components/ui/` directory, write your own Card, or import any other component library**. If `@holaboss/ui` is missing something, surface it to the SDK team instead of inventing a local replacement — visual drift is the failure mode the library exists to prevent.
+`@hitechcloud/ui` is a public npm package. It provides every primitive and CSS token your dashboard needs. **Do not generate shadcn primitives, copy a `components/ui/` directory, write your own Card, or import any other component library**. If `@hitechcloud/ui` is missing something, surface it to the SDK team instead of inventing a local replacement — visual drift is the failure mode the library exists to prevent.
 
 Layout itself is your call. There is no `DashboardShell` / `PageHeader` / `DataTable` / `StatPill` / etc. — those were removed in 0.3.0. Compose page chrome from the raw primitives (Card, Tabs, Sheet, Sidebar, Table, Skeleton, EmptyState…). What the layout should look like is decided in the `interface-design` polish turn, not here.
 
@@ -204,15 +204,15 @@ Install:
 
 ```bash
 cd <app-dir>
-bun add @holaboss/ui
+bun add @hitechcloud/ui
 ```
 
-Both `@holaboss/app-builder-sdk` and `@holaboss/ui` are public npm packages. The resulting `package.json` looks like:
+Both `@hitechcloud/app-builder-sdk` and `@hitechcloud/ui` are public npm packages. The resulting `package.json` looks like:
 
 ```json
 "dependencies": {
-  "@holaboss/app-builder-sdk": "latest",
-  "@holaboss/ui": "latest"
+  "@hitechcloud/app-builder-sdk": "latest",
+  "@hitechcloud/ui": "latest"
 }
 ```
 
@@ -220,8 +220,8 @@ Both `@holaboss/app-builder-sdk` and `@holaboss/ui` are public npm packages. The
 
 ### Mount the styles — one import, done
 
-`@holaboss/ui` ships a pre-compiled stylesheet that contains:
-- the holaOS design tokens (`--background`, `--foreground`, `--primary`, `--radius`, etc.)
+`@hitechcloud/ui` ships a pre-compiled stylesheet that contains:
+- the hitechcloudOS design tokens (`--background`, `--foreground`, `--primary`, `--radius`, etc.)
 - the default theme palette
 - every Tailwind utility class used by the library's primitives + layouts
 
@@ -229,14 +229,14 @@ Import it once at the dashboard root:
 
 ```tsx
 // src/client/routes/__root.tsx
-import "@holaboss/ui/styles.css";
+import "@hitechcloud/ui/styles.css";
 ```
 
-That's it. **Do not** try to add `@holaboss/ui` to your own Tailwind `@source` list — the utilities are already baked in. **Do not** mount `tokens.css` + `themes/holaos.css` separately unless you have an explicit reason (those exports exist as an escape hatch).
+That's it. **Do not** try to add `@hitechcloud/ui` to your own Tailwind `@source` list — the utilities are already baked in. **Do not** mount `tokens.css` + `themes/hitechcloudos.css` separately unless you have an explicit reason (those exports exist as an escape hatch).
 
 Visual rules: colors / spacing / radii come from these CSS variables. No inline `style={{ color: "#f12711" }}`. No custom CSS files. No new Tailwind colors. If a value is missing from the token palette, escalate to the SDK team — do not patch it locally.
 
-### Catalog of what `@holaboss/ui` ships
+### Catalog of what `@hitechcloud/ui` ships
 
 A full base-ui-flavoured shadcn surface — ~55 primitives. The ones you reach for most for a dashboard:
 
@@ -255,7 +255,7 @@ A full base-ui-flavoured shadcn surface — ~55 primitives. The ones you reach f
 
 1. Start TanStack Start (or simple Bun.serve serving a Vite-built dashboard) on `env.PORT` from the same `server.ts` that boots the MCP server on `env.MCP_PORT`. The desktop's iframe loads whatever the http port serves.
 2. The dashboard reads the app's own SQLite (the table `app.resource()` declared) via TanStack Start server functions — same DB the MCP tools mutate. **Never duplicate state.**
-3. Mount `@holaboss/ui/styles.css` at the top of `__root.tsx`. That single import covers the tokens, the default theme, and every Tailwind utility class the library uses. Without it the tokens fall back to defaults and the components render with no styling.
+3. Mount `@hitechcloud/ui/styles.css` at the top of `__root.tsx`. That single import covers the tokens, the default theme, and every Tailwind utility class the library uses. Without it the tokens fall back to defaults and the components render with no styling.
 
 Beyond those three wiring points, **the layout is yours**. The `interface-design` skill output (delivered in the auto-queued polish turn) is your design brief; the primitive catalog above is your toolbox. No scaffolding template, no "minimal dashboard route" stub to copy.
 
@@ -277,20 +277,20 @@ Each schema change is a version; the user must be able to roll back.
 
 `workspace_apps_register` runs two structural lints over `src/client/` for dashboard apps. Both reject the call with file/line context; nothing ships until they pass.
 
-- **Minimum named imports from `@holaboss/ui`.** A dashboard with fewer than 3 distinct named imports from the library across all `src/client/` files is rejected. Importing only `@holaboss/ui/styles.css` (the stylesheet) does NOT count — the library exists to provide composable components, not just tokens. Replace hand-rolled className-based components with the library's `Card` / `Button` / `Table` / `Badge` / `StatusDot` / `Skeleton` / `EmptyState` / `Tabs` / `ChartContainer` etc.
-- **No parallel design system in app-local CSS.** Any `.css` file under `src/client/` containing hex color literals (`#1f883d`), raw color function calls (`rgb()` / `hsl()` / `oklch()` / `lab()` / `lch()`), or custom CSS variable definitions that don't forward an existing holaOS token (`--my-thing: var(--background);` style passthroughs are allowed) is rejected. The lint exists because agents repeatedly shipped 200+-line stylesheets defining their own theme on top of the library — bypassing the OKLch palette, the font-weight cap, and the workspace theme system. App-local CSS may contain `@import "tailwindcss"` and empty `@layer` blocks so app-side composed Tailwind classes work; that's all.
+- **Minimum named imports from `@hitechcloud/ui`.** A dashboard with fewer than 3 distinct named imports from the library across all `src/client/` files is rejected. Importing only `@hitechcloud/ui/styles.css` (the stylesheet) does NOT count — the library exists to provide composable components, not just tokens. Replace hand-rolled className-based components with the library's `Card` / `Button` / `Table` / `Badge` / `StatusDot` / `Skeleton` / `EmptyState` / `Tabs` / `ChartContainer` etc.
+- **No parallel design system in app-local CSS.** Any `.css` file under `src/client/` containing hex color literals (`#1f883d`), raw color function calls (`rgb()` / `hsl()` / `oklch()` / `lab()` / `lch()`), or custom CSS variable definitions that don't forward an existing hitechcloudOS token (`--my-thing: var(--background);` style passthroughs are allowed) is rejected. The lint exists because agents repeatedly shipped 200+-line stylesheets defining their own theme on top of the library — bypassing the OKLch palette, the font-weight cap, and the workspace theme system. App-local CSS may contain `@import "tailwindcss"` and empty `@layer` blocks so app-side composed Tailwind classes work; that's all.
 
 Other UI anti-patterns (not lint-enforced, but still wrong):
 
-- **A `components/ui/` directory or any shadcn-add path.** Import primitives from `@holaboss/ui` only.
+- **A `components/ui/` directory or any shadcn-add path.** Import primitives from `@hitechcloud/ui` only.
 - **Inline `style={{ ... }}`** anywhere except `style={{ width: ... }}` for measured layout (resize observers, etc.).
 - **Hardcoded hex colors / px values for spacing or radii.** Use the theme tokens; if missing, surface to the SDK team.
-- **A new component library** (Material UI, Ant, Chakra, react-aria, etc.) — `@holaboss/ui` wraps the workspace-canonical primitives; that's the only path.
+- **A new component library** (Material UI, Ant, Chakra, react-aria, etc.) — `@hitechcloud/ui` wraps the workspace-canonical primitives; that's the only path.
 - **Per-app dark mode toggle / theme picker.** Theme is workspace-level; the app inherits via CSS variables and does nothing.
 
 ### App-level anti-patterns (not UI — code shape)
 
-- **Hand-rolled polling / `setInterval` / `setTimeout(retry, N)` / custom backoff loops.** All scheduling and retry lives in the workspace automations layer. The SDK's `sync(name, { schedule, ... })` is a **declarative** statement of intent — Holaboss runs it on the declared cadence; you do not. Putting an interval in client or server code creates duplicate fetches, fights workspace pause/resume, and ignores user-level rate budgets.
+- **Hand-rolled polling / `setInterval` / `setTimeout(retry, N)` / custom backoff loops.** All scheduling and retry lives in the workspace automations layer. The SDK's `sync(name, { schedule, ... })` is a **declarative** statement of intent — Hitechcloud runs it on the declared cadence; you do not. Putting an interval in client or server code creates duplicate fetches, fights workspace pause/resume, and ignores user-level rate budgets.
 - **Custom OAuth, token storage, or refresh logic.** The runtime broker via Composio owns the OAuth lifecycle, token rotation, scope negotiation, and re-auth detection end-to-end. Your app's only credential primitive is `createRuntimeBrokerTransport({ provider })`. If you find yourself reading a token, you are off-path; route through the broker instead. To branch on "needs reauth", use `getIntegrationStatus()` and inspect `code === "integration_needs_reauth"`.
 - **Hardcoded user identity in code** — usernames, email addresses, account ids, workspace names. These are mutable + per-workspace. Read identity from `getIntegrationStatus()` issues (handle/email come back enriched), from app row state, or from a server-function parameter. Never bake "@alice" or "user@example.com" into source.
 - **Layering a second ORM / entity abstraction on top of `resource` + `action` + `sync`.** The five primitives are the whole storage contract; the MCP tool surface and the dashboard reads derive from them. If you need a field, a state, or an action that doesn't exist in your `resource`, extend the resource — don't wrap it in your own `class Repository`. A parallel model silently desynchronizes from the tools the agent gets.
@@ -299,17 +299,17 @@ Other UI anti-patterns (not lint-enforced, but still wrong):
 
 ### Reviewer pass
 
-After writing the dashboard, eyeball it against an existing healthy holaOS pane (e.g. the marketplace pane, the integrations pane). It should feel like the same product. If it doesn't, you've imported something from outside `@holaboss/ui` or redefined a primitive — re-check.
+After writing the dashboard, eyeball it against an existing healthy hitechcloudOS pane (e.g. the marketplace pane, the integrations pane). It should feel like the same product. If it doesn't, you've imported something from outside `@hitechcloud/ui` or redefined a primitive — re-check.
 
 ## Pick a reference shape
 
 Copy the closest bundled reference dir as your template; don't write from scratch. All backend references are at `reference/<shape>/`.
 
-Backend references (`slack-messaging`, `pinterest-publishing`, `github-workflow`, `gcalendar-events`, `telegram-messaging`) are integration-only (no `src/client/`). Use them for the backend skeleton (`app.ts`, `provider.ts`, `server.ts`, `app.runtime.yaml`) — they're correct. **There is no dashboard reference.** Dashboard-shape apps assemble `src/client/` themselves from `@holaboss/ui` primitives under the `interface-design` skill's guidance — copying a single canonical template was producing every dashboard looking the same, so the template was removed.
+Backend references (`slack-messaging`, `pinterest-publishing`, `github-workflow`, `gcalendar-events`, `telegram-messaging`) are integration-only (no `src/client/`). Use them for the backend skeleton (`app.ts`, `provider.ts`, `server.ts`, `app.runtime.yaml`) — they're correct. **There is no dashboard reference.** Dashboard-shape apps assemble `src/client/` themselves from `@hitechcloud/ui` primitives under the `interface-design` skill's guidance — copying a single canonical template was producing every dashboard looking the same, so the template was removed.
 
 | Shape | Reference | Use when the request looks like |
 |---|---|---|
-| **dashboard** | _(none — compose freely)_ | Anything with a list / table / kanban / calendar / "let me see my X" — agent-built workspace pane. There is no canonical `src/client/` template; assemble from `@holaboss/ui` primitives under the `interface-design` skill. Combine with one of the backend shapes below for the actual data plane. |
+| **dashboard** | _(none — compose freely)_ | Anything with a list / table / kanban / calendar / "let me see my X" — agent-built workspace pane. There is no canonical `src/client/` template; assemble from `@hitechcloud/ui` primitives under the `interface-design` skill. Combine with one of the backend shapes below for the actual data plane. |
 | **messaging** | `slack-messaging/` | Send / edit / delete / react on a message; chat-like provider (Discord, Telegram, IRC, SMS). Has custom state alphabet + side-effect actions + reversible scheduled send. **Also the only backend reference with full `server.ts` + `app.runtime.yaml`** — copy those two files verbatim into any new module regardless of shape. |
 | **publishing** | `pinterest-publishing/` | Multi-step upload-then-publish + reversible cancel; idempotency via `row.external_id` short-circuit. Use for any "create draft → confirm → publish → can be deleted" flow (image / video / blog posts). |
 | **workflow** | `github-workflow/` | Multi-state lifecycle (`draft / open / in_progress / closed / reopened / failed`), reversible close↔reopen, side-effect actions (`comment`, `assign`) that don't change row.status. CRM leads / issue trackers / ticketing systems. |
@@ -330,7 +330,7 @@ For Slack-style modules where the agent drives via MCP and no dashboard is neede
 ├── provider.ts         # ProviderRegistry: id, baseUrl, allowedHosts, whoamiPath
 ├── server.ts           # production entry: SqliteStateBackend + runtime-broker + startMcpServer
 ├── app.runtime.yaml    # manifest (lifecycle, healthchecks, mcp.tools list, env_contract, integration)
-└── package.json        # declares @holaboss/app-builder-sdk via npm semver
+└── package.json        # declares @hitechcloud/app-builder-sdk via npm semver
 ```
 
 `startMcpServer({ httpPort })`'s built-in placeholder is acceptable here — the user never opens this app's workspace pane in practice, they drive it from chat. Copy `reference/slack-messaging/{server.ts,app.runtime.yaml}` and adapt the constants. Copy `reference/<your-shape>/{app.ts,provider.ts}` and adapt the resource/action declarations.
@@ -350,7 +350,7 @@ For vibe-coded apps where the user expects a workspace pane:
 │   ├── routes/
 │   ├── components/ui/  # shadcn primitives, generated NOT hand-written
 │   └── lib/utils.ts
-└── components.json     # shadcn registry pinned to the holaOS-locked version
+└── components.json     # shadcn registry pinned to the hitechcloudOS-locked version
 ```
 
 `server.ts` for dashboard apps runs two things:
@@ -381,8 +381,8 @@ After writing the 4 files into `<workspace>/apps/<app_id>/`, do these in order. 
   "private": true,
   "type": "module",
   "dependencies": {
-    "@holaboss/app-builder-sdk": "latest",
-    "@holaboss/ui": "latest"
+    "@hitechcloud/app-builder-sdk": "latest",
+    "@hitechcloud/ui": "latest"
   }
 }
 ```
@@ -395,7 +395,7 @@ Both packages live on npmjs.com (public, Apache-2.0). `bun install` pulls them d
 cd <workspace>/apps/<app_id> && bun install
 ```
 
-If the user's runtime injects `WORKSPACE_DB_PATH`, `HOLABOSS_APP_GRANT`, `HOLABOSS_INTEGRATION_BROKER_URL`, `MCP_PORT`, `PORT` (it does — see runtime's `app-lifecycle-worker.ts`), the production entry in `server.ts` runs as-is. Don't try to set these yourself.
+If the user's runtime injects `WORKSPACE_DB_PATH`, `HITECHCLOUD_APP_GRANT`, `HITECHCLOUD_INTEGRATION_BROKER_URL`, `MCP_PORT`, `PORT` (it does — see runtime's `app-lifecycle-worker.ts`), the production entry in `server.ts` runs as-is. Don't try to set these yourself.
 
 ### 3. `app.runtime.yaml` — declare env contract + mcp tools
 
@@ -403,10 +403,10 @@ Required env contract for any SDK app:
 
 ```yaml
 env_contract:
-  - "HOLABOSS_WORKSPACE_ID"
+  - "HITECHCLOUD_WORKSPACE_ID"
   - "WORKSPACE_DB_PATH"
-  - "HOLABOSS_INTEGRATION_BROKER_URL"
-  - "HOLABOSS_APP_GRANT"
+  - "HITECHCLOUD_INTEGRATION_BROKER_URL"
+  - "HITECHCLOUD_APP_GRANT"
   - "MCP_PORT"
 ```
 
@@ -477,7 +477,7 @@ curl -X PUT 'http://127.0.0.1:40531/api/v1/integrations/bindings/<workspace_id>/
 Get `<existing_connection_id>` from the runtime DB:
 
 ```
-sqlite3 ~/.holaboss-desktop/sandbox-host/state/control-plane.db \
+sqlite3 ~/.hitechcloud-desktop/sandbox-host/state/control-plane.db \
   "SELECT connection_id, account_handle FROM integration_connections WHERE provider_id='<provider>' AND status='active';"
 ```
 
@@ -493,7 +493,7 @@ The single biggest failure mode in vibe-coded apps is **shipping a non-functiona
 
 1. App declares `integrations: [...]` in `app.runtime.yaml` for every provider it uses. (See section 4 below — this is mandatory whenever the app calls any provider; the alternative is not "skip the declaration", it is "you do not need this provider in your app".)
 2. `workspace_apps_register` / `workspace_apps_ensure_running` returns a `pending_integrations` array listing every declared provider that does not yet have an active connection.
-3. For **each** entry in `pending_integrations`, you call `holaboss_workspace_integrations_propose_connect({ toolkit_slug })`. One card per provider. Same turn is fine.
+3. For **each** entry in `pending_integrations`, you call `hitechcloud_workspace_integrations_propose_connect({ toolkit_slug })`. One card per provider. Same turn is fine.
 4. You stop. The runtime emits a `waiting_on_pending_integrations` event, parks your next input, and re-dispatches it the moment all required connections land as `active`. You do not poll, do not retry, do not chain "let me also call gmail_get_profile to verify" — that hits 401 noise.
 5. When the system re-dispatches you, every required provider is connected, the dashboard's `getIntegrationStatus()` will return `ready: true`, and the app actually works.
 
@@ -515,7 +515,7 @@ Run all of these. Stop at the first failure and report the symptom verbatim, don
 ### Backend (every app)
 
 1. `cd <workspace>/apps/<app_id> && bun install` → exit 0, lockfile written
-2. `MCP_PORT=<port> WORKSPACE_DB_PATH=/tmp/<app_id>.db HOLABOSS_INTEGRATION_BROKER_URL=http://localhost:40531/api/v1/integrations HOLABOSS_APP_GRANT=fake bun run server.ts &` → "MCP server listening on :<port>" and "Tools registered: N" in stdout
+2. `MCP_PORT=<port> WORKSPACE_DB_PATH=/tmp/<app_id>.db HITECHCLOUD_INTEGRATION_BROKER_URL=http://localhost:40531/api/v1/integrations HITECHCLOUD_APP_GRANT=fake bun run server.ts &` → "MCP server listening on :<port>" and "Tools registered: N" in stdout
 3. `curl http://localhost:<port>/mcp/health` → `{"status":"ok","app_id":"<app_id>"}`
 4. (After registering in workspace.yaml + restarting desktop or hitting the binding refresh API) the app appears in the desktop integrations pane
 5. After the manual PUT binding step, agent calls `<app_id>_connection_status` → returns `{connected: true, identity: {...}}` if `provider.whoamiPath` is set, else `{connected: null, reason: "no_probe_defined"}`. Anything else (`{connected: false, reason: ...}`) means the binding or the upstream is broken — read the `message` field, fix root cause, don't retry blindly.
@@ -527,7 +527,7 @@ Run all of these. Stop at the first failure and report the symptom verbatim, don
 ### Dashboard (additionally, for dashboard apps)
 
 8. `curl http://localhost:<PORT>/` returns a TanStack Start HTML response — NOT the SDK's default "headless module" placeholder (search for "headless module" in the response body; if it appears, the dashboard server didn't start or isn't bound to PORT).
-9. Open the app's workspace pane in the desktop. It MUST visually resemble other holaOS panes — same fonts, same borders, same radii, same Card surface color. If it looks alien (raw HTML, off-brand colors, weird spacing), you've broken L1 or L2 of the UI constraints. Re-check that the global theme stylesheet is imported in `__root.tsx` and that all surfaces use shadcn primitives.
+9. Open the app's workspace pane in the desktop. It MUST visually resemble other hitechcloudOS panes — same fonts, same borders, same radii, same Card surface color. If it looks alien (raw HTML, off-brand colors, weird spacing), you've broken L1 or L2 of the UI constraints. Re-check that the global theme stylesheet is imported in `__root.tsx` and that all surfaces use shadcn primitives.
 10. Click around. Every interaction (dialogs, dropdowns, table sort, tab switch) must come from shadcn primitives; no native `<select>` / `<input>` / `<button>` should appear unstyled.
 11. Reload the desktop. The dashboard should rehydrate without a flash of unstyled content — confirms the CSS variables resolve at first paint.
 
@@ -546,7 +546,7 @@ Run all of these. Stop at the first failure and report the symptom verbatim, don
 
 - Do not ship the SDK's default "headless module" placeholder when the user asked for a dashboard. That page is intentionally minimal and ugly; the moment a dashboard is needed, `src/client/` must replace it.
 - Do not hand-write `<div>`-based layouts. Compose shadcn primitives (`Card`, `Tabs`, `Table`, `Dialog`, etc.) from the locked registry.
-- Do not introduce a second component library (MUI, Ant, Chakra, raw Radix, Headless UI). The holaOS-locked shadcn registry is the only allowed source.
+- Do not introduce a second component library (MUI, Ant, Chakra, raw Radix, Headless UI). The hitechcloudOS-locked shadcn registry is the only allowed source.
 - Do not use inline `style={{ color: ..., padding: ... }}` for colors / spacing / radii. CSS variables (`--background`, `--primary`, `--radius`, …) only.
 - Do not write a per-app theme toggle. Theme is workspace-level; the app inherits via CSS variables.
 - Do not hand-write `components/ui/button.tsx` etc. — use `bunx shadcn add button` so the locked registry version lands.
@@ -567,6 +567,6 @@ Run all of these. Stop at the first failure and report the symptom verbatim, don
 
 ### For dashboard apps (additionally)
 
-7. `@holaboss/ui` on npmjs.com — public package with the full primitive catalog (~55 base-ui shadcn components incl. Chart family, Sidebar, Dialog/Sheet/Drawer, Table, Form, Calendar, Carousel, Sonner). Install via `bun add @holaboss/ui` and mount the bundled styles via a single `import "@holaboss/ui/styles.css"` at the dashboard root. No DashboardShell/DataTable/StatPill layouts — compose from primitives.
-8. _(no dashboard reference)_ — dashboards compose freely from `@holaboss/ui` primitives. The `interface-design` skill chained above is the only authority on shape.
+7. `@hitechcloud/ui` on npmjs.com — public package with the full primitive catalog (~55 base-ui shadcn components incl. Chart family, Sidebar, Dialog/Sheet/Drawer, Table, Form, Calendar, Carousel, Sonner). Install via `bun add @hitechcloud/ui` and mount the bundled styles via a single `import "@hitechcloud/ui/styles.css"` at the dashboard root. No DashboardShell/DataTable/StatPill layouts — compose from primitives.
+8. _(no dashboard reference)_ — dashboards compose freely from `@hitechcloud/ui` primitives. The `interface-design` skill chained above is the only authority on shape.
 9. Compare against the current live desktop panes if available, but do not leave the workspace or guess repo-root source paths just to locate pane source files.

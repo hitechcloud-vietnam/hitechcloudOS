@@ -94,7 +94,7 @@ export function resolveIntegrationError(opts: ResolveOptions): IntegrationErrorC
     case "needs_own_credentials":
       return {
         headline: `${provider} needs your own API key`,
-        detail: `holaOS has no shared sign-in for ${provider} — connect it again and paste your key when asked.`,
+        detail: `hitechcloudOS has no shared sign-in for ${provider} — connect it again and paste your key when asked.`,
         action: "reconnect",
       };
     case "not_configured":

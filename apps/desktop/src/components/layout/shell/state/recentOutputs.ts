@@ -24,7 +24,7 @@ export type RecentOutput = {
 };
 
 export const recentOutputsAtom = atomWithStorage<RecentOutput[]>(
-  "holaboss-new-shell-recent-outputs-v1",
+  "hitechcloud-new-shell-recent-outputs-v1",
   [],
 );
 

@@ -8,12 +8,12 @@ import type {
 	InstallStatusEventPayload,
 	OpenAppEventPayload,
 	ShareDraft,
-} from "@holaboss/app-host/protocol";
+} from "@hitechcloud/app-host/protocol";
 import type { IWorkbookData } from "@univerjs/core";
 
 declare global {
 	/** Payload of the `host:openChat` event main emits after a hosted HolaApp
-	 * page calls `window.__holabossHost.chat.start` (the session is already
+	 * page calls `window.__hitechcloudHost.chat.start` (the session is already
 	 * created). The shell opens it + prefills the composer. */
 	interface HostOpenChatPayload {
 		session: MainSessionRecordPayload;
@@ -1431,17 +1431,17 @@ declare global {
 		status: string;
 	}
 
-	interface HolabossAnswerUserQuestionAnswer {
+	interface HitechcloudAnswerUserQuestionAnswer {
 		question_id: string;
 		option_id?: string | null;
 		response_text?: string | null;
 		notes?: string | null;
 	}
 
-	interface HolabossAnswerUserQuestionPayload {
+	interface HitechcloudAnswerUserQuestionPayload {
 		workspace_id: string;
 		session_id: string;
-		answers: HolabossAnswerUserQuestionAnswer[];
+		answers: HitechcloudAnswerUserQuestionAnswer[];
 		model?: string | null;
 		thinking_value?: string | null;
 	}
@@ -1469,7 +1469,7 @@ declare global {
 		updated_at: string;
 	}
 
-	interface HolabossClientConfigPayload {
+	interface HitechcloudClientConfigPayload {
 		projectsUrl: string;
 		marketplaceUrl: string;
 	}
@@ -1827,8 +1827,8 @@ declare global {
 		| { state: "reconnecting"; nextAttemptInMs: number; attempt: number }
 		| { state: "stopped"; reason: string };
 
-	interface HolabossCreateWorkspacePayload {
-		holaboss_user_id: string;
+	interface HitechcloudCreateWorkspacePayload {
+		hitechcloud_user_id: string;
 		location?: WorkspaceLocationPayload | null;
 		harness?: string | null;
 		name: string;
@@ -1855,7 +1855,7 @@ declare global {
 		rootPath: string | null;
 	}
 
-	interface HolabossQueueSessionInputPayload {
+	interface HitechcloudQueueSessionInputPayload {
 		text: string;
 		/** Ambient context about the open HolaApp/surface (the "user currently has
 		 * <app> open …" block + the app's MCP tool hint). Sent to the AGENT only —
@@ -1874,7 +1874,7 @@ declare global {
 		app_id?: string | null;
 	}
 
-	interface HolabossStreamSessionOutputsPayload {
+	interface HitechcloudStreamSessionOutputsPayload {
 		sessionId: string;
 		workspaceId?: string | null;
 		inputId?: string | null;
@@ -1882,29 +1882,29 @@ declare global {
 		stopOnTerminal?: boolean;
 	}
 
-	interface HolabossPauseSessionRunPayload {
+	interface HitechcloudPauseSessionRunPayload {
 		workspace_id: string;
 		session_id: string;
 	}
 
-	interface HolabossUpdateQueuedSessionInputPayload {
+	interface HitechcloudUpdateQueuedSessionInputPayload {
 		workspace_id: string;
 		session_id: string;
 		input_id: string;
 		text: string;
 	}
 
-	interface HolabossCancelQueuedSessionInputPayload {
+	interface HitechcloudCancelQueuedSessionInputPayload {
 		workspace_id: string;
 		session_id: string;
 		input_id: string;
 	}
 
-	interface HolabossSessionStreamHandlePayload {
+	interface HitechcloudSessionStreamHandlePayload {
 		streamId: string;
 	}
 
-	interface HolabossSessionStreamEventPayload {
+	interface HitechcloudSessionStreamEventPayload {
 		streamId: string;
 		type: "event" | "error" | "done";
 		event?: {
@@ -1921,7 +1921,7 @@ declare global {
 		mandate?: string;
 		model?: string;
 		connectorCount?: number;
-		/** The permanent preset "Hola" employee — wears the Holaboss brand mark and
+		/** The permanent preset "Hola" employee — wears the Hitechcloud brand mark and
 		 *  can't be archived. */
 		preset?: boolean;
 		/** Deterministic avatar (bg color + emoji) for the roster row. */
@@ -1957,7 +1957,7 @@ declare global {
 		integrations: { slug: string; name: string }[];
 	}
 
-	interface HolabossSessionStreamDebugEntry {
+	interface HitechcloudSessionStreamDebugEntry {
 		at: string;
 		streamId: string;
 		phase: string;
@@ -2463,7 +2463,7 @@ declare global {
 			) => () => void;
 		};
 		appSurface: {
-			/** Web deep link (ai.holaboss.app://open-app?appId=…) forwarded from main;
+			/** Web deep link (ai.hitechcloud.app://open-app?appId=…) forwarded from main;
 			 * the subscriber drives useOpenHolaApp() to open the app surface. */
 			onOpenFromDeepLink(
 				listener: (target: { appId: string; path?: string }) => void,
@@ -2564,7 +2564,7 @@ declare global {
 			install(config: {
 				id: string;
 				mcpUrl: string;
-				holabossHosted: boolean;
+				hitechcloudHosted: boolean;
 				headerKeys: Record<string, string>;
 				queryKeys: Record<string, string>;
 				envKeys: Record<string, string>;
@@ -2575,7 +2575,7 @@ declare global {
 			attachAppOwned(config: {
 				id: string;
 				mcpUrl: string;
-				holabossHosted: boolean;
+				hitechcloudHosted: boolean;
 				headerKeys: Record<string, string>;
 				queryKeys: Record<string, string>;
 				envKeys: Record<string, string>;
@@ -2587,7 +2587,7 @@ declare global {
 				configs: {
 					id: string;
 					mcpUrl: string;
-					holabossHosted: boolean;
+					hitechcloudHosted: boolean;
 					headerKeys: Record<string, string>;
 					queryKeys: Record<string, string>;
 					envKeys: Record<string, string>;
@@ -2601,7 +2601,7 @@ declare global {
 				configs: {
 					id: string;
 					mcpUrl: string;
-					holabossHosted: boolean;
+					hitechcloudHosted: boolean;
 					headerKeys: Record<string, string>;
 					queryKeys: Record<string, string>;
 					envKeys: Record<string, string>;
@@ -2621,11 +2621,11 @@ declare global {
 			sendInstallStatus(requestId: string, list: InstalledList): void;
 			onEmployeesChanged(listener: () => void): () => void;
 		};
-		holahub: {
+		hitechhub: {
 			stageShare(draft: ShareDraft): Promise<boolean>;
 		};
 		workspace: {
-			getClientConfig: () => Promise<HolabossClientConfigPayload>;
+			getClientConfig: () => Promise<HitechcloudClientConfigPayload>;
 			pickTemplateFolder: () => Promise<TemplateFolderSelectionPayload>;
 			pickWorkspaceRuntimeFolder: () => Promise<WorkspaceRuntimeFolderSelectionPayload>;
 			pickWorkspaceRelocationFolder: (
@@ -2836,28 +2836,28 @@ declare global {
 				payload: StageSessionAttachmentPathsPayload,
 			) => Promise<StageSessionAttachmentsResponsePayload>;
 			queueSessionInput: (
-				payload: HolabossQueueSessionInputPayload,
+				payload: HitechcloudQueueSessionInputPayload,
 			) => Promise<EnqueueSessionInputResponsePayload>;
 			pauseSessionRun: (
-				payload: HolabossPauseSessionRunPayload,
+				payload: HitechcloudPauseSessionRunPayload,
 			) => Promise<PauseSessionRunResponsePayload>;
 			answerUserQuestion: (
-				payload: HolabossAnswerUserQuestionPayload,
+				payload: HitechcloudAnswerUserQuestionPayload,
 			) => Promise<AnswerUserQuestionResponsePayload>;
 			updateQueuedSessionInput: (
-				payload: HolabossUpdateQueuedSessionInputPayload,
+				payload: HitechcloudUpdateQueuedSessionInputPayload,
 			) => Promise<UpdateQueuedSessionInputResponsePayload>;
 			cancelQueuedSessionInput: (
-				payload: HolabossCancelQueuedSessionInputPayload,
+				payload: HitechcloudCancelQueuedSessionInputPayload,
 			) => Promise<CancelQueuedSessionInputResponsePayload>;
 			openSessionOutputStream: (
-				payload: HolabossStreamSessionOutputsPayload,
-			) => Promise<HolabossSessionStreamHandlePayload>;
+				payload: HitechcloudStreamSessionOutputsPayload,
+			) => Promise<HitechcloudSessionStreamHandlePayload>;
 			closeSessionOutputStream: (
 				streamId: string,
 				reason?: string,
 			) => Promise<void>;
-			getSessionStreamDebug: () => Promise<HolabossSessionStreamDebugEntry[]>;
+			getSessionStreamDebug: () => Promise<HitechcloudSessionStreamDebugEntry[]>;
 			isVerboseTelemetryEnabled: () => Promise<boolean>;
 			listIntegrationCatalog: () => Promise<IntegrationCatalogResponsePayload>;
 			listIntegrationConnections: (params?: {
@@ -3030,7 +3030,7 @@ declare global {
 			}>;
 			composioMcpEnsureRunning: (workspaceId: string) => Promise<unknown>;
 			resolveTemplateIntegrations: (
-				payload: HolabossCreateWorkspacePayload,
+				payload: HitechcloudCreateWorkspacePayload,
 			) => Promise<ResolveTemplateIntegrationsResult>;
 			generateTemplateContent(params: {
 				contentType: "onboarding" | "readme";
@@ -3069,7 +3069,7 @@ declare global {
 				context: OperatorSurfaceContextPayload | null,
 			): Promise<void>;
 			onSessionStreamEvent: (
-				listener: (payload: HolabossSessionStreamEventPayload) => void,
+				listener: (payload: HitechcloudSessionStreamEventPayload) => void,
 			) => () => void;
 		};
 		holaemployee: {
@@ -3091,10 +3091,10 @@ declare global {
 					mimeType: string;
 					contentBase64: string;
 				}[];
-			}) => Promise<HolabossSessionStreamHandlePayload>;
+			}) => Promise<HitechcloudSessionStreamHandlePayload>;
 			closeChatStream: (streamId: string) => Promise<void>;
 			onChatStreamEvent: (
-				listener: (payload: HolabossSessionStreamEventPayload) => void,
+				listener: (payload: HitechcloudSessionStreamEventPayload) => void,
 			) => () => void;
 		};
 		auth: {
@@ -3107,7 +3107,7 @@ declare global {
 			requestAuth: () => Promise<void>;
 			signOut: () => Promise<void>;
 			// Organization (tenant) context. Switching the active org re-scopes every
-			// backend call (the gateway injects x-holaboss-org-id from the session).
+			// backend call (the gateway injects x-hitechcloud-org-id from the session).
 			listOrganizations: () => Promise<DesktopOrganizationPayload[]>;
 			getActiveOrganization: () => Promise<DesktopActiveOrganizationPayload | null>;
 			setActiveOrganization: (

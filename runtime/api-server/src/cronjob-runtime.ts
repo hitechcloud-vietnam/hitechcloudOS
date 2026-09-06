@@ -6,7 +6,7 @@ import {
   type RuntimeStateStore,
   type WorkspaceRecord,
   utcNowIso,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 /**
  * Native cronjob runtime. A cronjob is a scheduled prompt: on its `cron`

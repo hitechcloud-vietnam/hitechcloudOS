@@ -25,7 +25,7 @@ type UpdateRuntimeConfigRequest = {
   subagent_model?: string | null;
   runtime_mode?: string | null;
   default_provider?: string | null;
-  holaboss_enabled?: boolean | string | null;
+  hitechcloud_enabled?: boolean | string | null;
   desktop_browser_enabled?: boolean | string | null;
   desktop_browser_url?: string | null;
   desktop_browser_auth_token?: string | null;
@@ -54,7 +54,7 @@ function productRuntimeConfigResponse(config: ProductRuntimeConfig): Record<stri
     subagent_model: config.subagentModel,
     runtime_mode: config.runtimeMode,
     default_provider: config.defaultProvider,
-    holaboss_enabled: config.holabossEnabled,
+    hitechcloud_enabled: config.hitechcloudEnabled,
     desktop_browser_enabled: config.desktopBrowserEnabled,
     desktop_browser_url: config.desktopBrowserUrl,
     desktop_browser_auth_token: config.desktopBrowserAuthToken,

@@ -1,19 +1,19 @@
-# @holaboss/editor
+# @hitechcloud/editor
 
-Tiptap-based block editor for holaOS.
+Tiptap-based block editor for hitechcloudOS.
 
 **v0 status**: Markdown editor only. Plugged into desktop's `.md` / `.mdx` /
 `.markdown` file editing surface as the replacement for the previous plain
 `<textarea>`. Future versions add Notion-style blocks (slash menu, drag handle,
 embedded databases) per the design doc:
 
-- `holaOS/docs/plans/2026-05-06-pages-and-databases-design.md`
+- `hitechcloudOS/docs/plans/2026-05-06-pages-and-databases-design.md`
 
 ## Usage
 
 ```tsx
-import "@holaboss/editor/styles.css";
-import { MarkdownEditor } from "@holaboss/editor";
+import "@hitechcloud/editor/styles.css";
+import { MarkdownEditor } from "@hitechcloud/editor";
 
 function MyPane({ value, onChange }) {
   return (

@@ -1,4 +1,4 @@
-import type { MemoryEntryRecord } from "@holaboss/runtime-state-store";
+import type { MemoryEntryRecord } from "@hitechcloud/runtime-state-store";
 
 import { assessMemoryFreshness, governanceRuleForMemoryType, type MemoryFreshnessAssessment } from "./memory-governance.js";
 

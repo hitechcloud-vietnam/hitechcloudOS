@@ -5,7 +5,7 @@
  * (the `fingerprint` engine). Gated OFF by default: the entry points (the 🛡
  * Fingerprint button) show a Contact Sales popup instead of the editor, because
  * the engine is an ENTERPRISE feature — the OSS core loads the licensed
- * `@holaboss/fingerprint-ee` package (Camoufox, run out-of-process) at runtime
+ * `@hitechcloud/fingerprint-ee` package (Camoufox, run out-of-process) at runtime
  * through the FingerprintBrowserEngine seam; absent (plain OSS builds), the
  * feature is off. Flip this to `true` for a licensed build to expose the UI.
  */

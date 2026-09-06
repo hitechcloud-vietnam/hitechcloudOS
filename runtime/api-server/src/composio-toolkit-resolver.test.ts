@@ -9,7 +9,7 @@ import {
 import type {
   IntegrationConnectionRecord,
   RuntimeStateStore,
-} from "@holaboss/runtime-state-store";
+} from "@hitechcloud/runtime-state-store";
 
 function makeStoreStub(params: {
   connections: Array<{

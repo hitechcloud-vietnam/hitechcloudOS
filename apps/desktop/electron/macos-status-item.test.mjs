@@ -4,7 +4,7 @@ import test from "node:test";
 
 const MAIN_PATH = new URL("./main.ts", import.meta.url);
 
-test("desktop main process installs a macOS status item for Holaboss", async () => {
+test("desktop main process installs a macOS status item for Hitechcloud", async () => {
   const source = await readFile(MAIN_PATH, "utf8");
 
   assert.match(source, /Tray,/);

@@ -1,4 +1,4 @@
-// Ported verbatim from holaOS/desktop/electron/main.ts (lines 13823-13978).
+// Ported verbatim from hitechcloudOS/desktop/electron/main.ts (lines 13823-13978).
 // Two intentional changes from the original:
 //   1. Transport: node:http -> fetch. Electron renderer + Node 24 + Bun all
 //      support fetch + AbortSignal natively, so the SDK works in every host.
